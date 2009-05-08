@@ -1,0 +1,64 @@
+\documentclass[12pt]{article}
+\begin{document}
+\section*{Data analysis recipes:\ \\
+  Fitting a straight line to data\footnote{
+    Copyright 2009 David~W.~Hogg (david.hogg@nyu.edu).  You may copy
+    and distribute this document provided that you make no changes to
+    it whatsoever.}}
+
+\noindent
+David~W.~Hogg\\
+\textsl{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics,\\
+New~York~University}\\
+\texttt{david.hogg@nyu.edu}
+
+\begin{abstract}
+  In excruciating detail, I go through all of the considerations
+  involved in fitting a straight line to a set of points in a
+  two-dimensional plane.  Standard chi-squared fitting is only
+  appropriate when there is a dimension along which the data points
+  have negligible uncertainties; this condition is rarely met in
+  practice.  In addition to considering cases of general,
+  heterogeneous, and arbitrarily covariant two-dimensional
+  uncertainties, I also look at situations in which there are large
+  outliers, upper or lower limits on some points, unknown
+  uncertainties, and unknown but expected intrinsic scatter in the
+  linear relationship being fit.  Above all I emphasize the importance
+  of choosing a justified scalar objective, and recommend separating
+  that decision from any decisions about the details of optimization.
+\end{abstract}
+
+Common problem.
+
+No consensus on generalizations.
+
+Absurdities in the literature.
+
+Robot science: I want methods that are so reliable that they can be
+performed automatically by unsupervised robots on millions of
+problems.
+
+\section{Standard practice}
+
+Note that even when the conditions of standard practice are met, it is
+\emph{still} often done wrong!
+
+\section{Arbitrary two-dimensional uncertainties}
+
+\section{Comments on non-gaussian errors}
+
+\section{Robustness to outliers}
+
+Criticize sigma-clipping relative to having a known scalar objective.
+Sigma-clipping is a procedure the end point of which depends on the
+starting point.
+
+\section{Limits}
+
+\section{Unknown datapoint uncertainties}
+
+\section{Intrinsic scatter}
+
+\section{Discussion}
+
+\end{document}
