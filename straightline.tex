@@ -1,4 +1,17 @@
 \documentclass[12pt]{article}
+\usepackage{amssymb,amsmath}
+
+\newcommand{\mmatrix}[1]{\boldsymbol{#1}}
+\newcommand{\inverse}[1]{{#1}^{-1}}
+\newcommand{\transpose}[1]{{#1}^{\scriptscriptstyle \top}}
+\newcommand{\mA}{\mmatrix{A}}
+\newcommand{\mAT}{\transpose{\mA}}
+\newcommand{\mC}{\mmatrix{C}}
+\newcommand{\mCinv}{\inverse{\mC}}
+\newcommand{\mX}{\mmatrix{X}}
+\newcommand{\mY}{\mmatrix{Y}}
+\newcommand{\mYT}{\transpose{\mY}}
+
 \begin{document}
 \section*{Data analysis recipes:\ \\
   Fitting a straight line to data\footnote{
@@ -40,12 +53,127 @@ problems.
 
 \section{Standard practice}
 
+You have a set of $N>2$ points $(x_i,y_i)$, with known gaussian
+uncertainties $\sigma_{yi}$ in the $y$ direction, and no uncertainty
+at all (that is, perfect knowledge) in the $x$ direction.  You want to
+find the function $f(x)$ of the form
+\begin{equation}
+f(x) = m\,x + b \quad ,
+\end{equation}
+where $m$ is the slope and $b$ is the intercept, that ``best fits''
+the points.  What is meant by ``best fits'' is, of course, very
+important, and in what follows I will have a lot to say about that.
+For now, I describe standard practice:
+
+Construct the matrices
+\begin{equation}
+\mY = \left[\begin{array}{c}
+y_1 \\
+y_2 \\
+\cdots \\
+y_N
+\end{array}\right] \quad ,
+\end{equation}
+\begin{equation}
+\mA = \left[\begin{array}{cc}
+1 & x_1 \\
+1 & x_2 \\
+\multicolumn{2}{c}{\cdots} \\
+1 & x_N
+\end{array}\right] \quad ,
+\end{equation}
+\begin{equation}
+\mC = \left[\begin{array}{cccc}
+\sigma_{y1}^{2} & 0 & \cdots & 0 \\
+0 & \sigma_{y2}^{2} & \cdots & 0 \\
+\multicolumn{4}{c}{\cdots} \\
+0 & 0 & \cdots & \sigma_{yN}^{2}
+\end{array}\right] \quad ,
+\end{equation}
+where one might call $\mY$ a ``vector'', and the covariance matrix
+$\mC$ can be generalized to the case in which there are covariances
+between the different $y$-direction uncertainties.  The best-fit
+values for the parameters $m$ and $b$ are just the components of a
+column vector $\mX$ found by
+\begin{equation}\label{eq:lsf}
+\left[\begin{array}{c} $b$ \\ $m$ \end{array}\right]
+ = \mX = \inverse{\left(\mAT\,\mCinv\,\mA\right)}
+  \,\left(\mAT\,\mCinv\,\mY\right) \quad .
+\end{equation}
+This seems all very complicated, but it is actually the simplest thing
+that can be written down that is linear, obeys matrix multiplication
+rules, and has the right relative sensitivity to data of different
+statistical significance.  It can be justified in one of several ways;
+the linear algebra justification starts by noting that you want to
+solve the equation
+\begin{equation}
+\mY = \mA\,\mX \quad ,
+\end{equation}
+but you can't because that equation is over-constrained.  So you
+weight everything with the inverse of the covariance matrix (as you
+would if you were doing, say, a weighted average), and then
+left-multiply everything by $\mAT$ to reduce the dimensionality, and
+then equation~(\ref{eq:lsf}) is the solution of that
+reduced-dimensionality equation.
+
+This methodology minimizes a quantity $\chi^2$ (``chi-squared''),
+which is the mean square error, scaled by the uncertainties, or
+\begin{equation}
+\chi^2
+ = \sum_{i=1}^N \frac{\left(y_i - f(x_i)\right)^2}{\sigma_{yi}^2}
+ \equiv \transpose{\left(\mY-\mA\,\mX\right)}\,\mCinv\,\left(\mY-\mA\,\mX\right)
+ \quad ,
+\end{equation}
+that is, it finds the values for $m$ and $b$ that minimize $\chi^2$.
+This, of course, is only one possible meaning of the phrase ``best
+fit''.
+
+When the uncertainties are gaussian and their variances $\sigma_{yi}$
+are correctly estimated, the matrix
+$\inverse{\left(\mAT\,\mCinv\,\mA\right)}$ that appears in
+equation~\ref{eq:lsf} is just the covariance matrix (gaussian
+uncertainty variances on the diagonal, covariances off the diagonal)
+for the parameters in $\mX$.  The justification of this will have to
+wait for a discussion of the objective function, if it comes at all.
+
 Note that even when the conditions of standard practice are met, it is
-\emph{still} often done wrong!
+\emph{still} often done wrong!  It is not unusual to see the
+individual data-point error estimates ignored, even when they are
+known at least approximately.  It is also common for the problem to
+get ``transposed'' such that the coordinates for which errors are
+negligible (the independent variables) are put into the $\mY$ vector
+and the coordinates for which errors are \emph{not} negligible (the
+dependent variables) are put into the $\mA$ matrix.  In this latter
+case, the procedure makes no sense at all really; it happens when the
+investigator thinks of some quantity ``really being'' the dependent
+variable, despite the fact that it has the smaller error.  In the
+context of fitting, however, there is no meaning to these
+``independent'' and ``dependent'' terms beyond the error properties.
+
+\section{The objective function}
+
+A scientist's justification of equation~(\ref{eq:lsf}) cannot appeal
+purely to abstract ideas of linear algebra, but must originate from
+the scientific question at hand.  Here and in what follows, I will
+advocate that the only reliable procedure is to use all one's
+knowledge about the problem to construct a (preferably) justified,
+(necessarily) scalar (or, really, one-dimensional), \emph{objective
+function} that represents monotonically the quality of the fit.  In
+this framework, fitting anything to anything involves a scientific
+question about the objective function representing ``goodness of fit''
+and then a separate and subsequent engineering question about how to
+\emph{find the optimum} and, possibly, the confidence interval or
+posterior probability distribution around that optimum.  Note that in
+the above section we did \emph{not} proceed according to these rules;
+indeed the procedure was introduced prior to the objective function,
+and the objective function was not justified.
+
+Gaussian uncertainties... gaussian posterior... chi-squared... linear
+algebra.
+
+\section{A comment on non-gaussian errors}
 
 \section{Arbitrary two-dimensional uncertainties}
-
-\section{Comments on non-gaussian errors}
 
 \section{Robustness to outliers}
 
