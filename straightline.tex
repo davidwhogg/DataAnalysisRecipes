@@ -1,6 +1,7 @@
 \documentclass[12pt]{article}
-\usepackage{amssymb,amsmath}
+\usepackage{amssymb,amsmath,mathrsfs}
 
+\renewcommand{\d}{\mathrm{d}}
 \newcommand{\mmatrix}[1]{\boldsymbol{#1}}
 \newcommand{\inverse}[1]{{#1}^{-1}}
 \newcommand{\transpose}[1]{{#1}^{\scriptscriptstyle \top}}
@@ -11,6 +12,7 @@
 \newcommand{\mX}{\mmatrix{X}}
 \newcommand{\mY}{\mmatrix{Y}}
 \newcommand{\mYT}{\transpose{\mY}}
+\newcommand{\like}{\mathscr{L}}
 
 \begin{document}
 \section*{Data analysis recipes:\ \\
@@ -149,6 +151,9 @@ investigator thinks of some quantity ``really being'' the dependent
 variable, despite the fact that it has the smaller error.  In the
 context of fitting, however, there is no meaning to these
 ``independent'' and ``dependent'' terms beyond the error properties.
+In performing this standard fit, the investigator is effectively
+assuming that the $x$ values have negligible uncertainties; if they do
+\emph{not}, then the investigator is making a mistake.
 
 \section{The objective function}
 
@@ -168,10 +173,75 @@ the above section we did \emph{not} proceed according to these rules;
 indeed the procedure was introduced prior to the objective function,
 and the objective function was not justified.
 
-Gaussian uncertainties... gaussian posterior... chi-squared... linear
-algebra.
+One method for finding or creating a justified scalar objective is to
+make a ``generative model'' for the data, or a statistical model for
+how a data set similar to the one you have might have been generated.
+In the case of the straight line fit in the presence of known,
+gaussian uncertainties, one can create this generative model by
+imagining that the data \emph{really do} come from a line of the form
+$y = f(x) = m\,x+b$, and that the only reason that any data point
+deviates from this perfect, straight line is that to this has been
+added a small $y$-direction offset drawn from a gaussian distribution
+of zero mean and known variance $\sigma_y^2$.  In this model, given an
+independent position $x_i$, an uncertainty $\sigma_{yi}$, a slope $m$,
+and an intercept $b$, the frequency distribution
+$p(y_i|x_i,\sigma_{yi},m,b)$ for $y_i$ is
+\begin{equation}
+p(y_i|x_i,\sigma_{yi},m,b) = \frac{1}{\sqrt{2\,\pi\,\sigma_{yi}^2}}
+ \,\exp\left(-\frac{(y_i - m\,x - b)^2}{2\,\sigma_{yi}^2}\right) \quad ,
+\end{equation}
+where this gives the expected frequency (in a hypothetical set of
+repeated experiments) of getting value in the range $[y_i,y_i+\d y]$
+per unit $\d y$.
+
+This generative model provides us with a natural, justified, scalar objective:  We seek the line (parameters $m$ and $b$) that maximize the likelihood of the observed data.  The likelihood $\like$ is 
+\begin{equation}\label{eq:like}
+\like \propto \prod_{i=1}^N p(y_i|x_i,\sigma_{yi},m,b) \quad ,
+\end{equation}
+where I have used ``$\propto$'' not ``$=$'' to be careful about the
+infinitesimal volume $(\d y)^N$ and a possible normalization constant
+that comes from the overall probability of the data in the context of
+the model space (to which I may return below).  Taking the logarithm,
+\begin{eqnarray}\displaystyle
+\ln\like
+ & = & K + \sum_{i=1}^N -\frac{(y_i - m\,x - b)^2}{2\,\sigma_{yi}^2} \nonumber\\
+ & = & K - \frac{1}{2}\,\chi^2 \quad ,
+\end{eqnarray}
+where $K$ is some constant.  This shows that likelihood maximization
+is identical to $\chi^2$ minimization and we have justified,
+scientifically, the procedure of the previous section.
+
+The Bayesian generalization of this is to say that
+\begin{equation}
+p(m,b|D,I) = \frac{p(D|m,b,I)}{p(D|I)}\,p(m,b|I) \quad ,
+\end{equation}
+where $m$ and $b$ are the model parameters, $D$ is a short-hand for
+all the data $y_i$, $I$ is a short-hand for all the prior knowledge of
+the $x_i$ and the $\sigma_{yi}$ and everything else about the problem,
+$p(m,b|D,I)$ is the \emph{posterior} probability distribution for the
+parameters given the data and the prior knowledge, the ratio is the
+likelihood just computed, which has a frequency distribution for the
+data on top and that same thing marginalized over all parameters on
+the bottom (the denominator can be thought of as a normalization
+constant), and $p(m,b|I)$ is the \emph{prior} probability distribution
+for the parameters that represents all knowledge \emph{except} the
+input data $D$.  Unless the prior $p(m,b|I)$ is pretty informative,
+the posterior distribution function $p(m,b|D,I)$ here is going to look
+very similar to the likelihood function in equation~(\ref{eq:like})
+above.
+
+We have succeeded in justifying the standard method as optimizing a
+justified, scalar objective function.  It is just the great good luck
+of Gaussian distributions that that optimization is a pure linear
+function of the data, and therefore trivial to implement.
 
 \section{A comment on non-gaussian errors}
+
+Errors and uncertainties.
+
+What you are really assuming.
+
+Fitting for the error distribution.  Etc.
 
 \section{Arbitrary two-dimensional uncertainties}
 
