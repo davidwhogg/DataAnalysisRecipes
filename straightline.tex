@@ -1,7 +1,13 @@
 % to-do
+% -----
 % - write
-% - use () for functions, and [] for grouping/precedence
 % - distinguish error from uncertainty and frequency from probability
+
+% style notes
+% -----------
+% - careful with the words ``error'' and ``uncertainty''
+% - careful with the words ``probability'' and ``frequency''
+% - use () for function arguments, and [] for grouping/precedence
 
 \documentclass[12pt]{article}
 \usepackage{amssymb,amsmath,mathrsfs}
@@ -104,8 +110,8 @@ values for the parameters $m$ and $b$ are just the components of a
 column vector $\mX$ found by
 \begin{equation}\label{eq:lsf}
 \left[\begin{array}{c} $b$ \\ $m$ \end{array}\right]
- = \mX = \inverse{\left(\mAT\,\mCinv\,\mA\right)}
-  \,\left(\mAT\,\mCinv\,\mY\right) \quad .
+ = \mX = \inverse{\left[\mAT\,\mCinv\,\mA\right]}
+  \,\left[\mAT\,\mCinv\,\mY\right] \quad .
 \end{equation}
 This seems all very complicated, but it is actually the simplest thing
 that can be written down that is linear, obeys matrix multiplication
@@ -127,8 +133,9 @@ This methodology minimizes a quantity $\chi^2$ (``chi-squared''),
 which is the mean square error, scaled by the uncertainties, or
 \begin{equation}
 \chi^2
- = \sum_{i=1}^N \frac{\left(y_i - f(x_i)\right)^2}{\sigma_{yi}^2}
- \equiv \transpose{\left(\mY-\mA\,\mX\right)}\,\mCinv\,\left(\mY-\mA\,\mX\right)
+ = \sum_{i=1}^N \frac{\left[y_i - f(x_i)\right]^2}{\sigma_{yi}^2}
+ \equiv \transpose{\left[\mY-\mA\,\mX\right]}
+ \,\mCinv\,\left[\mY-\mA\,\mX\right]
  \quad ,
 \end{equation}
 that is, it finds the values for $m$ and $b$ that minimize $\chi^2$.
@@ -137,13 +144,14 @@ fit''.
 
 When the uncertainties are gaussian and their variances $\sigma_{yi}$
 are correctly estimated, the matrix
-$\inverse{\left(\mAT\,\mCinv\,\mA\right)}$ that appears in
-equation~\ref{eq:lsf} is just the covariance matrix (gaussian
+$\inverse{\left[\mAT\,\mCinv\,\mA\right]}$ that appears in
+equation~(\ref{eq:lsf}) is just the covariance matrix (gaussian
 uncertainty variances on the diagonal, covariances off the diagonal)
 for the parameters in $\mX$.  The justification of this will have to
 wait for a discussion of the objective function, if it comes at all.
 
-Note that even when the conditions of standard practice are met, it is
+\paragraph{Comments:}
+Even when the conditions of standard practice are met, it is
 \emph{still} often done wrong!  It is not unusual to see the
 individual data-point error estimates ignored, even when they are
 known at least approximately.  It is also common for the problem to
@@ -159,6 +167,9 @@ context of fitting, however, there is no meaning to these
 In performing this standard fit, the investigator is effectively
 assuming that the $x$ values have negligible uncertainties; if they do
 \emph{not}, then the investigator is making a mistake.
+
+Physicists should be studying linear algebra and computation at least
+as much as they study calculus and differential equations.  Discuss.
 
 \section{The objective function}
 
@@ -193,7 +204,7 @@ and an intercept $b$, the frequency distribution
 $p(y_i|x_i,\sigma_{yi},m,b)$ for $y_i$ is
 \begin{equation}
 p(y_i|x_i,\sigma_{yi},m,b) = \frac{1}{\sqrt{2\,\pi\,\sigma_{yi}^2}}
- \,\exp\left(-\frac{(y_i - m\,x - b)^2}{2\,\sigma_{yi}^2}\right) \quad ,
+ \,\exp\left(-\frac{[y_i - m\,x - b]^2}{2\,\sigma_{yi}^2}\right) \quad ,
 \end{equation}
 where this gives the expected frequency (in a hypothetical set of
 repeated experiments) of getting value in the range $[y_i,y_i+\d y]$
@@ -209,7 +220,7 @@ that comes from the overall probability of the data in the context of
 the model space (to which I may return below).  Taking the logarithm,
 \begin{eqnarray}\displaystyle
 \ln\like
- & = & K + \sum_{i=1}^N -\frac{(y_i - m\,x - b)^2}{2\,\sigma_{yi}^2} \nonumber\\
+ & = & K + \sum_{i=1}^N -\frac{[y_i - m\,x - b]^2}{2\,\sigma_{yi}^2} \nonumber\\
  & = & K - \frac{1}{2}\,\chi^2 \quad ,
 \end{eqnarray}
 where $K$ is some constant.  This shows that likelihood maximization
@@ -240,15 +251,21 @@ justified, scalar objective function.  It is just the great good luck
 of Gaussian distributions that that optimization is a pure linear
 function of the data, and therefore trivial to implement.
 
-\section{A comment on non-gaussian errors}
+\paragraph{Comments:}
+Note the relationship to the weighted mean, the simple result of
+combining measurements with gaussian uncertainties?  Why does the
+objective have to be a ``scalar''?  Why did we put the $x_i$ and
+$\sigma{yi}$ into $I$ and not $D$, and when is that appropriate?  Why
+did I talk about the ``frequency distribution'' for the errors and not
+the ``probability distribution''?
+
+\section{Non-gaussian errors}
 
 Errors and uncertainties.
 
 What you are really assuming.
 
-Fitting for the error distribution.  Etc.
-
-\section{Arbitrary two-dimensional uncertainties}
+Generalized error distributons.
 
 \section{Robustness to outliers}
 
@@ -256,9 +273,11 @@ Criticize sigma-clipping relative to having a known scalar objective.
 Sigma-clipping is a procedure the end point of which depends on the
 starting point.
 
-\section{Limits}
-
 \section{Unknown datapoint uncertainties}
+
+\section{Arbitrary two-dimensional uncertainties}
+
+\section{Limits}
 
 \section{Intrinsic scatter}
 
