@@ -15,10 +15,13 @@
 \newcommand{\sectionname}{Section}
 \newcommand{\equationname}{equation}
 \newcommand{\problemname}{Exercise}
+\newcommand{\commentsname}{Comments}
 
 \newcounter{problem}
 \newenvironment{problem}{\paragraph{\problemname~\theproblem:}\refstepcounter{problem}}{}
 \renewcommand{\d}{\mathrm{d}}
+\newenvironment{comments}{\paragraph{\commentsname:}}{}
+
 \newcommand{\mmatrix}[1]{\boldsymbol{#1}}
 \newcommand{\inverse}[1]{{#1}^{-1}}
 \newcommand{\transpose}[1]{{#1}^{\scriptscriptstyle \top}}
@@ -69,6 +72,8 @@ Absurdities in the literature.
 Robot science: I want methods that are so reliable that they can be
 performed automatically by unsupervised robots on millions of
 problems.
+
+Apologies for the astronomy-centrism.
 
 \section{Standard practice}
 
@@ -156,7 +161,7 @@ uncertainty variances on the diagonal, covariances off the diagonal)
 for the parameters in $\mX$.  The justification of this will have to
 wait for a discussion of the objective function, if it comes at all.
 
-\paragraph{Comments:}
+\begin{comments}
 Even when the conditions of standard practice are met, it is
 \emph{still} often done wrong!  It is not unusual to see the
 individual data-point error estimates ignored, even when they are
@@ -174,11 +179,14 @@ In performing this standard fit, the investigator is effectively
 assuming that the $x$ values have negligible uncertainties; if they do
 \emph{not}, then the investigator is making a mistake.
 
+In the above, cite the papers on the Hubble expansion from SNe.
+
 Physicists should be studying linear algebra and computation at least
 as much as they study calculus and differential equations.  Discuss.
 
 The inverse covariance matrix is like a linear ``metric'' for the data
 space.
+\end{comments}
 
 \begin{problem}\label{prob:standard}
 Using the standard linear algebra method of this \sectionname, fit the
@@ -279,13 +287,14 @@ justified, scalar objective function.  It is just the great good luck
 of Gaussian distributions that that optimization is a pure linear
 function of the data, and therefore trivial to implement.
 
-\paragraph{Comments:}
+\begin{comments}
 Note the relationship to the weighted mean, the simple result of
 combining measurements with gaussian uncertainties?  Why does the
 objective have to be a ``scalar''?  Why did we put the $x_i$ and
 $\sigma_{yi}$ into $I$ and not $D$, and when is that appropriate?  Why
 did I talk about the ``frequency distribution'' for the errors and not
 the ``probability distribution''?
+\end{comments}
 
 \begin{problem}
 Imagine a set of $N$ measurements $z_i$, with uncertainty variances
@@ -300,9 +309,37 @@ is the usual weighted mean.
 
 \section{Robustness to outliers}
 
-Criticize sigma-clipping relative to having a known scalar objective.
-Sigma-clipping is a procedure the end point of which depends on the
-starting point.
+\begin{comments}
+No robust procedure will be linear, so everything must be iterated to
+convergence.  Almost nothing robust will be convex, even, so there are
+issues about local minima.
+
+The standard method for removing sensitivity to outliers (in
+astrophysics, anyway) is known as ``sigma-clipping''.  This is a
+procedure that involves performing the fit, identifying the worst
+outliers in a $\chi^2$ sense---the points that contribute more than
+some threshold $Q^2$ to the $\chi^2$ sum, removing those, fitting
+again, identifying again, and so on to convergence.  This procedure is
+easy to implement, fast, and reliable (provided that the threshold
+$Q^2$ is set high enough), but it has various problems that make it
+less suitable than the methods described above.  One is that it is a
+\emph{procedure} not an \emph{objective function}.  The procedure does
+not necessarily optimize a justifiable objective.  A second is that
+the procedure gives an answer that depends, in general, on the
+starting point or initialization, and because there is there is no way
+to compare different answers (there is no objective function), the
+investigator can't decide which of two converged answers is
+``better''.  You might think that the answer with least scatter
+(smallest $\chi^2$ per data point) is better, but that will favor
+solutions that involve rejecting most of the data; you might think the
+answer that uses the most data is better, but that can have a very
+large $\chi^2$.  A third problem is that the procedure does not
+necessarily converge to anything non-trivial at all; if the threshold
+$Q^2$ gets very small, there are situations in which all but two of
+the data points can be rejected by the procedure.  All that said, with
+a large $Q^2$ and standard, pretty good data, the sigma-clipping
+procedure is easy to implement and fast; I have often used it myself.
+\end{comments}
 
 %%% syntactical reference point
 
@@ -317,6 +354,10 @@ Generalized error distributons.
 \section{Unknown datapoint uncertainties}
 
 \section{Arbitrary two-dimensional uncertainties}
+
+\begin{comments}
+Bash the forward and reverse fitting in Tully-Fisher.
+\end{comments}
 
 \section{Limits}
 
