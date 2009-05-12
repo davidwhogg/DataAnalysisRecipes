@@ -12,6 +12,12 @@
 \documentclass[12pt]{article}
 \usepackage{amssymb,amsmath,mathrsfs}
 
+\newcommand{\sectionname}{Section}
+\newcommand{\equationname}{equation}
+\newcommand{\problemname}{Exercise}
+
+\newcounter{problem}
+\newenvironment{problem}{\paragraph{\problemname~\theproblem:}\refstepcounter{problem}}{}
 \renewcommand{\d}{\mathrm{d}}
 \newcommand{\mmatrix}[1]{\boldsymbol{#1}}
 \newcommand{\inverse}[1]{{#1}^{-1}}
@@ -39,19 +45,19 @@ New~York~University}\\
 \texttt{david.hogg@nyu.edu}
 
 \begin{abstract}
-  In excruciating detail, I go through all of the considerations
-  involved in fitting a straight line to a set of points in a
-  two-dimensional plane.  Standard chi-squared fitting is only
-  appropriate when there is a dimension along which the data points
-  have negligible uncertainties; this condition is rarely met in
-  practice.  In addition to considering cases of general,
-  heterogeneous, and arbitrarily covariant two-dimensional
-  uncertainties, I also look at situations in which there are large
-  outliers, upper or lower limits on some points, unknown
-  uncertainties, and unknown but expected intrinsic scatter in the
-  linear relationship being fit.  Above all I emphasize the importance
-  of choosing a justified scalar objective, and recommend separating
-  that decision from any decisions about the details of optimization.
+  I go through all of the considerations involved in fitting a
+  straight line to a set of points in a two-dimensional plane.
+  Standard chi-squared fitting is only appropriate when there is a
+  dimension along which the data points have negligible uncertainties;
+  this condition is rarely met in practice.  In addition to
+  considering cases of general, heterogeneous, and arbitrarily
+  covariant two-dimensional uncertainties, I also look at situations
+  in which there are bad data (large outliers), upper or lower limits
+  on some points, unknown uncertainties, and unknown but expected
+  intrinsic scatter in the linear relationship being fit.  Above all I
+  emphasize the importance of choosing a justified scalar objective,
+  and recommend separating that decision from any decisions about the
+  details of optimization.
 \end{abstract}
 
 Common problem.
@@ -126,7 +132,7 @@ but you can't because that equation is over-constrained.  So you
 weight everything with the inverse of the covariance matrix (as you
 would if you were doing, say, a weighted average), and then
 left-multiply everything by $\mAT$ to reduce the dimensionality, and
-then equation~(\ref{eq:lsf}) is the solution of that
+then \equationname~(\ref{eq:lsf}) is the solution of that
 reduced-dimensionality equation.
 
 This methodology minimizes a quantity $\chi^2$ (``chi-squared''),
@@ -145,7 +151,7 @@ fit''.
 When the uncertainties are gaussian and their variances $\sigma_{yi}$
 are correctly estimated, the matrix
 $\inverse{\left[\mAT\,\mCinv\,\mA\right]}$ that appears in
-equation~(\ref{eq:lsf}) is just the covariance matrix (gaussian
+\equationname~(\ref{eq:lsf}) is just the covariance matrix (gaussian
 uncertainty variances on the diagonal, covariances off the diagonal)
 for the parameters in $\mX$.  The justification of this will have to
 wait for a discussion of the objective function, if it comes at all.
@@ -171,15 +177,35 @@ assuming that the $x$ values have negligible uncertainties; if they do
 Physicists should be studying linear algebra and computation at least
 as much as they study calculus and differential equations.  Discuss.
 
+The inverse covariance matrix is like a linear ``metric'' for the data
+space.
+
+\begin{problem}\label{prob:standard}
+Using the standard linear algebra method of this \sectionname, fit the
+straight line $y=m\,x+b$ to the $x$ and $y$ values in \tablename~??,
+using the $y$ uncertainty variances $\sigma_y^2$ but \emph{ignoring}
+all of the $x$ uncertainty variances $\sigma_x^2$ and all of the
+covariances $\sigma_{xy}^2$.  Make a plot showing the points, their
+$y$-direction uncertainties, and the best-fit line.  What is the
+standard uncertainty variance $\sigma_m^2$ on the slope of the line?
+\end{problem}
+
+\begin{problem}
+Explain in words why or how the linear algebra expression in
+\equationname~(\ref{eq:lsf}) minmizes the squared error.  If it helps,
+consider only the case in which all the data points have identical
+uncertainties (so the $\mC$ matrix is trivial).
+\end{problem}
+
 \section{The objective function}
 
-A scientist's justification of equation~(\ref{eq:lsf}) cannot appeal
-purely to abstract ideas of linear algebra, but must originate from
-the scientific question at hand.  Here and in what follows, I will
-advocate that the only reliable procedure is to use all one's
+A scientist's justification of \equationname~(\ref{eq:lsf}) cannot
+appeal purely to abstract ideas of linear algebra, but must originate
+from the scientific question at hand.  Here and in what follows, I
+will advocate that the only reliable procedure is to use all one's
 knowledge about the problem to construct a (preferably) justified,
 (necessarily) scalar (or, really, one-dimensional), \emph{objective
-function} that represents monotonically the quality of the fit.  In
+  function} that represents monotonically the quality of the fit.  In
 this framework, fitting anything to anything involves a scientific
 question about the objective function representing ``goodness of fit''
 and then a separate and subsequent engineering question about how to
@@ -210,7 +236,9 @@ where this gives the expected frequency (in a hypothetical set of
 repeated experiments) of getting value in the range $[y_i,y_i+\d y]$
 per unit $\d y$.
 
-This generative model provides us with a natural, justified, scalar objective:  We seek the line (parameters $m$ and $b$) that maximize the likelihood of the observed data.  The likelihood $\like$ is 
+This generative model provides us with a natural, justified, scalar
+objective: We seek the line (parameters $m$ and $b$) that maximize the
+likelihood of the observed data.  The likelihood $\like$ is
 \begin{equation}\label{eq:like}
 \like \propto \prod_{i=1}^N p(y_i|x_i,\sigma_{yi},m,b) \quad ,
 \end{equation}
@@ -243,8 +271,8 @@ constant), and $p(m,b|I)$ is the \emph{prior} probability distribution
 for the parameters that represents all knowledge \emph{except} the
 input data $D$.  Unless the prior $p(m,b|I)$ is pretty informative,
 the posterior distribution function $p(m,b|D,I)$ here is going to look
-very similar to the likelihood function in equation~(\ref{eq:like})
-above.
+very similar to the likelihood function in
+\equationname~(\ref{eq:like}) above.
 
 We have succeeded in justifying the standard method as optimizing a
 justified, scalar objective function.  It is just the great good luck
@@ -259,6 +287,25 @@ $\sigma_{yi}$ into $I$ and not $D$, and when is that appropriate?  Why
 did I talk about the ``frequency distribution'' for the errors and not
 the ``probability distribution''?
 
+\begin{problem}
+Imagine a set of $N$ measurements $z_i$, with uncertainty variances
+$\sigma_{zi}^2$, all of the same (unknown) quantity $Z$.  Assuming the
+generative model that each $z_i$ differs from $Z$ by a
+gaussian-distributed offset, taken from a gaussian with zero mean and
+variance $\sigma_{zi}^2$, write down an experession for the log
+likelihood $\ln\like$ for the data given the model parameter $Z$.
+Take a derivative and show that the maximum likelihood value for $Z$
+is the usual weighted mean.
+\end{problem}
+
+\section{Robustness to outliers}
+
+Criticize sigma-clipping relative to having a known scalar objective.
+Sigma-clipping is a procedure the end point of which depends on the
+starting point.
+
+%%% syntactical reference point
+
 \section{Non-gaussian errors}
 
 Errors and uncertainties.
@@ -266,12 +313,6 @@ Errors and uncertainties.
 What you are really assuming.
 
 Generalized error distributons.
-
-\section{Robustness to outliers}
-
-Criticize sigma-clipping relative to having a known scalar objective.
-Sigma-clipping is a procedure the end point of which depends on the
-starting point.
 
 \section{Unknown datapoint uncertainties}
 
