@@ -34,6 +34,8 @@
 \newcommand{\mYT}{\transpose{\mY}}
 \newcommand{\like}{\mathscr{L}}
 
+\newcommand{\pgood}{p_{\mathrm{good}}}
+
 \begin{document}
 \section*{Data analysis recipes:\ \\
   Fitting a straight line to data\footnote{
@@ -81,7 +83,7 @@ You have a set of $N>2$ points $(x_i,y_i)$, with known gaussian
 uncertainties $\sigma_{yi}$ in the $y$ direction, and no uncertainty
 at all (that is, perfect knowledge) in the $x$ direction.  You want to
 find the function $f(x)$ of the form
-\begin{equation}
+\begin{equation}\label{eq:fofx}
 f(x) = m\,x + b \quad ,
 \end{equation}
 where $m$ is the slope and $b$ is the intercept, that ``best fits''
@@ -186,6 +188,11 @@ as much as they study calculus and differential equations.  Discuss.
 
 The inverse covariance matrix is like a linear ``metric'' for the data
 space.
+
+Note that not only does this problem have a linear solution, the
+solution is convex or unique.  This is remarkable, and almost no
+perturbation of this problem (as we will see below) has either of
+these properties, let alone both.
 \end{comments}
 
 \begin{problem}\label{prob:standard}
@@ -196,13 +203,25 @@ all of the $x$ uncertainty variances $\sigma_x^2$ and all of the
 covariances $\sigma_{xy}^2$.  Make a plot showing the points, their
 $y$-direction uncertainties, and the best-fit line.  What is the
 standard uncertainty variance $\sigma_m^2$ on the slope of the line?
+Is there anything you don't like about the result?
+\end{problem}
+
+\begin{problem}\label{prob:quadratic}
+Generalize the method of this \sectionname\ to fit a general quadratic
+(second order) relationship.  Add another column to matrix $\mA$
+containing the values $x_i^2$, and another element to vector $\mX$
+(call it $q$).  Then re-do \problemname~\ref{prob:standard} but
+fitting for and plotting the best quadratic relationship
+\begin{equation}
+g(x) = q\,x^2 + m\,x + b \quad.
+\end{equation}
 \end{problem}
 
 \begin{problem}
 Explain in words why or how the linear algebra expression in
 \equationname~(\ref{eq:lsf}) minmizes the squared error.  If it helps,
 consider only the case in which all the data points have identical
-uncertainties (so the $\mC$ matrix is trivial).
+uncertainties (so the matrix $\mC$ is trivial).
 \end{problem}
 
 \section{The objective function}
@@ -309,6 +328,58 @@ is the usual weighted mean.
 
 \section{Robustness to outliers}
 
+The standard linear fitting method is very sensitive to
+\emph{outliers}, points that are substantially farther from the linear
+relation than expected because of unmodeled experimental error or
+unmodeled but rare sources of noise.  There are two general approaches
+to this problem, which are not necessarily different.  The first is to
+``soften'' the objective function at large deviation.  The second is
+to find ways to objectively remove or reject ``bad'' points.  Both of
+these are strongly preferable to sorting through the data by hand, for
+reasons of subjectivity and irreproducibility that I need not state.
+
+One straightforward way to soften the objective function relative to
+$\chi^2$ is to lower the power to which residuals are raised.  For
+example, if we model the frequency distribution
+$p(y_i|x_i,\sigma_{yi},m,b)$ not with a gaussian but rather with a
+biexponential
+\begin{equation}
+p(y_i|x_i,\sigma_{yi},m,b) = \frac{1}{2\,s_i}
+ \,\exp\left(-\frac{|y_i-m\,x_i-b|}{s_i}\right) \quad ,
+\end{equation}
+where $s_i$ is an estimate of the mean absolute error, probably
+correctly set to something like $s_i = \sigma_{yi}/\sqrt{2}$.
+Optimization of the total log likelihood is equivalent to minimizing
+\begin{equation}
+X = \sum_{i=1}^N \frac{|y_i-f(x_i)|}{s_i} \quad ,
+\end{equation}
+where $f(x)$ is the straight line of \equationname~\ref{eq:fofx}.
+This approach is rarely quantitatively justified, but it has the nice
+property that it introduces no new parameters.
+
+Another straightforward softening is to (smoothly) cut off the
+contribution of a residual as it becomes large.  For example, replace
+$\chi^2$ with
+\begin{equation}
+\chi_Q^2 = \sum_{i=1}^N \frac{Q^2\,[y_i-f(x_i)]^2}
+  {Q^2\,\sigma_{yi}^2+[y_i-f(x_i)]^2} \quad ,
+\end{equation}
+where $Q^2$ is the maximum amount a point can contribute to
+$\chi_Q^2$.  When each residual is small, its contribution to
+$\chi_Q^2$ is nearly identical to its contribution to the standard
+$\chi^2$, but as the residual gets substantial, the contribution of
+the residual does not increase as the square.  This is about the
+simplest robust method that introduces only one new parameter ($Q$).
+
+The alternative to these softenings is to try data rejection, in which
+adds to the problem a set of $N$ integers $q_i$, one per data point,
+each of which is unity if the $i$th data point is good, and zero if
+the $i$th data point is bad.  In addition, to construct an objective
+function one needs an additional parameter $\pgood$, which is the
+\emph{prior} probability that any individual data point is good.
+
+%%% syntactical reference point
+
 \begin{comments}
 No robust procedure will be linear, so everything must be iterated to
 convergence.  Almost nothing robust will be convex, even, so there are
@@ -333,15 +404,16 @@ investigator can't decide which of two converged answers is
 (smallest $\chi^2$ per data point) is better, but that will favor
 solutions that involve rejecting most of the data; you might think the
 answer that uses the most data is better, but that can have a very
-large $\chi^2$.  A third problem is that the procedure does not
-necessarily converge to anything non-trivial at all; if the threshold
-$Q^2$ gets very small, there are situations in which all but two of
-the data points can be rejected by the procedure.  All that said, with
-a large $Q^2$ and standard, pretty good data, the sigma-clipping
-procedure is easy to implement and fast; I have often used it myself.
+large $\chi^2$.  These issues relate to the fact that the method does
+not explicitly \emph{penalize} the rejection of data; this is another
+bad consequence of not having an explicit objective function.  A third
+problem is that the procedure does not necessarily converge to
+anything non-trivial at all; if the threshold $Q^2$ gets very small,
+there are situations in which all but two of the data points can be
+rejected by the procedure.  All that said, with a large $Q^2$ and
+standard, pretty good data, the sigma-clipping procedure is easy to
+implement and fast; I have often used it myself.
 \end{comments}
-
-%%% syntactical reference point
 
 \section{Non-gaussian errors}
 
