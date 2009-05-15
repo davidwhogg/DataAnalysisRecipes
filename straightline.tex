@@ -8,6 +8,7 @@
 % - careful with the words ``error'' and ``uncertainty''
 % - careful with the words ``probability'' and ``frequency''
 % - use () for function arguments, and [] for grouping/precedence
+% - define macros; remember 1, 2, infinity
 
 \documentclass[12pt]{article}
 \usepackage{amssymb,amsmath,mathrsfs}
@@ -19,9 +20,9 @@
 
 \newcounter{problem}
 \newenvironment{problem}{\paragraph{\problemname~\theproblem:}\refstepcounter{problem}}{}
-\renewcommand{\d}{\mathrm{d}}
 \newenvironment{comments}{\paragraph{\commentsname:}}{}
 
+% matrix stuff
 \newcommand{\mmatrix}[1]{\boldsymbol{#1}}
 \newcommand{\inverse}[1]{{#1}^{-1}}
 \newcommand{\transpose}[1]{{#1}^{\scriptscriptstyle \top}}
@@ -32,8 +33,15 @@
 \newcommand{\mX}{\mmatrix{X}}
 \newcommand{\mY}{\mmatrix{Y}}
 \newcommand{\mYT}{\transpose{\mY}}
-\newcommand{\like}{\mathscr{L}}
 
+% set stuff
+\newcommand{\setofall}[3]{\{{#1}\}_{{#2}}^{{#3}}}
+\newcommand{\allq}{\setofall{q_i}{i=1}{N}}
+\newcommand{\ally}{\setofall{y_i}{i=1}{N}}
+
+% other random multiply used math symbols
+\renewcommand{\d}{\mathrm{d}}
+\newcommand{\like}{\mathscr{L}}
 \newcommand{\pgood}{p_{\mathrm{good}}}
 
 \begin{document}
@@ -197,13 +205,11 @@ these properties, let alone both.
 
 \begin{problem}\label{prob:standard}
 Using the standard linear algebra method of this \sectionname, fit the
-straight line $y=m\,x+b$ to the $x$ and $y$ values in \tablename~??,
-using the $y$ uncertainty variances $\sigma_y^2$ but \emph{ignoring}
-all of the $x$ uncertainty variances $\sigma_x^2$ and all of the
-covariances $\sigma_{xy}^2$.  Make a plot showing the points, their
-$y$-direction uncertainties, and the best-fit line.  What is the
-standard uncertainty variance $\sigma_m^2$ on the slope of the line?
-Is there anything you don't like about the result?
+straight line $y=m\,x+b$ to the $x$, $y$, and $\sigma_y$ values in
+\tablename~??.  Make a plot showing the points, their uncertainties,
+and the best-fit line.  What is the standard uncertainty variance
+$\sigma_m^2$ on the slope of the line?  Is there anything you don't
+like about the result?
 \end{problem}
 
 \begin{problem}\label{prob:quadratic}
@@ -284,20 +290,20 @@ scientifically, the procedure of the previous section.
 
 The Bayesian generalization of this is to say that
 \begin{equation}
-p(m,b|D,I) = \frac{p(D|m,b,I)}{p(D|I)}\,p(m,b|I) \quad ,
+p(m,b|\ally,I) = \frac{p(\ally|m,b,I)}{p(\ally|I)}\,p(m,b|I) \quad ,
 \end{equation}
-where $m$ and $b$ are the model parameters, $D$ is a short-hand for
+where $m$ and $b$ are the model parameters, $\ally$ is a short-hand for
 all the data $y_i$, $I$ is a short-hand for all the prior knowledge of
 the $x_i$ and the $\sigma_{yi}$ and everything else about the problem,
-$p(m,b|D,I)$ is the \emph{posterior} probability distribution for the
+$p(m,b|\ally,I)$ is the \emph{posterior} probability distribution for the
 parameters given the data and the prior knowledge, the ratio is the
 likelihood just computed, which has a frequency distribution for the
 data on top and that same thing marginalized over all parameters on
 the bottom (the denominator can be thought of as a normalization
 constant), and $p(m,b|I)$ is the \emph{prior} probability distribution
 for the parameters that represents all knowledge \emph{except} the
-input data $D$.  Unless the prior $p(m,b|I)$ is pretty informative,
-the posterior distribution function $p(m,b|D,I)$ here is going to look
+input data $\ally$.  Unless the prior $p(m,b|I)$ is pretty informative,
+the posterior distribution function $p(m,b|\ally,I)$ here is going to look
 very similar to the likelihood function in
 \equationname~(\ref{eq:like}) above.
 
@@ -310,9 +316,9 @@ function of the data, and therefore trivial to implement.
 Note the relationship to the weighted mean, the simple result of
 combining measurements with gaussian uncertainties?  Why does the
 objective have to be a ``scalar''?  Why did we put the $x_i$ and
-$\sigma_{yi}$ into $I$ and not $D$, and when is that appropriate?  Why
-did I talk about the ``frequency distribution'' for the errors and not
-the ``probability distribution''?
+$\sigma_{yi}$ into $I$ and not into the set of data, and when is that
+appropriate?  Why did I talk about the ``frequency distribution'' for
+the errors and not the ``probability distribution''?
 \end{comments}
 
 \begin{problem}
@@ -350,7 +356,7 @@ p(y_i|x_i,\sigma_{yi},m,b) = \frac{1}{2\,s_i}
 where $s_i$ is an estimate of the mean absolute error, probably
 correctly set to something like $s_i = \sigma_{yi}/\sqrt{2}$.
 Optimization of the total log likelihood is equivalent to minimizing
-\begin{equation}
+\begin{equation}\label{eq:biexp}
 X = \sum_{i=1}^N \frac{|y_i-f(x_i)|}{s_i} \quad ,
 \end{equation}
 where $f(x)$ is the straight line of \equationname~\ref{eq:fofx}.
@@ -360,30 +366,69 @@ property that it introduces no new parameters.
 Another straightforward softening is to (smoothly) cut off the
 contribution of a residual as it becomes large.  For example, replace
 $\chi^2$ with
-\begin{equation}
+\begin{equation}\label{eq:soft}
 \chi_Q^2 = \sum_{i=1}^N \frac{Q^2\,[y_i-f(x_i)]^2}
   {Q^2\,\sigma_{yi}^2+[y_i-f(x_i)]^2} \quad ,
 \end{equation}
-where $Q^2$ is the maximum amount a point can contribute to
-$\chi_Q^2$.  When each residual is small, its contribution to
-$\chi_Q^2$ is nearly identical to its contribution to the standard
-$\chi^2$, but as the residual gets substantial, the contribution of
-the residual does not increase as the square.  This is about the
-simplest robust method that introduces only one new parameter ($Q$).
+where $Q^2$ is the maximum amount a point can contribute to $\chi_Q^2$
+(cite papers cited by Barron).  When each residual is small, its
+contribution to $\chi_Q^2$ is nearly identical to its contribution to
+the standard $\chi^2$, but as the residual gets substantial, the
+contribution of the residual does not increase as the square.  This is
+about the simplest robust method that introduces only one new
+parameter ($Q$).
 
 The alternative to these softenings is to try data rejection, in which
-adds to the problem a set of $N$ integers $q_i$, one per data point,
-each of which is unity if the $i$th data point is good, and zero if
-the $i$th data point is bad.  In addition, to construct an objective
-function one needs an additional parameter $\pgood$, which is the
-\emph{prior} probability that any individual data point is good.
+adds to the problem a set of $N$ binary integers $q_i$, one per data
+point, each of which is unity if the $i$th data point is good, and
+zero if the $i$th data point is bad (cite Press and Jaynes here).  In
+addition, to construct an objective function one needs an additional
+parameter $\pgood$, which is the \emph{prior} probability that any
+individual data point is good.  All these $N+1$ extra parameters may
+seem like crazy baggage, but their values can be \emph{inferred} and
+\emph{marginalized out} so in the end, this method introduces \emph{no
+  new parameters}.
 
-%%% syntactical reference point
+In this situation, I don't know a consistent way to proceed that isn't
+Bayesian (possibly for lack of trying), so let's go Bayesian.  In this
+case, likelihood is
+\begin{eqnarray}\displaystyle
+\frac{p(\ally|m,b,\allq,\pgood,I)}{p(\ally|I)}
+ &\propto& \prod_{i=1}^N \left[\exp\left(-\frac{[y_i-m\,x_i-b]^2}{2\,\sigma_{yi}^2}\right)\right]^q_i \quad ,
+\end{eqnarray}
+but there is an important prior probability
+\begin{eqnarray}\displaystyle
+p(m,b,\allq,\pgood|I)
+ &=& p(m,b|I)\,p(\allq|\pgood,I)\,p(\pgood|I) \nonumber \\
+ &=& p(m,b|I)\,\pgood^{q_i}\,[1-\pgood]^{[1-q_i]} \quad ,
+\end{eqnarray}
+where I have assumed that the prior probability distribution
+$p(\pgood|I)$ for $\pgood$ is just flat on the interval $0<\pgood<1$
+(the least informative possible assumption).
+
+The posterior probability distribution is the product of the
+(correctly normalized) likelihood times the prior.  If all we care
+about are the parameters $(m,b)$ of the line, we have to marginalize
+the posterior probability distribution over all choices for the binary
+integers $\allq$ and all possible values for $\pgood$.  This
+marginalization involves evaluating and marginalizing (over $\pgood$)
+$2^N$ different likelihoods!  Of course because very few points are
+true candidates for rejection, there are many ways to ``trim the
+tree'' and do this quickly; the lazy can simply sample; the very lazy
+can loop over all $2^N$ and go on vacation while it executes.
 
 \begin{comments}
 No robust procedure will be linear, so everything must be iterated to
 convergence.  Almost nothing robust will be convex, even, so there are
 issues about local minima.
+
+On bad data, you might not want to give all points the same prior
+probability distribution function over $\pgood$.  One of the amusing
+things about the posterior is that you can pick a particular data
+point $I$ and marginalize over $(m,b)$ and all the $q_i$ \emph{except}
+$q_I$.  This will return the marginalized posterior probability that
+point $I$ is good.  This is good for embarassing colleagues in
+meta-analyses (cite Press here).
 
 The standard method for removing sensitivity to outliers (in
 astrophysics, anyway) is known as ``sigma-clipping''.  This is a
@@ -415,6 +460,49 @@ standard, pretty good data, the sigma-clipping procedure is easy to
 implement and fast; I have often used it myself.
 \end{comments}
 
+\begin{problem}
+Using the biexponential objective function of
+\equationname~(\ref{eq:biexp}), find the best-fit straight line
+$y=m\,x+b$ for the $x$, $y$, and $\sigma_y$ values in \tablename~??.
+You will have to use a non-linear optimizer of some kind or you will
+have to take a sampling approach.  Make a plot showing the points,
+their uncertainties, and the best-fit line.  How does this compare to
+the standard result you obtained in \problemname~\ref{prob:standard}?
+Do you like it better or worse?
+\end{problem}
+
+\begin{problem}
+Using the soft chi-squared objective function of
+\equationname~(\ref{eq:soft}), find the best-fit straight line
+$y=m\,x+b$ for the $x$, $y$, and $\sigma_y$ values in \tablename~??.
+You will have to use a non-linear optimizer of some kind or you will
+have to take a sampling approach.  Alternatively, you can try an
+iterated-linear method in which you iterate the standard linear method
+but modify the weights at each iteration.  Make a plot showing the
+points, their uncertainties, and the best-fit line.  How does this
+compare to the standard result you obtained in
+\problemname~\ref{prob:standard}?  Do you like it better or worse?
+\end{problem}
+
+\begin{problem}
+Using the fully marginalized Bayesian data rejection method described
+above, find the best-fit straight line $y=m\,x+b$ for the $x$, $y$,
+and $\sigma_y$ values in \tablename~??.  Proceed by (dumbly) looping
+over every possible (non-trivial) assigment of $q_i$ values.  Make a
+plot showing the points, their uncertainties, and the best-fit line.
+How does this compare to the standard result you obtained in
+\problemname~\ref{prob:standard}?  Do you like it better or worse?
+For extra credit, mark each data point on your plot with
+the fully marginalized probability that the point is good (that is, not
+rejected, or has $q=1$).
+\end{problem}
+
+\section{Unknown datapoint uncertainties}
+
+%%% syntactical reference point
+
+\section{Assigning uncertainties to best-fit parameters}
+
 \section{Non-gaussian errors}
 
 Errors and uncertainties.
@@ -422,8 +510,6 @@ Errors and uncertainties.
 What you are really assuming.
 
 Generalized error distributons.
-
-\section{Unknown datapoint uncertainties}
 
 \section{Arbitrary two-dimensional uncertainties}
 
