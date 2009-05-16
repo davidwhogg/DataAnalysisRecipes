@@ -85,7 +85,7 @@ problems.
 
 Apologies for the astronomy-centrism.
 
-\section{Standard practice}
+\section{Standard practice}\label{sec:standard}
 
 You have a set of $N>2$ points $(x_i,y_i)$, with known gaussian
 uncertainties $\sigma_{yi}$ in the $y$ direction, and no uncertainty
@@ -152,7 +152,7 @@ reduced-dimensionality equation.
 
 This methodology minimizes a quantity $\chi^2$ (``chi-squared''),
 which is the total squared error, scaled by the uncertainties, or
-\begin{equation}
+\begin{equation}\label{eq:chisquared}
 \chi^2
  = \sum_{i=1}^N \frac{\left[y_i - f(x_i)\right]^2}{\sigma_{yi}^2}
  \equiv \transpose{\left[\mY-\mA\,\mX\right]}
@@ -497,11 +497,39 @@ the fully marginalized probability that the point is good (that is, not
 rejected, or has $q=1$).
 \end{problem}
 
-\section{Unknown datapoint uncertainties}
+\section{Assigning uncertainties to best-fit parameters}
+
+In the standard linear-algebra method of $\chi^2$ minimization given
+in \sectionname~\ref{sec:standard}, the uncertainties in the best-fit
+parameters $(m,b)$ are given by the two-dimensional output covariance
+matrix
+\begin{equation}
+\left[\begin{array}{cc}
+\sigma_{b}^2 & \sigma_{mb}^2 \\
+\sigma_{mb}^2 & \sigma_{m}^2
+\end{array}\right] = \inverse{\left[\mAT\,\mCinv\,\mA\right]} \quad ,
+\end{equation}
+where the ordering is defined by the ordering in matrix $\mA$.  But
+these best-fit uncertainties \emph{only} strictly hold under three
+extremely strict conditions, almost none of which is met in real
+practice: \textsl{(1)}~The uncertainties in the data points must truly
+be gaussian, with variances correctly described by the
+$\sigma_{yi}^2$, \textsl{(2)}~there must be no rejection of any data
+or any departure from the exact, standard definition of $\chi^2$ given
+in \equationname~(\ref{eq:chisquared}), and \textsl{(3)}~the
+generative model of the data implied by the method---that is, that the
+data are truly drawn from a negligible-scatter linear relationship and
+subsequently had noise added, where the noise offsets were generated
+by a gaussian process---must be an accurate description of the data.
+
+These conditions are rarely met in practice.  Often the noise
+estimates are rough, the uncertainties are known not to be gaussian,
+the investigator has applied data rejection or equivalent
+conditioning, and the relationship has intrinsic scatter and
+curvature.  For these generic reasons, we much prefer empirical
+estimates of the uncertainty in the best-fit parameters.
 
 %%% syntactical reference point
-
-\section{Assigning uncertainties to best-fit parameters}
 
 \section{Non-gaussian errors}
 
