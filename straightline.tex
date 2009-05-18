@@ -13,6 +13,10 @@
 \documentclass[12pt]{article}
 \usepackage{amssymb,amsmath,mathrsfs}
 
+\newcommand{\notenglish}[1]{\textit{#1}}
+\newcommand{\aposteriori}{\notenglish{a~posteriori}}
+\newcommand{\apriori}{\notenglish{a~priori}}
+
 \newcommand{\sectionname}{Section}
 \newcommand{\equationname}{equation}
 \newcommand{\problemname}{Exercise}
@@ -417,6 +421,27 @@ true candidates for rejection, there are many ways to ``trim the
 tree'' and do this quickly; the lazy can simply sample; the very lazy
 can loop over all $2^N$ and go on vacation while it executes.
 
+One unfortunate (though unavoidably correct) thing about any Bayesian
+method is that it does not return an ``answer'' but rather it returns
+a \emph{posterior probability distribution}.  Strictly, this posterior
+distribution function \emph{is} your answer.  However, what scientists
+are usually doing is not, strictly, inference, but rather,
+decision-making.  That is, the investigator wants an answer, not a
+distribution.  There are (at least) two reactions to this.  One is to
+ignore the fundamental Bayesianism at the end, and choose simply the
+``maximum \aposteriori'' (MAP) answer---the single value of $(m,b)$
+that optimizes the fully marginalized (over $\pgood$ and $\allq$)
+posterior probability distribution function.  This is the Bayesian's
+analog of maximum likelihood.  The other reaction is to suck it up and
+sample the posterior probability distribution and carry forward not
+one answer to the problem but $M$ answers, each of which is drawn
+fairly and independently from the posterior distribution function.
+The latter is to be preferred because \textsl{(a)}~it shows the
+uncertainties very clearly, and \textsl{(b)}~the sampling can be
+carried forward to future inferences as an approximation to the
+posterior distribution function, useful for propagating uncertainty,
+or standing in as a \emph{prior} for some subsequent inference.
+
 \begin{comments}
 No robust procedure will be linear, so everything must be iterated to
 convergence.  Almost nothing robust will be convex, even, so there are
@@ -486,15 +511,20 @@ compare to the standard result you obtained in
 
 \begin{problem}
 Using the fully marginalized Bayesian data rejection method described
-above, find the best-fit straight line $y=m\,x+b$ for the $x$, $y$,
-and $\sigma_y$ values in \tablename~??.  Proceed by (dumbly) looping
-over every possible (non-trivial) assigment of $q_i$ values.  Make a
-plot showing the points, their uncertainties, and the best-fit line.
-How does this compare to the standard result you obtained in
-\problemname~\ref{prob:standard}?  Do you like it better or worse?
-For extra credit, mark each data point on your plot with
-the fully marginalized probability that the point is good (that is, not
-rejected, or has $q=1$).
+above, find the best-fit (the maximum \aposteriori) straight line
+$y=m\,x+b$ for the $x$, $y$, and $\sigma_y$ values in \tablename~??.
+Before choosing the MAP line, marginalize over $\pgood$ and $\allq$ by
+(dumbly) looping over every possible (non-trivial) assigment of $q_i$
+values, and at each assignment, integrate over all possible values of
+$\pgood$.  Make a plot showing the points, their uncertainties, and
+the MAP line.  How does this compare to the standard result you
+obtained in \problemname~\ref{prob:standard}?  Do you like the MAP
+line better or worse?  For extra credit, plot a sampling of 10 lines
+drawn from the marginalized posterior distribution for $(m,b)$
+(marginalized over $\pgood$ and $\allq$) and plot the samples as a set
+of light grey or transparent lines.  For extra extra credit, mark each
+data point on your plot with the fully marginalized probability that
+the point is good (that is, not rejected, or has $q=1$).
 \end{problem}
 
 \section{Assigning uncertainties to best-fit parameters}
