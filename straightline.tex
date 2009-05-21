@@ -42,6 +42,7 @@
 \newcommand{\setofall}[3]{\{{#1}\}_{{#2}}^{{#3}}}
 \newcommand{\allq}{\setofall{q_i}{i=1}{N}}
 \newcommand{\ally}{\setofall{y_i}{i=1}{N}}
+\newcommand{\allsigmay}{\setofall{\sigma_{yi}^2}{i=1}{N}}
 
 % other random multiply used math symbols
 \renewcommand{\d}{\mathrm{d}}
@@ -51,27 +52,27 @@
 \begin{document}
 \section*{Data analysis recipes:\ \\
   Fitting a straight line to data\footnote{
-    Copyright 2009 David~W.~Hogg (david.hogg@nyu.edu).  You may copy
-    and distribute this document provided that you make no changes to
-    it whatsoever.}}
+    Copyright 2009 David~W.~Hogg (david.hogg@nyu.edu) and Jo Bovy.
+    You may copy and distribute this document
+    provided that you make no changes to it whatsoever.}}
 
 \noindent
-David~W.~Hogg\\
+David~W.~Hogg \textsl{and}
+Jo~Bovy\\
 \textsl{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics,\\
-New~York~University}\\
-\texttt{david.hogg@nyu.edu}
+New~York~University}
 
 \begin{abstract}
-  I go through all of the considerations involved in fitting a
+  We go through all of the considerations involved in fitting a
   straight line to a set of points in a two-dimensional plane.
   Standard chi-squared fitting is only appropriate when there is a
   dimension along which the data points have negligible uncertainties;
   this condition is rarely met in practice.  In addition to
   considering cases of general, heterogeneous, and arbitrarily
-  covariant two-dimensional uncertainties, I also look at situations
+  covariant two-dimensional uncertainties, we also look at situations
   in which there are bad data (large outliers), upper or lower limits
   on some points, unknown uncertainties, and unknown but expected
-  intrinsic scatter in the linear relationship being fit.  Above all I
+  intrinsic scatter in the linear relationship being fit.  Above all we
   emphasize the importance of choosing a justified scalar objective,
   and recommend separating that decision from any decisions about the
   details of optimization.
@@ -83,7 +84,7 @@ No consensus on generalizations.
 
 Absurdities in the literature.
 
-Robot science: I want methods that are so reliable that they can be
+Robot science: We want methods that are so reliable that they can be
 performed automatically by unsupervised robots on millions of
 problems.
 
@@ -100,8 +101,8 @@ f(x) = m\,x + b \quad ,
 \end{equation}
 where $m$ is the slope and $b$ is the intercept, that ``best fits''
 the points.  What is meant by ``best fits'' is, of course, very
-important, and in what follows I will have a lot to say about that.
-For now, I describe standard practice:
+important, and in what follows we will have a lot to say about that.
+For now, we describe standard practice:
 
 Construct the matrices
 \begin{equation}
@@ -165,7 +166,7 @@ which is the total squared error, scaled by the uncertainties, or
 \end{equation}
 that is, it finds the values for $m$ and $b$ that minimize $\chi^2$.
 This, of course, is only one possible meaning of the phrase ``best
-fit''.
+fit''; that issue is the subject of the rest of this document.
 
 When the uncertainties are gaussian and their variances $\sigma_{yi}$
 are correctly estimated, the matrix
@@ -238,7 +239,7 @@ uncertainties (so the matrix $\mC$ is trivial).
 
 A scientist's justification of \equationname~(\ref{eq:lsf}) cannot
 appeal purely to abstract ideas of linear algebra, but must originate
-from the scientific question at hand.  Here and in what follows, I
+from the scientific question at hand.  Here and in what follows, we
 will advocate that the only reliable procedure is to use all one's
 knowledge about the problem to construct a (preferably) justified,
 (necessarily) scalar (or, really, one-dimensional), \emph{objective
@@ -279,10 +280,10 @@ likelihood of the observed data.  The likelihood $\like$ is
 \begin{equation}\label{eq:like}
 \like \propto \prod_{i=1}^N p(y_i|x_i,\sigma_{yi},m,b) \quad ,
 \end{equation}
-where I have used ``$\propto$'' not ``$=$'' to be careful about the
+where we have used ``$\propto$'' not ``$=$'' to be careful about the
 infinitesimal volume $(\d y)^N$ and a possible normalization constant
 that comes from the overall probability of the data in the context of
-the model space (to which I may return below).  Taking the logarithm,
+the model space (to which we may return below).  Taking the logarithm,
 \begin{eqnarray}\displaystyle
 \ln\like
  & = & K + \sum_{i=1}^N -\frac{[y_i - m\,x - b]^2}{2\,\sigma_{yi}^2} \nonumber\\
@@ -321,7 +322,7 @@ Note the relationship to the weighted mean, the simple result of
 combining measurements with gaussian uncertainties?  Why does the
 objective have to be a ``scalar''?  Why did we put the $x_i$ and
 $\sigma_{yi}$ into $I$ and not into the set of data, and when is that
-appropriate?  Why did I talk about the ``frequency distribution'' for
+appropriate?  Why did we talk about the ``frequency distribution'' for
 the errors and not the ``probability distribution''?
 \end{comments}
 
@@ -346,7 +347,7 @@ to this problem, which are not necessarily different.  The first is to
 ``soften'' the objective function at large deviation.  The second is
 to find ways to objectively remove or reject ``bad'' points.  Both of
 these are strongly preferable to sorting through the data by hand, for
-reasons of subjectivity and irreproducibility that I need not state.
+reasons of subjectivity and irreproducibility that we need not state.
 
 One straightforward way to soften the objective function relative to
 $\chi^2$ is to lower the power to which residuals are raised.  For
@@ -393,7 +394,7 @@ seem like crazy baggage, but their values can be \emph{inferred} and
 \emph{marginalized out} so in the end, this method introduces \emph{no
   new parameters}.
 
-In this situation, I don't know a consistent way to proceed that isn't
+In this situation, we don't know a consistent way to proceed that isn't
 Bayesian (possibly for lack of trying), so let's go Bayesian.  In this
 case, likelihood is
 \begin{eqnarray}\displaystyle
@@ -406,7 +407,7 @@ p(m,b,\allq,\pgood|I)
  &=& p(m,b|I)\,p(\allq|\pgood,I)\,p(\pgood|I) \nonumber \\
  &=& p(m,b|I)\,\pgood^{q_i}\,[1-\pgood]^{[1-q_i]} \quad ,
 \end{eqnarray}
-where I have assumed that the prior probability distribution
+where we have assumed that the prior probability distribution
 $p(\pgood|I)$ for $\pgood$ is just flat on the interval $0<\pgood<1$
 (the least informative possible assumption).
 
@@ -455,6 +456,12 @@ $q_I$.  This will return the marginalized posterior probability that
 point $I$ is good.  This is good for embarassing colleagues in
 meta-analyses (cite Press here).
 
+What do you do about data rejection if you \emph{don't know the
+  magnitudes of your uncertainties} $\allsigmay$?  Probably the only
+way to proceed is to guess something about the \emph{relative}
+uncertainties of the data points, for example that they are all
+similar.
+
 The standard method for removing sensitivity to outliers (in
 astrophysics, anyway) is known as ``sigma-clipping''.  This is a
 procedure that involves performing the fit, identifying the worst
@@ -482,7 +489,7 @@ anything non-trivial at all; if the threshold $Q^2$ gets very small,
 there are situations in which all but two of the data points can be
 rejected by the procedure.  All that said, with a large $Q^2$ and
 standard, pretty good data, the sigma-clipping procedure is easy to
-implement and fast; I have often used it myself.
+implement and fast; we have often used it ourselves.
 \end{comments}
 
 \begin{problem}
@@ -561,7 +568,7 @@ estimates of the uncertainty in the best-fit parameters.
 
 In the Bayesian scheme of \sectionname~\ref{sec:robust}, the output is
 a posterior distribution for the parameters $(m,b)$.  This
-distribution function is, in the sense I am using it here, an
+distribution function is, in the sense we are using it here, an
 empirical measurement of the uncertainties of the parameters.  The
 uncertainty variances $(\sigma_m^2,\sigma_b^2)$ and the covariance
 $\sigma_{mb}^2$ can be computed as second moments of this posterior
@@ -577,42 +584,94 @@ depend in any way on the quality of fit.
 In any non-Bayesian scheme, or when the full posterior has been
 discarded in favor of only the MAP value, there are still empirical
 methods for determining the uncertainties in the best-fit parameters.
+The two most common are \emph{bootstrap} and \emph{jackknife}.  The
+first attempts to empirically create new data sets that are similar to
+your actual data set.  The second measures your differential
+sensitivity to each individual data point.
 
-%%% syntactical reference point
+In bootstrap, you do the unlikely-sounding thing of drawing $N$ data
+points randomly from the $N$ data points you have \emph{with
+  replacement}.  That is, some data points get dropped, and some get
+doubled, but the important thing is that you select each of the $N$
+that you are going to use in each trial independently from the whole
+set of $N$ you have.  You do this selection of $N$ points once for
+each of $M$ bootstrap trials $j$.  For each of the $M$ trials $j$, you
+get an estimate---by whatever method you are using (linear fitting,
+fitting with rejection, optimizing some custom objection
+function)---of the parameters $(m_j,b_j)$, where $j$ goes from $1$ to
+$M$.  An estimate of your uncertainty variance on $m$ is
+\begin{equation}
+\sigma_m^2 = \frac{1}{M}\,\sum_{j=1}^M [m_j-m]^2 \quad ,
+\end{equation}
+where $m$ stands in for the best-fit $m$ using all the data.  The
+uncertainty variance on $b$ is the same but with $[b_j-b]^2$ in the
+sum, and the covariance $\sigma_{mb}^2$ is the same but with
+$[m_j-m]\,[b_j-b]$.  Bootstrap creates a new parameter, the number $M$
+of trials.  There is a huge literature on this, so we won't say
+anything too specific, but one intuition is that once you have $M$
+comparable to $N$, there probably isn't much else you can learn,
+unless you got terribly unlucky with your random number generator.
+
+In jackknife, you make your measurement $N$ times, each time
+\emph{leaving out} data point $i$.  Again, it doesn't matter what
+method you are using, for each leave-one-out trial $i$ you get an
+estimate $(m_i,b_i)$ found by fitting with all the data \emph{except}
+point $i$.  Then your best-fit slope becomes
+\begin{equation}
+m = \frac{1}{N}\,\sum_{i=1}^N m_i \quad ,
+\end{equation}
+and the uncertainty variance becomes
+\begin{equation}
+\sigma_m^2 = \frac{N-1}{N}\,\sum_{i=1}^N [m_i-m]^2 \quad ,
+\end{equation}
+with the obvious modifications to make $\sigma_b^2$ and
+$\sigma_{mb}^2$.  The factor $[N-1]/N$ accounts, magically, for the
+fact that the samples are not independent in any sense, and can only
+be justified in the limit that everything is gaussian and all the
+points are identical in their error properties.
 
 \begin{comments}
 Compare jackknife and bootstrap in terms of ``conservativeness''.
 Note that neither makes sense if there is a large dynamic range in the
-$\sigma_{yi}^2$.
+$\sigma_{yi}^2$.  Why do these techniques have the names they do?
+They are extremely useful when you don't know or don't trust your
+uncertainties $\allsigmay$.
 
 Don't we have examples where a bad-fitting model can lead to very
-tight Bayesian constraints?
+tight Bayesian constraints; that is, aren't we being too nice to the
+Bayesians?
 \end{comments}
 
-\section{Non-gaussian errors}
-
-Errors and uncertainties.
-
-What you are really assuming.
-
-Generalized error distributons.
-
 \section{Arbitrary two-dimensional uncertainties}
+
+%%% syntactical reference point
 
 \begin{comments}
 Bash the forward and reverse fitting in Tully-Fisher.
 \end{comments}
 
-\section{Limits}
-
 \section{Intrinsic scatter}
 
 \section{Discussion}
 
+What did we \emph{not} discuss?
+
+Non-gaussian errors: Difference between error, noise, and uncertainty.
+What are you really assuming?  It could just be that you mis-estimated
+your variance.  How do you deal, in general, with other kinds of error
+distributions?
+
+How to deal with upper and lower limits?  Might need to bring in the
+idea of maximum entropy here.  Not unlike the non-gaussian noise
+situation.
+
 \paragraph{Acknowlegments}
-It is a pleasure to thank Sam Roweis (Toronto), who taught me to find
-and optimize objective functions.  This research was partially
-supported by NASA (ADP grant NNX08AJ48G) and a Research Fellowship of
-the Alexander von Humboldt Foundation.
+We owe a debt above all to Sam Roweis (Toronto), who taught us to find
+and optimize justified scalar objective functions.  In addition it is
+a pleasure to thank Dustin Lang (Toronto, Princeton) for discussions.
+This research was partially supported by NASA (ADP grant NNX08AJ48G)
+and a Research Fellowship of the Alexander von Humboldt Foundation.
+This research made use of the Python programming language and the
+open-source Python packages scipy, numpy, and matplotlib.
 
 \end{document}
