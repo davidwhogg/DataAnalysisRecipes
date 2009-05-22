@@ -37,12 +37,15 @@
 \newcommand{\mX}{\mmatrix{X}}
 \newcommand{\mY}{\mmatrix{Y}}
 \newcommand{\mYT}{\transpose{\mY}}
+\newcommand{\mZ}{\mmatrix{Z}}
 
 % set stuff
 \newcommand{\setofall}[3]{\{{#1}\}_{{#2}}^{{#3}}}
 \newcommand{\allq}{\setofall{q_i}{i=1}{N}}
 \newcommand{\ally}{\setofall{y_i}{i=1}{N}}
+\newcommand{\allxy}{\setofall{x_i,y_i}{i=1}{N}}
 \newcommand{\allsigmay}{\setofall{\sigma_{yi}^2}{i=1}{N}}
+\newcommand{\allC}{\setofall{\mC_i}{i=1}{N}}
 
 % other random multiply used math symbols
 \renewcommand{\d}{\mathrm{d}}
@@ -637,6 +640,13 @@ $\sigma_{yi}^2$.  Why do these techniques have the names they do?
 They are extremely useful when you don't know or don't trust your
 uncertainties $\allsigmay$.
 
+If you are doing sigma-clipping or anything that looks like standard
+least-square fitting but with small modifications, it might be
+tempting to use the standard uncertainty estimate.  But that is
+definitely wrong, because whatever encouraged you to do the
+sigma-clipping or other modifications is probably sufficient reason to
+disbelieve the standard uncertainty estimate.
+
 Don't we have examples where a bad-fitting model can lead to very
 tight Bayesian constraints; that is, aren't we being too nice to the
 Bayesians?
@@ -652,6 +662,50 @@ and uncertainties on the data?
 \end{problem}
 
 \section{Arbitrary two-dimensional uncertainties}
+
+Of course most real two dimensional data $\allxy$ come with
+uncertainties in \emph{both} directions (both $x$ and $y$).  You might
+not \emph{know} the amplitudes of these uncertainties, but it is
+unlikely that the $x$ values are known to sufficiently high accuracy
+that \emph{any} of the straight-line fitting methods given so far is
+valid.  Recall that everything so far has assumed that the
+$x$-direction uncertainties were negligible.
+
+In general, when one makes a two dimensional measurement $(x_i,y_i)$,
+that measurement comes uncertainties $(\sigma_{xi}^2,\sigma_{yi}^2)$
+in both directions, and some covariance $\sigma_{xyi}^2$ between them.
+These can be put together into a covariance tensor $\mC_i$
+\begin{equation}
+\mC_i = \left[\begin{array}{cc}
+\sigma_{xi}^2 & \sigma_{xyi}^2 \\ \sigma_{xyi}^2 & \sigma_{yi}^2
+\end{array}\right] \quad .
+\end{equation}
+If the errors are gaussian, or if all that is known about the
+uncertainties is their variances, then the covariance tensor can be
+used in a two-dimensional gaussian representation of the probability
+of getting measurement $(x_i,y_i)$ when the ``true value'' (the value
+you would have for this data point if it had been observed with
+negligible error) is $(x,y)$:
+\begin{equation}
+p(x_i,y_i|\mC_i,x,y) = \frac{1}{2\,\pi\,\det(\mC_i)}
+  \,\exp\left(-\frac{1}{2}\,\transpose{\left[\mZ_i - \mZ\right]}
+  \,\inverse{\mC_i}\,\left[\mZ_i - \mZ\right]\right) \quad ,
+\end{equation}
+where we have implicitly made column vectors
+\begin{equation}
+\mZ = \left[\begin{array}{c} x \\ y \end{array}\right] \quad ; \quad
+\mZ_i = \left[\begin{array}{c} x_i \\ y_i \end{array}\right] \quad .
+\end{equation}
+
+Now in the face of these general (though gaussian) two-dimensional
+uncertainties, how do we fit a line?  Justified objective functions
+will have something to do with the probability of the observations
+$\allxy$ given the uncertainties $\allC$, as a function of properties
+$(m,b)$ of the line.  In standard parlance, the probability of the
+observations given model parameters $(m,b)$ is called the
+\emph{likelihood} of the parameters given the observations.  We will
+now construct this likelihood and maximize it, or else multiply it by
+a prior on the parameters and report the posterior on the parameters.
 
 %%% syntactical reference point
 
