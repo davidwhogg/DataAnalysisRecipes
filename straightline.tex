@@ -238,7 +238,7 @@ consider only the case in which all the data points have identical
 uncertainties (so the matrix $\mC$ is trivial).
 \end{problem}
 
-\section{The objective function}
+\section{The objective function}\label{sec:objective}
 
 A scientist's justification of \equationname~(\ref{eq:lsf}) cannot
 appeal purely to abstract ideas of linear algebra, but must originate
@@ -446,6 +446,17 @@ carried forward to future inferences as an approximation to the
 posterior distribution function, useful for propagating uncertainty,
 or standing in as a \emph{prior} for some subsequent inference.
 
+Another unfortunate (though unavoidably correct) thing about any
+Bayesian method is that prior probabilities must be specified.  In any
+situation of straight-line fitting where the data are good, these
+priors do not matter very much to the final answer.  The way we have
+written our likelihoods, the MAP result becomes very directly
+analogous to the maximum likelihood answer when the (improper,
+non-normalizable) prior ``flat in $m$, flat in $b$'' is adopted.
+Usually the investigator \emph{does} have some basis for setting some
+more informative priors, but a deep and sensible discussion of priors
+is beyond the scope of this document.
+
 \begin{comments}
 No robust procedure will be linear, so everything must be iterated to
 convergence.  Almost nothing robust will be convex, even, so there are
@@ -537,7 +548,7 @@ data point on your plot with the fully marginalized probability that
 the point is good (that is, not rejected, or has $q=1$).
 \end{problem}
 
-\section{Assigning uncertainties to best-fit parameters}
+\section{Assigning uncertainties to best-fit parameters}\label{sec:uncertainty}
 
 In the standard linear-algebra method of $\chi^2$ minimization given
 in \sectionname~\ref{sec:standard}, the uncertainties in the best-fit
@@ -661,7 +672,7 @@ uncertainties compare and which seems most reasonable, given the data
 and uncertainties on the data?
 \end{problem}
 
-\section{Arbitrary two-dimensional uncertainties}
+\section{Arbitrary two-dimensional uncertainties}\label{sec:twod}
 
 Of course most real two dimensional data $\allxy$ come with
 uncertainties in \emph{both} directions (both $x$ and $y$).  You might
@@ -701,20 +712,74 @@ Now in the face of these general (though gaussian) two-dimensional
 uncertainties, how do we fit a line?  Justified objective functions
 will have something to do with the probability of the observations
 $\allxy$ given the uncertainties $\allC$, as a function of properties
-$(m,b)$ of the line.  In standard parlance, the probability of the
-observations given model parameters $(m,b)$ is called the
-\emph{likelihood} of the parameters given the observations.  We will
-now construct this likelihood and maximize it, or else multiply it by
-a prior on the parameters and report the posterior on the parameters.
+$(m,b)$ of the line.  As in \section{sec:objective}, the probability
+of the observations given model parameters $(m,b)$ is proportional to
+the \emph{likelihood} of the parameters given the observations.  We
+will now construct this likelihood and maximize it, or else multiply
+it by a prior on the parameters and report the posterior on the
+parameters.
+
+Schematically, the construction of the likelihood involves specifying
+the line (parameterized by $m,b$), finding the probability of each
+observed data point given any true point on that line, and
+marginalizing over all possible true points on the line.  In the end,
+this procedure leads to \emph{projections} of the two-dimensional
+uncertainty gaussians along the line (or onto the subspace that is
+orthogonal to the line), and evaluation of those at the
+\emph{projected errors}.  Projection is a standard linear algebra
+technique, so we will use linear algebra (matrix) notation.
 
 %%% syntactical reference point
+
+HOGG: Describe projection matrices and their use.  Note the
+normalization constants.  Discuss the issue of a prior or a metric for
+the $(m,b)$ space and why it has to change from the linear fitting
+problem.
+
+The generative model here is that there are $N$ points with true
+values that lie precisely on a narrow, linear relation in the $x$--$y$
+plane.  To each of these true points a gaussian offset has been added
+to make each observed point $(x_i,y_i)$, where the offset was drawn
+from the two-dimensional gaussian with covariance tensor $\mC_i$.  As
+usual, if this generative model is a good approximation to the
+properties of the data set, the method works very well.  Of course
+there are many situations in which this is \emph{not} a good
+approximation.  Below, we consider the (very common) case that the
+relationship is near-linear but not \emph{narrow}, so there is an
+intrinsic width or scatter in the true relationship.  Another case is
+that there are outliers; this can be taken care of by methods very
+precisely analogous to the methods in \sectionname~\ref{sec:robust}.
 
 \begin{comments}
 Bash the forward and reverse fitting in Tully-Fisher.
 \end{comments}
 
+\begin{problem}\label{prob:twod}
+Using the method of this \sectionname, fit the straight line
+$y=m\,x+b$ to the $x$, $y$, $\sigma_x$, $\sigma_{xy}$, and $\sigma_y$
+values of points XX--XX in \tablename~??.  Make a plot showing the
+points, their two-dimensional uncertainties (show them as one-sigma
+ellipses), and the best-fit line.
+\end{problem}
+
 \begin{problem}
-Take the data from Tables~?? and ??.  Fit a straight line to the $y$
+Repeat \problemname~\ref{prob:twod}, but using \emph{all} of the data
+in \tablename~??.  Some of the points are now outliers, so your fit
+may look worse.  Follow the fit by a robust procedure analogous to the
+Bayesian procedure with good data probability $\pgood$ and
+classifications $\allq$ described in \sectionname~\ref{sec:robust}.
+Use something sensible for the prior probability distribution for
+$(m,b)$, as discussed above.  Plot the two results with the data and
+uncertainties.  For extra credit, plot a sampling of 10 lines drawn
+from the marginalized posterior distribution for $(m,b)$ (marginalized
+over $\pgood$ and $\allq$) and plot the samples as a set of light grey
+or transparent lines.  For extra extra credit, mark each data point on
+your plot with the fully marginalized probability that the point is
+good (that is, not rejected, or has $q=1$).
+\end{problem}
+
+\begin{problem}
+Take the data from \tablename~??.  Fit a straight line to the $y$
 values of the points XX--XX, using the $y$-direction uncertainties
 $\sigma_y^2$ only, by the standard method described in
 \sectionname~\ref{sec:standard}.  Now transpose the problem and fit
@@ -724,7 +789,7 @@ the $x$-direction and $y$-direction uncertainties, and the two
 best-fit lines.  Comment.
 \end{problem}
 
-\section{Intrinsic scatter}
+\section{Intrinsic scatter}\label{sec:scatter}
 
 \section{Discussion}
 
