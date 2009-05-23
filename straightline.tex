@@ -38,6 +38,7 @@
 \newcommand{\mY}{\mmatrix{Y}}
 \newcommand{\mYT}{\transpose{\mY}}
 \newcommand{\mZ}{\mmatrix{Z}}
+\newcommand{\vhat}{\mmatrix{\hat{v}}}
 
 % set stuff
 \newcommand{\setofall}[3]{\{{#1}\}_{{#2}}^{{#3}}}
@@ -51,6 +52,7 @@
 \renewcommand{\d}{\mathrm{d}}
 \newcommand{\like}{\mathscr{L}}
 \newcommand{\pgood}{p_{\mathrm{good}}}
+\newcommand{\bperp}{b_{\perp}}
 
 \begin{document}
 \section*{Data analysis recipes:\ \\
@@ -705,7 +707,7 @@ p(x_i,y_i|\mC_i,x,y) = \frac{1}{2\,\pi\,\det(\mC_i)}
   \,\inverse{\mC_i}\,\left[\mZ_i - \mZ\right]\right) \quad ,
 \end{equation}
 where we have implicitly made column vectors
-\begin{equation}
+\begin{equation}\label{eq:mZ}
 \mZ = \left[\begin{array}{c} x \\ y \end{array}\right] \quad ; \quad
 \mZ_i = \left[\begin{array}{c} x_i \\ y_i \end{array}\right] \quad .
 \end{equation}
@@ -714,12 +716,12 @@ Now in the face of these general (though gaussian) two-dimensional
 uncertainties, how do we fit a line?  Justified objective functions
 will have something to do with the probability of the observations
 $\allxy$ given the uncertainties $\allC$, as a function of properties
-$(m,b)$ of the line.  As in \section{sec:objective}, the probability
-of the observations given model parameters $(m,b)$ is proportional to
-the \emph{likelihood} of the parameters given the observations.  We
-will now construct this likelihood and maximize it, or else multiply
-it by a prior on the parameters and report the posterior on the
-parameters.
+$(m,b)$ of the line.  As in \sectionname~\ref{sec:objective}, the
+probability of the observations given model parameters $(m,b)$ is
+proportional to the \emph{likelihood} of the parameters given the
+observations.  We will now construct this likelihood and maximize it,
+or else multiply it by a prior on the parameters and report the
+posterior on the parameters.
 
 Schematically, the construction of the likelihood involves specifying
 the line (parameterized by $m,b$), finding the probability of each
@@ -731,21 +733,51 @@ orthogonal to the line), and evaluation of those at the
 \emph{projected errors}.  Projection is a standard linear algebra
 technique, so we will use linear algebra (matrix) notation.
 
-%%% syntactical reference point
+A slope $m$ can be described by a unit vector $\vhat$
+\emph{orthogonal} to the line or linear relation:
+\begin{equation}
+\vhat
+ = \frac{1}{\sqrt{1+m^2}}\,\left[\begin{array}{c}-m\\1\end{array}\right]
+ = \left[\begin{array}{c}-\sin\theta\\\cos\theta\end{array}\right] \quad ,
+\end{equation}
+where we have defined the angle $\theta = \arctan m$ made between the
+line and the $x$ axis.  The orthogonal displacement $\Delta_i$ of each
+data point $(x_i,y_i)$ from the line is given by
+\begin{equation}
+\Delta_i = \transpose{\vhat}\,\mZ_i - b\,\cos\theta \quad ,
+\end{equation}
+where $\mZ_i$ is the column vector made from $(x_i,y_i)$ in
+\equationname~(\ref{eq:mZ}).  Similarly, each data point's covariance
+matrix $\mC_i$ projects down to an orthogonal variance $\Sigma_i^2$ given by
+\begin{equation}
+\Sigma_i^2 = \transpose{\vhat}\,\mC_i\,\vhat
+\end{equation}
+and then the log likelihood for $(m,b)$ or $(\theta,b\,\cos\theta)$
+can be written as
+\begin{equation}
+\ln\like = K + \sum_{i=1}^N -\frac{\Delta_i^2}{2\,\Sigma_{i}^2} \quad ,
+\end{equation}
+where $K$ is some constant.  \emph{This} likelihood can be maximized,
+and the resulting values of $(m,b)$ are justifiably the best-fit
+values.  The only modification we would suggest is performing the fit
+or likelihood maximization not in terms of $(m,b)$ but rather
+$(\theta,\bperp)$, where $\bperp$ is the perpendicular distance of the
+line from the origin or $b\,\cos\theta$.  This removes the paradox
+that the standard ``prior'' assumption of standard straight-line
+fitting treats all \emph{slopes} $m$ equally, putting way too much
+attention on angles near $\pm\pi/2$.  The Bayesian must set a prior.
+Again, there are many choices here, but the most natural is
+\emph{something} like flat in $\theta$ and flat in $\bperp$ (the
+latter not proper).
 
-HOGG: Describe projection matrices and their use.  Note the
-normalization constants.  Discuss the issue of a prior or a metric for
-the $(m,b)$ space and why it has to change from the linear fitting
-problem.
-
-The generative model here is that there are $N$ points with true
-values that lie precisely on a narrow, linear relation in the $x$--$y$
-plane.  To each of these true points a gaussian offset has been added
-to make each observed point $(x_i,y_i)$, where the offset was drawn
-from the two-dimensional gaussian with covariance tensor $\mC_i$.  As
-usual, if this generative model is a good approximation to the
-properties of the data set, the method works very well.  Of course
-there are many situations in which this is \emph{not} a good
+The implicit generative model here is that there are $N$ points with
+true values that lie precisely on a narrow, linear relation in the
+$x$--$y$ plane.  To each of these true points a gaussian offset has
+been added to make each observed point $(x_i,y_i)$, where the offset
+was drawn from the two-dimensional gaussian with covariance tensor
+$\mC_i$.  As usual, if this generative model is a good approximation
+to the properties of the data set, the method works very well.  Of
+course there are many situations in which this is \emph{not} a good
 approximation.  Below, we consider the (very common) case that the
 relationship is near-linear but not \emph{narrow}, so there is an
 intrinsic width or scatter in the true relationship.  Another case is
