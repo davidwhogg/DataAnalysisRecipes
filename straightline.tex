@@ -11,7 +11,7 @@
 % - define macros; remember 1, 2, infinity
 
 \documentclass[12pt]{article}
-\usepackage{amssymb,amsmath,mathrsfs}
+\usepackage{amssymb,amsmath,mathrsfs,deluxetable}
 
 \newcommand{\notenglish}[1]{\textit{#1}}
 \newcommand{\aposteriori}{\notenglish{a~posteriori}}
@@ -214,10 +214,10 @@ these properties, let alone both.
 \begin{problem}\label{prob:standard}
 Using the standard linear algebra method of this \sectionname, fit the
 straight line $y=m\,x+b$ to the $x$, $y$, and $\sigma_y$ values in
-\tablename~??.  Make a plot showing the points, their uncertainties,
-and the best-fit line.  What is the standard uncertainty variance
-$\sigma_m^2$ on the slope of the line?  Is there anything you don't
-like about the result?
+\tablename~\ref{table:data_allerr}.  Make a plot showing the points,
+their uncertainties, and the best-fit line.  What is the standard
+uncertainty variance $\sigma_m^2$ on the slope of the line?  Is there
+anything you don't like about the result?
 \end{problem}
 
 \begin{problem}\label{prob:quadratic}
@@ -509,43 +509,45 @@ implement and fast; we have often used it ourselves.
 \begin{problem}
 Using the biexponential objective function of
 \equationname~(\ref{eq:biexp}), find the best-fit straight line
-$y=m\,x+b$ for the $x$, $y$, and $\sigma_y$ values in \tablename~??.
-You will have to use a non-linear optimizer of some kind or you will
-have to take a sampling approach.  Make a plot showing the points,
-their uncertainties, and the best-fit line.  How does this compare to
-the standard result you obtained in \problemname~\ref{prob:standard}?
-Do you like it better or worse?
+$y=m\,x+b$ for the $x$, $y$, and $\sigma_y$ values in
+\tablename~\ref{table:data_allerr}.  You will have to use a non-linear
+optimizer of some kind or you will have to take a sampling approach.
+Make a plot showing the points, their uncertainties, and the best-fit
+line.  How does this compare to the standard result you obtained in
+\problemname~\ref{prob:standard}?  Do you like it better or worse?
 \end{problem}
 
 \begin{problem}
 Using the soft chi-squared objective function of
 \equationname~(\ref{eq:soft}), find the best-fit straight line
-$y=m\,x+b$ for the $x$, $y$, and $\sigma_y$ values in \tablename~??.
-You will have to use a non-linear optimizer of some kind or you will
-have to take a sampling approach.  Alternatively, you can try an
-iterated-linear method in which you iterate the standard linear method
-but modify the weights at each iteration.  Make a plot showing the
-points, their uncertainties, and the best-fit line.  How does this
-compare to the standard result you obtained in
-\problemname~\ref{prob:standard}?  Do you like it better or worse?
+$y=m\,x+b$ for the $x$, $y$, and $\sigma_y$ values in
+\tablename~\ref{table:data_allerr}.  You will have to use a non-linear
+optimizer of some kind or you will have to take a sampling approach.
+Alternatively, you can try an iterated-linear method in which you
+iterate the standard linear method but modify the weights at each
+iteration.  Make a plot showing the points, their uncertainties, and
+the best-fit line.  How does this compare to the standard result you
+obtained in \problemname~\ref{prob:standard}?  Do you like it better
+or worse?
 \end{problem}
 
 \begin{problem}
 Using the fully marginalized Bayesian data rejection method described
 above, find the best-fit (the maximum \aposteriori) straight line
-$y=m\,x+b$ for the $x$, $y$, and $\sigma_y$ values in \tablename~??.
-Before choosing the MAP line, marginalize over $\pgood$ and $\allq$ by
-(dumbly) looping over every possible (non-trivial) assigment of $q_i$
-values, and at each assignment, integrate over all possible values of
-$\pgood$.  Make a plot showing the points, their uncertainties, and
-the MAP line.  How does this compare to the standard result you
-obtained in \problemname~\ref{prob:standard}?  Do you like the MAP
-line better or worse?  For extra credit, plot a sampling of 10 lines
-drawn from the marginalized posterior distribution for $(m,b)$
-(marginalized over $\pgood$ and $\allq$) and plot the samples as a set
-of light grey or transparent lines.  For extra extra credit, mark each
-data point on your plot with the fully marginalized probability that
-the point is good (that is, not rejected, or has $q=1$).
+$y=m\,x+b$ for the $x$, $y$, and $\sigma_y$ values in
+\tablename~\ref{table:data_allerr}.  Before choosing the MAP line,
+marginalize over $\pgood$ and $\allq$ by (dumbly) looping over every
+possible (non-trivial) assigment of $q_i$ values, and at each
+assignment, integrate over all possible values of $\pgood$.  Make a
+plot showing the points, their uncertainties, and the MAP line.  How
+does this compare to the standard result you obtained in
+\problemname~\ref{prob:standard}?  Do you like the MAP line better or
+worse?  For extra credit, plot a sampling of 10 lines drawn from the
+marginalized posterior distribution for $(m,b)$ (marginalized over
+$\pgood$ and $\allq$) and plot the samples as a set of light grey or
+transparent lines.  For extra extra credit, mark each data point on
+your plot with the fully marginalized probability that the point is
+good (that is, not rejected, or has $q=1$).
 \end{problem}
 
 \section{Assigning uncertainties to best-fit parameters}\label{sec:uncertainty}
@@ -757,31 +759,32 @@ Bash the forward and reverse fitting in Tully-Fisher.
 \begin{problem}\label{prob:twod}
 Using the method of this \sectionname, fit the straight line
 $y=m\,x+b$ to the $x$, $y$, $\sigma_x$, $\sigma_{xy}$, and $\sigma_y$
-values of points XX--XX in \tablename~??.  Make a plot showing the
-points, their two-dimensional uncertainties (show them as one-sigma
-ellipses), and the best-fit line.
+values of points XX--XX in \tablename~\ref{table:data_allerr}.  Make a
+plot showing the points, their two-dimensional uncertainties (show
+them as one-sigma ellipses), and the best-fit line.
 \end{problem}
 
 \begin{problem}
 Repeat \problemname~\ref{prob:twod}, but using \emph{all} of the data
-in \tablename~??.  Some of the points are now outliers, so your fit
-may look worse.  Follow the fit by a robust procedure analogous to the
-Bayesian procedure with good data probability $\pgood$ and
-classifications $\allq$ described in \sectionname~\ref{sec:robust}.
-Use something sensible for the prior probability distribution for
-$(m,b)$, as discussed above.  Plot the two results with the data and
-uncertainties.  For extra credit, plot a sampling of 10 lines drawn
-from the marginalized posterior distribution for $(m,b)$ (marginalized
-over $\pgood$ and $\allq$) and plot the samples as a set of light grey
-or transparent lines.  For extra extra credit, mark each data point on
-your plot with the fully marginalized probability that the point is
-good (that is, not rejected, or has $q=1$).
+in \tablename~\ref{table:data_allerr}.  Some of the points are now
+outliers, so your fit may look worse.  Follow the fit by a robust
+procedure analogous to the Bayesian procedure with good data
+probability $\pgood$ and classifications $\allq$ described in
+\sectionname~\ref{sec:robust}.  Use something sensible for the prior
+probability distribution for $(m,b)$, as discussed above.  Plot the
+two results with the data and uncertainties.  For extra credit, plot a
+sampling of 10 lines drawn from the marginalized posterior
+distribution for $(m,b)$ (marginalized over $\pgood$ and $\allq$) and
+plot the samples as a set of light grey or transparent lines.  For
+extra extra credit, mark each data point on your plot with the fully
+marginalized probability that the point is good (that is, not
+rejected, or has $q=1$).
 \end{problem}
 
 \begin{problem}
-Take the data from \tablename~??.  Fit a straight line to the $y$
-values of the points XX--XX, using the $y$-direction uncertainties
-$\sigma_y^2$ only, by the standard method described in
+Take the data from \tablename~\ref{table:data_allerr}.  Fit a straight
+line to the $y$ values of the points XX--XX, using the $y$-direction
+uncertainties $\sigma_y^2$ only, by the standard method described in
 \sectionname~\ref{sec:standard}.  Now transpose the problem and fit
 the same data but fitting the $x$ values using the $x$-direction
 uncertainties $\sigma_x^2$ only.  Make a plot showing the data points,
@@ -812,5 +815,38 @@ This research was partially supported by NASA (ADP grant NNX08AJ48G)
 and a Research Fellowship of the Alexander von Humboldt Foundation.
 This research made use of the Python programming language and the
 open-source Python packages scipy, numpy, and matplotlib.
+
+
+\clearpage
+%Any changes to this table should be made IN THE CODE
+\begin{deluxetable}{rrrrrr@{.}l}
+\tablecolumns{7}
+\tablehead{ID &$x$ & $y$ & $\sigma_y$ & $\sigma_x$ &  \multicolumn{2}{c}{$\rho_{xy}$}}
+\tablewidth{0pt}
+\startdata
+1 & 201 & 592 & 61 & 9 & -0 & 84\\
+2 & 244 & 401 & 25 & 4 & 0 & 31\\
+3 & 47 & 583 & 38 & 11 & 0 & 64\\
+4 & 287 & 402 & 15 & 7 & -0 & 27\\
+5 & 203 & 495 & 21 & 5 & -0 & 33\\
+6 & 58 & 173 & 15 & 9 & 0 & 67\\
+7 & 210 & 479 & 27 & 4 & -0 & 02\\
+8 & 202 & 504 & 14 & 4 & -0 & 05\\
+9 & 198 & 510 & 30 & 11 & -0 & 84\\
+10 & 158 & 416 & 16 & 7 & -0 & 69\\
+11 & 165 & 393 & 14 & 5 & 0 & 30\\
+12 & 201 & 442 & 25 & 5 & -0 & 46\\
+13 & 157 & 317 & 52 & 5 & -0 & 03\\
+14 & 131 & 311 & 16 & 6 & 0 & 50\\
+15 & 166 & 400 & 34 & 6 & 0 & 73\\
+16 & 160 & 337 & 31 & 5 & -0 & 52\\
+17 & 186 & 423 & 42 & 9 & 0 & 90\\
+18 & 125 & 334 & 26 & 8 & 0 & 40\\
+19 & 218 & 533 & 16 & 6 & -0 & 78\\
+20 & 146 & 344 & 22 & 5 & -0 & 56\\
+\enddata
+\label{table:data_allerr}
+\end{deluxetable}
+
 
 \end{document}
