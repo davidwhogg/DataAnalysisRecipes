@@ -50,6 +50,7 @@
 % set stuff
 \newcommand{\setofall}[3]{\{{#1}\}_{{#2}}^{{#3}}}
 \newcommand{\allq}{\setofall{q_i}{i=1}{N}}
+\newcommand{\allx}{\setofall{x_i}{i=1}{N}}
 \newcommand{\ally}{\setofall{y_i}{i=1}{N}}
 \newcommand{\allxy}{\setofall{x_i,y_i}{i=1}{N}}
 \newcommand{\allsigmay}{\setofall{\sigma_{yi}^2}{i=1}{N}}
@@ -176,7 +177,7 @@ important, and in what follows we will have a lot to say about that.
 For now, we describe standard practice:
 
 Construct the matrices
-\begin{equation}
+\begin{equation}\label{eq:mY}
 \mY = \left[\begin{array}{c}
 y_1 \\
 y_2 \\
@@ -258,25 +259,34 @@ and the coordinates for which errors are \emph{not} negligible (the
 dependent variables) are put into the $\mA$ matrix.  In this latter
 case, the procedure makes no sense at all really; it happens when the
 investigator thinks of some quantity ``really being'' the dependent
-variable, despite the fact that it has the smaller error.  In the
-context of fitting, however, there is no meaning to these
-``independent'' and ``dependent'' terms beyond the error properties.
-In performing this standard fit, the investigator is effectively
-assuming that the $x$ values have negligible uncertainties; if they do
-\emph{not}, then the investigator is making a mistake.
+variable, despite the fact that it has the smaller error.  For example
+there are mistakes in the Hubble expansion literature, because many
+have an intuition that the ``velocity depends on the distance'' when
+in fact velocities are measured better, so from the point of view of
+fitting, it is better to think of the distance depending on the
+velocity.  In the context of fitting, there is no meaning to the terms
+``independent variable'' and ``dependent variable'' beyond the error
+properties of the data.  In performing this standard fit, the
+investigator is effectively assuming that the $x$ values have
+negligible uncertainties; if they do \emph{not}, then the investigator
+is making a mistake.
 
-In the above, cite the papers on the Hubble expansion from SNe.
+Conceptually, the inverse covariance matrix appears in the
+construction of the $\chi^2$ objective function like a linear
+``metric'' for the data space: It is used to turn a $N$-dimensional
+vector displacement into a scalar squared distance.  This idea is
+sometimes useful for thinking about statistics as a physicist.
 
-Physicists should be studying linear algebra and computation at least
-as much as they study calculus and differential equations.  Discuss.
-
-The inverse covariance matrix is like a linear ``metric'' for the data
-space.
-
-Note that not only does this problem have a linear solution, the
-solution is convex or unique.  This is remarkable, and almost no
-perturbation of this problem (as we will see below) has either of
-these properties, let alone both.
+Note that not only does the standard problem solved in this
+\sectionname\ have a linear solution, the objective function
+``landscape'' is convex so the solution is unique.  This is
+remarkable, and almost no perturbation of this problem (as we will see
+below) has either of these properties, let alone both.  For this
+standard problem, the linearity and convexity permit a one-step
+solution with no significant engineering challenges (even when $N$
+gets exceedingly large).  As we modify (and make more realistic) this
+problem, linearity and convexity will \emph{both} be broken; some
+thought will have to be put into the optimization.
 \end{comments}
 
 \begin{problem}\label{prob:standard}
@@ -297,13 +307,6 @@ fitting for and plotting the best quadratic relationship
 \begin{equation}
 g(x) = q\,x^2 + m\,x + b \quad.
 \end{equation}
-\end{problem}
-
-\begin{problem}
-Explain in words why or how the linear algebra expression in
-\equationname~(\ref{eq:lsf}) minimizes the squared error.  If it helps,
-consider only the case in which all the data points have identical
-uncertainties (so the matrix $\mC$ is trivial).
 \end{problem}
 
 \section{The objective function}\label{sec:objective}
@@ -368,20 +371,20 @@ The Bayesian generalization of this is to say that
 \begin{equation}
 p(m,b|\ally,I) = \frac{p(\ally|m,b,I)}{p(\ally|I)}\,p(m,b|I) \quad ,
 \end{equation}
-where $m$ and $b$ are the model parameters, $\ally$ is a short-hand for
-all the data $y_i$, $I$ is a short-hand for all the prior knowledge of
-the $x_i$ and the $\sigma_{yi}$ and everything else about the problem,
-$p(m,b|\ally,I)$ is the \emph{posterior} probability distribution for the
-parameters given the data and the prior knowledge, the ratio is the
-likelihood just computed, which has a frequency distribution for the
-data on top and that same thing marginalized over all parameters on
-the bottom (the denominator can be thought of as a normalization
-constant), and $p(m,b|I)$ is the \emph{prior} probability distribution
-for the parameters that represents all knowledge \emph{except} the
-input data $\ally$.  Unless the prior $p(m,b|I)$ is pretty informative,
-the posterior distribution function $p(m,b|\ally,I)$ here is going to look
-very similar to the likelihood function in
-\equationname~(\ref{eq:like}) above.
+where $m$ and $b$ are the model parameters, $\ally$ is a short-hand
+for all the data $y_i$, $I$ is a short-hand for all the prior
+knowledge of the $x_i$ and the $\sigma_{yi}$ and everything else about
+the problem, $p(m,b|\ally,I)$ is the \emph{posterior} probability
+distribution for the parameters given the data and the prior
+knowledge, the ratio is the likelihood $\like$ just computed, which
+has a frequency distribution for the data on top and that same thing
+marginalized over all parameters on the bottom (the denominator can be
+thought of as a normalization constant), and $p(m,b|I)$ is the
+\emph{prior} probability distribution for the parameters that
+represents all knowledge \emph{except} the input data $\ally$.  Unless
+the prior $p(m,b|I)$ is pretty informative, the posterior distribution
+function $p(m,b|\ally,I)$ here is going to look very similar to the
+likelihood function in \equationname~(\ref{eq:like}) above.
 
 We have succeeded in justifying the standard method as optimizing a
 justified, scalar objective function.  It is just the great good luck
@@ -389,14 +392,72 @@ of Gaussian distributions that that optimization is a pure linear
 function of the data, and therefore trivial to implement.
 
 \begin{comments}
-Note the relationship to the weighted mean, the simple result of
-combining measurements with gaussian uncertainties?  Why does the
-objective have to be a ``scalar''?  Why did we put the $x_i$ and
-$\sigma_{yi}$ into $I$ and not into the set of data, and when is that
-appropriate?  Why did we talk about the ``frequency distribution'' for
-the errors and not the ``probability distribution''?  When will I use
-the words ``uncertainty'', ``noise'', and ``error''?  Quote
-Neugebauer?
+In geometry or physics, a ``scalar'' is not just a quantity with a
+magnitude; it is a quantity with a magnitude that has certain
+transformation properties: It is invariant under some relevant
+transformations of the coordinates.  The objective ought to be
+something like a scalar in this sense, because we want the inference
+to be as insensitive to coordinate choices as possible.  The standard
+$\chi^2$ objective function is a scalar in the sense that it is
+invariant to translations or rescalings of the data in the $\mY$
+vector space defined in \equationname~(\ref{eq:mY}).  Of course a
+\emph{rotation} of the data in the space would be pretty strange, and
+would make the covariance matrix $\mC$ much more complicated, so
+perhaps the fact that the objective is literally a linear algebra
+scalar---this is clear from its matrix representation in
+\equationname~(\ref{eq:chisquared})---is a red herring.
+
+The more important thing about the objective is that it must have
+\emph{one magnitude only}.  Often when one asks a scientist what they
+are trying to optimize, they will tell you something like ``I am
+trying to maximize the resolution, minimize the noise, and minimize
+the error in measured fluxes''.  Well, those are good objectives, but
+\emph{you can't optimize them all}.  You either have to pick one, or
+make a convex combination of them (such as by adding them together in
+quadrature with weights).  This point is so obvious, it is not clear
+what else to say, except that many scientific investigations are so
+ill-posed that the investigator does not know what is being optimized.
+
+We have tried in this document to be a bit careful with words.
+Following Jaynes (cite Jaynes), we have tried to use the word
+``probability'' for our knowledge or uncertainty about a parameter in
+the problem, and ``frequency'' for the rate at which a random variable
+comes a particular way.  So the noise process that sets the
+uncertainty $\sigma_{yi}$ has a frequency distribution, but if we are
+just talking about our \emph{knowledge} about the true value of $y$
+for a data point measured to have value $y_i$, we might describe that
+with a probability distribution.  In the Bayesian context, then---to
+get extremely technical---the posterior probability distribution
+function is truly a probabiity distribution, but the likelihood factor
+is constructed from frequency distributions.  This relates to the
+difference between ``uncertainty'' and ``error''; if your data have
+\emph{errors}, correct them!  Your data come with
+\emph{uncertainties}, which are limitations to your knowledge, not
+\emph{mistakes}.
+
+One oddity in this \sectionname\ is that when we set up the Bayesian
+problem we put the $\allx$ and $\allsigmay$ into the prior information
+$I$ and \emph{not} into the data.  These were not considered data.
+Why not?  This was a choice, but we made it to emphasize that in the
+standard approach to fitting, there is a \emph{total asymmetry}
+between the $x_i$ and the $y_i$.  The $x_i$ are considered part of the
+\emph{experimental design}; they are the input to an experiment that
+got the $y_i$ as output.  For example, the $x_i$ are the times
+(measured by your perfect and reliable clock) at which you chose
+\apriori\ to look through the telescope, and the $y_i$ are the Right
+Ascensions you measured at those times.  As soon as there is any sense
+in which the $x_i$ are themselves \emph{also} data, the
+method---Bayesian or frequentist---of this \sectionname\ is invalid.
+
+It remains a miracle (to us) that the optimization of the $\chi^2$
+objective, which is the only sensible objective under the assumptions
+of the standard problem, has a linear solution.  One can attribute
+this to the magical properties of the gaussian distribution, but the
+gaussian distribution is also the maximum entropy distribution (the
+least informative possible distribution) constrained to have zero mean
+and a known variance; it is the limiting distribution of the central
+limit theorem.  That this leads to a convex, linear algebra solution
+is something for which we all ought to give thanks.
 \end{comments}
 
 \begin{problem}
@@ -408,6 +469,13 @@ variance $\sigma_{ti}^2$, write down an experession for the log
 likelihood $\ln\like$ for the data given the model parameter $T$.
 Take a derivative and show that the maximum likelihood value for $T$
 is the usual weighted mean.
+\end{problem}
+
+\begin{problem}
+Take the matrix formulation for $\chi^2$ given in
+\equationname~(\ref{eq:chisquared}) and take derivatives to show that
+the minimum is at the matrix location given in
+\equationname~(\ref{eq:lsf}).
 \end{problem}
 
 \section{Robustness to outliers}\label{sec:robust}
@@ -528,19 +596,20 @@ more informative priors, but a deep and sensible discussion of priors
 is beyond the scope of this document.
 
 \begin{comments}
-No robust procedure will be linear, so everything must be iterated to
-convergence.  Almost nothing robust will be convex, even, so there are
-issues about local minima.
+Hogg: No robust procedure will be linear, so everything must be
+iterated to convergence.  Almost nothing robust will be convex, even,
+so there are issues about local minima.  We need to say stuff about
+this in the text, not just the \commentsname.
 
-On bad data, you might not want to give all points the same prior
-probability distribution function over $\pgood$.  One of the amusing
-things about the posterior is that you can pick a particular data
-point $I$ and marginalize over $(m,b)$ and all the $q_i$ \emph{except}
-$q_I$.  This will return the marginalized posterior probability that
-point $I$ is good.  This is good for embarassing colleagues in
-meta-analyses (cite Press here).
+Hogg: On bad data, you might not want to give all points the same
+prior probability distribution function over $\pgood$.  One of the
+amusing things about the posterior is that you can pick a particular
+data point $I$ and marginalize over $(m,b)$ and all the $q_i$
+\emph{except} $q_I$.  This will return the marginalized posterior
+probability that point $I$ is good.  This is good for embarassing
+colleagues in meta-analyses (cite Press here).
 
-What do you do about data rejection if you \emph{don't know the
+Hogg: What do you do about data rejection if you \emph{don't know the
   magnitudes of your uncertainties} $\allsigmay$?  Probably the only
 way to proceed is to guess something about the \emph{relative}
 uncertainties of the data points, for example that they are all
