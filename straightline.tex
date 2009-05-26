@@ -289,13 +289,24 @@ problem, linearity and convexity will \emph{both} be broken; some
 thought will have to be put into the optimization.
 \end{comments}
 
+\begin{problem}\label{prob:easy}
+Using the standard linear algebra method of this \sectionname, fit the
+straight line $y=m\,x+b$ to the $x$, $y$, and $\sigma_y$ values for
+data points XX--XX in \tablename~\ref{table:data_allerr}.  Make a plot
+showing the points, their uncertainties, and the best-fit line.  What
+is the standard uncertainty variance $\sigma_m^2$ on the slope of the
+line?
+\end{problem}
+
 \begin{problem}\label{prob:standard}
 Using the standard linear algebra method of this \sectionname, fit the
 straight line $y=m\,x+b$ to the $x$, $y$, and $\sigma_y$ values in
 \tablename~\ref{table:data_allerr}.  Make a plot showing the points,
 their uncertainties, and the best-fit line.  What is the standard
 uncertainty variance $\sigma_m^2$ on the slope of the line?  Is there
-anything you don't like about the result?
+anything you don't like about the result?  Is there anything different
+about the new points you have included beyond those used in
+\problemname~\ref{prob:easy}?
 \end{problem}
 
 \begin{problem}\label{prob:quadratic}
@@ -687,6 +698,59 @@ $\pgood$ and $\allq$) and plot the samples as a set of light grey or
 transparent lines.  For extra extra credit, mark each data point on
 your plot with the fully marginalized probability that the point is
 good (that is, not rejected, or has $q=1$).
+\end{problem}
+
+\section{Goodness of fit and unknown data uncertainties}\label{sec:goodness}
+
+How can you decide if your fit is a good one, or that your assumptions
+are justified?  And how can you infer or assess the individual
+data-point uncertainties if you don't know them, or don't trust them?
+These problems are related problems, but they are coupled: In the
+standard (frequentist) paradigm, you can't test your assumptions
+unless you are very confident about your uncertainty estimates, and
+you can't test your uncertainty estimates unless you are very
+confident about your assumptions.
+
+Hogg: What to do if your $\chi^2$ value is too high?  Answer: Reassess
+errors, perform outlier rejection, expand uncertainty estimates.
+
+Hogg: What to do if your $\chi^2$ value is too low?  Answer: Reassess
+errors, add in covariances!
+
+As a Bayesian, as usual, you can do more, but you also have to work
+harder.  For example, imagine that you don't know anything about your
+individual data-point uncertainties $\allsigmay$ at all.  Imagine,
+further, that you don't even know anything about their \emph{relative}
+magnitudes; that is, you can't even assume that they have similar
+magnitudes...Hogg?
+
+\begin{comments}
+As to the Bayesian version of goodness-of-fit, it is often said that
+it is impossible for a Bayesian to assess goodness-of-fit or to
+\emph{reject} a model without specifying alternatives.  There is an
+element of truth in this, because Bayesian probabilities are only
+defined in the context of the prior assumptions, so the rejection of a
+model on probabilistic grounds requires the existence of alternatives
+within the priors.  Of course this is not difficult, so there is no
+sense in which a Bayesian cannot assess goodness-of-fit.  For example,
+assessment of the
+
+Hogg: Bash the idea of \emph{dividing} $\chi^2$ by the number of
+degrees of freedom.
+\end{comments}
+
+\begin{problem}
+Assess the $\chi^2$ value for the fit performed in
+\problemname~\ref{prob:easy} (do that problem first if you haven't
+already).  Is the fit good?
+\end{problem}
+
+\begin{problem}
+Re-do the fit of \problemname~\ref{prob:easy} but setting all
+$\sigma_{yi}^2=S$, that is, ignoring the uncertainties and replacing
+them all with the same value $S$.  Now what uncertainty variance $S$
+would make $\chi^2 = N-2$?  How does it compare to the mean and median
+of the uncertainty variances $\allsigmay$?
 \end{problem}
 
 \section{Assigning uncertainties to best-fit parameters}\label{sec:uncertainty}
