@@ -4,7 +4,6 @@
 % - Hogg: fill out comments and other stuff
 % - Hogg: we need to say things about procedure; right now the document is almost entirely about the objective
 % - Hogg: should we say something substantial---not superficial---about non-convexity; perhaps initializing trials with RANSAC-like initial conditions
-% - Bovy: make table notes that explain that \sigma_{xy}=\sigma_x\,\sigma_y\,\rho_{xy} among other things?
 % - Bovy: do something to the fake data that makes PCA differ from the right thing; this requires correlating the variance tensors, I think.
 % - Bovy: make one or two plots and incorporate and cite them by \ref{}
 
@@ -17,13 +16,25 @@
 
 \documentclass[12pt]{article}
 \usepackage{amssymb,amsmath,mathrsfs,deluxetable}
+\usepackage{natbib}
 \usepackage{float,graphicx}
+% hypertex insanity
+\usepackage{color,hyperref}
+\definecolor{linkcolor}{rgb}{0,0,0.25}
+\hypersetup{
+  colorlinks=true,        % false: boxed links; true: colored links
+  linkcolor=linkcolor,    % color of internal links
+  citecolor=linkcolor,    % color of links to bibliography
+  filecolor=linkcolor,    % color of file links
+  urlcolor=linkcolor      % color of external links
+}
 
 \setlength{\emergencystretch}{2em}%No overflow
 
 \newcommand{\notenglish}[1]{\textit{#1}}
 \newcommand{\aposteriori}{\notenglish{a~posteriori}}
 \newcommand{\apriori}{\notenglish{a~priori}}
+\newcommand{\etal}{et al.}
 
 \newcommand{\sectionname}{Section}
 \newcommand{\equationname}{equation}
@@ -160,12 +171,12 @@ This document is part polemic, part attempt at establishing standards,
 and part notes for our own future re-use.  We apologize in advance for
 some astrophysics bias and failure to review basic ideas of linear
 algebra, function optimization, and practical statistics.  Very good
-reviews of the latter exist in abundance (cite Jaynes, MacKay, and
-Press here).  Our focus is on the specific problems of linear fitting
-that we so often face; the general ideas appear in the context of
-these concrete and relatively realistic example problems.  The reader
-is encouraged to do the \problemname s; many of these ask you to
-produce plots which can be compared with the \figurename s.
+reviews of the latter exist in abundance \citep{jaynes,mackay,press}.
+Our focus is on the specific problems of linear fitting that we so
+often face; the general ideas appear in the context of these concrete
+and relatively realistic example problems.  The reader is encouraged
+to do the \problemname s; many of these ask you to produce plots which
+can be compared with the \figurename s.
 
 \section{Standard practice}\label{sec:standard}
 
@@ -437,7 +448,7 @@ what else to say, except that many scientific investigations are so
 ill-posed that the investigator does not know what is being optimized.
 
 We have tried in this document to be a bit careful with words.
-Following Jaynes (cite Jaynes), we have tried to use the word
+Following Jaynes \citet{jaynes}, we have tried to use the word
 ``probability'' for our knowledge or uncertainty about a parameter in
 the problem, and ``frequency'' for the rate at which a random variable
 comes a particular way.  So the noise process that sets the
@@ -567,7 +578,7 @@ return to the same best optimum, or that if you come to a different
 one, it has a worse value for the objective.
 
 One attractive kind of optimizer is a sampler such as a Markov Chain
-Monte Carlo method (cite MacKay).  These take a bit of getting used
+Monte Carlo method \citep{mackay}.  These take a bit of getting used
 to, but once you have them working well, they handle the optimization
 and the local minima problems simultaneously.  These only have
 well-defined properties when your objective function can be
@@ -1193,7 +1204,7 @@ the function that, when convolved with each data point's intrinsic
 uncertainty gaussian, creates a distribution function from which that
 data point is a single sample.  Such methods fall into the
 intersection of density estimation and deconvolution, and completely
-general methods exist (BOVY: cite Bovy here).
+general methods exist \citep{bovy}.
 
 \begin{comments}
 Why should you never subtract out the variance in quadrature?  Hogg
@@ -1209,7 +1220,7 @@ maximum-likelihood \emph{intrinsic} relation.
 
 \begin{problem}
 Re-do \problemname~\ref{prob:intrinsic} but as a Bayesian, with
-sensble Bayesian priors on $(\theta,\bperp,V)$.  Find and marginalize
+sensible Bayesian priors on $(\theta,\bperp,V)$.  Find and marginalize
 the posterior distribution over $(\theta,\bperp)$ to generate a
 marginalized posterior probability for the intrinsic variance
 parameter $V$.  Plot this posterior with the 95 and 99~percent
@@ -1273,6 +1284,24 @@ See \figurename~\ref{fig:ex3}.
 \caption{Solution to \problemname~\ref{prob:quadratic}}\label{fig:ex3}
 \end{figure}
 \end{solution}
+
+
+
+\begin{thebibliography}{}
+\bibitem[Bovy, Hogg, \& Roweis(2009)]{bovy}
+  Bovy,~J., Hogg,~D.~W., \& Roweis, S.~T.~, 2009,
+  Extreme deconvolution: inferring complete distribution functions from noisy, heterogeneous, and incomplete observations, 
+  arXiv:0905.2979 [stat.ME]
+\bibitem[Jaynes(2003)]{jaynes}
+  Jaynes,~E.~T., 2003,
+  \textit{Probability theory: the logic of science} (Cambridge University Press)
+\bibitem[Mackay(2003)]{mackay}
+  Mackay,~D.~J.~C., 2003,
+  \textit{Information theory, inference, and learning algorithms} (Cambridge University Press)
+\bibitem[Press \etal(2007)]{press}
+  Press,~W.~H., Teukolsky,~S.~A., Vetterling,~W.~T., \& Flannery,~B.~P., 2007,
+  \textit{Numerical recipes: the art of scientific computing} (Cambridge University Press)
+\end{thebibliography}
 
 
 \clearpage
