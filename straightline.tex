@@ -17,6 +17,7 @@
 
 \documentclass[12pt]{article}
 \usepackage{amssymb,amsmath,mathrsfs,deluxetable}
+\usepackage{float,graphicx}
 
 \newcommand{\notenglish}[1]{\textit{#1}}
 \newcommand{\aposteriori}{\notenglish{a~posteriori}}
@@ -25,10 +26,13 @@
 \newcommand{\sectionname}{Section}
 \newcommand{\equationname}{equation}
 \newcommand{\problemname}{Exercise}
+\newcommand{\solutionname}{Solution}
 \newcommand{\commentsname}{Comments}
 
 \newcounter{problem}
 \newenvironment{problem}{\paragraph{\problemname~\theproblem:}\refstepcounter{problem}}{}
+\newcounter{solution}
+\newenvironment{solution}{\paragraph{\solutionname~\thesolution:}\refstepcounter{solution}}{}
 \newenvironment{comments}{\paragraph{\commentsname:}}{}
 
 % matrix stuff
@@ -291,7 +295,7 @@ thought will have to be put into the optimization.
 \begin{problem}\label{prob:easy}
 Using the standard linear algebra method of this \sectionname, fit the
 straight line $y=m\,x+b$ to the $x$, $y$, and $\sigma_y$ values for
-data points XX--XX in \tablename~\ref{table:data_allerr}.  Make a plot
+data points 5--20 in \tablename~\ref{table:data_allerr}.  Make a plot
 showing the points, their uncertainties, and the best-fit line.  What
 is the standard uncertainty variance $\sigma_m^2$ on the slope of the
 line?
@@ -312,7 +316,7 @@ about the new points you have included beyond those used in
 Generalize the method of this \sectionname\ to fit a general quadratic
 (second order) relationship.  Add another column to matrix $\mA$
 containing the values $x_i^2$, and another element to vector $\mX$
-(call it $q$).  Then re-do \problemname~\ref{prob:standard} but
+(call it $q$).  Then re-do \problemname~\ref{prob:easy} but
 fitting for and plotting the best quadratic relationship
 \begin{equation}
 g(x) = q\,x^2 + m\,x + b \quad.
@@ -1238,6 +1242,36 @@ NASA (ADP grant NNX08AJ48G) and a Research Fellowship of the Alexander
 von Humboldt Foundation.  This research made use of the Python
 programming language and the open-source Python packages scipy, numpy,
 and matplotlib.
+
+
+\appendix
+
+\section{Solutions to the exercises}
+
+\begin{solution}
+See \figurename~\ref{fig:ex1}.
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{ex1.png}
+\caption{Solution to \problemname~\ref{prob:easy}}\label{fig:ex1}
+\end{figure}
+\end{solution}
+
+\begin{solution}
+See \figurename~\ref{fig:ex2}.
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{ex2.png}
+\caption{Solution to \problemname~\ref{prob:standard}}\label{fig:ex2}
+\end{figure}
+\end{solution}
+
+\begin{solution}
+See \figurename~\ref{fig:ex3}.
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{ex3.png}
+\caption{Solution to \problemname~\ref{prob:quadratic}}\label{fig:ex3}
+\end{figure}
+\end{solution}
+
 
 \clearpage
 %Any changes to this table should be made IN THE CODE
