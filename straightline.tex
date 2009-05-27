@@ -1,6 +1,5 @@
 % to-do
 % -----
-% - Hogg: write intro
 % - Hogg: write discussion
 % - Hogg: fill out comments and other stuff
 % - Hogg: we need to say things about procedure; right now the document is almost entirely about the objective
@@ -513,7 +512,7 @@ p(y_i|x_i,\sigma_{yi},m,b) = \frac{1}{2\,s_i}
  \,\exp\left(-\frac{|y_i-m\,x_i-b|}{s_i}\right) \quad ,
 \end{equation}
 where $s_i$ is an estimate of the mean absolute error, probably
-correctly set to something like $s_i = \sigma_{yi}/\sqrt{2}$.
+correctly set to something like $s_i\approx \sigma_{yi}$.
 Optimization of the total log likelihood is equivalent to minimizing
 \begin{equation}\label{eq:biexp}
 X = \sum_{i=1}^N \frac{|y_i-f(x_i)|}{s_i} \quad ,
@@ -537,8 +536,43 @@ contribution of the residual does not increase as the square.  This is
 about the simplest robust method that introduces only one new
 parameter ($Q$).
 
+In both of these softenings of $\chi^2$, the objective function is no
+longer purely quadratic, and the solution is no longer purely linear.
+Worse, in almost any reasonable softening, the problem becomes
+\emph{non-convex}; that is, there will, in general, be multiple optima
+from which the global optimum must be selected.  These two problems
+are both in the area of \emph{optimization}, a sensible discussion of
+which is \emph{way} beyond the scope of this document (cite some
+relevant book here).  However, we can provide a bit of advice.
+
+The first piece of advice is to find, get used to, and take care of
+some good non-linear optimizer or optimization code.  It will be
+necessary in all your inference.  Most data analysis platforms have
+optimizers that can handle problems like those presented here with
+little or no trouble.  The second piece of advice is to spend a bit of
+thought on initialization.  That is, do not start the optimizer in an
+arbitrary point in parameter space, but rather initialize it near
+where you think the answer is likely to be, using either your prior
+knowledge, or else a linear fit (which provides an objective starting
+point).  The third piece of advice is to check for multiple minima by
+sampling parameter space in some significant region around the optimum
+you have, re-converge the nonlinear optimizer, and verify that you
+return to the same best optimum, or that if you come to a different
+one, it has a worse value for the objective.
+
+One attractive kind of optimizer is a sampler such as a Markov Chain
+Monte Carlo method (cite MacKay).  These take a bit of getting used
+to, but once you have them working well, they handle the optimization
+and the local minima problems simultaneously.  These only have
+well-defined properties when your objective function can be
+interpreted as a probability or likelihood, but that is okay here.  In
+the Bayesian scheme below, they simultaneously find your best fit
+parameters \emph{and} provide a sampling from the posterior
+distribution function, a Good Thing to carry forward (as we note
+below).
+
 The alternative to these softenings is to try data rejection, in which
-adds to the problem a set of $N$ binary integers $q_i$, one per data
+we add to the problem a set of $N$ binary integers $q_i$, one per data
 point, each of which is unity if the $i$th data point is good, and
 zero if the $i$th data point is bad (cite Press and Jaynes here).  In
 addition, to construct an objective function one needs an additional
@@ -598,7 +632,7 @@ posterior distribution function, useful for propagating uncertainty,
 or standing in as a \emph{prior} for some subsequent inference.
 
 Another unfortunate (though unavoidably correct) thing about any
-Bayesian method is that prior probabilities must be specified.  In any
+Bayes\-ian method is that prior probabilities must be specified.  In any
 situation of straight-line fitting where the data are good, these
 priors do not matter very much to the final answer.  The way we have
 written our likelihoods, the MAP result becomes very directly
@@ -609,24 +643,32 @@ more informative priors, but a deep and sensible discussion of priors
 is beyond the scope of this document.
 
 \begin{comments}
-Hogg: No robust procedure will be linear, so everything must be
-iterated to convergence.  Almost nothing robust will be convex, even,
-so there are issues about local minima.  We need to say stuff about
-this in the text, not just the \commentsname.
+Because, in this \sectionname, we have broken the assumptions of
+least-square fitting, we have also broken the linearity and convexity
+of the problem.  That is, no robust procedure will be linear, and not
+many robust procedures can be convex, so everything in the category of
+modifying $\chi^2$ must be iterated to convergence.  In the Bayesian
+scheme presented above, there is no iteration to convergence, but
+there is a marginalization over a large discrete space.  Even these
+minimal modifications to the standard assumptions ruin the miracle of
+linear least squares; this shows how unusual and special the
+``textbook'' case is.
 
-Hogg: On bad data, you might not want to give all points the same
-prior probability distribution function over $\pgood$.  One of the
-amusing things about the posterior is that you can pick a particular
-data point $I$ and marginalize over $(m,b)$ and all the $q_i$
-\emph{except} $q_I$.  This will return the marginalized posterior
-probability that point $I$ is good.  This is good for embarassing
-colleagues in meta-analyses (cite Press here).
+Importantly, the \emph{scientific} decision is about the objective
+function.  Optimization is an \emph{engineering} consideration.  This
+distinction is not made to denigrate the latter (we are very much
+engineers); it is to emphasize that optimizers should be chosen on
+practical grounds of time, resources, and availability.
 
-Hogg: What do you do about data rejection if you \emph{don't know the
-  magnitudes of your uncertainties} $\allsigmay$?  Probably the only
-way to proceed is to guess something about the \emph{relative}
-uncertainties of the data points, for example that they are all
-similar.
+When flagging bad data, you might not want to give all points the same
+prior probability distribution function over $\pgood$, though it is
+rare that one has reliable information about the unreliability of
+one's data.  Complementary to this, one of the amusing things about
+the Bayesian posterior developed above is that you can pick a
+particular data point $J$ and marginalize over $(m,b)$ and all the
+$q_i$ \emph{except} $q_J$.  This will return the marginalized
+posterior probability that point $J$ is good.  This is good for
+embarassing colleagues in meta-analyses (cite Press here).
 
 The standard method for removing sensitivity to outliers (in
 astrophysics, anyway) is known as ``sigma-clipping''.  This is a
@@ -656,6 +698,16 @@ there are situations in which all but two of the data points can be
 rejected by the procedure.  All that said, with a large $Q^2$ and
 standard, pretty good data, the sigma-clipping procedure is easy to
 implement and fast; we have often used it ourselves.
+
+One extremely common variation on the problem of data rejection is the
+situation in which you have to perform data rejection but you
+\emph{don't know the magnitudes of your uncertainties} $\allsigmay$.
+We will say a bit more about this in \sectionname~\ref{sec:goodness},
+but the general procedure is to include the $\allsigmay$ as model
+parameters and infer them and marginalize over them \emph{also}.  This
+is much more tractable and pleasant if you can assume that all the
+data-point uncertainties are comparable or you know something else
+equally informative about their \emph{relative} magnitudes.
 \end{comments}
 
 \begin{problem}
