@@ -2,6 +2,8 @@
 % -----
 % - Hogg: write discussion
 % - Hogg: fill out comments and other stuff
+% - Hogg: should we distinguish parameters (m,b) from their best-fit values?
+% - Hogg: should we distinguish = \equiv and \leftarrow ?
 % - Hogg: we need to say things about procedure; right now the document is almost entirely about the objective
 % - Hogg: should we say something substantial---not superficial---about non-convexity; perhaps initializing trials with RANSAC-like initial conditions
 % - Bovy: do something to the fake data that makes PCA differ from the right thing; this requires correlating the variance tensors, I think.
@@ -781,14 +783,41 @@ unless you are very confident about your uncertainty estimates, and
 you can't test your uncertainty estimates unless you are very
 confident about your assumptions.
 
-Hogg: What is expected for $\chi^2$, and why you shouldn't reject
-models on that basis alone.
+Imagine that the generative model in \sectionname~\ref{sec:objective}
+is a valid description of the data.  In this case, the noise
+contribution for each data point $i$ has been drawn from a gaussian
+with variance $\sigma_{yi}^2$.  In this case, the expectation is that
+data point $i$ will provide a mean squared error comparable to
+$\sigma_{yi}^2$, and a contribution of roughly unity to $\chi^2$ when
+the parameters $(m,b)$ are set close to their true values.  Because in
+detail there are two fit parameters $(m,b)$ which you have been
+permitted to optimize, the expectaton for $\chi^2$ is smaller than
+$N$; the rule of thumb is that---when the model is a good fit and the
+uncertainties are gaussian with known variances,
+\begin{equation}
+\chi^2 = [N-2] \pm \sqrt{N-2} \quad ,
+\end{equation}
+where the $\pm$ symbol is used loosely to indicate something close to
+a standard error (something close to a 68-percent confidence
+interval).  If you find $\chi^2$ in this ballpark, it is conceivable
+that the model is good.
+
+It is easy to get a $\chi^2$ much \emph{higher} than $[N-2]$; getting
+a \emph{lower} value seems impossible; yet it happens very frequently.
+This is one of the many reasons that rejection or acceptance of a
+model on the $\chi^2$ basis is dangerous; exactly the same kinds of
+problems that can make $\chi^2$ unreasonably low can make it
+unreasonably high; worse yet, it can make $\chi^2$ reasonable when the
+model is bad.  Two extremely common reasons $\chi^2$ can be lower...Hogg
+
+Hogg: What to do if your $\chi^2$ value is too low?  Answer: Reassess
+errors, add in covariances!
 
 Hogg: What to do if your $\chi^2$ value is too high?  Answer: Reassess
 errors, perform outlier rejection, expand uncertainty estimates.
 
-Hogg: What to do if your $\chi^2$ value is too low?  Answer: Reassess
-errors, add in covariances!
+Hogg: Why you shouldn't reject
+models on a $\chi^2$ basis alone.
 
 As a Bayesian, as usual, you can do more, but you also have to work
 harder.  For example, imagine that you don't know anything about your
@@ -798,6 +827,12 @@ magnitudes; that is, you can't even assume that they have similar
 magnitudes...Hogg?
 
 \begin{comments}
+Hogg: Contrast model comparison with model rejection.  Note the
+difference between the $\sqrt{N-2}$ and the 1 of model comparison.
+
+Hogg: Bash the idea of \emph{dividing} $\chi^2$ by the number of
+degrees of freedom.
+
 As to the Bayesian version of goodness-of-fit, it is often said that
 it is impossible for a Bayesian to assess goodness-of-fit or to
 \emph{reject} a model without specifying alternatives.  There is an
@@ -806,10 +841,7 @@ defined in the context of the prior assumptions, so the rejection of a
 model on probabilistic grounds requires the existence of alternatives
 within the priors.  Of course this is not difficult, so there is no
 sense in which a Bayesian cannot assess goodness-of-fit.  For example,
-assessment of the
-
-Hogg: Bash the idea of \emph{dividing} $\chi^2$ by the number of
-degrees of freedom.
+assessment of the...Hogg
 \end{comments}
 
 \begin{problem}
