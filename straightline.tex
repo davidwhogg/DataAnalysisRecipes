@@ -1,7 +1,6 @@
 % to-do
 % -----
-% - Hogg: write discussion
-% - Hogg: fill out comments and other stuff
+% - Hogg: finish all Hogg-marked paragraphs
 % - Hogg: should we distinguish parameters (m,b) from their best-fit values?
 % - Hogg: should we distinguish = \equiv and \leftarrow ?
 % - Hogg: we need to say things about procedure; right now the document is almost entirely about the objective
@@ -38,6 +37,7 @@
 \newcommand{\apriori}{\notenglish{a~priori}}
 \newcommand{\etal}{et al.}
 
+\newcommand{\documentname}{document}
 \newcommand{\sectionname}{Section}
 \newcommand{\equationname}{equation}
 \newcommand{\problemname}{Exercise}
@@ -151,7 +151,7 @@ operation known as ``least-square fitting''.  This miracle deserves
 contemplation.  Once any of the input assumptions is violated (and
 note there are many input assumptions), all bets are off, and there
 are no consensus methods used by scientists across disciplines.  It is
-one of the objectives of this document to suggest and promote some
+one of the objectives of this \documentname\ to suggest and promote some
 possible consensus methods: We present below simple, straightforward,
 comprehensible, and---above all---\emph{justifiable} methods for
 fitting a straight line to data with general, non-trivial, and
@@ -167,7 +167,7 @@ just make the point to remind everyone that when you cite, rely upon,
 or transmit a best-fit slope or intercept reported in the literature,
 you may be propagating more noise than signal.
 
-This document is part polemic, part attempt at establishing standards,
+This \documentname\ is part polemic, part attempt at establishing standards,
 and part notes for our own future re-use.  We apologize in advance for
 some astrophysics bias and failure to review basic ideas of linear
 algebra, function optimization, and practical statistics.  Very good
@@ -209,7 +209,7 @@ y_N
 1 & x_N
 \end{array}\right] \quad ,
 \end{equation}
-\begin{equation}
+\begin{equation}\label{eq:covar}
 \mC = \left[\begin{array}{cccc}
 \sigma_{y1}^{2} & 0 & \cdots & 0 \\
 0 & \sigma_{y2}^{2} & \cdots & 0 \\
@@ -254,7 +254,7 @@ which is the total squared error, scaled by the uncertainties, or
 \end{equation}
 that is, it finds the values for $m$ and $b$ that minimize $\chi^2$.
 This, of course, is only one possible meaning of the phrase ``best
-fit''; that issue is the subject of the rest of this document.
+fit''; that issue is the subject of the rest of this \documentname.
 
 When the uncertainties are gaussian and their variances $\sigma_{yi}$
 are correctly estimated, the matrix
@@ -308,8 +308,9 @@ thought will have to be put into the optimization.
 \begin{problem}\label{prob:easy}
 Using the standard linear algebra method of this \sectionname, fit the
 straight line $y=m\,x+b$ to the $x$, $y$, and $\sigma_y$ values for
-data points 5 through 20 in \tablename~\ref{table:data_allerr}.  Make a plot
-showing the points, their uncertainties, and the best-fit line.  What
+data points 5 through 20 in \tablename~\ref{table:data_allerr}.  Make
+a plot showing the points, their uncertainties, and the best-fit line.
+Your plot should end up looking like \figurename~\ref{fig:easy}.  What
 is the standard uncertainty variance $\sigma_m^2$ on the slope of the
 line?
 \end{problem}
@@ -317,13 +318,13 @@ line?
 \begin{problem}\label{prob:standard}
 Using the standard linear algebra method of this \sectionname, fit the
 straight line $y=m\,x+b$ to the $x$, $y$, and $\sigma_y$ values for
-all the data points in
-\tablename~\ref{table:data_allerr}.  Make a plot showing the points,
-their uncertainties, and the best-fit line.  What is the standard
-uncertainty variance $\sigma_m^2$ on the slope of the line?  Is there
-anything you don't like about the result?  Is there anything different
-about the new points you have included beyond those used in
-\problemname~\ref{prob:easy}?
+all the data points in \tablename~\ref{table:data_allerr}.  Make a
+plot showing the points, their uncertainties, and the best-fit line.
+Your plot should end up looking like \figurename~\ref{fig:standard}.
+What is the standard uncertainty variance $\sigma_m^2$ on the slope of
+the line?  Is there anything you don't like about the result?  Is
+there anything different about the new points you have included beyond
+those used in \problemname~\ref{prob:easy}?
 \end{problem}
 
 \begin{problem}\label{prob:quadratic}
@@ -335,6 +336,7 @@ fitting for and plotting the best quadratic relationship
 \begin{equation}
 g(x) = q\,x^2 + m\,x + b \quad.
 \end{equation}
+Your plot should end up looking like \figurename~\ref{fig:quadratic}.
 \end{problem}
 
 \section{The objective function}\label{sec:objective}
@@ -448,7 +450,7 @@ quadrature with weights).  This point is so obvious, it is not clear
 what else to say, except that many scientific investigations are so
 ill-posed that the investigator does not know what is being optimized.
 
-We have tried in this document to be a bit careful with words.
+We have tried in this \documentname\ to be a bit careful with words.
 Following Jaynes \citet{jaynes}, we have tried to use the word
 ``probability'' for our knowledge or uncertainty about a parameter in
 the problem, and ``frequency'' for the rate at which a random variable
@@ -560,7 +562,7 @@ Worse, in almost any reasonable softening, the problem becomes
 \emph{non-convex}; that is, there will, in general, be multiple optima
 from which the global optimum must be selected.  These two problems
 are both in the area of \emph{optimization}, a sensible discussion of
-which is \emph{way} beyond the scope of this document (cite some
+which is \emph{way} beyond the scope of this \documentname\ (cite some
 relevant book here).  However, we can provide a bit of advice.
 
 The first piece of advice is to find, get used to, and take care of
@@ -658,7 +660,7 @@ analogous to the maximum likelihood answer when the (improper,
 non-normalizable) prior ``flat in $m$, flat in $b$'' is adopted.
 Usually the investigator \emph{does} have some basis for setting some
 more informative priors, but a deep and sensible discussion of priors
-is beyond the scope of this document.
+is beyond the scope of this \documentname.
 
 \begin{comments}
 Because, in this \sectionname, we have broken the assumptions of
@@ -802,46 +804,100 @@ a standard error (something close to a 68-percent confidence
 interval).  If you find $\chi^2$ in this ballpark, it is conceivable
 that the model is good.
 
+Model rejection on the basis of too-large $\chi^2$ is a frequentist's
+option only.  A Bayesian can't interpret the data without a model, so
+there is no meaning to the question ``is this model good?''.
+Bayesians only answer questions of the form ``is this model better
+than that one?''.  Because we are only considering the straight-line
+model in this \documentname, further discussion of this point goes beyond
+our scope (aside from a few comments below).
+
 It is easy to get a $\chi^2$ much \emph{higher} than $[N-2]$; getting
 a \emph{lower} value seems impossible; yet it happens very frequently.
 This is one of the many reasons that rejection or acceptance of a
 model on the $\chi^2$ basis is dangerous; exactly the same kinds of
 problems that can make $\chi^2$ unreasonably low can make it
 unreasonably high; worse yet, it can make $\chi^2$ reasonable when the
-model is bad.  Two extremely common reasons $\chi^2$ can be lower...Hogg
+model is bad.  Reasons $\chi^2$ can be lower include that uncertainty
+estimates are often underestimated, and, worse, often positively
+correlated.  The opposit of these problemms can make $\chi^2$ high
+when the model is good.
 
-Hogg: What to do if your $\chi^2$ value is too low?  Answer: Reassess
-errors, add in covariances!
+Correlated measurements are not uncommon; the process by which the
+observations were taken often involve shared information or
+assumptions which, if the individual data-point uncertainties have
+been estimated by some means that effectively marginalizes over some
+or all of that shared information, then there will be large
+covariances among the data points.  These covariances bring
+off-digonal elements into the covariance matrix $\mC$, which was
+trivially constructed in \equationname~(\ref{eq:covar}) under the
+assumption that all covariances (off-diagonal elements) are precisely
+zero.  Once the off-diagonal elements are non-zero, $\chi^2$ must be
+computed by the matrix expression in
+\equationname~(\ref{eq:chisquared}); this is equivalent to replacing
+the sum over $i$ to two sums over $i$ and $j$ and considering all
+cross terms
+\begin{equation}
+\chi^2
+ = \transpose{\left[\mY-\mA\,\mX\right]}\,\mCinv\,\left[\mY-\mA\,\mX\right]
+ = \sum_{i=1}^N \sum_{j=1}^N \frac{\left[y_i-f(x_i)\right]\,[y_j-f(x_j)]}
+   {\sigma_{yij}} \quad,
+\end{equation} 
+where $\sigma_{yij}$ is the covariance between the uncertainties in
+observation $y_i$ and $y_j$, or, when $i=j$, the uncertainty variance
+$\sigma_{yi}^2$.
 
-Hogg: What to do if your $\chi^2$ value is too high?  Answer: Reassess
-errors, perform outlier rejection, expand uncertainty estimates.
+In principle, data-point uncertainty variance underestimation or mean
+point-to-point covariance can be \emph{estimated} by adjusting them
+until $\chi^2$ is reasonable, in a model you know (for independent
+reasons) to be good.  This is rarely a good idea, both because you
+rarely know that the model is a good one, and you are much better
+served \emph{understanding} your variances and covariances directly.
 
-Hogg: Why you shouldn't reject
-models on a $\chi^2$ basis alone.
-
-As a Bayesian, as usual, you can do more, but you also have to work
-harder.  For example, imagine that you don't know anything about your
-individual data-point uncertainties $\allsigmay$ at all.  Imagine,
-further, that you don't even know anything about their \emph{relative}
-magnitudes; that is, you can't even assume that they have similar
-magnitudes...Hogg?
+If you don't have or trust your uncertainty estimates and don't care
+about them at all, your best bet is to go Bayesian, infer them, and
+marginalize them out.  Imagine that you don't know anything about your
+individual data-point uncertainty variances $\allsigmay$ at all.
+Imagine, further, that you don't even know anything about their
+\emph{relative} magnitudes; that is, you can't even assume that they
+have similar magnitudes.  In this case a procedure is the following:
+Move the uncertainties into the model parameters to get the large
+parameter list $(m,b,\allsigmay)$.  Pick a prior on the uncertainties
+(on which you must have \emph{some} prior information, given, for
+example, the range of your data and the like).  Apply Bayes's rule to
+obtain a posterior distribution function for all the parameters
+$(m,b,\allsigmay)$.  Marginalize over the uncertainties to obtain the
+properly marginalized posterior distribution function for $(m,b)$.  No
+sane person would imagine that the procedure described here can lead
+to any informative inference.  However, if the prior on the
+$\allsigmay$ is relatively flat in the relevant region, the \emph{lack
+  of specificity} of the model when the uncertainties are large pushes
+the system to smaller uncertainties, and the \emph{inaccuracy} of the
+model when the uncertainties are small pushes the system to larger
+uncertainties.  If the model is reasonable, the inferred uncertainties
+will be reasonable too.
 
 \begin{comments}
-Hogg: Contrast model comparison with model rejection.  Note the
-difference between the $\sqrt{N-2}$ and the 1 of model comparison.
+Frequentist model rejection on the basis of unnacceptable $\chi^2$
+should not be confused with model \emph{comparison} performed with
+$\chi^2$.  If $\chi^2$ differs from the the number of degrees of
+freedom ($N-2$ here) by something on the order of the square root of
+that, the model cannot be rejected on a $\chi^2$ basis.  However, if
+two equally plausible models differ from one another by a difference
+$\Delta\chi^2$ substantially larger than unity, the model with the
+lower $\chi^2$ can be preferred and the higher rejected on that basis,
+even if the higher still shows an acceptable $\chi^2$.  This
+difference between model rejection and model comparison is
+counterintuitive, but it emerges from the difference that in the moel
+comparison case, there are \emph{two} models, not one, and they are
+both (by assumption) equally plausible \apriori.  The conditions for
+model comparison are stronger, so the test is more sensitive.
 
-Hogg: Bash the idea of \emph{dividing} $\chi^2$ by the number of
-degrees of freedom.
-
-As to the Bayesian version of goodness-of-fit, it is often said that
-it is impossible for a Bayesian to assess goodness-of-fit or to
-\emph{reject} a model without specifying alternatives.  There is an
-element of truth in this, because Bayesian probabilities are only
-defined in the context of the prior assumptions, so the rejection of a
-model on probabilistic grounds requires the existence of alternatives
-within the priors.  Of course this is not difficult, so there is no
-sense in which a Bayesian cannot assess goodness-of-fit.  For example,
-assessment of the...Hogg
+In the case of correctly estimated uncertainty variances and two
+models that are equally plausible \apriori, the $\Delta\chi^2$ value
+between the models is (twice) the natural logarithm of the odds ratio
+between the models.  For this reason, large $\Delta\chi^2$ values
+generate considerable confidence.
 \end{comments}
 
 \begin{problem}
@@ -856,6 +912,25 @@ $\sigma_{yi}^2=S$, that is, ignoring the uncertainties and replacing
 them all with the same value $S$.  Now what uncertainty variance $S$
 would make $\chi^2 = N-2$?  How does it compare to the mean and median
 of the uncertainty variances $\allsigmay$?
+\end{problem}
+
+\begin{problem}
+Flesh out and write all equations for the Bayesian uncertainty
+estimation and marginalization procedure described in this
+\sectionname.  Note that the inference and marginalization would be
+very expensive without excellent sampling tools!  Make the additional
+(unjustified) assumption that all the uncertainties have the same
+variance $\sigma_{yi}^2=S$ to make the problem tractable.  Apply the
+method to the $x$ and $y$ values for points 5 through 20 in
+\tablename~\ref{table:data_allerr}.  Make a plot showing the points,
+the maximum \aposteriori\ value of the uncertainty variance as error
+bars, and the maximum \aposteriori\ straight line.  For extra credit,
+plot two straight lines, one that is maximum \aposteriori\ for the
+full posterior and one that is the same but for the posterior after
+the uncertainty variance $S$ has been marginalized out.  Also plot two
+sets of error bars, one that shows the maximum for the full posterior
+and one for the posterior after the line parameters $(m,b)$ have been
+marginalized out.
 \end{problem}
 
 \section{Assigning uncertainties to best-fit parameters}\label{sec:uncertainty}
@@ -955,7 +1030,7 @@ be justified in the limit that everything is gaussian and all the
 points are identical in their error properties.
 
 \begin{comments}
-Compare jackknife and bootstrap in terms of ``conservativeness''.
+Hogg: Compare jackknife and bootstrap in terms of ``conservativeness''.
 Note that neither makes sense if there is a large dynamic range in the
 $\sigma_{yi}^2$.  Why do these techniques have the names they do?
 They are extremely useful when you don't know or don't trust your
@@ -968,7 +1043,7 @@ definitely wrong, because whatever encouraged you to do the
 sigma-clipping or other modifications is probably sufficient reason to
 disbelieve the standard uncertainty estimate.
 
-Don't we have examples where a bad-fitting model can lead to very
+Hogg: Don't we have examples where a bad-fitting model can lead to very
 tight Bayesian constraints; that is, aren't we being too nice to the
 Bayesians?
 \end{comments}
@@ -1122,7 +1197,7 @@ substantially more than the uncertainty in the procedure given in this
 Another common method for finding the linear relationship in data when
 there are errors in both direction is \emph{principal components
   analysis}.  The manifold reasons \emph{not} to use this here are
-beyond the scope of this document, but in a nutshell: The method of
+beyond the scope of this \documentname, but in a nutshell: The method of
 principal components analysis \emph{does} return a linear relationship
 for a data set, in the form of the dominant principal component.
 However, this is the dominant principal component of the observed
@@ -1141,10 +1216,11 @@ case everything is trivial, no?).
 
 \begin{problem}\label{prob:twod}
 Using the method of this \sectionname, fit the straight line
-$y=m\,x+b$ to the $x$, $y$, $\sigma_x^2$, $\sigma_{xy}$, and $\sigma_y^2$
-values of points XX--XX taken from \tablename~\ref{table:data_allerr}.
-Make a plot showing the points, their two-dimensional uncertainties
-(show them as one-sigma ellipses), and the best-fit line.
+$y=m\,x+b$ to the $x$, $y$, $\sigma_x^2$, $\sigma_{xy}$, and
+$\sigma_y^2$ values of points 5 through 20 taken from
+\tablename~\ref{table:data_allerr}.  Make a plot showing the points,
+their two-dimensional uncertainties (show them as one-sigma ellipses),
+and the best-fit line.
 \end{problem}
 
 \begin{problem}
@@ -1165,10 +1241,10 @@ rejected, or has $q=1$).
 \end{problem}
 
 \begin{problem}
-Perform the forward--reverse fitting procedure on points XX--XX from
-\tablename~\ref{table:data_allerr}.  That is, fit a straight line to
-the $y$ values of the points XX--XX, using the $y$-direction
-uncertainties $\sigma_y^2$ only, by the standard method described in
+Perform the forward--reverse fitting procedure on points 5 through 20
+from \tablename~\ref{table:data_allerr}.  That is, fit a straight line
+to the $y$ values of the points, using the $y$-direction uncertainties
+$\sigma_y^2$ only, by the standard method described in
 \sectionname~\ref{sec:standard}.  Now transpose the problem and fit
 the same data but fitting the $x$ values using the $x$-direction
 uncertainties $\sigma_x^2$ only.  Make a plot showing the data points,
@@ -1177,7 +1253,7 @@ best-fit lines.  Comment.
 \end{problem}
 
 \begin{problem}
-Perform principal components analysis on points XX--XX from
+Perform principal components analysis on points 5 through 20 from
 \tablename~\ref{table:data_allerr}.  That is, diagonalize the $2\times
 2$ matrix $\mQ$ given by
 \begin{equation}
@@ -1201,7 +1277,7 @@ would be if they were both measured with negligible uncertainties).
 The words ``narrow'' and ``linear'' are both problematic, since there
 are very few problems in science, especially in astrophysics, in which
 a relationship between two observables is expected to be either.  To
-generalize beyond linear is to go beyond the scope of this document,
+generalize beyond linear is to go beyond the scope of this \documentname,
 so let's consider relationships that are linear but not narrow.  That
 is, in general we will have to consider relationships that have finite
 width.  This gets into the complicated area of estimating density
@@ -1262,23 +1338,27 @@ parameter $V$.  Plot this posterior with the 95 and 99~percent
 limits?
 \end{problem}
 
-\section{Discussion}
+\section{But there's more}
 
-What did we \emph{not} discuss?
+If you read this far, you deserve either congratulations or an
+intervention.  Incredibly, we have not covered all of the relevant
+material for straight-line fitting.  In this final \sectionname, we
+rapidly comment on a few outstanding issues, that could have obtained
+\sectionname s of their own.
 
-Non-gaussian errors: Difference between error, noise, and uncertainty.
+Hogg: Non-gaussian errors: Difference between error, noise, and uncertainty.
 What are you really assuming?  It could just be that you mis-estimated
 your variance.  How do you deal, in general, with other kinds of error
 distributions?
 
-Consider either here or above some kind of foreground/background EM
+Hogg: Consider either here or above some kind of foreground/background EM
 modeling, a la Dustin.
 
-How to deal with upper and lower limits?  Might need to bring in the
+Hogg: How to deal with upper and lower limits?  Might need to bring in the
 idea of maximum entropy here.  Not unlike the non-gaussian noise
 situation.
 
-Goodness of fit and model selecton?
+Hogg: Bayesian model selection and decision theory?
 
 \paragraph{Acknowlegments}
 We owe a debt above all to Sam Roweis (Toronto), who taught us to find
@@ -1289,32 +1369,6 @@ NASA (ADP grant NNX08AJ48G) and a Research Fellowship of the Alexander
 von Humboldt Foundation.  This research made use of the Python
 programming language and the open-source Python packages scipy, numpy,
 and matplotlib.
-
-
-\appendix
-
-\section{Solutions to the exercises}
-
-{\bf{Solution to \problemname~\ref{prob:easy}:}}
-\begin{figure}[H]
-\includegraphics[]{ex1.png}
-\caption{Solution to \problemname~\ref{prob:easy}}\label{fig:ex1}
-\end{figure}
-
-
-{\bf{Solution to \problemname~\ref{prob:standard}:}}
-\begin{figure}[H]
-\includegraphics[]{ex2.png}
-\caption{Solution to \problemname~\ref{prob:standard}}\label{fig:ex2}
-\end{figure}
-
-{\bf{Solution to \problemname~\ref{prob:quadratic}:}}
-\begin{figure}[H]
-\includegraphics[]{ex3.png}
-\caption{Solution to \problemname~\ref{prob:quadratic}}\label{fig:ex3}
-\end{figure}
-
-
 
 \begin{thebibliography}{}
 \bibitem[Bovy, Hogg, \& Roweis(2009)]{bovy}
@@ -1332,6 +1386,23 @@ and matplotlib.
   \textit{Numerical recipes: the art of scientific computing} (Cambridge University Press)
 \end{thebibliography}
 
+\clearpage
+\begin{figure}[H]
+\includegraphics[]{ex1.png}
+\caption{Solution to \problemname~\ref{prob:easy}}\label{fig:easy}
+\end{figure}
+
+\clearpage
+\begin{figure}[H]
+\includegraphics[]{ex2.png}
+\caption{Solution to \problemname~\ref{prob:standard}}\label{fig:standard}
+\end{figure}
+
+\clearpage
+\begin{figure}[H]
+\includegraphics[]{ex3.png}
+\caption{Solution to \problemname~\ref{prob:quadratic}}\label{fig:quadratic}
+\end{figure}
 
 \clearpage
 %Any changes to this table should be made IN THE CODE
@@ -1364,7 +1435,5 @@ and matplotlib.
 \label{table:data_allerr}
 \enddata
 \end{deluxetable}
-
-
 
 \end{document}
