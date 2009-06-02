@@ -29,6 +29,13 @@
   filecolor=linkcolor,    % color of file links
   urlcolor=linkcolor      % color of external links
 }
+%%Figure caption
+\makeatletter
+\newsavebox{\tempbox}
+\newcommand{\@makefigcaption}[2]{%
+\vspace{10pt}{#1.--- #2\par}}%
+\renewcommand{\figure}{\let\@makecaption\@makefigcaption\@float{figure}}
+\makeatother
 
 \setlength{\emergencystretch}{2em}%No overflow
 
@@ -1459,19 +1466,19 @@ and matplotlib.
 \clearpage
 \begin{figure}[H]
 \includegraphics[]{ex1.png}
-\caption{Solution to \problemname~\ref{prob:easy}}\label{fig:easy}
+\caption{Solution to \problemname~\ref{prob:easy}.}\label{fig:easy}
 \end{figure}
 
 \clearpage
 \begin{figure}[H]
 \includegraphics[]{ex2.png}
-\caption{Solution to \problemname~\ref{prob:standard}}\label{fig:standard}
+\caption{Solution to \problemname~\ref{prob:standard}.}\label{fig:standard}
 \end{figure}
 
 \clearpage
 \begin{figure}[H]
 \includegraphics[]{ex3.png}
-\caption{Solution to \problemname~\ref{prob:quadratic}}\label{fig:quadratic}
+\caption{Solution to \problemname~\ref{prob:quadratic}.}\label{fig:quadratic}
 \end{figure}
 
 \clearpage
@@ -1499,7 +1506,7 @@ and matplotlib.
 \clearpage
 \begin{figure}[H]
 \includegraphics[]{ex7b.png}
-\caption{Solution to \problemname~\ref{prob:softchisq} iteratively updating the weights in a regular chi-squared optimization..}\label{fig:softchisqb}
+\caption{Solution to \problemname~\ref{prob:softchisq} iteratively updating the weights in a regular chi-squared optimization.}\label{fig:softchisqb}
 \end{figure}
 \clearpage
 \begin{figure}[H]
