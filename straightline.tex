@@ -730,7 +730,7 @@ data-point uncertainties are comparable or you know something else
 equally informative about their \emph{relative} magnitudes.
 \end{comments}
 
-\begin{problem}
+\begin{problem}\label{prob:biexp}
 Using the biexponential objective function of
 \equationname~(\ref{eq:biexp}), find the best-fit straight line
 $y=m\,x+b$ for the $x$, $y$, and $\sigma_y$ values in
@@ -741,7 +741,7 @@ line.  How does this compare to the standard result you obtained in
 \problemname~\ref{prob:standard}?  Do you like it better or worse?
 \end{problem}
 
-\begin{problem}
+\begin{problem}\label{prob:softchisq}
 Using the soft chi-squared objective function of
 \equationname~(\ref{eq:soft}), find the best-fit straight line
 $y=m\,x+b$ for the $x$, $y$, and $\sigma_y$ values in
@@ -1403,6 +1403,45 @@ and matplotlib.
 \includegraphics[]{ex3.png}
 \caption{Solution to \problemname~\ref{prob:quadratic}}\label{fig:quadratic}
 \end{figure}
+
+\clearpage
+\begin{figure}[H]
+\includegraphics[]{ex6a.png}
+\caption{Solution to \problemname~\ref{prob:biexp} using a simple optimizer.}\label{fig:biexpa}
+\end{figure}
+\clearpage
+\begin{figure}[H]
+\includegraphics[]{ex6b.png}
+\caption{Solution to \problemname~\ref{prob:biexp} using simulated annealing to try to find the global minimum.}\label{fig:biexpb}
+\end{figure}
+\clearpage
+\begin{figure}[H]
+\includegraphics[]{ex6c.png}
+\caption{Solution to \problemname~\ref{prob:biexp} using a simple Metropolis sampling scheme.}\label{fig:biexpc}
+\end{figure}
+
+
+\clearpage
+\begin{figure}[H]
+\includegraphics[]{ex7a.png}
+\caption{Solution to \problemname~\ref{prob:softchisq} using a simple optimizer.}\label{fig:softchisqa}
+\end{figure}
+\clearpage
+\begin{figure}[H]
+\includegraphics[]{ex7b.png}
+\caption{Solution to \problemname~\ref{prob:softchisq} iteratively updating the weights in a regular chi-squared optimization..}\label{fig:softchisqb}
+\end{figure}
+\clearpage
+\begin{figure}[H]
+\includegraphics[]{ex7c.png}
+\caption{Solution to \problemname~\ref{prob:softchisq} using simulated annealing to try to find the global minimum.}\label{fig:softchisqc}
+\end{figure}
+\clearpage
+\begin{figure}[H]
+\includegraphics[]{ex7d.png}
+\caption{Solution to \problemname~\ref{prob:softchisq} using a simple Metropolis sampling scheme.}\label{fig:softchisqd}
+\end{figure}
+
 
 \clearpage
 %Any changes to this table should be made IN THE CODE
