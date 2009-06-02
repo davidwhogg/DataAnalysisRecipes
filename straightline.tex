@@ -370,7 +370,7 @@ of zero mean and known variance $\sigma_y^2$.  In this model, given an
 independent position $x_i$, an uncertainty $\sigma_{yi}$, a slope $m$,
 and an intercept $b$, the frequency distribution
 $p(y_i|x_i,\sigma_{yi},m,b)$ for $y_i$ is
-\begin{equation}
+\begin{equation}\label{eq:objectivei}
 p(y_i|x_i,\sigma_{yi},m,b) = \frac{1}{\sqrt{2\,\pi\,\sigma_{yi}^2}}
  \,\exp\left(-\frac{[y_i - m\,x - b]^2}{2\,\sigma_{yi}^2}\right) \quad ,
 \end{equation}
@@ -728,6 +728,9 @@ parameters and infer them and marginalize over them \emph{also}.  This
 is much more tractable and pleasant if you can assume that all the
 data-point uncertainties are comparable or you know something else
 equally informative about their \emph{relative} magnitudes.
+
+Hogg: Consider either here or above some kind of foreground/background
+EM modeling, a la Dustin.
 \end{comments}
 
 \begin{problem}\label{prob:biexp}
@@ -898,6 +901,8 @@ models that are equally plausible \apriori, the $\Delta\chi^2$ value
 between the models is (twice) the natural logarithm of the odds ratio
 between the models.  For this reason, large $\Delta\chi^2$ values
 generate considerable confidence.
+
+Hogg: Something about Bayesian model selection and decision theory?
 \end{comments}
 
 \begin{problem}
@@ -1338,27 +1343,92 @@ parameter $V$.  Plot this posterior with the 95 and 99~percent
 limits?
 \end{problem}
 
-\section{But there's more}
+\section{Non-gaussian uncertainties}
 
-If you read this far, you deserve either congratulations or an
-intervention.  Incredibly, we have not covered all of the relevant
-material for straight-line fitting.  In this final \sectionname, we
-rapidly comment on a few outstanding issues, that could have obtained
-\sectionname s of their own.
+In everything above we have assumed something equivalent to gaussian
+uncertainties, except in \sectionname~\ref{sec:robust} where we
+permitted data rejection and considered softer objective functions.
+Many noise processes in the real world are \emph{not} gaussian; what
+to do?  There are three general kinds of methodologies for dealing
+with non-gaussian errors.  Before we describe them, an aside on
+uncertainty and error.
 
-Hogg: Non-gaussian errors: Difference between error, noise, and uncertainty.
-What are you really assuming?  It could just be that you mis-estimated
-your variance.  How do you deal, in general, with other kinds of error
-distributions?
+As we noted above, your \emph{uncertainty} is a measure of what you
+don't know, while an \emph{error} is a mistake or incorrect value.
+The fact that a measurement $y_i$ differs from some kind of ``true''
+value $Y_i$ that it would have in some kind of ``perfect experiment''
+can be for two reasons (which are not unrelated): It could be that
+there is some source of \emph{noise} in the experiment that generates
+offsets for each data point $i$ away from its true value.  Or it could
+be that the ``measurement'' $y_i$ is actually the outcome of some
+probabilistic inference \emph{itself} and therefore comes with a
+posterior probability distribution.  In either case, there is a finite
+uncertainty, and in both cases it comes somehow from imperfection in
+the experiment, but the way you understand the distribution of the
+uncertainty is different.  In the first case, you have to make a model
+for the noise in the experiment.  In the second, you have to analyze
+some posteriors.  In either case, clearly, the uncertainty can be
+non-gaussian.
 
-Hogg: Consider either here or above some kind of foreground/background EM
-modeling, a la Dustin.
+All that said, and even when you \emph{suspect} that the sources of
+noise are not gaussian, it is still sometimes okay to treat the
+\emph{uncertainties} as gaussian: The gaussian distribution is the
+maximum entropy distribution for a fixed \emph{variance}.  That means
+that is you have some (magical?) way to estimate the variance of your
+uncertainty, and you aren't sure of anything else but the variance,
+then the gaussian is---contrary to popular opinon---the \emph{most
+  conservative} thing you can assume.  Of course it is very rare that
+you do know the variance of your uncertainty or noise; most
+uncertainty estimators (for example the standard uncertainty
+covariance $\inverse{\left[\mAT\,\mCinv\,\mA\right]}$ of
+\sectionname~\ref{sec:standard}) are measurements of the central part
+of the distribution function and are \emph{not} good estimators of the
+total variance; thus the relevant situations may be rare.
 
-Hogg: How to deal with upper and lower limits?  Might need to bring in the
-idea of maximum entropy here.  Not unlike the non-gaussian noise
-situation.
+Back to business.  The first approach to non-gaussian noise or
+uncertainty is, therefore, somehow to properly estimate the true or
+total variance of your uncertainties and then do the most conservative
+thing, which is to once again assume that the noise is gaussian.  The
+second approach is to make no attempt to understand the
+non-guassianity, but to use one of the robust or data-rejection
+methods of \sectionname~\ref{sec:robust}.  The third approach is to
+fully understand and model the non-gaussianity.
 
-Hogg: Bayesian model selection and decision theory?
+For example, if data points are generated by a process the noise from
+which looks like a sum or mixture of $k$ gaussians with different
+variances, and the distribution can be understood well enough to be
+modeled, the investigator can replace the objective function with
+something more realistic.  For example, the generative model in
+\sectionname~\ref{sec:objective} for the standard case was built out
+of individual data-point likelihoods given in
+\equationname~(\ref{eq:objectivei}).  If the uncertainty distrbution
+can be expressed as the sum of $k$ gaussians (as all probability
+distributions can), these likelihoods become
+\begin{equation}
+p(y_i|x_i,\sigma_{yi},m,b) = \sum_{j=1}^k
+ \frac{a_j}{\sqrt{2\,\pi\,\sigma_{yij}^2}}
+ \,\exp\left(-\frac{[y_i+\Delta y_{ij}-m\,x-b]^2}{2\,\sigma_{yij}^2}\right)
+ \quad ,
+\end{equation}
+where the $k$ gaussians for measurement $i$ have variances
+$\sigma_{yij}$, offsets (means---there is no need for the gaussians to
+be concentric) $\Delta y_{ij}$, and amplitudes $a_j$ that sum to
+unity.  In this case, fitting becomes much more challenging (from an
+optimization standpoint), but this can become a \emph{completely
+  general} objective function for arbitrarily complicated non-gaussian
+uncertainties.  It can even be generalized to situations of
+arbitrarily complicated joint distributions for \emph{all} the
+measurement uncertainties.
+
+One very common non-gaussian situation is one in which the data points
+are either upper limits, or lower limits, or the investigator has a
+value with an error bar but knows that the true value can't enter into
+some region (for example, there are many situations in which one knows
+that all the true $Y_i$ must be greater than zero).  In all these
+situations, the best thing to do is to model the uncertainty
+distribution as well as possible, and carry on.  Optimization might
+become challenging, but that is an engineering problem that must be
+tackled for scientific correctness.
 
 \paragraph{Acknowlegments}
 We owe a debt above all to Sam Roweis (Toronto), who taught us to find
