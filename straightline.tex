@@ -6,7 +6,6 @@
 % - Hogg: we need to say things about procedure; right now the document is almost entirely about the objective
 % - Hogg: should we say something substantial---not superficial---about non-convexity; perhaps initializing trials with RANSAC-like initial conditions
 % - Bovy: do something to the fake data that makes PCA differ from the right thing; this requires correlating the variance tensors, I think.
-% - Bovy: make one or two plots and incorporate and cite them by \ref{}
 
 % style notes
 % -----------
@@ -43,9 +42,10 @@
 \newcommand{\aposteriori}{\notenglish{a~posteriori}}
 \newcommand{\apriori}{\notenglish{a~priori}}
 \newcommand{\etal}{et al.}
+\newcommand{\eg}{e.g.}
 
 \newcommand{\documentname}{document}
-\newcommand{\sectionname}{Section}
+\newcommand{\sectionname}{section}
 \newcommand{\equationname}{equation}
 \newcommand{\problemname}{Exercise}
 \newcommand{\solutionname}{Solution}
@@ -200,30 +200,26 @@ important, and in what follows we will have a lot to say about that.
 For now, we describe standard practice:
 
 Construct the matrices
-\begin{equation}\label{eq:mY}
-\mY = \left[\begin{array}{c}
+\begin{align}\label{eq:mY}
+\mY &= \left[\begin{array}{c}
 y_1 \\
 y_2 \\
 \cdots \\
 y_N
-\end{array}\right] \quad ,
-\end{equation}
-\begin{equation}
-\mA = \left[\begin{array}{cc}
+\end{array}\right] \quad ,\\
+\mA &= \left[\begin{array}{cc}
 1 & x_1 \\
 1 & x_2 \\
 \multicolumn{2}{c}{\cdots} \\
 1 & x_N
-\end{array}\right] \quad ,
-\end{equation}
-\begin{equation}\label{eq:covar}
-\mC = \left[\begin{array}{cccc}
+\end{array}\right] \quad ,\\
+\mC & = \left[\begin{array}{cccc}
 \sigma_{y1}^{2} & 0 & \cdots & 0 \\
 0 & \sigma_{y2}^{2} & \cdots & 0 \\
 \multicolumn{4}{c}{\cdots} \\
 0 & 0 & \cdots & \sigma_{yN}^{2}
-\end{array}\right] \quad ,
-\end{equation}
+\end{array}\right] \quad ,\label{eq:covar}
+\end{align}
 where one might call $\mY$ a ``vector'', and the covariance matrix
 $\mC$ can be generalized to the case in which there are covariances
 between the different $y$-direction uncertainties.  The best-fit
@@ -261,7 +257,8 @@ which is the total squared error, scaled by the uncertainties, or
 \end{equation}
 that is, it finds the values for $m$ and $b$ that minimize $\chi^2$.
 This, of course, is only one possible meaning of the phrase ``best
-fit''; that issue is the subject of the rest of this \documentname.
+fit''; that issue is the main subject of the rest of this
+\documentname.
 
 When the uncertainties are gaussian and their variances $\sigma_{yi}$
 are correctly estimated, the matrix
@@ -277,28 +274,29 @@ Even when the conditions of standard practice are met, it is
 individual data-point error estimates ignored, even when they are
 known at least approximately.  It is also common for the problem to
 get ``transposed'' such that the coordinates for which errors are
-negligible (the independent variables) are put into the $\mY$ vector
-and the coordinates for which errors are \emph{not} negligible (the
-dependent variables) are put into the $\mA$ matrix.  In this latter
-case, the procedure makes no sense at all really; it happens when the
-investigator thinks of some quantity ``really being'' the dependent
-variable, despite the fact that it has the smaller error.  For example
-there are mistakes in the Hubble expansion literature, because many
-have an intuition that the ``velocity depends on the distance'' when
-in fact velocities are measured better, so from the point of view of
-fitting, it is better to think of the distance depending on the
-velocity.  In the context of fitting, there is no meaning to the terms
-``independent variable'' and ``dependent variable'' beyond the error
-properties of the data.  In performing this standard fit, the
-investigator is effectively assuming that the $x$ values have
-negligible uncertainties; if they do \emph{not}, then the investigator
-is making a mistake.
+negligible are put into the $\mY$ vector and the coordinates for which
+errors are \emph{not} negligible are put into the $\mA$ matrix.  In
+this latter case, the procedure makes no sense at all really; it
+happens when the investigator thinks of some quantity ``really being''
+the dependent variable, despite the fact that it has the smaller
+error.  For example there are mistakes in the Hubble expansion
+literature, because many have an intuition that the ``velocity depends
+on the distance'' when in fact velocities are measured better, so from
+the point of view of fitting, it is better to think of the distance
+depending on the velocity.  In the context of fitting, there is no
+meaning to the terms ``independent variable'' and ``dependent
+variable'' beyond the error properties of the data.  In performing
+this standard fit, the investigator is effectively assuming that the
+$x$ values have negligible uncertainties; if they do \emph{not}, then
+the investigator is making a mistake.
 
 Conceptually, the inverse covariance matrix appears in the
 construction of the $\chi^2$ objective function like a linear
 ``metric'' for the data space: It is used to turn a $N$-dimensional
-vector displacement into a scalar squared distance.  This idea is
-sometimes useful for thinking about statistics as a physicist.
+vector displacement into a scalar squared distance between the
+observed values and the values predicted by the model. This distance
+is then minimized.  This idea is sometimes useful for thinking about
+statistics as a physicist.
 
 Note that not only does the standard problem solved in this
 \sectionname\ have a linear solution, the objective function
@@ -458,7 +456,7 @@ what else to say, except that many scientific investigations are so
 ill-posed that the investigator does not know what is being optimized.
 
 We have tried in this \documentname\ to be a bit careful with words.
-Following Jaynes \citet{jaynes}, we have tried to use the word
+Following \citet{jaynes}, we have tried to use the word
 ``probability'' for our knowledge or uncertainty about a parameter in
 the problem, and ``frequency'' for the rate at which a random variable
 comes a particular way.  So the noise process that sets the
@@ -556,7 +554,7 @@ $\chi^2$ with
   {Q^2\,\sigma_{yi}^2+[y_i-f(x_i)]^2} \quad ,
 \end{equation}
 where $Q^2$ is the maximum amount a point can contribute to $\chi_Q^2$
-(cite papers cited by Barron).  When each residual is small, its
+ \citep{hampel}.  When each residual is small, its
 contribution to $\chi_Q^2$ is nearly identical to its contribution to
 the standard $\chi^2$, but as the residual gets substantial, the
 contribution of the residual does not increase as the square.  This is
@@ -569,8 +567,8 @@ Worse, in almost any reasonable softening, the problem becomes
 \emph{non-convex}; that is, there will, in general, be multiple optima
 from which the global optimum must be selected.  These two problems
 are both in the area of \emph{optimization}, a sensible discussion of
-which is \emph{way} beyond the scope of this \documentname\ (cite some
-relevant book here).  However, we can provide a bit of advice.
+which is \emph{way} beyond the scope of this \documentname\
+\citep[see, \eg,][]{press}.  However, we can provide a bit of advice.
 
 The first piece of advice is to find, get used to, and take care of
 some good non-linear optimizer or optimization code.  It will be
@@ -582,10 +580,10 @@ arbitrary point in parameter space, but rather initialize it near
 where you think the answer is likely to be, using either your prior
 knowledge, or else a linear fit (which provides an objective starting
 point).  The third piece of advice is to check for multiple minima by
-sampling parameter space in some significant region around the optimum
-you have, re-converge the nonlinear optimizer, and verify that you
-return to the same best optimum, or that if you come to a different
-one, it has a worse value for the objective.
+randomly sampling parameter space in some significant region around
+the optimum you have, re-converge the nonlinear optimizer, and verify
+that you return to the same best optimum, or that if you come to a
+different one, it has a worse value for the objective.
 
 One attractive kind of optimizer is a sampler such as a Markov Chain
 Monte Carlo method \citep{mackay}.  These take a bit of getting used
@@ -607,7 +605,7 @@ parameter $\pgood$, which is the \emph{prior} probability that any
 individual data point is good.  All these $N+1$ extra parameters may
 seem like crazy baggage, but their values can be \emph{inferred} and
 \emph{marginalized out} so in the end, this method introduces \emph{no
-  new parameters}.
+ new parameters}.
 
 In this situation, we don't know a consistent way to proceed that isn't
 Bayesian (possibly for lack of trying), so let's go Bayesian.  In this
@@ -747,7 +745,9 @@ $y=m\,x+b$ for the $x$, $y$, and $\sigma_y$ values in
 \tablename~\ref{table:data_allerr}.  You will have to use a non-linear
 optimizer of some kind or you will have to take a sampling approach.
 Make a plot showing the points, their uncertainties, and the best-fit
-line.  How does this compare to the standard result you obtained in
+line.  The results using a few of the optimization methods are shown
+in \figurename s~\ref{fig:biexpa} through \ref{fig:biexpc}. How does
+this compare to the standard result you obtained in
 \problemname~\ref{prob:standard}?  Do you like it better or worse?
 \end{problem}
 
@@ -760,7 +760,9 @@ optimizer of some kind or you will have to take a sampling approach.
 Alternatively, you can try an iterated-linear method in which you
 iterate the standard linear method but modify the weights at each
 iteration.  Make a plot showing the points, their uncertainties, and
-the best-fit line.  How does this compare to the standard result you
+the best-fit line.  The results using a few of the optimization
+methods are shown in \figurename s~\ref{fig:softchisqa} through
+\ref{fig:softchisqd}. How does this compare to the standard result you
 obtained in \problemname~\ref{prob:standard}?  Do you like it better
 or worse?
 \end{problem}
@@ -804,10 +806,13 @@ $\sigma_{yi}^2$, and a contribution of roughly unity to $\chi^2$ when
 the parameters $(m,b)$ are set close to their true values.  Because in
 detail there are two fit parameters $(m,b)$ which you have been
 permitted to optimize, the expectaton for $\chi^2$ is smaller than
-$N$; the rule of thumb is that---when the model is a good fit and the
-uncertainties are gaussian with known variances,
+$N$. Because the model is linear, the distribution of $\chi^2$ is
+known analytically and is given (unsurprisingly) by a
+\emph{chi-square} distribution: in the limit of large $N$ the rule of
+thumb is that---when the model is a good fit and the uncertainties are
+gaussian with known variances,
 \begin{equation}
-\chi^2 = [N-2] \pm \sqrt{N-2} \quad ,
+\chi^2 = [N-2] \pm \sqrt{2[N-2]} \quad ,
 \end{equation}
 where the $\pm$ symbol is used loosely to indicate something close to
 a standard error (something close to a 68-percent confidence
@@ -830,32 +835,30 @@ problems that can make $\chi^2$ unreasonably low can make it
 unreasonably high; worse yet, it can make $\chi^2$ reasonable when the
 model is bad.  Reasons $\chi^2$ can be lower include that uncertainty
 estimates are often underestimated, and, worse, often positively
-correlated.  The opposit of these problemms can make $\chi^2$ high
+correlated.  The opposite of these problems can make $\chi^2$ high
 when the model is good.
 
 Correlated measurements are not uncommon; the process by which the
 observations were taken often involve shared information or
-assumptions which, if the individual data-point uncertainties have
-been estimated by some means that effectively marginalizes over some
-or all of that shared information, then there will be large
-covariances among the data points.  These covariances bring
-off-digonal elements into the covariance matrix $\mC$, which was
-trivially constructed in \equationname~(\ref{eq:covar}) under the
-assumption that all covariances (off-diagonal elements) are precisely
-zero.  Once the off-diagonal elements are non-zero, $\chi^2$ must be
-computed by the matrix expression in
-\equationname~(\ref{eq:chisquared}); this is equivalent to replacing
-the sum over $i$ to two sums over $i$ and $j$ and considering all
-cross terms
+assumptions. If the individual data-point uncertainties have been
+estimated by some means that effectively marginalizes over some or all
+of that shared information, then there will be large covariances among
+the data points.  These covariances bring off-diagonal elements into
+the covariance matrix $\mC$, which was trivially constructed in
+\equationname~(\ref{eq:covar}) under the assumption that all
+covariances (off-diagonal elements) are precisely zero.  Once the
+off-diagonal elements are non-zero, $\chi^2$ must be computed by the
+matrix expression in \equationname~(\ref{eq:chisquared}); this is
+equivalent to replacing the sum over $i$ to two sums over $i$ and $j$
+and considering all cross terms
 \begin{equation}
-\chi^2
- = \transpose{\left[\mY-\mA\,\mX\right]}\,\mCinv\,\left[\mY-\mA\,\mX\right]
- = \sum_{i=1}^N \sum_{j=1}^N \frac{\left[y_i-f(x_i)\right]\,[y_j-f(x_j)]}
-   {\sigma_{yij}} \quad,
+\chi^2 =
+ \transpose{\left[\mY-\mA\,\mX\right]}\,\mCinv\,\left[\mY-\mA\,\mX\right]
+ = \sum_{i=1}^N \sum_{j=1}^N
+ \frac{\left[y_i-f(x_i)\right]\,(\mCinv)_{ij}[y_j-f(x_j)]}
+ {\sigma_{yij}} \quad,
 \end{equation} 
-where $\sigma_{yij}$ is the covariance between the uncertainties in
-observation $y_i$ and $y_j$, or, when $i=j$, the uncertainty variance
-$\sigma_{yi}^2$.
+where the $(\mCinv)_{ij}$ are the elements of the inverse covariance matrix.
 
 In principle, data-point uncertainty variance underestimation or mean
 point-to-point covariance can be \emph{estimated} by adjusting them
@@ -900,8 +903,10 @@ even if the higher still shows an acceptable $\chi^2$.  This
 difference between model rejection and model comparison is
 counterintuitive, but it emerges from the difference that in the moel
 comparison case, there are \emph{two} models, not one, and they are
-both (by assumption) equally plausible \apriori.  The conditions for
-model comparison are stronger, so the test is more sensitive.
+both (by assumption) equally plausible \apriori.  The fact that both
+models are reasonable does not mean that we cannot prefer the more
+reasonable one. The conditions for model comparison are stronger, so
+the test is more sensitive.
 
 In the case of correctly estimated uncertainty variances and two
 models that are equally plausible \apriori, the $\Delta\chi^2$ value
@@ -957,16 +962,18 @@ matrix
 \sigma_{mb} & \sigma_{m}^2
 \end{array}\right] = \inverse{\left[\mAT\,\mCinv\,\mA\right]} \quad ,
 \end{equation}
-where the ordering is defined by the ordering in matrix $\mA$.  But
-these best-fit uncertainties \emph{only} strictly hold under three
-extremely strict conditions, almost none of which is met in real
-practice: \textsl{(a)}~The uncertainties in the data points must truly
-be gaussian, with variances correctly described by the
-$\sigma_{yi}^2$, \textsl{(b)}~there must be no rejection of any data
-or any departure from the exact, standard definition of $\chi^2$ given
-in \equationname~(\ref{eq:chisquared}), and \textsl{(c)}~the
-generative model of the data implied by the method---that is, that the
-data are truly drawn from a negligible-scatter linear relationship and
+where the ordering is defined by the ordering in matrix $\mA$. The
+justification for this is given by simple propagation of uncertainties
+and only for large $N$ are these uncertainties gaussian. But these
+best-fit uncertainties \emph{only} strictly hold under three extremely
+strict conditions, almost none of which is met in real practice:
+\textsl{(a)}~The uncertainties in the data points must truly be
+gaussian, with variances correctly described by the $\sigma_{yi}^2$,
+\textsl{(b)}~there must be no rejection of any data or any departure
+from the exact, standard definition of $\chi^2$ given in
+\equationname~(\ref{eq:chisquared}), and \textsl{(c)}~the generative
+model of the data implied by the method---that is, that the data are
+truly drawn from a negligible-scatter linear relationship and
 subsequently had noise added, where the noise offsets were generated
 by a gaussian process---must be an accurate description of the data.
 
@@ -1095,7 +1102,7 @@ of getting measurement $(x_i,y_i)$ when the ``true value'' (the value
 you would have for this data point if it had been observed with
 negligible error) is $(x,y)$:
 \begin{equation}
-p(x_i,y_i|\mC_i,x,y) = \frac{1}{2\,\pi\,\det(\mC_i)}
+p(x_i,y_i|\mC_i,x,y) = \frac{1}{2\,\pi\,\det(\mC_i)^{\frac{1}{2}}}
   \,\exp\left(-\frac{1}{2}\,\transpose{\left[\mZ_i - \mZ\right]}
   \,\inverse{\mC_i}\,\left[\mZ_i - \mZ\right]\right) \quad ,
 \end{equation}
@@ -1119,11 +1126,14 @@ posterior on the parameters.
 Schematically, the construction of the likelihood involves specifying
 the line (parameterized by $m,b$), finding the probability of each
 observed data point given any true point on that line, and
-marginalizing over all possible true points on the line.  In the end,
-this procedure leads to \emph{projections} of the two-dimensional
-uncertainty gaussians along the line (or onto the subspace that is
-orthogonal to the line), and evaluation of those at the
-\emph{projected errors}.  Projection is a standard linear algebra
+marginalizing over all possible true points on the line.  This is most
+easily done by considering the straight line as a two-dimensional
+gaussian with an infinite eigenvalue corresponding to the direction of
+the line and a zero eigenvalue for the direction orthogonal to
+this. In the end, this procedure leads to \emph{projections} of the
+two-dimensional uncertainty gaussians along the line (or onto the
+subspace that is orthogonal to the line), and evaluation of those at
+the \emph{projected errors}.  Projection is a standard linear algebra
 technique, so we will use linear algebra (matrix) notation.
 
 A slope $m$ can be described by a unit vector $\vhat$
@@ -1381,9 +1391,9 @@ All that said, and even when you \emph{suspect} that the sources of
 noise are not gaussian, it is still sometimes okay to treat the
 \emph{uncertainties} as gaussian: The gaussian distribution is the
 maximum entropy distribution for a fixed \emph{variance}.  That means
-that is you have some (magical?) way to estimate the variance of your
+that if you have some (magical?) way to estimate the variance of your
 uncertainty, and you aren't sure of anything else but the variance,
-then the gaussian is---contrary to popular opinon---the \emph{most
+then the gaussian is---contrary to popular opinion---the \emph{most
   conservative} thing you can assume.  Of course it is very rare that
 you do know the variance of your uncertainty or noise; most
 uncertainty estimators (for example the standard uncertainty
@@ -1455,6 +1465,9 @@ and matplotlib.
 \bibitem[Jaynes(2003)]{jaynes}
   Jaynes,~E.~T., 2003,
   \textit{Probability theory: the logic of science} (Cambridge University Press)
+\bibitem[Hampel \etal(1986)]{hampel}
+  Hampel,~F.~R., Ronchetti,~E.~M., Rousseeuw,~P.~J., \& Stahel,~W.~A., 1986, 
+  \textit{Robust Statistics: The Approach Based on Influence Functions} (New York: Wiley)
 \bibitem[Mackay(2003)]{mackay}
   Mackay,~D.~J.~C., 2003,
   \textit{Information theory, inference, and learning algorithms} (Cambridge University Press)
