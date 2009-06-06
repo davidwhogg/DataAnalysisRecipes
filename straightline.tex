@@ -384,16 +384,13 @@ per unit $\d y$.
 
 This generative model provides us with a natural, justified, scalar
 objective: We seek the line (parameters $m$ and $b$) that maximize the
-probability of the observed data or likelihood of the parameters
-(which are nearly the same thing in standard parlance).  The
-likelihood $\like$ is
+probability of the observed data given the model or likelihood of the
+parameters (which are the same thing in standard parlance).  The
+likelihood $\like$ is the product of conditional probabilities
 \begin{equation}\label{eq:like}
-\like \propto \prod_{i=1}^N p(y_i|x_i,\sigma_{yi},m,b) \quad ,
+\like = \prod_{i=1}^N p(y_i|x_i,\sigma_{yi},m,b) \quad .
 \end{equation}
-where we have used ``$\propto$'' not ``$=$'' to be careful about the
-infinitesimal volume $(\d y)^N$ and a possible normalization constant
-that comes from the overall probability of the data in the context of
-the model space (to which we may return below).  Taking the logarithm,
+Taking the logarithm,
 \begin{eqnarray}\displaystyle
 \ln\like
  & = & K - \sum_{i=1}^N \frac{[y_i - m\,x - b]^2}{2\,\sigma_{yi}^2} \nonumber\\
@@ -405,22 +402,22 @@ scientifically, the procedure of the previous section.
 
 The Bayesian generalization of this is to say that
 \begin{equation}
-p(m,b|\ally,I) = \frac{p(\ally|m,b,I)}{p(\ally|I)}\,p(m,b|I) \quad ,
+p(m,b|\ally,I) = \frac{p(\ally|m,b,I)\,p(m,b|I)}{p(\ally|I)} \quad ,
 \end{equation}
 where $m$ and $b$ are the model parameters, $\ally$ is a short-hand
 for all the data $y_i$, $I$ is a short-hand for all the prior
 knowledge of the $x_i$ and the $\sigma_{yi}$ and everything else about
 the problem, $p(m,b|\ally,I)$ is the \emph{posterior} probability
 distribution for the parameters given the data and the prior
-knowledge, the ratio is the likelihood $\like$ just computed, which
-has a frequency distribution for the data on top and that same thing
-marginalized over all parameters on the bottom (the denominator can be
-thought of as a normalization constant), and $p(m,b|I)$ is the
+knowledge, $p(\ally|m,b,I)$ is the likelihood $\like$ just computed,
+which is a frequency distribution for the data, $p(m,b|I)$ is the
 \emph{prior} probability distribution for the parameters that
-represents all knowledge \emph{except} the input data $\ally$.  Unless
-the prior $p(m,b|I)$ is pretty informative, the posterior distribution
-function $p(m,b|\ally,I)$ here is going to look very similar to the
-likelihood function in \equationname~(\ref{eq:like}) above.
+represents all knowledge \emph{except} the input data $\ally$, and the
+denominator can be thought of as a normalization constant, obtained by
+marginalizing the numerator over all parameters. Unless the prior
+$p(m,b|I)$ is pretty informative, the posterior distribution function
+$p(m,b|\ally,I)$ here is going to look very similar to the likelihood
+function in \equationname~(\ref{eq:like}) above.
 
 We have succeeded in justifying the standard method as optimizing a
 justified, scalar objective function.  It is just the great good luck
@@ -833,9 +830,10 @@ model on the $\chi^2$ basis is dangerous; exactly the same kinds of
 problems that can make $\chi^2$ unreasonably low can make it
 unreasonably high; worse yet, it can make $\chi^2$ reasonable when the
 model is bad.  Reasons $\chi^2$ can be lower include that uncertainty
-estimates are often underestimated, and, worse, often positively
-correlated.  The opposite of these problems can make $\chi^2$ high
-when the model is good.
+estimates are often underestimated. The opposite of this problem can
+make $\chi^2$ high when the model is good. Even worse is the fact that
+uncertainty estimates are often correlated, which can result in a
+$\chi^2$ significantly different from the expected value.
 
 Correlated measurements are not uncommon; the process by which the
 observations were taken often involve shared information or
