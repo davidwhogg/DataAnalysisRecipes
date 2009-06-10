@@ -855,10 +855,11 @@ and considering all cross terms
 \chi^2 =
  \transpose{\left[\mY-\mA\,\mX\right]}\,\mCinv\,\left[\mY-\mA\,\mX\right]
  = \sum_{i=1}^N \sum_{j=1}^N
- \frac{\left[y_i-f(x_i)\right]\,(\mCinv)_{ij}[y_j-f(x_j)]}
+ \frac{\left[y_i-f(x_i)\right]\,[y_j-f(x_j)]}
  {\sigma_{yij}} \quad,
 \end{equation} 
-where the $(\mCinv)_{ij}$ are the elements of the inverse covariance matrix.
+where the $[1/\sigma_{yij}]$ are the elements of the inverse covariance
+matrix $\inverse{\mC}$, with $\sigma_{yii}\equiv\sigma_{yi}^2$.
 
 In principle, data-point uncertainty variance underestimation or mean
 point-to-point covariance can be \emph{estimated} by adjusting them
