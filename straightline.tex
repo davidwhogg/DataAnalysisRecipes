@@ -66,6 +66,7 @@
 \newcommand{\mC}{\mmatrix{C}}
 \newcommand{\mCinv}{\inverse{\mC}}
 \newcommand{\mQ}{\mmatrix{Q}}
+\newcommand{\mS}{\mmatrix{S}}
 \newcommand{\mX}{\mmatrix{X}}
 \newcommand{\mY}{\mmatrix{Y}}
 \newcommand{\mYT}{\transpose{\mY}}
@@ -1090,9 +1091,9 @@ $x$-direction uncertainties were negligible.
 In general, when one makes a two dimensional measurement $(x_i,y_i)$,
 that measurement comes with uncertainties $(\sigma_{xi}^2,\sigma_{yi}^2)$
 in both directions, and some covariance $\sigma_{xyi}$ between them.
-These can be put together into a covariance tensor $\mC_i$
+These can be put together into a covariance tensor $\mS_i$
 \begin{equation}
-\mC_i = \left[\begin{array}{cc}
+\mS_i = \left[\begin{array}{cc}
 \sigma_{xi}^2 & \sigma_{xyi} \\ \sigma_{xyi} & \sigma_{yi}^2
 \end{array}\right] \quad .
 \end{equation}
@@ -1103,9 +1104,9 @@ of getting measurement $(x_i,y_i)$ when the ``true value'' (the value
 you would have for this data point if it had been observed with
 negligible error) is $(x,y)$:
 \begin{equation}
-p(x_i,y_i|\mC_i,x,y) = \frac{1}{2\,\pi\,\sqrt{\det(\mC_i)}}
+p(x_i,y_i|\mS_i,x,y) = \frac{1}{2\,\pi\,\sqrt{\det(\mS_i)}}
   \,\exp\left(-\frac{1}{2}\,\transpose{\left[\mZ_i - \mZ\right]}
-  \,\inverse{\mC_i}\,\left[\mZ_i - \mZ\right]\right) \quad ,
+  \,\inverse{\mS_i}\,\left[\mZ_i - \mZ\right]\right) \quad ,
 \end{equation}
 where we have implicitly made column vectors
 \begin{equation}\label{eq:mZ}
@@ -1152,9 +1153,9 @@ data point $(x_i,y_i)$ from the line is given by
 \end{equation}
 where $\mZ_i$ is the column vector made from $(x_i,y_i)$ in
 \equationname~(\ref{eq:mZ}).  Similarly, each data point's covariance
-matrix $\mC_i$ projects down to an orthogonal variance $\Sigma_i^2$ given by
+matrix $\mS_i$ projects down to an orthogonal variance $\Sigma_i^2$ given by
 \begin{equation}\label{eq:Sigma}
-\Sigma_i^2 = \transpose{\vhat}\,\mC_i\,\vhat
+\Sigma_i^2 = \transpose{\vhat}\,\mS_i\,\vhat
 \end{equation}
 and then the log likelihood for $(m,b)$ or $(\theta,b\,\cos\theta)$
 can be written as
@@ -1179,7 +1180,7 @@ true values that lie precisely on a narrow, linear relation in the
 $x$--$y$ plane.  To each of these true points a gaussian offset has
 been added to make each observed point $(x_i,y_i)$, where the offset
 was drawn from the two-dimensional gaussian with covariance tensor
-$\mC_i$.  As usual, if this generative model is a good approximation
+$\mS_i$.  As usual, if this generative model is a good approximation
 to the properties of the data set, the method works very well.  Of
 course there are many situations in which this is \emph{not} a good
 approximation.  Below, we consider the (very common) case that the
@@ -1227,7 +1228,7 @@ However, this is the dominant principal component of the observed
 data, not of the underlying linear relationshiop that, when noise is
 added, generates the observations.  For this reason, the output of PCA
 will be strongly drawn or affected by the individual data point noise
-covariances $\mC_i$.  This point is a subtle one, but in astrophysics
+covariances $\mS_i$.  This point is a subtle one, but in astrophysics
 it is almost certainly having a large effect in the standard
 literature on the ``fundamental plane'' of elliptical galaxies, and in
 other areas where a fit is being made to data with substantial
