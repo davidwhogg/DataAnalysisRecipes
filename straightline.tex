@@ -1088,7 +1088,7 @@ valid.  Recall that everything so far has assumed that the
 $x$-direction uncertainties were negligible.
 
 In general, when one makes a two dimensional measurement $(x_i,y_i)$,
-that measurement comes uncertainties $(\sigma_{xi}^2,\sigma_{yi}^2)$
+that measurement comes with uncertainties $(\sigma_{xi}^2,\sigma_{yi}^2)$
 in both directions, and some covariance $\sigma_{xyi}$ between them.
 These can be put together into a covariance tensor $\mC_i$
 \begin{equation}
@@ -1103,7 +1103,7 @@ of getting measurement $(x_i,y_i)$ when the ``true value'' (the value
 you would have for this data point if it had been observed with
 negligible error) is $(x,y)$:
 \begin{equation}
-p(x_i,y_i|\mC_i,x,y) = \frac{1}{2\,\pi\,\det(\mC_i)^{\frac{1}{2}}}
+p(x_i,y_i|\mC_i,x,y) = \frac{1}{2\,\pi\,\sqrt{\det(\mC_i)}}
   \,\exp\left(-\frac{1}{2}\,\transpose{\left[\mZ_i - \mZ\right]}
   \,\inverse{\mC_i}\,\left[\mZ_i - \mZ\right]\right) \quad ,
 \end{equation}
