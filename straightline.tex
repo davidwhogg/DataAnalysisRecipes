@@ -3,7 +3,7 @@
 % - Hogg: should we distinguish parameters (m,b) from their best-fit values?
 % - Hogg: should we distinguish = \equiv and \leftarrow ?
 % - Hogg: we need to say things about procedure; right now the document is almost entirely about the objective
-% - Hogg: should we say something substantial---not superficial---about non-convexity; perhaps initializing trials with RANSAC-like initial conditions
+% - Hogg: should we say something substantial---not superficial---about non-convexity; perhaps initializing trials with RANSAC-like initial conditions; or even put in a problem to optimize the scalar, but considering *only* the lines created by pairs of points.
 % - Hogg: look at every use of ``probability'' for correctness.
 % - Hogg: look at every use of ``likelihood'' for correctness.
 % - Hogg: footnote Neuegebauer on the error / uncertainty thing.
@@ -734,8 +734,22 @@ is much more tractable and pleasant if you can assume that all the
 data-point uncertainties are comparable or you know something else
 equally informative about their \emph{relative} magnitudes.
 
-Hogg: Consider either here or above some kind of foreground/background
-EM modeling, a la Dustin.
+Another approach---perhaps the most correct---to data rejection is to
+explicitly \emph{model} the outliers or rejected points.  This
+involves extending the generative model to include not just the points
+on the line (or displaced from the line purely by their measurement
+errors) but also the points \emph{not} on the line.  In this approach,
+there is a foreground model (the line) and a background model (some
+broader distribution, possibly with its own parameters), and each data
+point gets a parameter in the form of the probability $p_i$ that that
+data point is a member of the foreground population.  In the end, the
+best-fit parameters of the line (or the posterior distribution for
+them) is found by marginalizing over all the background parameters and
+all of the individual data-point probabilities
+$\setofall{p_i}{i=1}{N}$.  This solution is beautiful, and of wide
+application in the experimental sciences, but because it gets into
+issues of \emph{density estimation} we consider it beyond the scope of
+this \documentname.
 \end{comments}
 
 \begin{problem}\label{prob:biexp}
@@ -908,15 +922,48 @@ comparison case, there are \emph{two} models, not one, and they are
 both (by assumption) equally plausible \apriori.  The fact that both
 models are reasonable does not mean that we cannot prefer the more
 reasonable one. The conditions for model comparison are stronger, so
-the test is more sensitive.
+the test is more sensitive.  In the case of correctly estimated
+uncertainty variances and two models that are equally plausible
+\apriori, the $\Delta\chi^2$ value between the models is (twice) the
+natural logarithm of the odds ratio between the models.  For this
+reason, large $\Delta\chi^2$ values generate considerable confidence.
 
-In the case of correctly estimated uncertainty variances and two
-models that are equally plausible \apriori, the $\Delta\chi^2$ value
-between the models is (twice) the natural logarithm of the odds ratio
-between the models.  For this reason, large $\Delta\chi^2$ values
-generate considerable confidence.
+Technically, Bayesians cannot reject a model outright on the basis of
+bad $\chi^2$ alone; Bayesians can only \emph{compare} comparable
+models.  A Bayesian will only consider the absolute value of $\chi^2$
+to obtain hints about what might be going wrong.  Part of the reason
+for this is that a Bayesian analysis returns a probability
+distribution over mutually exclusive hypotheses.  This distribution or
+this set of probabilities integrates or sums to unity.  If only one
+model (``the data are drawn from a straight line, plus noise'') is
+considered, the probabilities for the parameters of that model will
+integrate to unity and the model cannot be disfavored in any sense.
+Of course, any time an investigator considers only one model, he or
+she is almost certainly making a mistake, and any conservative
+Bayesian data analyst will consider a large space of models and ask
+about the evidence for the alternatives, or for complexification of
+the current model.  So a Bayesian \emph{can} reject models on a
+$\chi^2$ basis---provided that he or she has permitted a wide enough
+range of models, and provided those models have somewhat comparable
+prior probabilities.  Model rejection and hypothesis comparison is
+only discussed here in the \commentsname\ because they are large
+topics that go beyond the scope of this \documentname.
 
-Hogg: Something about Bayesian model selection and decision theory?
+In general, the investigator's decision-making about what models to
+consider and test have an enormous impact on her or his scientific
+conclusions.  At the beginning of an investigation, this problem lies
+in the setting of priors.  An investigator who considers \emph{only} a
+straight-line model for her or his points is effectively setting
+insanely informative priors (the prior probability of every
+alternative model is precisely zero).  At the end of an investigation,
+this problem---what models to consider---lies in the area of
+\emph{decision theory}, another topic beyond the scope of this
+\documentname.  But even in a context as limited as straight-line
+fitting, it is worth remembering that, as scientists, we are not just
+inferring things, we are making \emph{decisions}---about what is right
+and wrong, about what to investigate, about what to report, and about
+what to advocate---and these decisions are only indirectly related to
+the inferences we perform.
 \end{comments}
 
 \begin{problem}
@@ -1051,11 +1098,12 @@ be justified in the limit that everything is gaussian and all the
 points are identical in their error properties.
 
 \begin{comments}
-Hogg: Compare jackknife and bootstrap in terms of ``conservativeness''.
-Note that neither makes sense if there is a large dynamic range in the
-$\sigma_{yi}^2$.  Why do these techniques have the names they do?
-They are extremely useful when you don't know or don't trust your
-uncertainties $\allsigmay$.
+Hogg: Compare jackknife and bootstrap in terms of
+``conservativeness''.  Note that neither makes sense if there is a
+large dynamic range in the $\sigma_{yi}^2$.  Why do these techniques
+have the names they do?  They are extremely useful when you don't know
+or don't trust your uncertainties $\allsigmay$, or when you don't
+trust assumptions about their distribution or robustness.
 
 If you are doing sigma-clipping or anything that looks like standard
 least-square fitting but with small modifications, it might be
