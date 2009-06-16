@@ -1099,23 +1099,49 @@ be justified in the limit that everything is gaussian and all the
 points are identical in their error properties.
 
 \begin{comments}
-Hogg: Compare jackknife and bootstrap in terms of
-``conservativeness''.  Note that neither makes sense if there is a
-large dynamic range in the $\sigma_{yi}^2$.  Why do these techniques
-have the names they do?  They are extremely useful when you don't know
-or don't trust your uncertainties $\allsigmay$, or when you don't
-trust assumptions about their distribution or robustness.
+Neither jackknife nor bootstrap make sense, in their naive forms
+(given above) if there is a huge dynamic range in the uncertainty
+variances $\sigma_{yi}^2$ of the data points.  This is because these
+techniques effectively treat all of the data equally.  Of course, both
+methods could be adjusted to account for this; bootstrap could be made
+to randomly select points somehow proportionally to their contribution
+to the total inverse uncertainty variance (it is the sum of the
+$\sigma_{yi}^{-2}$ that determines the total amount of information),
+and jackknife trials could be combined in a weighted way, weighted by
+the total inverse uncertainty variance.  But these generalizations
+require significant research; probably the methods should be avoided
+if there is a large diversity in the $\sigma_{yi}^2$.
+
+Jackknife and bootstrap are both extremely useful when you don't know
+or don't trust your uncertainties $\allsigmay$.  However, they
+\emph{do} make assumptions about the problem.  In detail, these
+methods will not give correct answers if the model is very wrong or if
+there are large outliers.  That said, if you \emph{do} believe your
+uncertainty estimates, any difference between the jackknife,
+bootstrap, and traditional uncertainty estimates for the best-fit line
+parameters undermines confidence in the validity of the model.  If you
+believe the model, then any difference between the jackknife,
+bootstrap, and traditional uncertainty estimates undermines confidence
+in the data-point uncertainties $\allsigmay$.
 
 If you are doing sigma-clipping or anything that looks like standard
 least-square fitting but with small modifications, it might be
 tempting to use the standard uncertainty estimate.  But that is
 definitely wrong, because whatever encouraged you to do the
 sigma-clipping or other modifications is probably sufficient reason to
-disbelieve the standard uncertainty estimate.
+disbelieve the standard uncertainty estimate.  In these cases you want
+either to be measuring the width of your posterior (if you are a
+Bayesian) or else using an empirical estimate of the uncertainty such
+as jackknife or bootstrap.
 
-Hogg: Don't we have examples where a bad-fitting model can lead to very
-tight Bayesian constraints; that is, aren't we being too nice to the
-Bayesians?
+Bayesians like to be smug here---and have some justification---because
+the posterior distribution function gives the best fit parameters and
+the full distribution around that best-fit point in parameter space.
+However, the smugness must be tempered by the fact that \emph{within}
+the context of a single model (such as the generative model described
+in \sectionname~\ref{sec:objective}), the Bayesian analysis does not
+return any useful goodness-of-fit information; a bad model can be
+constrained well by the data but still dead wrong.
 \end{comments}
 
 \begin{problem}
