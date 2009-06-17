@@ -6,7 +6,6 @@
 % - Hogg: should we say something substantial---not superficial---about non-convexity; perhaps initializing trials with RANSAC-like initial conditions; or even put in a problem to optimize the scalar, but considering *only* the lines created by pairs of points.
 % - Hogg: look at every use of ``probability'' for correctness.
 % - Hogg: look at every use of ``likelihood'' for correctness.
-% - Hogg: footnote Neuegebauer on the error / uncertainty thing.
 % - Bovy: do something to the fake data that makes PCA differ from the right thing; this requires correlating the variance tensors, I think.
 % - Bovy: Write a few paragraphs about MCMC optimization
 
@@ -468,10 +467,11 @@ with a probability distribution.  In the Bayesian context, then---to
 get extremely technical---the posterior probability distribution
 function is truly a probabiity distribution, but the likelihood factor
 is constructed from frequency distributions.  This relates to the
-difference between ``uncertainty'' and ``error''; if your data have
-\emph{errors}, correct them!  Your data come with
-\emph{uncertainties}, which are limitations to your knowledge, not
-\emph{mistakes}.
+difference between ``uncertainty'' and ``error'': As one of our
+mentors---Gerry Neugebauer---liked to say, ``They are uncertainties,
+not errors; if they were \emph{errors}, we would have corrected
+them!''  Your data come with \emph{uncertainties}, which are
+limitations to your knowledge, not \emph{mistakes}.
 
 One oddity in this \sectionname\ is that when we set up the Bayesian
 problem we put the $\allx$ and $\allsigmay$ into the prior information
@@ -1416,12 +1416,34 @@ intersection of density estimation and deconvolution, and completely
 general methods exist \citep{bovy}.
 
 \begin{comments}
-Why should you never subtract out the variance in quadrature?  Hogg
-can think of two reasons.
+The standard method for estimating the width of a linear relationship
+is to compare the scatter of the data points to the scatter expected
+if the relationship is narrow.  The estimated intrinsic scatter can be
+found in this case by a procedure of ``subtracting in quadrature'',
+which is not a good idea in general.  For example, it doesn't work if
+the data points have a wide dynamic range in their measurement
+uncertainties, it can produce an estimate of the intrinsic scatter
+variance that is negative, and it returns no confidence interval or
+uncertainty.  In the case of negligible $x$-direction uncertainties, a
+better method is to add a variance $V_y$ to every data-point
+uncertainty variance $\sigma_{yi}^2$, and then vary $V_y$ until
+$\chi^2$ becomes close to its expected value of $[N-2]$ (or should it
+be $[N-3]$ since we have added another parameter).  In performing this
+test, one performs the standard linear least-squares fitting of
+\sectionname~\ref{sec:standard} at each value of $V$.  This method
+does return an estimate of the intrinsic scatter in the $y$-direction,
+but it can also return a negative value for the intrinsic scatter
+variance, and it doesn't return an uncertainty either (though one can
+be approximated using the expectation for $\chi^2$).
 
-Hogg: How does the perpendicular scatter or variance translate into a
-vertical variance or a horizontal one?  Why can't you tell these
-apart?
+One confusing issue in the subject of intrinsic scatter is the
+\emph{direction} for the scatter.  If things are Gaussian, it doesn't
+matter whether you think of the scatter being in the $x$ direction,
+the $y$ direction, or the direction perpendicular to the line (as we
+think of it in the method involving $V$ in this \sectionname.
+However, in presenting results, it must be made clear which direction
+is being assumed, and what the conversions are to the other directions
+(these involve the slope $m$ or angle $\theta$ of course).
 \end{comments}
 
 \begin{problem}\label{prob:intrinsic}
