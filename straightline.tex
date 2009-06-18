@@ -600,7 +600,7 @@ below).
 The alternative to these softenings is to try data rejection, in which
 we add to the problem a set of $N$ binary integers $q_i$, one per data
 point, each of which is unity if the $i$th data point is good, and
-zero if the $i$th data point is bad (cite Press and Jaynes here).  In
+zero if the $i$th data point is bad \citep{pressH0,jaynes}.  In
 addition, to construct an objective function one needs an additional
 parameter $\pgood$, which is the \emph{prior} probability that any
 individual data point is good.  All these $N+1$ extra parameters may
@@ -694,7 +694,7 @@ the Bayesian posterior developed above is that you can pick a
 particular data point $J$ and marginalize over $(m,b)$ and all the
 $q_i$ \emph{except} $q_J$.  This will return the marginalized
 posterior probability that point $J$ is good.  This is good for
-embarassing colleagues in meta-analyses (cite Press here).
+embarassing colleagues in meta-analyses \citep{pressH0}.
 
 The standard method for removing sensitivity to outliers (in
 astrophysics, anyway) is known as ``sigma-clipping''.  This is a
@@ -1574,6 +1574,12 @@ and matplotlib.
 \bibitem[Mackay(2003)]{mackay}
   Mackay,~D.~J.~C., 2003,
   \textit{Information theory, inference, and learning algorithms} (Cambridge University Press)
+\bibitem[Press(1997)]{pressH0}
+  Press,~W.~H., 1997,
+  Understanding data better with Bayesian and global statistical methods,
+  in \textit{Unsolved Problems in Astrophysics,}
+  eds. Bahcall,~J.~N. \& Ostriker,~J.~P. (Princeton University Press)
+  49--60.
 \bibitem[Press \etal(2007)]{press}
   Press,~W.~H., Teukolsky,~S.~A., Vetterling,~W.~T., \& Flannery,~B.~P., 2007,
   \textit{Numerical recipes: the art of scientific computing} (Cambridge University Press)
