@@ -630,15 +630,22 @@ seem like crazy baggage, but their values can be \emph{inferred} and
 
 In this situation, we don't know a consistent way to proceed that isn't
 Bayesian (possibly for lack of trying), so let's go Bayesian.  In this
-case, likelihood is
+case, the likelihood is
 \begin{eqnarray}\displaystyle
-\frac{p(\ally|m,b,\allq,\pgood,I)}{p(\ally|I)}
- &\propto& \prod_{i=1}^N \left[\exp\left(-\frac{[y_i-m\,x_i-b]^2}{2\,\sigma_{yi}^2}\right)\right]^{q_i} \quad ,
+\like &\equiv& \frac{p(\ally|m,b,\allq,\pgood,I)}{p(\ally|I)} \nonumber\\
+\like &\propto& \prod_{i=1}^N \left[\frac{1}{\sqrt{2\,\pi\,\sigma_{yi}^2}}
+ \,\exp\left(-\frac{[y_i-m\,x_i-b]^2}{2\,\sigma_{yi}^2}\right)\right]^{q_i}
+ \nonumber\\
+\ln\like &=& K - \sum_{i=1}^N q_i\,\ln\sigma_{yi} - \sum_{i=1}^N
+ q_i\,\frac{[y_i-m\,x_i-b]^2}{2\,\sigma_{yi}^2} \quad ,
 \end{eqnarray}
-but there is an important prior probability
+where $K$ is some constant.  Because we are permitting data rejection,
+there is an important prior probability on the $\allq$ that penalizes
+each rejection:
 \begin{eqnarray}\displaystyle
 p(m,b,\allq,\pgood|I)
- &=& p(m,b|I)\,p(\allq|\pgood,I)\,p(\pgood|I) \nonumber \\
+ &=& p(m,b|I)\,p(\allq|\pgood,I)\,p(\pgood|I) \nonumber\\
+p(m,b,\allq,\pgood|I)
  &=& p(m,b|I)\,\prod_{i=1}^N\pgood^{q_i}\,[1-\pgood]^{[1-q_i]} \quad ,
 \end{eqnarray}
 where we have assumed that the prior probability distribution
