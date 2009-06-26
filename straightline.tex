@@ -1070,13 +1070,13 @@ empirical measurement of the uncertainties of the parameters.  The
 uncertainty variances $(\sigma_m^2,\sigma_b^2)$ and the covariance
 $\sigma_{mb}$ can be computed as second moments of this posterior
 distribution function.  Computing the variances this way does involve
-assumptions, but it does \emph{not} involve any assumption that the
-model is a good fit to the data; that is, as the model becomes a bad
-fit to the data (for example when the data points are not consistent
-with being drawn from a narrow, straight line), these uncertainties
-change in accordance.  That is in strong contrast to the elements of
-the matrix $\inverse{\left[\mAT\,\mCinv\,\mA\right]}$, which don't
-depend in any way on the quality of fit.
+assumptions, but it is not extremely sensitive to the assumption that
+the model is a good fit to the data; that is, as the model becomes a
+bad fit to the data (for example when the data points are not
+consistent with being drawn from a narrow, straight line), these
+uncertainties change in accordance.  That is in strong contrast to the
+elements of the matrix $\inverse{\left[\mAT\,\mCinv\,\mA\right]}$,
+which don't depend in any way on the quality of fit.
 
 In any non-Bayesian scheme, or when the full posterior has been
 discarded in favor of only the MAP value, there are still empirical
