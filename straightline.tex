@@ -83,7 +83,9 @@
 % other random multiply used math symbols
 \renewcommand{\d}{\mathrm{d}}
 \newcommand{\like}{\mathscr{L}}
-\newcommand{\pgood}{p_{\mathrm{good}}}
+\newcommand{\pbad}{p_{\mathrm{b}}}
+\newcommand{\Ybad}{Y_{\mathrm{b}}}
+\newcommand{\Vbad}{V_{\mathrm{b}}}
 \newcommand{\bperp}{b_{\perp}}
 \newcommand{\mean}[1]{\left<{#1}\right>}
 \newcommand{\meanZ}{\mean{\mZ}}
@@ -99,8 +101,10 @@
 \section*{Data analysis recipes:\ \\
   Fitting a straight line to data\footnote{
     Copyright 2009 David~W.~Hogg (david.hogg@nyu.edu) and Jo Bovy.
-    You may copy and distribute this document
-    provided that you make no changes to it whatsoever.}}
+    This is a DRAFT version dated 2009-06-29.
+    Please do not distribute this document.}}
+%    You may copy and distribute this document
+%    provided that you make no changes to it whatsoever.}}
 
 \noindent
 David~W.~Hogg \textsl{and}
@@ -607,98 +611,111 @@ function, a Good Thing to carry forward (as we note below).
 
 If you are really feeling cheap, and don't want to learn about either
 samplers or nonlinear optimizers, there is one beautiful hack known as
-``RANSAC'', that everyone should know: Every \emph{pair} of data
-points in your sample can be joined as a straight line.  Therefore,
-your $N$ data points themselves suggest $M=N\,[N-1]/2$ possible
-straight lines.  If you simply compute the scalar objective for each
-of these $M$ suggestions (or a random subset), unless your data are
-pathological, you are likely to have sampled most of the relevant
-parameter space.  The preferred line, of course, is the one that
-optimizes the scalar objective.  This method doesn't return the strict
-optimum, but it does very well in most circumstances.
+``RANSAC'', which everyone should know: Every \emph{pair} of data
+points in your sample can be joined with a particular straight line.
+Therefore, your $N$ data points themselves suggest $M=N\,[N-1]/2$
+possible straight lines.  If you simply compute the scalar objective
+for each of these $M$ suggestions (or a random subset), unless your
+data are pathological, you are likely to have sampled most of the
+relevant parameter space.  The preferred line, of course, is the one
+that optimizes the scalar objective.  This method doesn't return the
+strict optimum, but it does very well in most circumstances.
 
 The alternative to these softenings is to try data rejection, in which
 we add to the problem a set of $N$ binary integers $q_i$, one per data
 point, each of which is unity if the $i$th data point is good, and
 zero if the $i$th data point is bad \citep{pressH0,jaynes}.  In
-addition, to construct an objective function one needs an additional
-parameter $\pgood$, which is the \emph{prior} probability that any
-individual data point is good.  All these $N+1$ extra parameters may
-seem like crazy baggage, but their values can be \emph{inferred} and
-\emph{marginalized out} so in the end, this method introduces \emph{no
- new parameters}.
+addition, to construct an objective function one needs some additional
+parameters including $\pbad$, the \emph{prior} probability that any
+individual data point is bad, and $(\Ybad,\Vbad)$, the mean and
+variance of the distribution of bad points (in $y$).  All these $N+3$
+extra parameters may seem like crazy baggage, but their values can be
+\emph{inferred} and \emph{marginalized out} so in the end, this method
+introduces \emph{no new parameters}.
 
-In this situation, we don't know a consistent way to proceed that isn't
-Bayesian (possibly for lack of trying), so let's go Bayesian.  In this
+This situation is starting to get complex; it sometimes pays in
+complex situations to be a Bayesian, so let's go Bayesian.  In this
 case, the likelihood is
 \begin{eqnarray}\displaystyle
-\like &\equiv& p(\ally|m,b,\allq,\pgood,I) \nonumber\\
+\like &\equiv& \frac{p(\ally|m,b,\allq,\pbad,\Ybad,\Vbad,I)}{p(\ally|I)}
+ \nonumber\\
 \like &\propto& \prod_{i=1}^N \left[\frac{1}{\sqrt{2\,\pi\,\sigma_{yi}^2}}
  \,\exp\left(-\frac{[y_i-m\,x_i-b]^2}{2\,\sigma_{yi}^2}\right)\right]^{q_i}
+ \nonumber \\ & & \quad\times
+ \left[\frac{1}{\sqrt{2\,\pi\,\Vbad}}
+ \,\exp\left(-\frac{[y_i-\Ybad]^2}{2\,\Vbad}\right)\right]^{[1-q_i]}
  \nonumber\\
-\ln\like &=& K - \sum_{i=1}^N q_i\,\ln\sigma_{yi} - \sum_{i=1}^N
- q_i\,\frac{[y_i-m\,x_i-b]^2}{2\,\sigma_{yi}^2} \quad ,
+\ln\like &=& K
+ - \sum_{i=1}^N \frac{q_i}{2}\,\ln\sigma_{yi}^2
+ - \sum_{i=1}^N q_i\,\frac{[y_i-m\,x_i-b]^2}{2\,\sigma_{yi}^2}
+ \nonumber \\ & & \quad
+ - \sum_{i=1}^N \frac{[1-q_i]}{2}\,\ln\Vbad
+ - \sum_{i=1}^N [1-q_i]\,\frac{[y_i-\Ybad]^2}{2\,\Vbad} \quad ,
 \end{eqnarray}
 where $K$ is some constant.  Because we are permitting data rejection,
 there is an important prior probability on the $\allq$ that penalizes
 each rejection:
 \begin{eqnarray}\displaystyle
-p(m,b,\allq,\pgood|I)
- &=& p(m,b|I)\,p(\allq|\pgood,I)\,p(\pgood|I) \nonumber\\
-p(m,b,\allq,\pgood|I)
- &=& p(m,b|I)\,\prod_{i=1}^N\pgood^{q_i}\,[1-\pgood]^{[1-q_i]} \quad ,
+p(m,b,\allq,\pbad,\Ybad,\Vbad|I)
+ &=& p(\allq|\pbad,I)\,p(m,b,\pbad,\Ybad,\Vbad|I)
+ \nonumber\\
+p(\allq|\pbad,I)
+ &=& \prod_{i=1}^N[1-\pbad]^{q_i}\,\pbad^{[1-q_i]}
+ \quad ,
 \end{eqnarray}
-where we have assumed that the prior probability distribution
-$p(\pgood|I)$ for $\pgood$ is just flat on the interval $0<\pgood<1$
-(the least informative possible assumption).  We call this the
-``prior'', but it still makes use of a parameter $\pgood$, for which
-we have a distribution.  In some sense, the flat distribution on
-$\pgood$ is a ``hyper-prior'' and the marginalization (that we will
-eventually do) over $\pgood$ is a marginalization over the
-hyper-prior.
+that is, the binomial probability of the particular sequence $\allq$.
+The priors on the other parameters should either be set according to
+an analysis of your prior knowledge or else be uninformative.
 
 The posterior probability distribution is the (correctly normalized)
 product of the likelihood times the prior.  If all we care about are
 the parameters $(m,b)$ of the line, we have to marginalize the
 posterior probability distribution over all choices for the binary
-integers $\allq$ and all possible values for $\pgood$.  This
-marginalization involves evaluating and marginalizing (over $\pgood$)
-$2^N$ different likelihoods!  Of course because very few points are
-true candidates for rejection, there are many ways to ``trim the
-tree'' and do this quickly; the lazy can simply sample; the very lazy
-can loop over all $2^N$ and go on vacation while it executes.
+integers $\allq$, all values of the prior probability $\pbad$, and the
+parameter space $(\Ybad,\Vbad)$ of the bad-point distribution.  This
+marginalization involves evaluating $2^N$ different likelihoods and
+marginalizing each one of them over $(\pbad,\Ybad,\Vbad)$!  Of course
+because very few points are true candidates for rejection, there are
+many ways to ``trim the tree'' and do this more quickly; the lazy can
+simply sample; the very lazy can loop over all $2^N$ and go on
+vacation while it executes.  In any case, this bad \emph{scaling} is a
+strong mark against this method, and we will give a much faster
+alternative below.
 
-One unfortunate (though unavoidably correct) thing about any Bayesian
-method is that it does not return an ``answer'' but rather it returns
-a \emph{posterior probability distribution}.  Strictly, this posterior
-distribution function \emph{is} your answer.  However, what scientists
-are usually doing is not, strictly, inference, but rather,
+One unfortunate (though unavoidably correct) thing about any
+Bayes\-ian method is that prior probabilities must be specified.  In
+any situation of straight-line fitting where the data are numerous and
+generally good, these priors do not matter very much to the final
+answer.  The way we have written our likelihoods, the MAP result
+becomes very directly analogous to the maximum likelihood answer when
+the (improper, non-normalizable) prior ``flat in $m$, flat in $b$'' is
+adopted, and something sensible has been chosen for $(\Ybad,\Vbad)$
+(broad distributions that include the mean and variance of the data
+would be a good place to start).  Usually the investigator \emph{does}
+have some basis for setting some more informative priors, but a deep
+and sensible discussion of priors is beyond the scope of this
+\documentname.
+
+The other unfortunate (though unavoidably correct) thing about any
+Bayesian method is that it does not return an ``answer'' but rather it
+returns a \emph{posterior probability distribution}.  Strictly, this
+posterior distribution function \emph{is} your answer.  However, what
+scientists are usually doing is not, strictly, inference, but rather,
 decision-making.  That is, the investigator wants an answer, not a
 distribution.  There are (at least) two reactions to this.  One is to
 ignore the fundamental Bayesianism at the end, and choose simply the
 ``maximum \aposteriori'' (MAP) answer---the single value of $(m,b)$
-that optimizes the fully marginalized (over $\pgood$ and $\allq$)
-posterior probability distribution function.  This is the Bayesian's
-analog of maximum likelihood.  The other reaction is to suck it up and
-sample the posterior probability distribution and carry forward not
-one answer to the problem but $M$ answers, each of which is drawn
-fairly and independently from the posterior distribution function.
-The latter is to be preferred because \textsl{(a)}~it shows the
-uncertainties very clearly, and \textsl{(b)}~the sampling can be
+that optimizes the fully marginalized (over $\pbad,\Ybad,\Vbad$ and
+$\allq$) posterior probability distribution function.  This is the
+Bayesian's analog of maximum likelihood.  The other reaction is to
+suck it up and sample the posterior probability distribution and carry
+forward not one answer to the problem but $M$ answers, each of which
+is drawn fairly and independently from the posterior distribution
+function.  The latter is to be preferred because \textsl{(a)}~it shows
+the uncertainties very clearly, and \textsl{(b)}~the sampling can be
 carried forward to future inferences as an approximation to the
 posterior distribution function, useful for propagating uncertainty,
 or standing in as a \emph{prior} for some subsequent inference.
-
-Another unfortunate (though unavoidably correct) thing about any
-Bayes\-ian method is that prior probabilities must be specified.  In any
-situation of straight-line fitting where the data are good, these
-priors do not matter very much to the final answer.  The way we have
-written our likelihoods, the MAP result becomes very directly
-analogous to the maximum likelihood answer when the (improper,
-non-normalizable) prior ``flat in $m$, flat in $b$'' is adopted.
-Usually the investigator \emph{does} have some basis for setting some
-more informative priors, but a deep and sensible discussion of priors
-is beyond the scope of this \documentname.
 
 \begin{comments}
 Because, in this \sectionname, we have broken the assumptions of
@@ -719,7 +736,7 @@ engineers); it is to emphasize that optimizers should be chosen on
 practical grounds of time, resources, and availability.
 
 When flagging bad data, you might not want to give all points the same
-prior probability distribution function over $\pgood$, though it is
+prior probability distribution function over $\pbad$, though it is
 rare that one has reliable information about the unreliability of
 one's data.  Complementary to this, one of the amusing things about
 the Bayesian posterior developed above is that you can pick a
@@ -819,15 +836,15 @@ Using the fully marginalized Bayesian data rejection method described
 above, find the best-fit (the maximum \aposteriori) straight line
 $y=m\,x+b$ for the $x$, $y$, and $\sigma_y$ values in
 \tablename~\ref{table:data_allerr}.  Before choosing the MAP line,
-marginalize over $\pgood$ and $\allq$ by (dumbly) looping over every
+marginalize over $\pbad$ and $\allq$ by (dumbly) looping over every
 possible (non-trivial) assigment of $q_i$ values, and at each
-assignment, integrate over all possible values of $\pgood$.  Make a
+assignment, integrate over all possible values of $\pbad$.  Make a
 plot showing the points, their uncertainties, and the MAP line.  How
 does this compare to the standard result you obtained in
 \problemname~\ref{prob:standard}?  Do you like the MAP line better or
 worse?  For extra credit, plot a sampling of 10 lines drawn from the
 marginalized posterior distribution for $(m,b)$ (marginalized over
-$\pgood$ and $\allq$) and plot the samples as a set of light grey or
+$\pbad$ and $\allq$) and plot the samples as a set of light grey or
 transparent lines.  For extra extra credit, mark each data point on
 your plot with the fully marginalized probability that the point is
 good (that is, not rejected, or has $q=1$).
@@ -1357,12 +1374,12 @@ Repeat \problemname~\ref{prob:twod}, but using all of the data in
 \tablename~\ref{table:data_allerr}.  Some of the points are now
 outliers, so your fit may look worse.  Follow the fit by a robust
 procedure analogous to the Bayesian procedure with good data
-probability $\pgood$ and classifications $\allq$ described in
+probability $\pbad$ and classifications $\allq$ described in
 \sectionname~\ref{sec:robust}.  Use something sensible for the prior
 probability distribution for $(m,b)$.  Plot the two results with the
 data and uncertainties.  For extra credit, plot a sampling of 10 lines
 drawn from the marginalized posterior distribution for $(m,b)$
-(marginalized over $\pgood$ and $\allq$) and plot the samples as a set
+(marginalized over $\pbad$ and $\allq$) and plot the samples as a set
 of light grey or transparent lines.  For extra extra credit, mark each
 data point on your plot with the fully marginalized probability that
 the point is good (that is, not rejected, or has $q=1$).
