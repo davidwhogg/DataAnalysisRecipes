@@ -83,7 +83,7 @@
 % other random multiply used math symbols
 \renewcommand{\d}{\mathrm{d}}
 \newcommand{\like}{\mathscr{L}}
-\newcommand{\pbad}{p_{\mathrm{b}}}
+\newcommand{\Pbad}{P_{\mathrm{b}}}
 \newcommand{\Ybad}{Y_{\mathrm{b}}}
 \newcommand{\Vbad}{V_{\mathrm{b}}}
 \newcommand{\bperp}{b_{\perp}}
@@ -626,7 +626,7 @@ we add to the problem a set of $N$ binary integers $q_i$, one per data
 point, each of which is unity if the $i$th data point is good, and
 zero if the $i$th data point is bad \citep{pressH0,jaynes}.  In
 addition, to construct an objective function one needs some additional
-parameters including $\pbad$, the \emph{prior} probability that any
+parameters including $\Pbad$, the \emph{prior} probability that any
 individual data point is bad, and $(\Ybad,\Vbad)$, the mean and
 variance of the distribution of bad points (in $y$).  All these $N+3$
 extra parameters may seem like crazy baggage, but their values can be
@@ -637,7 +637,7 @@ This situation is starting to get complex; it sometimes pays in
 complex situations to be a Bayesian, so let's go Bayesian.  In this
 case, the likelihood is
 \begin{eqnarray}\displaystyle
-\like &\equiv& \frac{p(\ally|m,b,\allq,\pbad,\Ybad,\Vbad,I)}{p(\ally|I)}
+\like &\equiv& \frac{p(\ally|m,b,\allq,\Pbad,\Ybad,\Vbad,I)}{p(\ally|I)}
  \nonumber\\
 \like &\propto& \prod_{i=1}^N \left[\frac{1}{\sqrt{2\,\pi\,\sigma_{yi}^2}}
  \,\exp\left(-\frac{[y_i-m\,x_i-b]^2}{2\,\sigma_{yi}^2}\right)\right]^{q_i}
@@ -656,11 +656,11 @@ where $K$ is some constant.  Because we are permitting data rejection,
 there is an important prior probability on the $\allq$ that penalizes
 each rejection:
 \begin{eqnarray}\displaystyle
-p(m,b,\allq,\pbad,\Ybad,\Vbad|I)
- &=& p(\allq|\pbad,I)\,p(m,b,\pbad,\Ybad,\Vbad|I)
+p(m,b,\allq,\Pbad,\Ybad,\Vbad|I)
+ &=& p(\allq|\Pbad,I)\,p(m,b,\Pbad,\Ybad,\Vbad|I)
  \nonumber\\
-p(\allq|\pbad,I)
- &=& \prod_{i=1}^N[1-\pbad]^{q_i}\,\pbad^{[1-q_i]}
+p(\allq|\Pbad,I)
+ &=& \prod_{i=1}^N[1-\Pbad]^{q_i}\,\Pbad^{[1-q_i]}
  \quad ,
 \end{eqnarray}
 that is, the binomial probability of the particular sequence $\allq$.
@@ -671,10 +671,10 @@ The posterior probability distribution is the (correctly normalized)
 product of the likelihood times the prior.  If all we care about are
 the parameters $(m,b)$ of the line, we have to marginalize the
 posterior probability distribution over all choices for the binary
-integers $\allq$, all values of the prior probability $\pbad$, and the
+integers $\allq$, all values of the prior probability $\Pbad$, and the
 parameter space $(\Ybad,\Vbad)$ of the bad-point distribution.  This
 marginalization involves evaluating $2^N$ different likelihoods and
-marginalizing each one of them over $(\pbad,\Ybad,\Vbad)$!  Of course
+marginalizing each one of them over $(\Pbad,\Ybad,\Vbad)$!  Of course
 because very few points are true candidates for rejection, there are
 many ways to ``trim the tree'' and do this more quickly; the lazy can
 simply sample; the very lazy can loop over all $2^N$ and go on
@@ -705,7 +705,7 @@ decision-making.  That is, the investigator wants an answer, not a
 distribution.  There are (at least) two reactions to this.  One is to
 ignore the fundamental Bayesianism at the end, and choose simply the
 ``maximum \aposteriori'' (MAP) answer---the single value of $(m,b)$
-that optimizes the fully marginalized (over $\pbad,\Ybad,\Vbad$ and
+that optimizes the fully marginalized (over $\Pbad,\Ybad,\Vbad$ and
 $\allq$) posterior probability distribution function.  This is the
 Bayesian's analog of maximum likelihood.  The other reaction is to
 suck it up and sample the posterior probability distribution and carry
@@ -716,6 +716,45 @@ the uncertainties very clearly, and \textsl{(b)}~the sampling can be
 carried forward to future inferences as an approximation to the
 posterior distribution function, useful for propagating uncertainty,
 or standing in as a \emph{prior} for some subsequent inference.
+
+We promised a faster---less computationally complex---method for
+modeling the outliers; here it is: Instead of requiring a hard
+assignment $q_i$ for each data point to either the straight-line or
+outlier populations, every data point can be modeled as being drawn
+from a \emph{mixture} (sum with amplitudes that sum to unity) of the
+straight-line and outlier distributions.  That is, the generative
+model the data $\ally$ is changed to
+\begin{eqnarray}\label{eq:mixture}\displaystyle
+\like &\equiv& \frac{p(\ally|m,b,\Pbad,\Ybad,\Vbad,I)}{p(\ally|I)}
+ \nonumber\\
+\like &\propto&
+ \prod_{i=1}^N \left[\frac{1-\Pbad}{\sqrt{2\,\pi\,\sigma_{yi}^2}}
+ \,\exp\left(-\frac{[y_i-m\,x_i-b]^2}{2\,\sigma_{yi}^2}\right)\right.
+ \nonumber \\ & & \quad
+ \left.+ \frac{\Pbad}{\sqrt{2\,\pi\,\Vbad}}
+ \,\exp\left(-\frac{[y_i-\Ybad]^2}{2\,\Vbad}\right)\right]
+ \quad ,
+\end{eqnarray}
+where, once again, $\Pbad$ is the probability that a data point is bad
+(or, more properly, the amplitude of the bad-data distribution
+function in the mixture), and $(\Ybad,\Vbad)$ are the parameters of
+the bad-data distribution.
+
+Optimization of the likelihood in \equationname~(\ref{eq:mixture})
+does \emph{not} involve exploring an exponential number of
+alternatives, and (when combined with a prior on
+$(m,b,\Pbad,\Ybad,\Vbad)$) can be marginalized over three rather than
+$N+3$ parameters to produce a posterior for the straight-line
+parameters $(m,b)$.  Whether to use the binary assignment or mixture
+methods depends, in principle, on your generative model for the data:
+Are there really ``good'' and ``bad'' points, drawn from different
+distributions, or are all points equivalent and drawn from a single
+distribution with good and bad parts to it?  However, this question
+can rarely be answered (or even posed well) in most problems of
+interest, so we strongly advise the latter, that is, fitting the
+distribution as a mixture of good and bad distributions.
+
+% syntactical reference point
 
 \begin{comments}
 Because, in this \sectionname, we have broken the assumptions of
@@ -736,7 +775,7 @@ engineers); it is to emphasize that optimizers should be chosen on
 practical grounds of time, resources, and availability.
 
 When flagging bad data, you might not want to give all points the same
-prior probability distribution function over $\pbad$, though it is
+prior probability distribution function over $\Pbad$, though it is
 rare that one has reliable information about the unreliability of
 one's data.  Complementary to this, one of the amusing things about
 the Bayesian posterior developed above is that you can pick a
@@ -836,15 +875,15 @@ Using the fully marginalized Bayesian data rejection method described
 above, find the best-fit (the maximum \aposteriori) straight line
 $y=m\,x+b$ for the $x$, $y$, and $\sigma_y$ values in
 \tablename~\ref{table:data_allerr}.  Before choosing the MAP line,
-marginalize over $\pbad$ and $\allq$ by (dumbly) looping over every
+marginalize over $\Pbad$ and $\allq$ by (dumbly) looping over every
 possible (non-trivial) assigment of $q_i$ values, and at each
-assignment, integrate over all possible values of $\pbad$.  Make a
+assignment, integrate over all possible values of $\Pbad$.  Make a
 plot showing the points, their uncertainties, and the MAP line.  How
 does this compare to the standard result you obtained in
 \problemname~\ref{prob:standard}?  Do you like the MAP line better or
 worse?  For extra credit, plot a sampling of 10 lines drawn from the
 marginalized posterior distribution for $(m,b)$ (marginalized over
-$\pbad$ and $\allq$) and plot the samples as a set of light grey or
+$\Pbad$ and $\allq$) and plot the samples as a set of light grey or
 transparent lines.  For extra extra credit, mark each data point on
 your plot with the fully marginalized probability that the point is
 good (that is, not rejected, or has $q=1$).
@@ -1374,12 +1413,12 @@ Repeat \problemname~\ref{prob:twod}, but using all of the data in
 \tablename~\ref{table:data_allerr}.  Some of the points are now
 outliers, so your fit may look worse.  Follow the fit by a robust
 procedure analogous to the Bayesian procedure with good data
-probability $\pbad$ and classifications $\allq$ described in
+probability $\Pbad$ and classifications $\allq$ described in
 \sectionname~\ref{sec:robust}.  Use something sensible for the prior
 probability distribution for $(m,b)$.  Plot the two results with the
 data and uncertainties.  For extra credit, plot a sampling of 10 lines
 drawn from the marginalized posterior distribution for $(m,b)$
-(marginalized over $\pbad$ and $\allq$) and plot the samples as a set
+(marginalized over $\Pbad$ and $\allq$) and plot the samples as a set
 of light grey or transparent lines.  For extra extra credit, mark each
 data point on your plot with the fully marginalized probability that
 the point is good (that is, not rejected, or has $q=1$).
