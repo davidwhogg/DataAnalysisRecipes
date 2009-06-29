@@ -637,20 +637,20 @@ This situation is starting to get complex; it sometimes pays in
 complex situations to be a Bayesian, so let's go Bayesian.  In this
 case, the likelihood is
 \begin{eqnarray}\displaystyle
-\like &\equiv& \frac{p(\ally|m,b,\allq,\Pbad,\Ybad,\Vbad,I)}{p(\ally|I)}
+\like &\equiv& p(\ally|m,b,\allq,\Pbad,\Ybad,\Vbad,I)
  \nonumber\\
 \like &\propto& \prod_{i=1}^N \left[\frac{1}{\sqrt{2\,\pi\,\sigma_{yi}^2}}
  \,\exp\left(-\frac{[y_i-m\,x_i-b]^2}{2\,\sigma_{yi}^2}\right)\right]^{q_i}
  \nonumber \\ & & \quad\times
- \left[\frac{1}{\sqrt{2\,\pi\,\Vbad}}
- \,\exp\left(-\frac{[y_i-\Ybad]^2}{2\,\Vbad}\right)\right]^{[1-q_i]}
+ \left[\frac{1}{\sqrt{2\,\pi\,[\Vbad+\sigma_{yi}^2]}}
+ \,\exp\left(-\frac{[y_i-\Ybad]^2}{2\,[\Vbad+\sigma_{yi}^2]}\right)\right]^{[1-q_i]}
  \nonumber\\
 \ln\like &=& K
  - \sum_{i=1}^N \frac{q_i}{2}\,\ln\sigma_{yi}^2
  - \sum_{i=1}^N q_i\,\frac{[y_i-m\,x_i-b]^2}{2\,\sigma_{yi}^2}
  \nonumber \\ & & \quad
- - \sum_{i=1}^N \frac{[1-q_i]}{2}\,\ln\Vbad
- - \sum_{i=1}^N [1-q_i]\,\frac{[y_i-\Ybad]^2}{2\,\Vbad} \quad ,
+ - \sum_{i=1}^N \frac{[1-q_i]}{2}\,\ln[\Vbad+\sigma_{yi}^2]
+ - \sum_{i=1}^N [1-q_i]\,\frac{[y_i-\Ybad]^2}{2\,[\Vbad+\sigma_{yi}^2]} \quad ,
 \end{eqnarray}
 where $K$ is some constant.  Because we are permitting data rejection,
 there is an important prior probability on the $\allq$ that penalizes
@@ -731,8 +731,8 @@ model the data $\ally$ is changed to
  \prod_{i=1}^N \left[\frac{1-\Pbad}{\sqrt{2\,\pi\,\sigma_{yi}^2}}
  \,\exp\left(-\frac{[y_i-m\,x_i-b]^2}{2\,\sigma_{yi}^2}\right)\right.
  \nonumber \\ & & \quad
- \left.+ \frac{\Pbad}{\sqrt{2\,\pi\,\Vbad}}
- \,\exp\left(-\frac{[y_i-\Ybad]^2}{2\,\Vbad}\right)\right]
+ \left.+ \frac{\Pbad}{\sqrt{2\,\pi\,[\Vbad+\sigma_{yi}^2]}}
+ \,\exp\left(-\frac{[y_i-\Ybad]^2}{2\,[\Vbad+\sigma_{yi}^2]}\right)\right]
  \quad ,
 \end{eqnarray}
 where, once again, $\Pbad$ is the probability that a data point is bad
