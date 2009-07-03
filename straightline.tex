@@ -4,8 +4,9 @@
 % - Hogg: should we distinguish = \equiv and \leftarrow ?
 % - Hogg: look at every use of ``probability'' for correctness.
 % - Hogg: look at every use of ``likelihood'' for correctness.
+% - Hogg: add a problem or two that reduces the error bars and shows that it leads to massive rejection.
+% - Hogg: mention linear regression -- which is usually least squares without the errors!
 % - Bovy: do something to the fake data that makes PCA differ from the right thing; this requires correlating the variance tensors, I think.
-% - Bovy: Write a few paragraphs about MCMC optimization
 
 % style notes
 % -----------
@@ -722,18 +723,19 @@ does \emph{not} involve exploring an exponential number of
 alternatives, and---when combined with a prior on
 $(m,b,\Pbad,\Ybad,\Vbad)$---can be marginalized over three rather than
 $N+3$ parameters to produce a posterior for the straight-line
-parameters $(m,b)$.  This scale of problem is very well
+parameters $(m,b)$.  This scale of problem is very easy to solve with
+any simple optimizer, and in particular works very well with a
+Markov-Chain.
 
-Whether to use the binary assignment or mixture
-methods depends, in principle, on your generative model for the data:
-Are there really ``good'' and ``bad'' points, drawn from different
-distributions, or are all points equivalent and drawn from a single
-distribution with good and bad parts to it?  However, this question
-can rarely be answered (or even posed well) in most problems of
-interest, so we strongly advise the latter, that is, fitting the
-distribution as a mixture of good and bad distributions.
-
-% syntactical reference point
+Whether to use the binary assignment or mixture methods depends, in
+principle, on your generative model for the data: Are there really
+``good'' and ``bad'' points, drawn from different distributions, or
+are all points equivalent and drawn from a single distribution with
+good and bad parts to it?  However, this question can rarely be
+answered (or even posed well) in most problems of interest, so we
+strongly advise the latter, that is, fitting the distribution as a
+mixture of good and bad distributions, where there is no exponential
+complexity.
 
 \begin{comments}
 Hogg...marginalization of posteriors vs likelihoods and why,
@@ -789,23 +791,25 @@ data-point uncertainties are comparable or you know something else
 equally informative about their \emph{relative} magnitudes.
 \end{comments}
 
-\begin{problem}
-Using the fully marginalized Bayesian data rejection method described
-above, find the best-fit (the maximum \aposteriori) straight line
-$y=m\,x+b$ for the $x$, $y$, and $\sigma_y$ values in
+\begin{problem}\label{prob:mixture}
+Using the mixture model proposed above---that treats the distribution
+as a mixture of a thin line containing a fraction $[1-\Pbad]$ of the
+points and a broader gaussian containing a fraction $\Pbad$ of the
+points---find the best-fit (the maximum \aposteriori) straight line
+$y=m\,x+b$ for the $x$, $y$, and $\sigma_y$ for the data in
 \tablename~\ref{table:data_allerr}.  Before choosing the MAP line,
-marginalize over $\Pbad$ and $\allq$ by (dumbly) looping over every
-possible (non-trivial) assigment of $q_i$ values, and at each
-assignment, integrate over all possible values of $\Pbad$.  Make a
-plot showing the points, their uncertainties, and the MAP line.  How
-does this compare to the standard result you obtained in
+marginalize over parameters $(\Pbad,\Ybad,\Vbad)$.  That is, if you
+take a sampling approach, this means sampling the full
+five-dimensional parameter space but then choosing the peak value in
+the histogram of samples in the two-dimensional parameter space
+$(m,b)$.  Make one plot showing this two-dimensional histogram, and
+another showing the points, their uncertainties, and the MAP line.
+How does this compare to the standard result you obtained in
 \problemname~\ref{prob:standard}?  Do you like the MAP line better or
 worse?  For extra credit, plot a sampling of 10 lines drawn from the
 marginalized posterior distribution for $(m,b)$ (marginalized over
-$\Pbad$ and $\allq$) and plot the samples as a set of light grey or
-transparent lines.  For extra extra credit, mark each data point on
-your plot with the fully marginalized probability that the point is
-good (that is, not rejected, or has $q=1$).
+$\Pbad,\Ybad,\Vbad$) and plot the samples as a set of light grey or
+transparent lines.
 \end{problem}
 
 \section{Softer or more robust objective function}\label{sec:robust}
