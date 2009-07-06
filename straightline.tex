@@ -4,8 +4,6 @@
 % - Hogg: should we distinguish = \equiv and \leftarrow ?
 % - Hogg: look at every use of ``probability'' for correctness.
 % - Hogg: look at every use of ``likelihood'' for correctness.
-% - Hogg: add a problem or two that reduces the error bars and shows that it leads to massive rejection.
-% - Hogg: mention linear regression -- which is usually least squares without the errors!
 % - Bovy: do something to the fake data that makes PCA differ from the right thing; this requires correlating the variance tensors, I think.
 
 % style notes
@@ -71,6 +69,10 @@
 \newcommand{\mYT}{\transpose{\mY}}
 \newcommand{\mZ}{\mmatrix{Z}}
 \newcommand{\vhat}{\mmatrix{\hat{v}}}
+
+% parameter vectors
+\newcommand{\parametervector}[1]{\mmatrix{\vec{#1}}}
+\newcommand{\pvtheta}{\parametervector{\theta}}
 
 % set stuff
 \newcommand{\setofall}[3]{\{{#1}\}_{{#2}}^{{#3}}}
@@ -312,6 +314,15 @@ vector displacement into a scalar squared distance between the
 observed values and the values predicted by the model. This distance
 is then minimized.  This idea is sometimes useful for thinking about
 statistics as a physicist.
+
+The words ``linear regression'' are used in many different contexts,
+but in the most common, they seem to mean ``linear fitting without any
+use of the errors''.  In other words, linear regression is usually
+just the procedure outlined in this \sectionname, but with the
+covariance matrix $\mC$ set equal to the identity matrix.  This is
+equivalent to fitting under the assumption not just that the
+$x$-direction uncertainties are negligible, but also that all of the
+$y$-direction uncertainties are identical gaussians.
 
 Note that not only does the standard problem solved in this
 \sectionname\ have a linear solution, the objective function
@@ -563,7 +574,7 @@ probability that any individual data point is bad, and parameters
 $(\Ybad,\Vbad)$, the mean and variance of the distribution of bad
 points (in $y$).  We need these latter parameters because, as we have
 emphasized above, our inference comes from evaluating a probabilistic
-generative model for the data, and that model must include the bad
+generative model for the data, and that model must generate the bad
 points as well as the good points!  All these $N+3$ extra parameters
 $(\allq,\Pbad,\Ybad,\Vbad)$ may seem like crazy baggage, but their
 values can be \emph{inferred} and \emph{marginalized out} so in the
@@ -580,17 +591,10 @@ Bayesian.  In this case, the likelihood is
  \nonumber \\ & & \quad\times
  \left[\frac{1}{\sqrt{2\,\pi\,[\Vbad+\sigma_{yi}^2]}}
  \,\exp\left(-\frac{[y_i-\Ybad]^2}{2\,[\Vbad+\sigma_{yi}^2]}\right)\right]^{[1-q_i]}
- \nonumber\\
-\ln\like &=& K
- - \sum_{i=1}^N \frac{q_i}{2}\,\ln\sigma_{yi}^2
- - \sum_{i=1}^N q_i\,\frac{[y_i-m\,x_i-b]^2}{2\,\sigma_{yi}^2}
- \nonumber \\ & & \quad
- - \sum_{i=1}^N \frac{[1-q_i]}{2}\,\ln[\Vbad+\sigma_{yi}^2]
- - \sum_{i=1}^N [1-q_i]\,\frac{[y_i-\Ybad]^2}{2\,[\Vbad+\sigma_{yi}^2]} \quad ,
+ \quad .
 \end{eqnarray}
-where $K$ is some constant.  Because we are permitting data rejection,
-there is an important prior probability on the $\allq$ that penalizes
-each rejection:
+Because we are permitting data rejection, there is an important prior
+probability on the $\allq$ that penalizes each rejection:
 \begin{eqnarray}\displaystyle
 p(m,b,\allq,\Pbad,\Ybad,\Vbad|I)
  &=& p(\allq|\Pbad,I)\,p(m,b,\Pbad,\Ybad,\Vbad|I)
@@ -608,19 +612,20 @@ likelihood times the prior, properly normalized.  In this case, the
 posterior we (tend to) care about is that for the line parameters
 $(m,b)$.  This is the full posterior probability distribution
 marginalized over the bad-data parameters $(\allq,\Pbad,\Ybad,\Vbad)$.
-The full posterior is
+Defining $\pvtheta\equiv(m,b,\allq,\Pbad,\Ybad,\Vbad)$ for brevity, the
+full posterior is
 \begin{equation}
-p(m,b,\allq,\Pbad,\Ybad,\Vbad|\ally,I) =
- \frac{p(\ally|m,b,\allq,\Pbad,\Ybad,\Vbad,I)}{p(\ally|I)}
- \,p(m,b,\allq,\Pbad,\Ybad,\Vbad|I)
+p(\pvtheta,I) =
+ \frac{p(\ally|\pvtheta,I)}{p(\ally|I)}
+ \,p(\pvtheta|I)
  \quad,
 \end{equation}
-where the numerator can---for our purposes here---be thought of as a
+where the denominator can---for our purposes here---be thought of as a
 normalization integral that makes the posterior distribution function
 integrate to unity.  The marginalization looks like
 \begin{equation}
 p(m,b|\ally,I)=\int \d\allq\,\d\Pbad\,\d\Ybad\,\d\Vbad
- \,p(m,b,\allq,\Pbad,\Ybad,\Vbad|\ally,I) \quad,
+ \,p(\pvtheta,I) \quad,
 \end{equation}
 where by the integral over $\d\allq$ we really mean a sum over all of
 the $2^N$ possible settings of the $q_i$, and the integrals over the
@@ -637,7 +642,7 @@ Compared to the standard line-fitting of
 are going to have to put some thought into computational methodology;
 the sum over $2^N$ settings should give any reader pause.  We will
 give, below, some advice about performing the marginalization and
-computing the posterior distribution functions, which can be extremely
+computing the posterior distribution functions, which can become
 complex.  We will also say a few things about Bayesian
 methods---involving priors and marginalization---in general.  But
 first we will present an alternative to this exponentially complex
@@ -649,7 +654,7 @@ hard assignment $q_i$ for each data point to either the straight-line
 or outlier populations, every data point can be modeled as being drawn
 from a \emph{mixture} (sum with amplitudes that sum to unity) of the
 straight-line and outlier distributions.  That is, the generative
-model the data $\ally$ is changed to
+model for the data $\ally$ is changed to
 \begin{eqnarray}\label{eq:mixture}\displaystyle
 \like &\equiv& \frac{p(\ally|m,b,\Pbad,\Ybad,\Vbad,I)}{p(\ally|I)}
  \nonumber\\
@@ -666,15 +671,15 @@ where, once again, $\Pbad$ is the probability that a data point is bad
 function in the mixture), and $(\Ybad,\Vbad)$ are the parameters of
 the bad-data distribution.
 
-Marginalization of the posterior generated by the likelihood in
-\equationname~(\ref{eq:mixture}) does \emph{not} involve exploring an
-exponential number of alternatives, and, again, when combined with a prior
-on $(m,b,\Pbad,\Ybad,\Vbad)$, can be marginalized over only three
-parameters to produce the posterior probability distribution function
+Marginalization of the posterior generated by the product of the
+likelihood in \equationname~(\ref{eq:mixture}) times a prior on
+$(m,b,\Pbad,\Ybad,\Vbad)$ does \emph{not} involve exploring an
+exponential number of alternatives; an integral over only three
+parameters produces the posterior probability distribution function
 for the straight-line parameters $(m,b)$.  This scale of problem is
 very well-suited to simple multi-dimensonal integrators, in particular
-it works very well with a Markov-Chain Monte Carlo, which we advocate
-below.
+it works very well with a simple Markov-Chain Monte Carlo, which we
+advocate below.
 
 Whether to use the exponential binary assignment or mixture methods
 depends---in principle---on your generative model for the data: Are
@@ -686,87 +691,99 @@ problems of interest, so we strongly advise the latter, that is,
 fitting the distribution as a mixture of good and bad distributions,
 where there is no exponential complexity.
 
+We have lots to talk about now.  We have gone from a procedure
+(\sectionname~\ref{sec:standard}) to an objective function
+(\sectionname~\ref{sec:objective}) to a general expression for a
+non-trivial posterior probability distribution function involving
+priors and multi-dimensional integration.  We will discuss all of
+these issues in turn: We must set the prior, we must find a way to
+integrate to marginalize the distribution function, and then we have
+to decide what to do with the marginalized posterior: optimize it or
+sample from it?
+
 % syntactical reference point
 
 Hogg...in both we have to choose priors on $(m,b,\Pbad,\Ybad,\Vbad)$...Hogg
 
-Hogg...we must discuss optimization and marginalization...Hogg
+Hogg...we must discuss marginalization...Hogg
+
+Hogg...so, you have a marginalized posterior, what now?...Hogg
 
 Hogg...no longer a convex, quadratic problem, so...Hogg
 
-The first piece of advice is to find, get used to, and take care of
-some good non-linear optimizer or optimization code.  It will be
-necessary in all your inference.  Most data analysis platforms have
-optimizers that can handle problems like those presented here with
-little or no trouble.  The second piece of advice---especially if you
-use a continuous optimizer, such as gradient descent---is to spend a
-bit of thought on initialization.  That is, do not start the optimizer
-in an arbitrary point in parameter space, but rather initialize it
-near where you think the answer is likely to be, using either your
-prior knowledge, or else a linear fit (which provides an objective
-starting point).  The third piece of advice is to check for multiple
-minima by randomly sampling parameter space in some significant region
-around the optimum you have, re-converge the nonlinear optimizer, and
-verify that you return to the same best optimum, or that if you come
-to a different one, it has a worse value for the objective.
+%% The first piece of advice is to find, get used to, and take care of
+%% some good non-linear optimizer or optimization code.  It will be
+%% necessary in all your inference.  Most data analysis platforms have
+%% optimizers that can handle problems like those presented here with
+%% little or no trouble.  The second piece of advice---especially if you
+%% use a continuous optimizer, such as gradient descent---is to spend a
+%% bit of thought on initialization.  That is, do not start the optimizer
+%% in an arbitrary point in parameter space, but rather initialize it
+%% near where you think the answer is likely to be, using either your
+%% prior knowledge, or else a linear fit (which provides an objective
+%% starting point).  The third piece of advice is to check for multiple
+%% minima by randomly sampling parameter space in some significant region
+%% around the optimum you have, re-converge the nonlinear optimizer, and
+%% verify that you return to the same best optimum, or that if you come
+%% to a different one, it has a worse value for the objective.
 
-One attractive kind of optimizer is a sampler such as a Markov Chain
-Monte Carlo method \citep{mackay}.  These take a bit of getting used
-to, but once you have them working well, they handle the optimization
-and the local minima problems simultaneously.  These only have
-well-defined properties when your objective function can be
-interpreted as a probability or likelihood, but that will be true for
-all the problem formulations in this \documentname.  In the Bayesian
-scheme below, they simultaneously find your best fit parameters
-\emph{and} provide a sampling from the posterior distribution
-function, a Good Thing to carry forward (as we note below).
+%% One attractive kind of optimizer is a sampler such as a Markov Chain
+%% Monte Carlo method \citep{mackay}.  These take a bit of getting used
+%% to, but once you have them working well, they handle the optimization
+%% and the local minima problems simultaneously.  These only have
+%% well-defined properties when your objective function can be
+%% interpreted as a probability or likelihood, but that will be true for
+%% all the problem formulations in this \documentname.  In the Bayesian
+%% scheme below, they simultaneously find your best fit parameters
+%% \emph{and} provide a sampling from the posterior distribution
+%% function, a Good Thing to carry forward (as we note below).
 
-If you are really feeling cheap, and don't want to learn about either
-samplers or nonlinear optimizers, there is one beautiful hack known as
-``RANSAC'', which everyone should know: Every \emph{pair} of data
-points in your sample can be joined with a particular straight line.
-Therefore, your $N$ data points themselves suggest $M=N\,[N-1]/2$
-possible straight lines.  If you simply compute the scalar objective
-for each of these $M$ suggestions (or a random subset), unless your
-data are pathological, you are likely to have sampled most of the
-relevant parameter space.  The preferred line, of course, is the one
-that optimizes the scalar objective.  This method doesn't return the
-strict optimum, but it does very well in most circumstances.
+%% If you are really feeling cheap, and don't want to learn about either
+%% samplers or nonlinear optimizers, there is one beautiful hack known as
+%% ``RANSAC'', which everyone should know: Every \emph{pair} of data
+%% points in your sample can be joined with a particular straight line.
+%% Therefore, your $N$ data points themselves suggest $M=N\,[N-1]/2$
+%% possible straight lines.  If you simply compute the scalar objective
+%% for each of these $M$ suggestions (or a random subset), unless your
+%% data are pathological, you are likely to have sampled most of the
+%% relevant parameter space.  The preferred line, of course, is the one
+%% that optimizes the scalar objective.  This method doesn't return the
+%% strict optimum, but it does very well in most circumstances.
 
-One unfortunate (though unavoidably correct) thing about any
-Bayes\-ian method is that prior probabilities must be specified.  In
-any situation of straight-line fitting where the data are numerous and
-generally good, these priors do not matter very much to the final
-answer.  The way we have written our likelihoods, the MAP result
-becomes very directly analogous to the maximum likelihood answer when
-the (improper, non-normalizable) prior ``flat in $m$, flat in $b$'' is
-adopted, and something sensible has been chosen for $(\Ybad,\Vbad)$
-(broad distributions that include the mean and variance of the data
-would be a good place to start).  Usually the investigator \emph{does}
-have some basis for setting some more informative priors, but a deep
-and sensible discussion of priors is beyond the scope of this
-\documentname.
+%% One unfortunate (though unavoidably correct) thing about any
+%% Bayes\-ian method is that prior probabilities must be specified.  In
+%% any situation of straight-line fitting where the data are numerous and
+%% generally good, these priors do not matter very much to the final
+%% answer.  The way we have written our likelihoods, the MAP result
+%% becomes very directly analogous to the maximum likelihood answer when
+%% the (improper, non-normalizable) prior ``flat in $m$, flat in $b$'' is
+%% adopted, and something sensible has been chosen for $(\Ybad,\Vbad)$
+%% (broad distributions that include the mean and variance of the data
+%% would be a good place to start).  Usually the investigator \emph{does}
+%% have some basis for setting some more informative priors, but a deep
+%% and sensible discussion of priors is beyond the scope of this
+%% \documentname.
 
-The other unfortunate (though unavoidably correct) thing about any
-Bayesian method is that it does not return an ``answer'' but rather it
-returns a \emph{posterior probability distribution}.  Strictly, this
-posterior distribution function \emph{is} your answer.  However, what
-scientists are usually doing is not, strictly, inference, but rather,
-decision-making.  That is, the investigator wants an answer, not a
-distribution.  There are (at least) two reactions to this.  One is to
-ignore the fundamental Bayesianism at the end, and choose simply the
-``maximum \aposteriori'' (MAP) answer---the single value of $(m,b)$
-that optimizes the fully marginalized (over $\Pbad,\Ybad,\Vbad$ and
-$\allq$) posterior probability distribution function.  This is the
-Bayesian's analog of maximum likelihood.  The other reaction is to
-suck it up and sample the posterior probability distribution and carry
-forward not one answer to the problem but $M$ answers, each of which
-is drawn fairly and independently from the posterior distribution
-function.  The latter is to be preferred because \textsl{(a)}~it shows
-the uncertainties very clearly, and \textsl{(b)}~the sampling can be
-carried forward to future inferences as an approximation to the
-posterior distribution function, useful for propagating uncertainty,
-or standing in as a \emph{prior} for some subsequent inference.
+%% The other unfortunate (though unavoidably correct) thing about any
+%% Bayesian method is that it does not return an ``answer'' but rather it
+%% returns a \emph{posterior probability distribution}.  Strictly, this
+%% posterior distribution function \emph{is} your answer.  However, what
+%% scientists are usually doing is not, strictly, inference, but rather,
+%% decision-making.  That is, the investigator wants an answer, not a
+%% distribution.  There are (at least) two reactions to this.  One is to
+%% ignore the fundamental Bayesianism at the end, and choose simply the
+%% ``maximum \aposteriori'' (MAP) answer---the single value of $(m,b)$
+%% that optimizes the fully marginalized (over $\Pbad,\Ybad,\Vbad$ and
+%% $\allq$) posterior probability distribution function.  This is the
+%% Bayesian's analog of maximum likelihood.  The other reaction is to
+%% suck it up and sample the posterior probability distribution and carry
+%% forward not one answer to the problem but $M$ answers, each of which
+%% is drawn fairly and independently from the posterior distribution
+%% function.  The latter is to be preferred because \textsl{(a)}~it shows
+%% the uncertainties very clearly, and \textsl{(b)}~the sampling can be
+%% carried forward to future inferences as an approximation to the
+%% posterior distribution function, useful for propagating uncertainty,
+%% or standing in as a \emph{prior} for some subsequent inference.
 
 \begin{comments}
 Hogg...marginalization of posteriors vs likelihoods and why,
