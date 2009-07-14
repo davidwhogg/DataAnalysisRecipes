@@ -785,6 +785,8 @@ advised for performing the marginalization.
 Hogg...marginalization of posteriors vs likelihoods and why,
 technically you have to be a Bayesian for this...Hogg
 
+Hogg...choose the best from the \emph{marginalized} posterior...Hogg
+
 Hogg...everyone gets in a tizzy about priors as assumptions, but they
 shouldn't...Hogg
 
@@ -875,10 +877,21 @@ distribution function for parameter $\Pbad$.  Discuss.
 
 \section{Softer or more robust objective function}\label{sec:robust}
 
-The other way...Hogg...less good...assumptions...non-gaussian errors...Hogg
+The other way to make fits less sensitive to outliers is to ``soften''
+the objective function so that the largest residuals do not contribute
+to the (negative) log likelihood in their squares.  In general this is
+a less good alternative than identifying and modeling the outliers (as
+we did in \sectionname~\ref{sec:outliers}), because objective
+functions softer than $\chi^2$ are rarely justifiable in terms of any
+generative model for the data.  In \sectionname~\ref{sec:non-gaussian}
+we discuss (briefly) justifiable modifications to the objective
+function when the observational uncertainty distributions depart from
+gaussians in known ways.  Nonetheless, even when there is not a good
+justification for softening the objective function, it can be useful
+for generating a robust fit with a minimum of effort.
 
-One straightforward way to soften the objective function relative to
-$\chi^2$ is to lower the power to which residuals are raised.  For
+The most straightforward way to soften the objective function relative
+to $\chi^2$ is to lower the power to which residuals are raised.  For
 example, if we model the frequency distribution
 $p(y_i|x_i,\sigma_{yi},m,b)$ not with a gaussian but rather with a
 biexponential
@@ -920,8 +933,9 @@ from which the global optimum must be selected.
 Again, our advice is to use MCMC to explore and optimize non-linear
 objectives like those in this \sectionname.  The MCMC Metropolis
 algorithm requires that the function be interpretable as a
-probability, but that is true by construction here.  Of course when it
-comes to pure optimization, there is a range of optimizers that can
+probability, but that is true by construction here (though perhaps
+only rarely is this truly scientifically justifiable).  Of course when
+it comes to pure optimization, there is a range of optimizers that can
 handle problems like those presented here with little or no trouble.
 However, if you \emph{do} use a gradient-based optimizer rather than a
 sampler, we advise spending a bit of thought on initialization.  That
@@ -949,20 +963,21 @@ strict optimum, but it does very well in most circumstances; it can
 also be used to initialize a true optimizer.
 
 \begin{comments}
-Hogg...in general softening is not justified unless you have a model
-for your data uncertainties that is non-gaussian, and then you just
-want to do the \emph{right} thing given those uncertainties...
+As we said above, softening is not usually justified unless you have a
+model for your data uncertainties that is non-gaussian, and even then
+you just want to do the \emph{right} thing given those uncertainties.
+We discuss this a bit more in \sectionname~\ref{sec:non-gaussian}.
 
 Because, in this \sectionname\ and \sectionname~\ref{sec:outliers}, we
 have broken the assumptions of least-square fitting, we have also
 broken the linearity and convexity of the problem.  That is, no robust
 procedure will be linear, and not many robust procedures can be
 convex, so everything must be iterated to convergence with a nonlinear
-optimizer or sampler.  In the Bayesian scheme presented above, there
-is no iteration to convergence, but there is a marginalization over a
-large discrete space.  Even these minimal modifications to the
-standard assumptions ruin the miracle of linear least squares; this
-shows how unusual and special the ``textbook'' case is.
+optimizer or sampler, and initialized from a range of starting points
+to work through the local minima.  That is, even the minimal
+modifications to the standard assumptions presented in this
+\documentname\ ruin the miracle of linear least squares; this shows
+how unusual and special the ``textbook'' case is.
 
 Importantly, the \emph{scientific} decision is about the objective
 function.  Optimization is an \emph{engineering} consideration.  This
