@@ -1,5 +1,6 @@
 % to-do
 % -----
+% - Hogg: cite and criticize ``sixlin'' paper
 % - Hogg: should we distinguish parameters (m,b) from their best-fit values?
 % - Hogg: should we distinguish = \equiv and \leftarrow ?
 % - Hogg: look at every use of ``probability'' for correctness.
@@ -656,7 +657,7 @@ from a \emph{mixture} (sum with amplitudes that sum to unity) of the
 straight-line and outlier distributions.  That is, the generative
 model for the data $\ally$ is changed to
 \begin{eqnarray}\label{eq:mixture}\displaystyle
-\like &\equiv& \frac{p(\ally|m,b,\Pbad,\Ybad,\Vbad,I)}{p(\ally|I)}
+\like &\equiv& p(\ally|m,b,\Pbad,\Ybad,\Vbad,I)
  \nonumber\\
 \like &\propto&
  \prod_{i=1}^N \left[\frac{1-\Pbad}{\sqrt{2\,\pi\,\sigma_{yi}^2}}
@@ -782,13 +783,43 @@ also returned, trivially (as we noted above) by the MCMC integrator we
 advised for performing the marginalization.
 
 \begin{comments}
-Hogg...marginalization of posteriors vs likelihoods and why,
-technically you have to be a Bayesian for this...Hogg
+The likelihood---for example, that in equation~(\ref{eq:mixture})---is
+the likelihood ``for the parameters'' but it has units (or
+dimensions), in some sense, of inverse data, because it is computed as
+the probability distribution function for observations, evaluated at
+the observed data.  The likelihood, therefore, is not something you
+can integrate or marginalize!  The posterior probability distribution,
+on the other hand, function has units (or dimensions) of inverse
+parameters, so it can be integrated over the parameter space.
+Marginalization, therefore, is only possible after construction of a
+posterior probability distribution function; marginalization is only
+possible in Bayesian analyses.  This is related to the fact that the
+prior probability distribution function serves (in part) to define a
+measure or metric in the parameter space.
 
-Hogg...choose the best from the \emph{marginalized} posterior...Hogg
+If all you care about is parameters $(m,b)$, and, furthermore, all you
+care about is the MAP answer, you must chose the MAP values from the
+\emph{marginalized} posterior.  This is because the MAP value of
+$(m,b,\Pbad,\Ybad,\Vbad)$ in the unmarginalized posterior will not, in
+general, have the same value of $(m,b)$ as the MAP value in the
+marginalized posterior.  This point is important in many real cases of
+inference: Even small departures from gaussianity in the posterior
+distribution function will lead to substantial shifts of the mode
+under marginalization.  Of course, if what you are carrying forward is
+not the MAP result but a \emph{sampling} from the posterior, a
+sampling from the unmarginalized posterior will contain the same
+distribution of $(m,b)$ values as a sampling from the marginalized
+one, by definition.
 
-Hogg...everyone gets in a tizzy about priors as assumptions, but they
-shouldn't...Hogg
+This \documentname\ is not an argument in favor of Bayesian
+approaches; sometimes non-Bayesian approaches are much more expedient
+and give just the same answer.  What this \documentname\ argues for is
+\emph{generative modeling}, which \emph{is} demanding.  The standard
+objection to Bayesian methods is that they require priors, and those
+priors are hard (some say impossible) to set objectively.  But this
+difficulty---in most problems of interest---pales in comparision to
+the difficulty of writing down a justifiable or even approximate
+generative model for the data.
 
 When flagging bad data, you might not want to give all points the same
 prior probability distribution function over $\Pbad$, though it is
