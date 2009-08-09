@@ -7,6 +7,15 @@
 % - Hogg: look at every use of ``likelihood'' for correctness.
 % - Bovy: do something to the fake data that makes PCA differ from the right thing; this requires correlating the variance tensors, I think.
 
+% notes from MPIA Hauskolloquium, 2009-06-24
+% ------------------------------------------
+% - emphasize that once you have a likelihood, there is *only* one thing to do; there is no choice
+% - collapse soft objective section into non-gaussian section and emphasize vanishingly rarely correct
+% - emphasize the importance of marginalization and that it forces Bayesianism
+% - emphasize that the outlier model is not the point, *modeling* the outliers is the point
+% - make MCMC more of the point, connect to marginalization
+% - put figures used in Hauskolloquium into document and remove figures for de-emphasized methods
+
 % style notes
 % -----------
 % - careful with the words ``error'', ``uncertainty''
@@ -104,17 +113,16 @@
 \thispagestyle{plain}\raggedbottom
 \section*{Data analysis recipes:\ \\
   Fitting a straight line to data\footnote{
-    Copyright 2009 David~W.~Hogg (david.hogg@nyu.edu) and Jo Bovy.
+    Copyright 2009 by the authors.
     This is a DRAFT version dated 2009-07-15.
     Please do not distribute this document.}}
 %    You may copy and distribute this document
 %    provided that you make no changes to it whatsoever.}}
 
 \noindent
-David~W.~Hogg \textsl{and}
-Jo~Bovy\\
-\textsl{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics,\\
-New~York~University}
+David~W.~Hogg\footnote{\textsl{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New York University} and \textsl{Max-Planck-Institut f\"ur Astronomie, Heidelberg}},
+Jo~Bovy\footnote{\textsl{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New York University}}, \&
+Dustin~Lang\footnote{\textsl{Department of Computer Science, University of Toronto} and \textsl{Princeton University Observatory}}
 
 \begin{abstract}
   We go through all of the considerations involved in fitting a
