@@ -1,6 +1,7 @@
 % to-do
 % -----
 % - Hogg: cite and criticize ``sixlin'' paper
+% - Hogg: cite and compliment the bayesian line-fitting paper (Bovy email)
 % - Hogg: should we distinguish parameters (m,b) from their best-fit values?
 % - Hogg: should we distinguish = \equiv and \leftarrow ?
 % - Hogg: look at every use of ``probability'' for correctness.
@@ -15,6 +16,7 @@
 % - emphasize that the outlier model is not the point, *modeling* the outliers is the point
 % - make MCMC more of the point, connect to marginalization
 % - put figures used in Hauskolloquium into document and remove figures for de-emphasized methods
+% - release code or pseudo-code to make the figures?
 
 % style notes
 % -----------
@@ -114,7 +116,7 @@
 \section*{Data analysis recipes:\ \\
   Fitting a straight line to data\footnote{
     Copyright 2009 by the authors.
-    This is a DRAFT version dated 2009-07-15.
+    This is a DRAFT version dated 2009-08-15.
     Please do not distribute this document.}}
 %    You may copy and distribute this document
 %    provided that you make no changes to it whatsoever.}}
@@ -125,20 +127,25 @@ Jo~Bovy\footnote{\textsl{Center~for~Cosmology~and~Particle~Physics, Department~o
 Dustin~Lang\footnote{\textsl{Department of Computer Science, University of Toronto} and \textsl{Princeton University Observatory}}
 
 \begin{abstract}
-  We go through all of the considerations involved in fitting a
-  straight line to a set of points in a two-dimensional plane.
-  Standard chi-squared fitting is only appropriate when there is a
+  We go through the many considerations involved in fitting a straight
+  line to a set of points in a two-dimensional plane.  Standard
+  weighted least-squares fitting is only appropriate when there is a
   dimension along which the data points have negligible uncertainties,
-  and another in which all the uncertainties can be described by
+  and another along which all the uncertainties can be described by
   gaussians of known variance; these conditions are rarely met in
   practice.  We consider cases of general, heterogeneous, and
   arbitrarily covariant two-dimensional uncertainties, and situations
   in which there are bad data (large outliers), unknown uncertainties,
   and unknown but expected intrinsic scatter in the linear
   relationship being fit.  Above all we emphasize the importance of
-  choosing a justified scalar objective, and recommend separating that
-  decision from any decisions about the details of optimization or
-  procedure.
+  having a ``generative model'' for the data, even an approximate one.
+  Once there is a generative model, the subsequent fitting is
+  non-arbitrary because the model permits direct computation of the
+  likelihood of the parameters or the posterior probability
+  distribution.  The latter is required if there are ``nuisance
+  parameters'' to marginalize away.  We advocate extremely simple
+  Markov-Chain Monte-Carlo methods for optimizing, sampling from, and
+  marginalizing over any probability distribution function.
 \end{abstract}
 
 It is conventional to begin any scientific document with an
@@ -148,14 +155,15 @@ scientists fit a straight line to their data, they are doing something
 that is simultaneously \emph{wrong} and \emph{unnecessary}.  It is
 wrong because circumstances in which a set of two dimensional
 measurements---outputs from an observation, experiment, or
-calculation---are truly drawn from a linear relationship is
-exceedingly rare.  Indeed, any mildly nonlinear transformation of
-coordinates and a truly linear relationship becomes curved.
-Furthermore, even if a relationship \emph{looks} linear, unless there
-is a confidently held theoretical reason to believe that the data are
-generated from a linear relationship, it probably isn't linear in
-detail; in these cases fitting with a linear model can introduce
-substantial systematic error.
+calculation---are truly drawn from a narrow, linear relationship is
+exceedingly rare.  Indeed, almost any transformation of coordinates
+renders a truly linear relationship non-linear.  Furthermore, even if
+a relationship \emph{looks} linear, unless there is a confidently held
+theoretical reason to believe that the data are generated from a
+linear relationship, it probably isn't linear in detail; in these
+cases fitting with a linear model can introduce substantial systematic
+error, or generate apparent inconsistencies among experiments that are
+intrinsically consistent.
 
 Even if the investigator doesn't care that the fit is wrong, it is
 likely to be unnecessary.  Why?  Because it is rare that, given a
@@ -180,15 +188,20 @@ gaussian-distributed noise of known amplitudes in one direction (the
 $y$ direction without loss of generality), the maximum-likelihood or
 best-fit line for the points has a slope $m$ and intercept $b$ that
 can be obtained justifiably by a perfectly linear matrix-algebra
-operation known as ``least-square fitting''.  This miracle deserves
-contemplation.  Once any of the input assumptions is violated (and
-note there are many input assumptions), all bets are off, and there
-are no consensus methods used by scientists across disciplines.  It is
-one of the objectives of this \documentname\ to suggest and promote some
-possible consensus methods: We present below simple, straightforward,
-comprehensible, and---above all---\emph{justifiable} methods for
-fitting a straight line to data with general, non-trivial, and
-uncertain properties.
+operation known as ``weighted linear least-square fitting''.  This
+miracle deserves contemplation.  Once any of the input assumptions is
+violated (and note there are many input assumptions), all bets are
+off, and there are no consensus methods used by scientists across
+disciplines.  Indeed, there is a large literature that implies that
+the violation of the assumptions opens up to the investigator a wide
+range of possible \emph{options} with little but aesthetics to
+distinguish them!  It is one of the objectives of this
+\documentname\ to suggest that if the data are \emph{modeled}
+statistically there is little arbitrariness.  It is another objective
+to promote consensus methods: We present below simple,
+straightforward, comprehensible, and---above all---\emph{justifiable}
+methods for fitting a straight line to data with general, non-trivial,
+and uncertain properties.
 
 Perhaps because there is no agreed-upon bible or cookbook to turn to,
 or perhaps because most investigators would rather make some stuff up
