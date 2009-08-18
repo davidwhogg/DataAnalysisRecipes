@@ -6,16 +6,18 @@
 % - Hogg: should we distinguish = \equiv and \leftarrow ?
 % - Hogg: look at every use of ``probability'' for correctness.
 % - Hogg: look at every use of ``likelihood'' for correctness.
-% - Bovy: do something to the fake data that makes PCA differ from the right thing; this requires correlating the variance tensors, I think.
+% - Bovy: site Sivia also in the MacKay, Press citation.
 
 % notes from MPIA Hauskolloquium, 2009-06-24
 % ------------------------------------------
 % - emphasize that once you have a likelihood, there is *only* one thing to do; there is no choice
 % - collapse soft objective section into non-gaussian section and emphasize vanishingly rarely correct
 % - emphasize the importance of marginalization and that it forces Bayesianism
-% - emphasize that the outlier model is not the point, *modeling* the outliers is the point
+% - emphasize that the specific outlier model is not the point, *modeling* the outliers is the point
 % - make MCMC more of the point, connect to marginalization
 % - put figures used in Hauskolloquium into document and remove figures for de-emphasized methods
+% - describe outlier odds calculation
+% - add words about upper limits
 % - release code or pseudo-code to make the figures?
 
 % style notes
@@ -177,9 +179,9 @@ fitting an overly simple model.
 That said, it must be admitted that one of the most effective ways to
 communicate scientific results is with catchy punchlines and compact,
 approximate representations, even when those are unjustified and
-unnecessary.  For this reason---and in situations where a linear fit
-\emph{is} justifiable and essential---the problem of fitting a line to
-data comes up very frequently in the life of a scientist.
+unnecessary.  For this reason---and the reason that in rare cases the
+fit \emph{is} justifiable and essential---the problem of fitting a
+line to data comes up very frequently in the life of a scientist.
 
 It is a miracle with which we hope everyone reading this is familiar
 that \emph{if} you have a set of two-dimensional points $(x,y)$ that
@@ -196,28 +198,28 @@ disciplines.  Indeed, there is a large literature that implies that
 the violation of the assumptions opens up to the investigator a wide
 range of possible \emph{options} with little but aesthetics to
 distinguish them!  It is one of the objectives of this
-\documentname\ to suggest that if the data are \emph{modeled}
-statistically there is little arbitrariness.  It is another objective
-to promote consensus methods: We present below simple,
-straightforward, comprehensible, and---above all---\emph{justifiable}
-methods for fitting a straight line to data with general, non-trivial,
-and uncertain properties.
+\documentname\ to promote an understanding that if the data can be
+\emph{modeled} statistically there is little arbitrariness.  It is
+another objective to promote consensus; when the choice of method is
+not arbitrary, consensus will emerge automatically.  We present below
+simple, straightforward, comprehensible, and---above
+all---\emph{justifiable} methods for fitting a straight line to data
+with general, non-trivial, and uncertain properties.
 
 Perhaps because there is no agreed-upon bible or cookbook to turn to,
 or perhaps because most investigators would rather make some stuff up
 that works ``good enough'' under deadline, or perhaps because many
 realize, deep down, that much fitting is really unnecessary anyway,
 there are some egregious procedures and associated errors and
-absurdities in the literature.  We won't call out the guilty here, but
-just make the point to remind everyone that when you cite, rely upon,
-or transmit a best-fit slope or intercept reported in the literature,
-you may be propagating more noise than signal.
+absurdities in the literature.  When an investigator cites, relies upon,
+or transmits a best-fit slope or intercept reported in the literature,
+he or she may be propagating more noise than signal.
 
 This \documentname\ is part polemic, part attempt at establishing standards,
 and part notes for our own future re-use.  We apologize in advance for
 some astrophysics bias and failure to review basic ideas of linear
 algebra, function optimization, and practical statistics.  Very good
-reviews of the latter exist in abundance \citep{jaynes,mackay,press}.
+reviews of the latter exist in abundance \citep{mackay,press}.
 Our focus is on the specific problems of linear fitting that we so
 often face; the general ideas appear in the context of these concrete
 and relatively realistic example problems.  The reader is encouraged
@@ -260,21 +262,20 @@ y_N
 \end{array}\right] \quad ,\label{eq:covar}
 \end{align}
 where one might call $\mY$ a ``vector'', and the covariance matrix
-$\mC$ could be generalized to the case in which there are covariances
-between the different $y$-direction uncertainties.  The best-fit
-values for the parameters $m$ and $b$ are just the components of a
-column vector $\mX$ found by
+$\mC$ could be generalized to the non-diagonal case in which there are
+covariances among the uncertainties of the different points.  The
+best-fit values for the parameters $m$ and $b$ are just the components
+of a column vector $\mX$ found by
 \begin{equation}\label{eq:lsf}
 \left[\begin{array}{c} $b$ \\ $m$ \end{array}\right]
  = \mX = \inverse{\left[\mAT\,\mCinv\,\mA\right]}
   \,\left[\mAT\,\mCinv\,\mY\right] \quad .
 \end{equation}
-This seems all very complicated, but it is actually the simplest thing
-that can be written down that is linear, obeys matrix multiplication
-rules, and has the right relative sensitivity to data of different
-statistical significance.  It can be justified in one of several ways;
-the linear algebra justification starts by noting that you want to
-solve the equation
+This is actually the simplest thing that can be written down that is
+linear, obeys matrix multiplication rules, and has the right relative
+sensitivity to data of different statistical significance.  It can be
+justified in one of several ways; the linear algebra justification
+starts by noting that you want to solve the equation
 \begin{equation}
 \mY = \mA\,\mX \quad ,
 \end{equation}
@@ -285,8 +286,9 @@ left-multiply everything by $\mAT$ to reduce the dimensionality, and
 then \equationname~(\ref{eq:lsf}) is the solution of that
 reduced-dimensionality equation.
 
-This methodology minimizes a quantity $\chi^2$ (``chi-squared''),
-which is the total squared error, scaled by the uncertainties, or
+This procedure is not arbitrary; it minimizes a quantity $\chi^2$
+(``chi-squared''), which is the total squared error, scaled by the
+uncertainties, or
 \begin{equation}\label{eq:chisquared}
 \chi^2
  = \sum_{i=1}^N \frac{\left[y_i - f(x_i)\right]^2}{\sigma_{yi}^2}
@@ -323,7 +325,7 @@ literature, because many have an intuition that the ``velocity depends
 on the distance'' when in fact velocities are measured better, so from
 the point of view of fitting, it is better to think of the distance
 depending on the velocity.  In the context of fitting, there is no
-meaning to the terms ``independent variable'' and ``dependent
+meaning to the (ill-chosen) terms ``independent variable'' and ``dependent
 variable'' beyond the error properties of the data.  In performing
 this standard fit, the investigator is effectively assuming that the
 $x$ values have negligible uncertainties; if they do \emph{not}, then
@@ -334,8 +336,11 @@ construction of the $\chi^2$ objective function like a linear
 ``metric'' for the data space: It is used to turn a $N$-dimensional
 vector displacement into a scalar squared distance between the
 observed values and the values predicted by the model. This distance
-is then minimized.  This idea is sometimes useful for thinking about
-statistics as a physicist.
+is then minimized.  This idea---that the covariance matrix is a
+metric---is sometimes useful for thinking about statistics as a
+physicist; it will return in \sectionname~\ref{sec:twod} when we think
+about data for which there are uncertainties in both the $x$ and $y$
+directions.
 
 The words ``linear regression'' are used in many different contexts,
 but in the most common, they seem to mean ``linear fitting without any
@@ -402,25 +407,25 @@ knowledge about the problem to construct a (preferably) justified,
 this framework, fitting anything to anything involves a scientific
 question about the objective function representing ``goodness of fit''
 and then a separate and subsequent engineering question about how to
-\emph{find the optimum} and, possibly, the confidence interval or
-posterior probability distribution around that optimum.  Note that in
-the above \sectionname\ we did \emph{not} proceed according to these
-rules; indeed the procedure was introduced prior to the objective
-function, and the objective function was not justified.
+\emph{find the optimum} and, possibly, the posterior probability
+distribution function around that optimum.  Note that in the above
+\sectionname\ we did \emph{not} proceed according to these rules;
+indeed the procedure was introduced prior to the objective function,
+and the objective function was not justified.
 
-One method for finding or creating a justified scalar objective is to
-make a ``generative model'' for the data, or a statistical model for
-the generation the data set you have.  In the case of the straight
-line fit in the presence of known, gaussian uncertainties, one can
-create this generative model by imagining that the data \emph{really
-  do} come from a line of the form $y = f(x) = m\,x+b$, and that the
-only reason that any data point deviates from this perfect, straight
-line is that to the true $y$ values a small $y$-direction offset has
-been added, where that offset was drawn from a gaussian distribution
-of zero mean and known variance $\sigma_y^2$.  In this model, given an
-independent position $x_i$, an uncertainty $\sigma_{yi}$, a slope $m$,
-and an intercept $b$, the frequency distribution
-$p(y_i|x_i,\sigma_{yi},m,b)$ for $y_i$ is
+By far the best method for finding or creating a justified scalar
+objective is to make a ``generative model'' for the data, or a
+statistical model that could reasonably have generated the data set
+you have.  In the case of the straight line fit in the presence of
+known, gaussian uncertainties, one can create this generative model by
+imagining that the data \emph{really do} come from a line of the form
+$y = f(x) = m\,x+b$, and that the only reason that any data point
+deviates from this perfect, straight line is that to the true $y$
+values a small $y$-direction offset has been added, where that offset
+was drawn from a gaussian distribution of zero mean and known variance
+$\sigma_y^2$.  In this model, given an independent position $x_i$, an
+uncertainty $\sigma_{yi}$, a slope $m$, and an intercept $b$, the
+frequency distribution $p(y_i|x_i,\sigma_{yi},m,b)$ for $y_i$ is
 \begin{equation}\label{eq:objectivei}
 p(y_i|x_i,\sigma_{yi},m,b) = \frac{1}{\sqrt{2\,\pi\,\sigma_{yi}^2}}
  \,\exp\left(-\frac{[y_i - m\,x - b]^2}{2\,\sigma_{yi}^2}\right) \quad ,
@@ -429,10 +434,12 @@ where this gives the expected frequency (in a hypothetical set of
 repeated experiments) of getting value in the range $[y_i,y_i+\d y]$
 per unit $\d y$.
 
+% syntactical reference point
+
 This generative model provides us with a natural, justified, scalar
 objective: We seek the line (parameters $m$ and $b$) that maximize the
 probability of the observed data given the model or likelihood of the
-parameters (which are the same thing in standard parlance).  The
+parameters (which are the same quantities in standard parlance).  The
 likelihood $\like$ is the product of conditional probabilities
 \begin{equation}\label{eq:like}
 \like = \prod_{i=1}^N p(y_i|x_i,\sigma_{yi},m,b) \quad .
