@@ -18,7 +18,12 @@
 % - put figures used in Hauskolloquium into document and remove figures for de-emphasized methods
 % - describe outlier odds calculation
 % - add words about upper limits
-% - release code or pseudo-code to make the figures?
+
+% notes from IMPRS
+% ----------------
+% - clearly itemize the standard fitting assumptions?
+% - add a problem at the beginning of the outliers problems asking for an MCMC replacement of the standard fitting problem
+% - release code or pseudo-code to make the figures?  What about lab materials?
 
 % style notes
 % -----------
@@ -26,6 +31,7 @@
 % - careful with the words ``probability'', ``frequency'', ``likelihood''
 % - use () for function arguments, and [] for grouping/precedence
 % - define macros; remember 1, 2, infinity
+% - put new terms in \emph{}, put only referred-to words in quotation marks.
 
 \documentclass[12pt,twoside]{article}
 \usepackage{amssymb,amsmath,mathrsfs,deluxetable}
@@ -118,7 +124,7 @@
 \section*{Data analysis recipes:\ \\
   Fitting a straight line to data\footnote{
     Copyright 2009 by the authors.
-    This is a DRAFT version dated 2009-08-15.
+    This is a DRAFT version dated 2009-08-19.
     Please do not distribute this document.}}
 %    You may copy and distribute this document
 %    provided that you make no changes to it whatsoever.}}
@@ -413,13 +419,16 @@ distribution function around that optimum.  Note that in the above
 indeed the procedure was introduced prior to the objective function,
 and the objective function was not justified.
 
-By far the best method for finding or creating a justified scalar
-objective is to make a ``generative model'' for the data, or a
-statistical model that could reasonably have generated the data set
-you have.  In the case of the straight line fit in the presence of
-known, gaussian uncertainties, one can create this generative model by
-imagining that the data \emph{really do} come from a line of the form
-$y = f(x) = m\,x+b$, and that the only reason that any data point
+In principle, there are many choices for objective function.  But the
+only procedure that is truly justified---in the sense that it leads to
+interpretable probabilistic inference, is to make a \emph{generative
+  model} for the data.  A generative model is a parameterized,
+quantitative description of a statistical procedure that could
+reasonably have generated the data set you have.  In the case of the
+straight line fit in the presence of known, gaussian uncertainties in
+one dimension, one can create this generative model as follows:
+Imagine that the data \emph{really do} come from a line of the form $y
+= f(x) = m\,x+b$, and that the only reason that any data point
 deviates from this perfect, straight line is that to the true $y$
 values a small $y$-direction offset has been added, where that offset
 was drawn from a gaussian distribution of zero mean and known variance
@@ -434,12 +443,11 @@ where this gives the expected frequency (in a hypothetical set of
 repeated experiments) of getting value in the range $[y_i,y_i+\d y]$
 per unit $\d y$.
 
-% syntactical reference point
-
-This generative model provides us with a natural, justified, scalar
+The generative model provides us with a natural, justified, scalar
 objective: We seek the line (parameters $m$ and $b$) that maximize the
-probability of the observed data given the model or likelihood of the
-parameters (which are the same quantities in standard parlance).  The
+probability of the observed data given the model or (in standard
+parlance) the \emph{likelihood of the parameters}.  In our generative
+model the data points are independently drawn (implicitly), so the
 likelihood $\like$ is the product of conditional probabilities
 \begin{equation}\label{eq:like}
 \like = \prod_{i=1}^N p(y_i|x_i,\sigma_{yi},m,b) \quad .
@@ -469,16 +477,20 @@ the data), $p(m,b|I)$ is the \emph{prior} probability distribution for
 the parameters that represents all knowledge \emph{except} the input
 data $\ally$, and the denominator can be thought of as a normalization
 constant, obtained by marginalizing the numerator over all
-parameters. Unless the prior $p(m,b|I)$ is pretty informative, the
-posterior distribution function $p(m,b|\ally,I)$ here is going to look
-very similar to the likelihood function in
-\equationname~(\ref{eq:like}) above.
+parameters. Unless the prior $p(m,b|I)$ has a lot of variation in the
+region of interest, the posterior distribution function
+$p(m,b|\ally,I)$ here is going to look very similar to the likelihood
+function in \equationname~(\ref{eq:like}) above.  That is, with an
+uninformative prior, the straight line that maximizes the likelihood
+will come extremely close to maximizing the posterior probability
+distribution function; we will return to this later.
 
 We have succeeded in justifying the standard method as optimizing a
-justified, scalar objective function.  It is just the great good luck
-of gaussian distributions that the objective can be written as a
-quadratic function of the data.  This makes the optimum a pure linear
-function of the data, and therefore trivial to obtain.
+justified, scalar objective function; the likelihood of a generative
+model for the data.  It is just the great good luck of gaussian
+distributions that the objective can be written as a quadratic
+function of the data.  This makes the optimum a pure linear function
+of the data, and therefore trivial to obtain.
 
 \begin{comments}
 In geometry or physics, a ``scalar'' is not just a quantity with a
@@ -506,6 +518,8 @@ make a convex combination of them (such as by adding them together in
 quadrature with weights).  This point is so obvious, it is not clear
 what else to say, except that many scientific investigations are so
 ill-posed that the investigator does not know what is being optimized.
+When there is a generative model for the data, this problem doesn't
+arise.
 
 We have tried in this \documentname\ to be a bit careful with words.
 Following \citet{jaynes}, we have tried to use the word
@@ -519,7 +533,7 @@ with a probability distribution.  In the Bayesian context, then---to
 get extremely technical---the posterior probability distribution
 function is truly a probabiity distribution, but the likelihood factor
 is constructed from frequency distributions.  This relates to the
-difference between ``uncertainty'' and ``error'': As one of our
+difference between ``uncertainty'' and ``error'': As one of DWH's
 mentors---Gerry Neugebauer---once said, ``They are uncertainties, not
 errors; if they were \emph{errors}, we would have corrected them!''
 Data come with \emph{uncertainties}, which are limitations of
@@ -610,8 +624,8 @@ values can be \emph{inferred} and \emph{marginalized out} so in the
 end, we need introduce \emph{no new free parameters}.
 
 In principle, to perform the marginalization we are going to have to
-define posterior probability distribution functions, so let's go
-Bayesian.  In this case, the likelihood is
+define posterior probability distribution functions (more on this
+below), so let's go Bayesian.  In this case, the likelihood is
 \begin{eqnarray}\displaystyle
 \like &\equiv& p(\ally|m,b,\allq,\Pbad,\Ybad,\Vbad,I)
  \nonumber\\
@@ -720,11 +734,11 @@ problems of interest, so we strongly advise the latter, that is,
 fitting the distribution as a mixture of good and bad distributions,
 where there is no exponential complexity.
 
-We have lots to talk about now.  We have gone from a procedure
+We have lots to discuss.  We have gone from a procedure
 (\sectionname~\ref{sec:standard}) to an objective function
 (\sectionname~\ref{sec:objective}) to a general expression for a
 non-trivial posterior probability distribution function involving
-priors and multi-dimensional integration.  We will discuss all of
+priors and multi-dimensional integration.  We will treat each of
 these issues in turn: We must set the prior, we must find a way to
 integrate to marginalize the distribution function, and then we have
 to decide what to do with the marginalized posterior: optimize it or
@@ -752,19 +766,21 @@ discussion of priors is beyond the scope of this \documentname.
 Suffice it to say, in this situation---pruning bad data---the setting
 of priors is the \emph{least} of one's problems.
 
-The second unfortunate thing about the Bayesian schemes is that we must
-marginalize.  As we have noted, marginalization is necessary if you
-want to get estimates with uncertainties or confidence intervals in
-the straight-line parameters $(m,b)$ that properly account for their
-covariances with the nuisance parameters $(\Pbad,\Ybad,\Vbad)$.  This
-marginalization can be performed by direct numerical integration
-(think gridding up the nuisance parameters, evaluating at every grid
-point, and summing), or it can be performed with some kind of sampler,
-such as a Monte-Carlo Markov Chain.  We strongly recommend the latter
-for reasons that will become obvious below; briefly, it is because in
-situations where the integral is of a \emph{probability distribution},
-not only does the MCMC scheme integrate it, it also produces a
-\emph{sampling} from the distribution as a side-product for free.
+The second unfortunate thing about the Bayesian schemes is that we
+must marginalize.  It is also a \emph{fortunate} thing that we
+\emph{can} marginalize.  As we have noted, marginalization is
+necessary if you want to get estimates with uncertainties or
+confidence intervals in the straight-line parameters $(m,b)$ that
+properly account for their covariances with the nuisance parameters
+$(\Pbad,\Ybad,\Vbad)$.  This marginalization can be performed by
+direct numerical integration (think gridding up the nuisance
+parameters, evaluating at every grid point, and summing), or it can be
+performed with some kind of sampler, such as a Monte-Carlo Markov
+Chain.  We strongly recommend the latter for reasons that will become
+obvious below; briefly, it is because in situations where the integral
+is of a \emph{probability distribution}, not only does the MCMC scheme
+integrate it, it also produces a \emph{sampling} from the distribution
+as a side-product for free.
 
 Bovy: Put in one paragraph about how MCMC works and describe the
 Metropolis algorithm briefly...say something about burn-in and taking
@@ -823,7 +839,8 @@ Marginalization, therefore, is only possible after construction of a
 posterior probability distribution function; marginalization is only
 possible in Bayesian analyses.  This is related to the fact that the
 prior probability distribution function serves (in part) to define a
-measure or metric in the parameter space.
+measure in the parameter space.  You can't integrate without a
+measure.
 
 If all you care about is parameters $(m,b)$, and, furthermore, all you
 care about is the MAP answer, you must chose the MAP values from the
@@ -933,6 +950,13 @@ all the data uncertainty variances $\sigma_{yi}^2$ by 4 (or dividing
 the uncertainties by 2).  Again plot the fully marginalized posterior
 distribution function for parameter $\Pbad$.  Discuss.
 \end{problem}
+
+% syntactical reference point
+
+% Combine this next section with non-gaussian errors.  Open with the
+% comment that, in some sense, outliers can be seen as examples of non-
+% gaussian errors; how to deal?  Softening is usually ad-hoc; modeling
+% them realistically is justified.
 
 \section{Softer or more robust objective function}\label{sec:robust}
 
