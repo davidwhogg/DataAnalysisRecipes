@@ -1,4 +1,4 @@
-all: straightline.pdf
+all: straightline.pdf blackhole.pdf
 
 %.pdf: %.tex
 	pdflatex $<
