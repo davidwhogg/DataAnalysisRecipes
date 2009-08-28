@@ -7,12 +7,12 @@
 % - Hogg: look at every use of ``probability'' for correctness.
 % - Hogg: look at every use of ``likelihood'' for correctness.
 % - Bovy: site Sivia also in the MacKay, Press citation.
+% - Hogg: should we explicitly explain the frequentist answer when there are nuisance parameters, etc?
 
 % notes from MPIA Hauskolloquium, 2009-06-24
 % ------------------------------------------
 % - emphasize that once you have a likelihood, there is *only* one thing to do; there is no choice
 % - collapse soft objective section into non-gaussian section and emphasize vanishingly rarely correct
-% - emphasize the importance of marginalization and that it forces Bayesianism
 % - emphasize that the specific outlier model is not the point, *modeling* the outliers is the point
 % - make MCMC more of the point, connect to marginalization
 % - put figures used in Hauskolloquium into document and remove figures for de-emphasized methods
@@ -359,7 +359,7 @@ $y$-direction uncertainties are identical gaussians.
 
 Note that not only does the standard problem solved in this
 \sectionname\ have a linear solution, the objective function
-``landscape'' is convex so the solution is unique.  This is
+``landscape'' is \emph{convex} so the solution is unique.  This is
 remarkable, and almost no perturbation of this problem (as we will see
 below) has either of these properties, let alone both.  For this
 standard problem, the linearity and convexity permit a one-step
@@ -520,6 +520,9 @@ what else to say, except that many scientific investigations are so
 ill-posed that the investigator does not know what is being optimized.
 When there is a generative model for the data, this problem doesn't
 arise.
+
+Hogg: Put full frequentist description of what you do with the
+likelihoods for a ``bag of models'' if you are a frequentist!  Hogg
 
 We have tried in this \documentname\ to be a bit careful with words.
 Following \citet{jaynes}, we have tried to use the word
@@ -866,6 +869,9 @@ priors are hard (some say impossible) to set objectively.  But this
 difficulty---in most problems of interest---pales in comparision to
 the difficulty of writing down a justifiable or even approximate
 generative model for the data.
+
+Hogg: Once again, what would a frequentist do with the nuisance
+parameters?  I think I know.  Hogg
 
 When flagging bad data, you might not want to give all points the same
 prior probability distribution function over $\Pbad$, though it is
