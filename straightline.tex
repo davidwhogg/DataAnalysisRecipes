@@ -12,12 +12,11 @@
 % notes from MPIA Hauskolloquium, 2009-06-24
 % ------------------------------------------
 % - emphasize that once you have a likelihood, there is *only* one thing to do; there is no choice
-% - collapse soft objective section into non-gaussian section and emphasize vanishingly rarely correct
+% - collapse soft objective section into non-Gaussian section and emphasize vanishingly rarely correct
 % - emphasize that the specific outlier model is not the point, *modeling* the outliers is the point
 % - make MCMC more of the point, connect to marginalization
 % - put figures used in Hauskolloquium into document and remove figures for de-emphasized methods
 % - describe outlier odds calculation
-% - add words about upper limits
 
 % notes from IMPRS
 % ----------------
@@ -140,7 +139,7 @@ Dustin~Lang\footnote{\textsl{Department of Computer Science, University of Toron
   weighted least-squares fitting is only appropriate when there is a
   dimension along which the data points have negligible uncertainties,
   and another along which all the uncertainties can be described by
-  gaussians of known variance; these conditions are rarely met in
+  Gaussians of known variance; these conditions are rarely met in
   practice.  We consider cases of general, heterogeneous, and
   arbitrarily covariant two-dimensional uncertainties, and situations
   in which there are bad data (large outliers), unknown uncertainties,
@@ -192,7 +191,7 @@ line to data comes up very frequently in the life of a scientist.
 It is a miracle with which we hope everyone reading this is familiar
 that \emph{if} you have a set of two-dimensional points $(x,y)$ that
 depart from a perfect, narrow, straight line only by the addition of
-gaussian-distributed noise of known amplitudes in one direction (the
+Gaussian-distributed noise of known amplitudes in one direction (the
 $y$ direction without loss of generality), the maximum-likelihood or
 best-fit line for the points has a slope $m$ and intercept $b$ that
 can be obtained justifiably by a perfectly linear matrix-algebra
@@ -234,7 +233,7 @@ can be compared with the \figurename s.
 
 \section{Standard practice}\label{sec:standard}
 
-You have a set of $N>2$ points $(x_i,y_i)$, with known gaussian
+You have a set of $N>2$ points $(x_i,y_i)$, with known Gaussian
 uncertainties $\sigma_{yi}$ in the $y$ direction, and no uncertainty
 at all (that is, perfect knowledge) in the $x$ direction.  You want to
 find the function $f(x)$ of the form
@@ -307,10 +306,10 @@ $b$ that minimize $\chi^2$.  This, of course, is only one possible
 meaning of the phrase ``best fit''; that issue is the main subject of
 the rest of this \documentname.
 
-When the uncertainties are gaussian and their variances $\sigma_{yi}$
+When the uncertainties are Gaussian and their variances $\sigma_{yi}$
 are correctly estimated, the matrix
 $\inverse{\left[\mAT\,\mCinv\,\mA\right]}$ that appears in
-\equationname~(\ref{eq:lsf}) is just the covariance matrix (gaussian
+\equationname~(\ref{eq:lsf}) is just the covariance matrix (Gaussian
 uncertainty variances on the diagonal, covariances off the diagonal)
 for the parameters in $\mX$.  The justification of this will have to
 wait for a discussion of the objective function, if it comes at all.
@@ -355,7 +354,7 @@ just the procedure outlined in this \sectionname, but with the
 covariance matrix $\mC$ set equal to the identity matrix.  This is
 equivalent to fitting under the assumption not just that the
 $x$-direction uncertainties are negligible, but also that all of the
-$y$-direction uncertainties are identical gaussians.
+$y$-direction uncertainties are identical Gaussians.
 
 Hogg:  This would be a good time to discuss the sixlin paper.  Hogg
 
@@ -427,13 +426,13 @@ interpretable probabilistic inference, is to make a \emph{generative
   model} for the data.  A generative model is a parameterized,
 quantitative description of a statistical procedure that could
 reasonably have generated the data set you have.  In the case of the
-straight line fit in the presence of known, gaussian uncertainties in
+straight line fit in the presence of known, Gaussian uncertainties in
 one dimension, one can create this generative model as follows:
 Imagine that the data \emph{really do} come from a line of the form $y
 = f(x) = m\,x+b$, and that the only reason that any data point
 deviates from this perfect, straight line is that to the true $y$
 values a small $y$-direction offset has been added, where that offset
-was drawn from a gaussian distribution of zero mean and known variance
+was drawn from a Gaussian distribution of zero mean and known variance
 $\sigma_y^2$.  In this model, given an independent position $x_i$, an
 uncertainty $\sigma_{yi}$, a slope $m$, and an intercept $b$, the
 frequency distribution $p(y_i|x_i,\sigma_{yi},m,b)$ for $y_i$ is
@@ -489,7 +488,7 @@ distribution function; we will return to this later.
 
 We have succeeded in justifying the standard method as optimizing a
 justified, scalar objective function; the likelihood of a generative
-model for the data.  It is just the great good luck of gaussian
+model for the data.  It is just the great good luck of Gaussian
 distributions that the objective can be written as a quadratic
 function of the data.  This makes the optimum a pure linear function
 of the data, and therefore trivial to obtain.
@@ -572,8 +571,8 @@ method---Bayesian or frequentist---of this \sectionname\ is invalid.
 It remains a miracle (to us) that the optimization of the $\chi^2$
 objective, which is the only sensible objective under the assumptions
 of the standard problem, has a linear solution.  One can attribute
-this to the magical properties of the gaussian distribution, but the
-gaussian distribution is also the maximum entropy distribution (the
+this to the magical properties of the Gaussian distribution, but the
+Gaussian distribution is also the maximum entropy distribution (the
 least informative possible distribution) constrained to have zero mean
 and a known variance; it is the limiting distribution of the central
 limit theorem.  That this leads to a convex, linear algebra solution
@@ -584,7 +583,7 @@ is something for which we all ought to give thanks.
 Imagine a set of $N$ measurements $t_i$, with uncertainty variances
 $\sigma_{ti}^2$, all of the same (unknown) quantity $T$.  Assuming the
 generative model that each $t_i$ differs from $T$ by a
-gaussian-distributed offset, taken from a gaussian with zero mean and
+Gaussian-distributed offset, taken from a Gaussian with zero mean and
 variance $\sigma_{ti}^2$, write down an experession for the log
 likelihood $\ln\like$ for the data given the model parameter $T$.
 Take a derivative and show that the maximum likelihood value for $T$
@@ -608,8 +607,8 @@ approaches to mitigating this sensitivity, which are not necessarily
 different.  The first is to find ways to objectively remove, reject,
 or become insensitive to ``bad'' points; this is the subject of this
 \sectionname.  The second is to better model your data-point
-uncertainties, permitting larger deviations than the gaussian noise
-estimates; this is the subject of \sectionname~\ref{sec:non-gaussian}.
+uncertainties, permitting larger deviations than the Gaussian noise
+estimates; this is the subject of \sectionname~\ref{sec:non-Gaussian}.
 Both of these are strongly preferable to sorting through the data and
 rejecting points by hand, for reasons of subjectivity and
 irreproducibility that we need not state.
@@ -854,7 +853,7 @@ care about is the MAP answer, you must chose the MAP values from the
 $(m,b,\Pbad,\Ybad,\Vbad)$ in the unmarginalized posterior will not, in
 general, have the same value of $(m,b)$ as the MAP value in the
 marginalized posterior.  This point is important in many real cases of
-inference: Even small departures from gaussianity in the posterior
+inference: Even small departures from Gaussianity in the posterior
 distribution function will lead to substantial shifts of the mode
 under marginalization.  Of course, if what you are carrying forward is
 not the MAP result but a \emph{sampling} from the posterior, a
@@ -932,7 +931,7 @@ equally informative about their \emph{relative} magnitudes.
 \begin{problem}\label{prob:mixture}
 Using the mixture model proposed above---that treats the distribution
 as a mixture of a thin line containing a fraction $[1-\Pbad]$ of the
-points and a broader gaussian containing a fraction $\Pbad$ of the
+points and a broader Gaussian containing a fraction $\Pbad$ of the
 points---find the best-fit (the maximum \aposteriori) straight line
 $y=m\,x+b$ for the $x$, $y$, and $\sigma_y$ for the data in
 \tablename~\ref{table:data_allerr}.  Before choosing the MAP line,
@@ -960,20 +959,14 @@ the uncertainties by 2).  Again plot the fully marginalized posterior
 distribution function for parameter $\Pbad$.  Discuss.
 \end{problem}
 
-% syntactical reference point
+\section{Non-Gaussian uncertainties}\label{sec:non-Gaussian}
 
-% Non-gaussian uncertainties:  Open with the
-% comment that, in some sense, outliers can be seen as examples of non-
-% gaussian errors; how to deal?  Softening is usually ad-hoc; modeling
-% them realistically is justified.
-
-\section{Non-gaussian uncertainties}\label{sec:non-gaussian}
-
-In the above we have assumed that every data point has a precisely
-gaussian uncertainty.  Many noise processes in the real world are
-\emph{not} gaussian; what to do?  There are three general kinds of
-methodologies for dealing with non-gaussian errors.  Before we
-describe them, permit an aside on uncertainty and error.
+The standard method of \sectionname~\ref{sec:standard} is only
+justified when the measurement uncertainties are Gaussians with known
+variances.  Many noise processes in the real world are \emph{not}
+Gaussian; what to do?  There are three general kinds of methodologies
+for dealing with non-Gaussian errors.  Before we describe them, permit
+an aside on uncertainty and error.
 
 As we noted above, your \emph{uncertainty} is a measure of what you
 don't know, while an \emph{error} is a mistake or incorrect value.
@@ -990,15 +983,15 @@ the experiment, but the way you understand the distribution of the
 uncertainty is different.  In the first case, you have to make a model
 for the noise in the experiment.  In the second, you have to analyze
 some posteriors.  In either case, clearly, the uncertainty can be
-non-gaussian.
+non-Gaussian.
 
 All that said, and even when you \emph{suspect} that the sources of
-noise are not gaussian, it is still sometimes okay to treat the
-\emph{uncertainties} as gaussian: The gaussian distribution is the
+noise are not Gaussian, it is still sometimes okay to treat the
+\emph{uncertainties} as Gaussian: The Gaussian distribution is the
 maximum entropy distribution for a fixed \emph{variance}.  That means
 that if you have some (perhaps magical) way to estimate the variance
 of your uncertainty, and you aren't sure of anything else but the
-variance, then the gaussian is---contrary to popular opinion---the
+variance, then the Gaussian is---contrary to popular opinion---the
 \emph{most conservative} thing you can assume.  Of course it is very
 rare that you do know the variance of your uncertainty or noise; most
 uncertainty estimators (for example the standard uncertainty
@@ -1008,23 +1001,31 @@ of the distribution function (not the tails) and are therefore
 \emph{not} good estimators of the total variance.  The relevant
 situations may be rare.
 
-Back to business.  The first approach to non-gaussian noise or
-uncertainty is, somehow to estimate the true or total variance of your
-uncertainties and then do the most conservative thing, which is to
-once again assume that the noise is gaussian!  The second approach is
-to make no attempt to understand the non-guassianity, but to use one
-of the data-rejection methods of \sectionname~\ref{sec:outliers}.  The
-third approach is to fully understand and model the non-gaussianity.
+Back to business.  The first approach to non-Gaussian noise or
+uncertainty is (somehow) to estimate the true or total variance of
+your uncertainties and then do the most conservative thing, which is
+to once again assume that the noise is Gaussian!  This is the simplest
+approach, but rarely possible, because when there are non-Gaussian
+uncertainties, the observed variance of a finite sample of points can
+be very much smaller than the true variance of the generating
+distribution function.  The second approach is to make no attempt to
+understand the non-guassianity, but to use one of the data-rejection
+methods of \sectionname~\ref{sec:outliers}.  This reduces the problem
+to one already solved, but has the disadvantage that the outlier
+points are effectively removed from the fit; they do not contribute
+what information they carry.  The third approach---the only approach
+that is really justified---is to fully understand and model the
+non-Gaussianity.
 
 For example, if data points are generated by a process the noise from
-which looks like a sum or mixture of $k$ gaussians with different
+which looks like a sum or mixture of $k$ Gaussians with different
 variances, and the distribution can be understood well enough to be
 modeled, the investigator can replace the objective function with
 something more realistic.  For example, the generative model in
 \sectionname~\ref{sec:objective} for the standard case was built out
 of individual data-point likelihoods given in
 \equationname~(\ref{eq:objectivei}).  If the uncertainty distribution
-can be expressed as the sum of $k$ gaussians (as all probability
+can be expressed as the sum of $k$ Gaussians (as all probability
 distributions can), these likelihoods become
 \begin{equation}
 p(y_i|x_i,\sigma_{yi},m,b) = \sum_{j=1}^k
@@ -1032,30 +1033,63 @@ p(y_i|x_i,\sigma_{yi},m,b) = \sum_{j=1}^k
  \,\exp\left(-\frac{[y_i+\Delta y_{ij}-m\,x-b]^2}{2\,\sigma_{yij}^2}\right)
  \quad ,
 \end{equation}
-where the $k$ gaussians for measurement $i$ have variances
-$\sigma_{yij}$, offsets (means---there is no need for the gaussians to
+where the $k$ Gaussians for measurement $i$ have variances
+$\sigma_{yij}$, offsets (means---there is no need for the Gaussians to
 be concentric) $\Delta y_{ij}$, and amplitudes $a_j$ that sum to
 unity.  In this case, fitting becomes much more challenging (from an
 optimization standpoint), but this can become a \emph{completely
-  general} objective function for arbitrarily complicated non-gaussian
+  general} objective function for arbitrarily complicated non-Gaussian
 uncertainties.  It can even be generalized to situations of
 arbitrarily complicated joint distributions for \emph{all} the
 measurement uncertainties.
 
-One very common non-gaussian situation is one in which the data points
+One very common non-Gaussian situation is one in which the data points
 include upper or lower limits, or the investigator has a value with an
 error bar but knows that the true value can't enter into some region
 (for example, there are many situations in which one knows that all
-the true $Y_i$ must be greater than zero).  In all these situations,
-the best thing to do is to model the uncertainty distribution as well
-as possible, construct the proper justified scalar objective function,
+the true $Y_i$ must be greater than zero).  We will say a bit more
+about this in the \commentsname, but in all these situations, the best
+thing to do is to model the uncertainty distribution as well as
+possible, construct the proper justified scalar objective function,
 and carry on.  Optimization might become challenging, but that is an
 engineering problem that must be tackled for scientific correctness.
+
+% syntactical reference point
 
 \begin{comments}
 Hogg: Pull up to here stuff (from below the end of document) about
 robust fitting (biexponential and soft chi-squared) and say why they
 are useful techniques but rarely justified...Hogg
+
+In the above, the possibility arose of having data points that are not
+true measurements but only, for example, upper limits.  In most
+contexts (in astrophysics, anyway) an ``upper limit'' is caused by one
+of two things.  Either the investigator has taken the logarithm of a
+quantity that in fact, for some measurements, went to zero or
+negative; or else the investigator is fitting a model to a binned
+quantity and in some bins there are no objects or data.  In the first
+case, the best advice is not to take the logarithm at all.  Fit a
+power-law in the linear space rather than a straight line in the log
+space.  In the second case, the best advice is to use the likelihood
+appropriate for a Poisson process rather than a Gaussian process.
+Least-square fitting is an approximation when the data are comprised
+of a poisson sampling; this approximation breaks down when the number
+of objects per bin becomes small.  Optimizing the correct Poission
+likelihood is not difficult, and it is the only scientifically
+justifiable thing to do.
+
+It is rare that there are true upper limits not caused by one of the
+above.  However, if neither of the above applies---perhaps because the
+investigator was given only the limits, and not the details of their
+origins---the right thing to do is to write down some generative model
+for the limits.  This would be some description of the ``probability
+of the data given the model'' where the (say) 95-percent upper limit
+is replaced with a probability distribution that has 95~percent of its
+mass below the reported limit value.  This is ideally done with a
+correct model of the measurement process, but it is acceptable in
+cases of justifiable ignorance to make up something reasonable;
+preferably something that is close to whatever distribution maximizes
+the entropy given the reported and logical constraints.
 \end{comments}
 
 \section{Goodness of fit and unknown uncertainties}\label{sec:goodness}
@@ -1071,7 +1105,7 @@ confident about your assumptions.
 
 Imagine that the generative model in \sectionname~\ref{sec:objective}
 is a valid description of the data.  In this case, the noise
-contribution for each data point $i$ has been drawn from a gaussian
+contribution for each data point $i$ has been drawn from a Gaussian
 with variance $\sigma_{yi}^2$.  The expectation is that data point $i$
 will provide a mean squared error comparable to $\sigma_{yi}^2$, and a
 contribution of order unity to $\chi^2$ when the parameters $(m,b)$
@@ -1081,7 +1115,7 @@ expectaton for $\chi^2$ is smaller than $N$. The model is linear, so
 the distribution of $\chi^2$ is known analytically and is given
 (unsurprisingly) by a \emph{chi-square} distribution: in the limit of
 large $N$ the rule of thumb is that---when the model is a good fit and
-the uncertainties are gaussian with known variances,
+the uncertainties are Gaussian with known variances,
 \begin{equation}
 \chi^2 = [N-2] \pm \sqrt{2[N-2]} \quad ,
 \end{equation}
@@ -1272,18 +1306,18 @@ where the ordering is defined by the ordering in matrix $\mA$.  These
 uncertainties for the model parameters \emph{only} strictly hold under
 three extremely strict conditions, almost none of which is met in real
 practice: \textsl{(a)}~The uncertainties in the data points must truly
-be gaussian, with variances correctly described by the
+be Gaussian, with variances correctly described by the
 $\sigma_{yi}^2$; \textsl{(b)}~there must be no rejection of any data
 or any departure from the exact, standard definition of $\chi^2$ given
 in \equationname~(\ref{eq:chisquared}); and \textsl{(c)}~the
 generative model of the data implied by the method---that is, that the
 data are truly drawn from a negligible-scatter linear relationship and
 subsequently had noise added, where the noise offsets were generated
-by a gaussian process---must be an accurate description of the data.
+by a Gaussian process---must be an accurate description of the data.
 
 These conditions are rarely met in practice.  Often the noise
 estimates are rough (or missing entirely!), the uncertainties are
-known not to be gaussian, the investigator has applied data rejection
+known not to be Gaussian, the investigator has applied data rejection
 or equivalent conditioning, and the relationship has intrinsic scatter
 and curvature.  For these generic reasons, we much prefer empirical
 estimates of the uncertainty in the best-fit parameters.
@@ -1350,7 +1384,7 @@ and the uncertainty variance becomes
 with the obvious modifications to make $\sigma_b^2$ and $\sigma_{mb}$.
 The factor $[N-1]/N$ accounts, magically, for the fact that the
 samples are not independent in any sense; this factor can only be
-justified in the limit that everything is gaussian and all the points
+justified in the limit that everything is Gaussian and all the points
 are identical in their error properties.
 
 \begin{comments}
@@ -1427,9 +1461,9 @@ These can be put together into a covariance tensor $\mS_i$
 \sigma_{xi}^2 & \sigma_{xyi} \\ \sigma_{xyi} & \sigma_{yi}^2
 \end{array}\right] \quad .
 \end{equation}
-If the errors are gaussian, or if all that is known about the
+If the errors are Gaussian, or if all that is known about the
 uncertainties is their variances, then the covariance tensor can be
-used in a two-dimensional gaussian representation of the probability
+used in a two-dimensional Gaussian representation of the probability
 of getting measurement $(x_i,y_i)$ when the ``true value'' (the value
 you would have for this data point if it had been observed with
 negligible error) is $(x,y)$:
@@ -1444,7 +1478,7 @@ where we have implicitly made column vectors
 \mZ_i = \left[\begin{array}{c} x_i \\ y_i \end{array}\right] \quad .
 \end{equation}
 
-Now in the face of these general (though gaussian) two-dimensional
+Now in the face of these general (though Gaussian) two-dimensional
 uncertainties, how do we fit a line?  Justified objective functions
 will have something to do with the probability of the observations
 $\allxy$ given the uncertainties $\allC$, as a function of properties
@@ -1459,11 +1493,11 @@ Schematically, the construction of the likelihood involves specifying
 the line (parameterized by $m,b$), finding the probability of each
 observed data point given any true point on that line, and
 marginalizing over all possible true points on the line.  One approach
-is to think of the straight line as a two-dimensional gaussian with an
+is to think of the straight line as a two-dimensional Gaussian with an
 infinite eigenvalue corresponding to the direction of the line and a
 zero eigenvalue for the direction orthogonal to this. In the end, this
 line of argument leads to \emph{projections} of the two-dimensional
-uncertainty gaussians along the line (or onto the subspace that is
+uncertainty Gaussians along the line (or onto the subspace that is
 orthogonal to the line), and evaluation of those at the
 \emph{projected errors}.  Projection is a standard linear algebra
 technique, so we will use linear algebra (matrix) notation.
@@ -1507,9 +1541,9 @@ latter not proper).
 
 The implicit generative model here is that there are $N$ points with
 true values that lie precisely on a narrow, linear relation in the
-$x$--$y$ plane.  To each of these true points a gaussian offset has
+$x$--$y$ plane.  To each of these true points a Gaussian offset has
 been added to make each observed point $(x_i,y_i)$, where the offset
-was drawn from the two-dimensional gaussian with covariance tensor
+was drawn from the two-dimensional Gaussian with covariance tensor
 $\mS_i$.  As usual, if this generative model is a good approximation
 to the properties of the data set, the method works very well.  Of
 course there are many situations in which this is \emph{not} a good
@@ -1637,13 +1671,13 @@ narrow.  This gets into the complicated area of estimating density
 given finite and noisy samples; again this is a huge subject so we
 will only consider one simple solution.
 
-Introduce an intrinsic gaussian variance $V$, orthogonal to the line.
+Introduce an intrinsic Gaussian variance $V$, orthogonal to the line.
 In this case, the parameters of the relationship become
 $(\theta,\bperp,V)$.  In this case, each data point can be treated as
 being drawn from a projected distribution function that is a
-\emph{convolution} of the projected uncertainty gaussian, of variance
+\emph{convolution} of the projected uncertainty Gaussian, of variance
 $\Sigma_i^2$ defined in \equationname~(\ref{eq:Sigma}), with the
-intrinsic scatter gaussian of variance $V$.  Convolution of gaussians
+intrinsic scatter Gaussian of variance $V$.  Convolution of Gaussians
 is trivial and the likelihood in this case becomes
 \begin{equation}
 \ln\like = K - \sum_{i=1}^N \frac{1}{2}\,\ln(\Sigma_{i}^2+V)
@@ -1662,7 +1696,7 @@ there are limitations to this procedure because it models only the
 distribution \emph{orthogonal} to the relationship.  Probably all good
 methods fully model the intrinsic two-dimensional density function,
 the function that, when convolved with each data point's intrinsic
-uncertainty gaussian, creates a distribution function from which that
+uncertainty Gaussian, creates a distribution function from which that
 data point is a single sample.  Such methods fall into the
 intersection of density estimation and deconvolution, and completely
 general methods exist \citep{bovy}.
@@ -1689,7 +1723,7 @@ variance, and it doesn't return an uncertainty either (though one can
 be approximated using the expectation for $\chi^2$).
 
 One confusing issue in the subject of intrinsic scatter is the
-\emph{direction} for the scatter.  If things are gaussian, it doesn't
+\emph{direction} for the scatter.  If things are Gaussian, it doesn't
 matter whether you think of the scatter being in the $x$ direction,
 the $y$ direction, or the direction perpendicular to the line (as we
 think of it in the method involving $V$ in this \sectionname).
@@ -1700,7 +1734,7 @@ is being assumed, and what the conversions are to the other directions
 
 \begin{problem}\label{prob:intrinsic}
 Re-do \problemname~\ref{prob:twod}, but now allowing for an orthogonal
-intrinsic gaussian variance $V$.  Re-make the plot, showing not the
+intrinsic Gaussian variance $V$.  Re-make the plot, showing not the
 best-fit line but rather the $\pm\sqrt{V}$ lines for the
 maximum-likelihood \emph{intrinsic} relation.
 \end{problem}
@@ -1813,17 +1847,17 @@ to the (negative) log likelihood in their squares.  In general this is
 a less good alternative than identifying and modeling the outliers (as
 we did in \sectionname~\ref{sec:outliers}), because objective
 functions softer than $\chi^2$ are rarely justifiable in terms of any
-generative model for the data.  In \sectionname~\ref{sec:non-gaussian}
+generative model for the data.  In \sectionname~\ref{sec:non-Gaussian}
 we discuss (briefly) justifiable modifications to the objective
 function when the observational uncertainty distributions depart from
-gaussians in known ways.  Nonetheless, even when there is not a good
+Gaussians in known ways.  Nonetheless, even when there is not a good
 justification for softening the objective function, it can be useful
 for generating a robust fit with a minimum of effort.
 
 The most straightforward way to soften the objective function relative
 to $\chi^2$ is to lower the power to which residuals are raised.  For
 example, if we model the frequency distribution
-$p(y_i|x_i,\sigma_{yi},m,b)$ not with a gaussian but rather with a
+$p(y_i|x_i,\sigma_{yi},m,b)$ not with a Gaussian but rather with a
 biexponential
 \begin{equation}
 p(y_i|x_i,\sigma_{yi},m,b) = \frac{1}{2\,s_i}
@@ -1894,9 +1928,9 @@ also be used to initialize a true optimizer.
 
 \begin{comments}
 As we said above, softening is not usually justified unless you have a
-model for your data uncertainties that is non-gaussian, and even then
+model for your data uncertainties that is non-Gaussian, and even then
 you just want to do the \emph{right} thing given those uncertainties.
-We discuss this a bit more in \sectionname~\ref{sec:non-gaussian}.
+We discuss this a bit more in \sectionname~\ref{sec:non-Gaussian}.
 
 Because, in this \sectionname\ and \sectionname~\ref{sec:outliers}, we
 have broken the assumptions of least-square fitting, we have also
