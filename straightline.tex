@@ -123,7 +123,7 @@
 \section*{Data analysis recipes:\ \\
   Fitting a straight line to data\footnote{
     Copyright 2009 by the authors.
-    This is a DRAFT version dated 2009-08-19.
+    This is a DRAFT version dated 2009-08-31.
     Please do not distribute this document.}}
 %    You may copy and distribute this document
 %    provided that you make no changes to it whatsoever.}}
@@ -917,15 +917,61 @@ rejected by the procedure.  All that said, with a large $Q^2$ and
 standard, pretty good data, the sigma-clipping procedure is easy to
 implement and fast; we have often used it ourselves.
 
-One extremely common variation on the problem of data rejection is the
-situation in which you have to perform data rejection but you
-\emph{don't know the magnitudes of your uncertainties} $\allsigmay$.
-We will say a bit more about this in \sectionname~\ref{sec:goodness},
-but the general procedure is to include the $\allsigmay$ as model
-parameters and infer them and marginalize over them \emph{also}.  This
-is much more tractable and pleasant if you can assume that all the
-data-point uncertainties are comparable or you know something else
-equally informative about their \emph{relative} magnitudes.
+One extremely common variation on the problem of data rejection or
+sigma-clipping is the situation in which you have to perform data
+rejection but you \emph{don't know the magnitudes of your
+  uncertainties} $\allsigmay$.  We will say a bit more about this in
+\sectionname~\ref{sec:goodness}, but the general procedure is to
+include the $\allsigmay$ as model parameters and infer them and
+marginalize over them \emph{also}.  This is only really tractable if
+you can assume that all the data-point uncertainties are identical or
+you know something else equally informative about their
+\emph{relative} magnitudes.
+
+A less commonly used method for removing sensitivity to outliers is to
+soften the objective function from $\chi^2$ (which depends
+quadratically on all residuals) to something that depends on large
+residuals to a smaller power.  The most straightforward way to soften
+the objective function is to lower the power to which residuals are
+raised.  For example, if we model the frequency distribution
+$p(y_i|x_i,\sigma_{yi},m,b)$ not with a Gaussian but rather with a
+biexponential
+\begin{equation}
+p(y_i|x_i,\sigma_{yi},m,b) = \frac{1}{2\,s_i}
+ \,\exp\left(-\frac{|y_i-m\,x_i-b|}{s_i}\right) \quad ,
+\end{equation}
+where $s_i$ is an estimate of the mean absolute error, probably
+correctly set to something like $s_i\approx \sigma_{yi}$.
+Optimization of the total log likelihood is equivalent to minimizing
+\begin{equation}\label{eq:biexp}
+X = \sum_{i=1}^N \frac{|y_i-f(x_i)|}{s_i} \quad ,
+\end{equation}
+where $f(x)$ is the straight line of \equationname~\ref{eq:fofx}.
+This approach is rarely justified, but it has the nice
+property that it introduces no new parameters.
+Another straightforward softening is to (smoothly) cut off the
+contribution of a residual as it becomes large.  For example, replace
+$\chi^2$ with
+\begin{equation}\label{eq:soft}
+\chi_Q^2 = \sum_{i=1}^N \frac{Q^2\,[y_i-f(x_i)]^2}
+  {Q^2\,\sigma_{yi}^2+[y_i-f(x_i)]^2} \quad ,
+\end{equation}
+where $Q^2$ is the maximum amount a point can contribute to $\chi_Q^2$
+\citep{hampel}.  When each residual is small, its contribution to
+$\chi_Q^2$ is nearly identical to its contribution to the standard
+$\chi^2$, but as the residual gets substantial, the contribution of
+the residual does not increase as the square.  This is about the
+simplest robust method that introduces only one new parameter ($Q$),
+and in principle, one can put a prior on $Q$, infer it, and
+marginalize it out.  In general these are both far less good
+alternatives than modeling the outliers, because objective functions
+softer than $\chi^2$ are rarely justifiable in terms of any generative
+model for the data.  In \sectionname~\ref{sec:non-Gaussian} we discuss
+(briefly) justifiable modifications to the objective function when the
+observational uncertainty distributions depart from Gaussians in known
+ways.  Nonetheless, even when there is not a good justification for
+softening the objective function, it can sometimes be useful for
+generating a robust fit with a minimum of effort.
 \end{comments}
 
 \begin{problem}\label{prob:mixture}
@@ -1054,13 +1100,7 @@ possible, construct the proper justified scalar objective function,
 and carry on.  Optimization might become challenging, but that is an
 engineering problem that must be tackled for scientific correctness.
 
-% syntactical reference point
-
 \begin{comments}
-Hogg: Pull up to here stuff (from below the end of document) about
-robust fitting (biexponential and soft chi-squared) and say why they
-are useful techniques but rarely justified...Hogg
-
 In the above, the possibility arose of having data points that are not
 true measurements but only, for example, upper limits.  In most
 contexts (in astrophysics, anyway) an ``upper limit'' is caused by one
@@ -1838,180 +1878,3 @@ numpy, and matplotlib.
 \end{deluxetable}
 
 \end{document}
-
-\section{Softer or more robust objective function}\label{sec:robust}
-
-The other way to make fits less sensitive to outliers is to ``soften''
-the objective function so that the largest residuals do not contribute
-to the (negative) log likelihood in their squares.  In general this is
-a less good alternative than identifying and modeling the outliers (as
-we did in \sectionname~\ref{sec:outliers}), because objective
-functions softer than $\chi^2$ are rarely justifiable in terms of any
-generative model for the data.  In \sectionname~\ref{sec:non-Gaussian}
-we discuss (briefly) justifiable modifications to the objective
-function when the observational uncertainty distributions depart from
-Gaussians in known ways.  Nonetheless, even when there is not a good
-justification for softening the objective function, it can be useful
-for generating a robust fit with a minimum of effort.
-
-The most straightforward way to soften the objective function relative
-to $\chi^2$ is to lower the power to which residuals are raised.  For
-example, if we model the frequency distribution
-$p(y_i|x_i,\sigma_{yi},m,b)$ not with a Gaussian but rather with a
-biexponential
-\begin{equation}
-p(y_i|x_i,\sigma_{yi},m,b) = \frac{1}{2\,s_i}
- \,\exp\left(-\frac{|y_i-m\,x_i-b|}{s_i}\right) \quad ,
-\end{equation}
-where $s_i$ is an estimate of the mean absolute error, probably
-correctly set to something like $s_i\approx \sigma_{yi}$.
-Optimization of the total log likelihood is equivalent to minimizing
-\begin{equation}\label{eq:biexp}
-X = \sum_{i=1}^N \frac{|y_i-f(x_i)|}{s_i} \quad ,
-\end{equation}
-where $f(x)$ is the straight line of \equationname~\ref{eq:fofx}.
-This approach is rarely quantitatively justified, but it has the nice
-property that it introduces no new parameters.
-
-Another straightforward softening is to (smoothly) cut off the
-contribution of a residual as it becomes large.  For example, replace
-$\chi^2$ with
-\begin{equation}\label{eq:soft}
-\chi_Q^2 = \sum_{i=1}^N \frac{Q^2\,[y_i-f(x_i)]^2}
-  {Q^2\,\sigma_{yi}^2+[y_i-f(x_i)]^2} \quad ,
-\end{equation}
-where $Q^2$ is the maximum amount a point can contribute to $\chi_Q^2$
- \citep{hampel}.  When each residual is small, its
-contribution to $\chi_Q^2$ is nearly identical to its contribution to
-the standard $\chi^2$, but as the residual gets substantial, the
-contribution of the residual does not increase as the square.  This is
-about the simplest robust method that introduces only one new
-parameter ($Q$).
-
-In both of these softenings of $\chi^2$, the objective function is no
-longer purely quadratic, and the solution is no longer purely linear.
-Worse, in almost any reasonable softening, the problem becomes
-\emph{non-convex}; that is, there will, in general, be multiple optima
-from which the global optimum must be selected.
-
-Again, our advice is to use MCMC to explore and optimize non-linear
-objectives like those in this \sectionname.  The MCMC Metropolis
-algorithm requires that the function be interpretable as a
-probability, but that is true by construction here (though perhaps
-only rarely is this truly scientifically justifiable).  Of course when
-it comes to pure optimization, there is a range of optimizers that can
-handle problems like those presented here with little or no trouble.
-However, if you \emph{do} use a gradient-based optimizer rather than a
-sampler, we advise spending a bit of thought on initialization.  That
-is, do not start the optimizer in an arbitrary point in parameter
-space, but rather initialize it near where you think the answer is
-likely to be, using either your prior knowledge, or else a linear fit
-(which provides an objective starting point).  The third piece of
-advice is to check for multiple minima by randomly sampling parameter
-space in some significant region around the optimum you have,
-re-converge the nonlinear optimizer, and verify that you return to the
-same best optimum, or that if you come to a different one, it has a
-worse value for the objective.
-
-If you are really feeling cheap, and don't want to learn about either
-samplers or nonlinear optimizers, there is one beautiful hack known as
-``RANSAC'', which everyone should know: Every \emph{pair} of data
-points in your sample can be joined with a particular straight line.
-Therefore, your $N$ data points themselves suggest $M=N\,[N-1]/2$
-possible straight lines.  If you simply compute the scalar objective
-for each of these $M$ suggestions (or a random subset), unless your
-data are pathological, you are likely to have sampled most of the
-relevant parameter space.  The preferred line, of course, is the one
-that optimizes the scalar objective.  This method doesn't return the
-strict optimum, but it does very well in most circumstances; it can
-also be used to initialize a true optimizer.
-
-\begin{comments}
-As we said above, softening is not usually justified unless you have a
-model for your data uncertainties that is non-Gaussian, and even then
-you just want to do the \emph{right} thing given those uncertainties.
-We discuss this a bit more in \sectionname~\ref{sec:non-Gaussian}.
-
-Because, in this \sectionname\ and \sectionname~\ref{sec:outliers}, we
-have broken the assumptions of least-square fitting, we have also
-broken the linearity and convexity of the problem.  That is, no robust
-procedure will be linear, and not many robust procedures can be
-convex, so everything must be iterated to convergence with a nonlinear
-optimizer or sampler, and initialized from a range of starting points
-to work through the local minima.  That is, even the minimal
-modifications to the standard assumptions presented in this
-\documentname\ ruin the miracle of linear least squares; this shows
-how unusual and special the ``textbook'' case is.
-
-Importantly, the \emph{scientific} decision is about the objective
-function.  Optimization is an \emph{engineering} consideration.  This
-distinction is not made to denigrate the latter (we are very much
-engineers); it is to emphasize that optimizers should be chosen on
-practical grounds of time, resources, and availability.
-\end{comments}
-
-\begin{problem}\label{prob:biexp}
-Using the biexponential objective function of
-\equationname~(\ref{eq:biexp}), find the best-fit straight line
-$y=m\,x+b$ for the $x$, $y$, and $\sigma_y$ values in
-\tablename~\ref{table:data_allerr}.  You will have to use a non-linear
-optimizer of some kind or you will have to take a sampling approach.
-Make a plot showing the points, their uncertainties, and the best-fit
-line.  The results using a few of the optimization methods are shown
-in \figurename s~\ref{fig:biexpa} through \ref{fig:biexpc}. How does
-this compare to the standard result you obtained in
-\problemname~\ref{prob:standard}?  Do you like it better or worse?
-\end{problem}
-
-\begin{problem}\label{prob:softchisq}
-Using the soft chi-squared objective function of
-\equationname~(\ref{eq:soft}), find the best-fit straight line
-$y=m\,x+b$ for the $x$, $y$, and $\sigma_y$ values in
-\tablename~\ref{table:data_allerr}.  You will have to use a non-linear
-optimizer of some kind or you will have to take a sampling approach.
-Alternatively, you can try an iterated-linear method in which you
-iterate the standard linear method but modify the weights at each
-iteration.  Make a plot showing the points, their uncertainties, and
-the best-fit line.  The results using a few of the optimization
-methods are shown in \figurename s~\ref{fig:softchisqa} through
-\ref{fig:softchisqd}. How does this compare to the standard result you
-obtained in \problemname~\ref{prob:standard}?  Do you like it better
-or worse?
-\end{problem}
-
-\clearpage
-\begin{figure}[H]
-\includegraphics[]{ex6a.png}
-\caption{Solution to \problemname~\ref{prob:biexp} using a simple optimizer.}\label{fig:biexpa}
-\end{figure}
-\clearpage
-\begin{figure}[H]
-\includegraphics[]{ex6b.png}
-\caption{Solution to \problemname~\ref{prob:biexp} using simulated annealing to try to find the global minimum.}\label{fig:biexpb}
-\end{figure}
-\clearpage
-\begin{figure}[H]
-\includegraphics[]{ex6c.png}
-\caption{Solution to \problemname~\ref{prob:biexp} using a simple Metropolis sampling scheme.}\label{fig:biexpc}
-\end{figure}
-
-\clearpage
-\begin{figure}[H]
-\includegraphics[]{ex7a.png}
-\caption{Solution to \problemname~\ref{prob:softchisq} using a simple optimizer.}\label{fig:softchisqa}
-\end{figure}
-\clearpage
-\begin{figure}[H]
-\includegraphics[]{ex7b.png}
-\caption{Solution to \problemname~\ref{prob:softchisq} iteratively updating the weights in a regular chi-squared optimization.}\label{fig:softchisqb}
-\end{figure}
-\clearpage
-\begin{figure}[H]
-\includegraphics[]{ex7c.png}
-\caption{Solution to \problemname~\ref{prob:softchisq} using simulated annealing to try to find the global minimum.}\label{fig:softchisqc}
-\end{figure}
-\clearpage
-\begin{figure}[H]
-\includegraphics[]{ex7d.png}
-\caption{Solution to \problemname~\ref{prob:softchisq} using a simple Metropolis sampling scheme.}\label{fig:softchisqd}
-\end{figure}
