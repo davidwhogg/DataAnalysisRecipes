@@ -1,10 +1,10 @@
 % to-do
 % -----
-% - Hogg: cite and criticize ``sixlin'' paper
 % - Hogg: cite and compliment the bayesian line-fitting paper (Bovy email)
 % - Hogg: should we distinguish parameters (m,b) from their best-fit values?
 % - Hogg: should we distinguish = \equiv and \leftarrow ?
 % - Hogg: look at every use of ``probability'' for correctness.
+% - Hogg: look at every use of ``frequency'' for correctness.
 % - Hogg: look at every use of ``likelihood'' for correctness.
 % - Bovy: site Sivia also in the MacKay, Press citation.
 % - Hogg: should we explicitly explain the frequentist answer when there are nuisance parameters, etc?
@@ -122,9 +122,9 @@
 \thispagestyle{plain}\raggedbottom
 \section*{Data analysis recipes:\ \\
   Fitting a straight line to data\footnote{
-    Copyright 2009 by the authors.
-    This is a DRAFT version dated 2009-08-31.
-    Please do not distribute this document.}}
+    Copyright 2010 by the authors.
+    \textbf{This is a DRAFT version dated 2010-03-18.
+    Please do not distribute this document.}}}
 %    You may copy and distribute this document
 %    provided that you make no changes to it whatsoever.}}
 
@@ -152,7 +152,7 @@ Dustin~Lang\footnote{\textsl{Department of Computer Science, University of Toron
   distribution.  The latter is required if there are ``nuisance
   parameters'' to marginalize away.  We advocate extremely simple
   Markov-Chain Monte-Carlo methods for optimizing, sampling from, and
-  marginalizing over any probability distribution function.
+  marginalizing any probability distribution function.
 \end{abstract}
 
 It is conventional to begin any scientific document with an
@@ -190,26 +190,26 @@ line to data comes up very frequently in the life of a scientist.
 
 It is a miracle with which we hope everyone reading this is familiar
 that \emph{if} you have a set of two-dimensional points $(x,y)$ that
-depart from a perfect, narrow, straight line only by the addition of
-Gaussian-distributed noise of known amplitudes in one direction (the
-$y$ direction without loss of generality), the maximum-likelihood or
-best-fit line for the points has a slope $m$ and intercept $b$ that
-can be obtained justifiably by a perfectly linear matrix-algebra
-operation known as ``weighted linear least-square fitting''.  This
-miracle deserves contemplation.  Once any of the input assumptions is
-violated (and note there are many input assumptions), all bets are
-off, and there are no consensus methods used by scientists across
-disciplines.  Indeed, there is a large literature that implies that
-the violation of the assumptions opens up to the investigator a wide
-range of possible \emph{options} with little but aesthetics to
-distinguish them!  It is one of the objectives of this
-\documentname\ to promote an understanding that if the data can be
-\emph{modeled} statistically there is little arbitrariness.  It is
-another objective to promote consensus; when the choice of method is
-not arbitrary, consensus will emerge automatically.  We present below
-simple, straightforward, comprehensible, and---above
-all---\emph{justifiable} methods for fitting a straight line to data
-with general, non-trivial, and uncertain properties.
+depart from a perfect, narrow, straight line $y=m\,x+b$ only by the
+addition of Gaussian-distributed noise of known amplitudes in the $y$
+direction only, \emph{then} the maximum-likelihood or best-fit line
+for the points has a slope $m$ and intercept $b$ that can be obtained
+justifiably by a perfectly linear matrix-algebra operation known as
+``weighted linear least-square fitting''.  This miracle deserves
+contemplation.  Once any of the input assumptions is violated (and
+note there are many input assumptions), all bets are off, and there
+are no consensus methods used by scientists across disciplines.
+Indeed, there is a large literature that implies that the violation of
+the assumptions opens up to the investigator a wide range of possible
+\emph{options} with little but aesthetics to distinguish them!  It is
+one of the objectives of this \documentname\ to promote an
+understanding that if the data can be \emph{modeled} statistically
+there is little arbitrariness.  It is another objective to promote
+consensus; when the choice of method is not arbitrary, consensus will
+emerge automatically.  We present below simple, straightforward,
+comprehensible, and---above all---\emph{justifiable} methods for
+fitting a straight line to data with general, non-trivial, and
+uncertain properties.
 
 Perhaps because there is no agreed-upon bible or cookbook to turn to,
 or perhaps because most investigators would rather make some stuff up
@@ -242,8 +242,8 @@ f(x) = m\,x + b \quad ,
 \end{equation}
 where $m$ is the slope and $b$ is the intercept, that ``best fits''
 the points.  What is meant by ``best fits'' is, of course, very
-important, and in what follows we will have a lot to say about that.
-For now, we describe standard practice:
+important, and in what follows we will have more to say about that.
+(Hogg: Do we? Hogg) For now, we describe standard practice:
 
 Construct the matrices
 \begin{align}\label{eq:mY}
@@ -301,7 +301,7 @@ uncertainties, or
  \,\mCinv\,\left[\mY-\mA\,\mX\right]
  \quad ,
 \end{equation}
-that is, \equationname~(\ref{eq:lsf}) computes the values for $m$ and
+that is, \equationname~(\ref{eq:lsf}) yields the values for $m$ and
 $b$ that minimize $\chi^2$.  This, of course, is only one possible
 meaning of the phrase ``best fit''; that issue is the main subject of
 the rest of this \documentname.
@@ -356,18 +356,19 @@ equivalent to fitting under the assumption not just that the
 $x$-direction uncertainties are negligible, but also that all of the
 $y$-direction uncertainties are identical Gaussians.
 
-Hogg:  This would be a good time to discuss the sixlin paper.  Hogg
+(Hogg:  This would be a good time to discuss the sixlin paper.---Hogg)
 
 Note that not only does the standard problem solved in this
 \sectionname\ have a linear solution, the objective function
-``landscape'' is \emph{convex} so the solution is unique.  This is
-remarkable, and almost no perturbation of this problem (as we will see
-below) has either of these properties, let alone both.  For this
-standard problem, the linearity and convexity permit a one-step
-solution with no significant engineering challenges (even when $N$
-gets exceedingly large).  As we modify (and make more realistic) this
-problem, linearity and convexity will \emph{both} be broken; some
-thought will have to be put into the optimization.
+``landscape'' is \emph{convex} so the optimum is global and the
+solution is unique.  This is remarkable, and almost no perturbation of
+this problem (as we will see below) has either of these properties,
+let alone both.  For this standard problem, the linearity and
+convexity permit a one-step solution with no significant engineering
+challenges, even when $N$ gets exceedingly large.  As we modify (and
+make more realistic) this problem, linearity and convexity will
+\emph{both} be broken; some thought will have to be put into the
+optimization.
 \end{comments}
 
 \begin{problem}\label{prob:easy}
@@ -522,8 +523,8 @@ ill-posed that the investigator does not know what is being optimized.
 When there is a generative model for the data, this problem doesn't
 arise.
 
-Hogg: Put full frequentist description of what you do with the
-likelihoods for a ``bag of models'' if you are a frequentist!  Hogg
+(Hogg: Put full frequentist description of what you do with the
+likelihoods for a ``bag of models'' if you are a frequentist!---Hogg)
 
 We have tried in this \documentname\ to be a bit careful with words.
 Following \citet{jaynes}, we have tried to use the word
@@ -787,10 +788,10 @@ is of a \emph{probability distribution}, not only does the MCMC scheme
 integrate it, it also produces a \emph{sampling} from the distribution
 as a side-product for free.
 
-Bovy: Put in one paragraph about how MCMC works and describe the
+(Bovy: Put in one paragraph about how MCMC works and describe the
 Metropolis algorithm briefly...say something about burn-in and taking
 every Nth sample...in principle this could get its own \sectionname;
-if you think it should let's discuss---Hogg
+if you think it should let's discuss---Hogg)
 
 Now, once you have run the MCMC and obtained a chain of samples from
 the posterior probability distribution for the full parameter set
@@ -871,8 +872,8 @@ difficulty---in most problems of interest---pales in comparision to
 the difficulty of writing down a justifiable or even approximate
 generative model for the data.
 
-Hogg: Once again, what would a frequentist do with the nuisance
-parameters?  I think I know.  Hogg
+(Hogg: Once again, what would a frequentist do with the nuisance
+parameters?  I think I know.---Hogg)
 
 When flagging bad data, you might not want to give all points the same
 prior probability distribution function over $\Pbad$, though it is
@@ -1792,12 +1793,12 @@ limits?
 \paragraph{Acknowlegments}\markright{End matter}
 We owe a debt above all to Sam Roweis (Toronto), who taught us to find
 and optimize justified scalar objective functions.  In addition it is
-a pleasure to thank Mike Blanton (NYU) and Dustin Lang (Toronto,
-Princeton) for valuable discussions.  This research was partially
-supported by NASA (ADP grant NNX08AJ48G) and a Research Fellowship of
-the Alexander von Humboldt Foundation.  This research made use of the
-Python programming language and the open-source Python packages scipy,
-numpy, and matplotlib.
+a pleasure to thank Mike Blanton (NYU) and Hans-Walter Rix (MPIA) for
+valuable discussions.  This research was partially supported by NASA
+(ADP grant NNX08AJ48G) and a Research Fellowship of the Alexander von
+Humboldt Foundation.  This research made use of the Python programming
+language and the open-source Python packages scipy, numpy, and
+matplotlib.
 
 \begin{thebibliography}{}
 \bibitem[Bovy, Hogg, \& Roweis(2009)]{bovy}
