@@ -59,6 +59,7 @@
 \newcommand{\notenglish}[1]{\textsl{#1}}
 \newcommand{\aposteriori}{\notenglish{a~posteriori}}
 \newcommand{\apriori}{\notenglish{a~priori}}
+\newcommand{\adhoc}{\notenglish{ad~hoc}}
 \newcommand{\etal}{\notenglish{et al.}}
 \newcommand{\eg}{\notenglish{e.g.}}
 
@@ -347,6 +348,18 @@ physicist; it will return in \sectionname~\ref{sec:twod} when we think
 about data for which there are uncertainties in both the $x$ and $y$
 directions.
 
+Because of the purely quadratic nature of this metric distance, the
+standard problem solved in this \sectionname\ has a linear solution.
+Not only that, but the objective function ``landscape'' is also
+\emph{convex} so the optimum is global and the solution is unique.
+This is remarkable, and almost no perturbation of this problem (as we
+will see below) has either of these properties, let alone both.  For
+this standard problem, the linearity and convexity permit a one-step
+solution with no significant engineering challenges, even when $N$
+gets exceedingly large.  As we modify (and make more realistic) this
+problem, linearity and convexity will \emph{both} be broken; some
+thought will have to be put into the optimization.
+
 The words ``linear regression'' are used in many different contexts,
 but in the most common, they seem to mean ``linear fitting without any
 use of the errors''.  In other words, linear regression is usually
@@ -354,21 +367,46 @@ just the procedure outlined in this \sectionname, but with the
 covariance matrix $\mC$ set equal to the identity matrix.  This is
 equivalent to fitting under the assumption not just that the
 $x$-direction uncertainties are negligible, but also that all of the
-$y$-direction uncertainties are identical Gaussians.
+$y$-direction uncertainties are simultaneously identical and Gaussian.
 
-(Hogg:  This would be a good time to discuss the sixlin paper.---Hogg)
+Sometimes the words ``linear regression'' is meant to cover a much
+larger range of options; in our field of astrophysics there have been
+attempts to test them all (for example, \citealt{isobe90}).  This kind
+of work---testing \adhoc\ procedures on simulated data---can only be
+peformed if you are willing to simultaneously commit (at least) two
+errors: \emph{First,} the linear regression methods are
+\emph{procedures}; they do not (necessarily) optimize anything that a
+scientist would care about. That is, the vast majority of procedures
+fail to produce a best-fit line in any possible sense of the word
+``best''.  Of course, some procedures do produce a best-fit line under
+some assumptions, but scientific procedures should flow from
+assumptions and not the other way around.  Scientists do not trade in
+procedures, they trade in objectives, and choose procedures only when
+they are demonstrated to optimize their objectives (we very much
+hope).  \emph{Second,} in this kind of testing, the investigator must
+decide which procedure ``performs'' best by applying the procedures to
+sets of \emph{simulated data}, where truth---the true generative
+model---is known.  All that possibly can be shown is which procedure
+does well at reproducing the parameters of the model with which the
+simulated data are generated!  This has no necessary relationship with
+anything by which the \emph{real} data are generated.  Even if the
+generative model for the artificial data matches perfectly the
+generation of the true data, it is still much better to analyze the
+likelihood created by this generative model than to explore procedure
+space for a procedure that comes close to doing that by accident.
 
-Note that not only does the standard problem solved in this
-\sectionname\ have a linear solution, the objective function
-``landscape'' is \emph{convex} so the optimum is global and the
-solution is unique.  This is remarkable, and almost no perturbation of
-this problem (as we will see below) has either of these properties,
-let alone both.  For this standard problem, the linearity and
-convexity permit a one-step solution with no significant engineering
-challenges, even when $N$ gets exceedingly large.  As we modify (and
-make more realistic) this problem, linearity and convexity will
-\emph{both} be broken; some thought will have to be put into the
-optimization.
+In addition to all the above, the above-cited paper \citep{isobe90}
+makes another substantial error: When deciding whether to fit for $y$
+as a function of $x$ or $x$ as a function of $y$, the authors claim
+that the decision should be based on the ``physics'' of $x$ and $y$!
+This the ``independent variable'' fallacy mentioned above.  The truth
+is that this decision must be based on the \emph{error properties} of
+$x$ and $y$. If $x$ has much smaller errors, then you must fit $y$ as
+a function of $x$; if the other way then the other way, and if neither
+has much smaller errors, then that kind of linear fitting is invalid.
+We have more to say about this generic situation below.  What is
+written in this paper \citep{isobe90}---by professional statisticians,
+we could add---is simply wrong.
 \end{comments}
 
 \begin{problem}\label{prob:easy}
@@ -1811,6 +1849,10 @@ matplotlib.
 \bibitem[Hampel \etal(1986)]{hampel}
   Hampel,~F.~R., Ronchetti,~E.~M., Rousseeuw,~P.~J., \& Stahel,~W.~A., 1986, 
   \textit{Robust Statistics: The Approach Based on Influence Functions} (New York: Wiley)
+\bibitem[Isobe \etal(1990)]{isobe90}
+  Isobe,~T., Feigelson, E.~D., Akritas,~M.~G., \& Babu,~G.~J.\ 1990,
+  ``Linear regression in astronomy'',
+  \textit{Astrophysical Journal} \textbf{364} 104--103.
 \bibitem[Mackay(2003)]{mackay}
   Mackay,~D.~J.~C., 2003,
   \textit{Information theory, inference, and learning algorithms} (Cambridge University Press)
