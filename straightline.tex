@@ -448,7 +448,7 @@ appeal purely to abstract ideas of linear algebra, but must originate
 from the scientific question at hand.  Here and in what follows, we
 will advocate that the only reliable procedure is to use all one's
 knowledge about the problem to construct a (preferably) justified,
-(necessarily) scalar (or, really, one-dimensional), \emph{objective
+(necessarily) scalar (or, at a minimum, one-dimensional), \emph{objective
   function} that represents monotonically the quality of the fit.  In
 this framework, fitting anything to anything involves a scientific
 question about the objective function representing ``goodness of fit''
@@ -469,19 +469,20 @@ straight line fit in the presence of known, Gaussian uncertainties in
 one dimension, one can create this generative model as follows:
 Imagine that the data \emph{really do} come from a line of the form $y
 = f(x) = m\,x+b$, and that the only reason that any data point
-deviates from this perfect, straight line is that to the true $y$
-values a small $y$-direction offset has been added, where that offset
-was drawn from a Gaussian distribution of zero mean and known variance
-$\sigma_y^2$.  In this model, given an independent position $x_i$, an
-uncertainty $\sigma_{yi}$, a slope $m$, and an intercept $b$, the
-frequency distribution $p(y_i|x_i,\sigma_{yi},m,b)$ for $y_i$ is
+deviates from this perfect, narrow, straight line is that to each of
+the true $y$ values a small $y$-direction offset has been added, where
+that offset was drawn from a Gaussian distribution of zero mean and
+known variance $\sigma_y^2$.  In this model, given an independent
+position $x_i$, an uncertainty $\sigma_{yi}$, a slope $m$, and an
+intercept $b$, the frequency distribution $p(y_i|x_i,\sigma_{yi},m,b)$
+for $y_i$ is
 \begin{equation}\label{eq:objectivei}
 p(y_i|x_i,\sigma_{yi},m,b) = \frac{1}{\sqrt{2\,\pi\,\sigma_{yi}^2}}
- \,\exp\left(-\frac{[y_i - m\,x - b]^2}{2\,\sigma_{yi}^2}\right) \quad ,
+ \,\exp\left(-\frac{[y_i - m\,x_i - b]^2}{2\,\sigma_{yi}^2}\right) \quad ,
 \end{equation}
 where this gives the expected frequency (in a hypothetical set of
-repeated experiments) of getting value in the range $[y_i,y_i+\d y]$
-per unit $\d y$.
+repeated experiments) of getting a value in the infinitesimal range
+$[y_i,y_i+\d y]$ per unit $\d y$.
 
 The generative model provides us with a natural, justified, scalar
 objective: We seek the line (parameters $m$ and $b$) that maximize the
@@ -495,7 +496,7 @@ likelihood $\like$ is the product of conditional probabilities
 Taking the logarithm,
 \begin{eqnarray}\displaystyle
 \ln\like
- & = & K - \sum_{i=1}^N \frac{[y_i - m\,x - b]^2}{2\,\sigma_{yi}^2} \nonumber\\
+ & = & K - \sum_{i=1}^N \frac{[y_i - m\,x_i - b]^2}{2\,\sigma_{yi}^2} \nonumber\\
  & = & K - \frac{1}{2}\,\chi^2 \quad ,
 \end{eqnarray}
 where $K$ is some constant.  This shows that likelihood maximization
@@ -514,11 +515,11 @@ distribution for the parameters given the data and the prior
 knowledge, $p(\ally|m,b,I)$ is the likelihood $\like$ just computed in
 \equationname~(\ref{eq:like}) (which is a frequency distribution for
 the data), $p(m,b|I)$ is the \emph{prior} probability distribution for
-the parameters that represents all knowledge \emph{except} the input
-data $\ally$, and the denominator can be thought of as a normalization
-constant, obtained by marginalizing the numerator over all
-parameters. Unless the prior $p(m,b|I)$ has a lot of variation in the
-region of interest, the posterior distribution function
+the parameters that represents all knowledge \emph{except} the data
+$\ally$, and the denominator can---for our purposes---be thought of as
+a normalization constant, obtained by marginalizing the numerator over
+all parameters. Unless the prior $p(m,b|I)$ has a lot of variation in
+the region of interest, the posterior distribution function
 $p(m,b|\ally,I)$ here is going to look very similar to the likelihood
 function in \equationname~(\ref{eq:like}) above.  That is, with an
 uninformative prior, the straight line that maximizes the likelihood
@@ -529,7 +530,7 @@ We have succeeded in justifying the standard method as optimizing a
 justified, scalar objective function; the likelihood of a generative
 model for the data.  It is just the great good luck of Gaussian
 distributions that the objective can be written as a quadratic
-function of the data.  This makes the optimum a pure linear function
+function of the data.  This makes the optimum a linear function
 of the data, and therefore trivial to obtain.
 
 \begin{comments}
@@ -542,11 +543,12 @@ to be as insensitive to coordinate choices as possible.  The standard
 $\chi^2$ objective function is a scalar in the sense that it is
 invariant to translations or rescalings of the data in the $\mY$
 vector space defined in \equationname~(\ref{eq:mY}).  Of course a
-\emph{rotation} of the data in the space would be pretty strange, and
-would make the covariance matrix $\mC$ much more complicated, so
-perhaps the fact that the objective is literally a linear algebra
-scalar---this is clear from its matrix representation in
-\equationname~(\ref{eq:chisquared})---is a red herring.
+\emph{rotation} of the data in the $N$-dimensional space of the
+$\ally$ would be pretty strange, and would make the covariance matrix
+$\mC$ much more complicated, so perhaps the fact that the objective is
+literally a linear algebra scalar---this is clear from its matrix
+representation in \equationname~(\ref{eq:chisquared})---is a red
+herring.
 
 The more important thing about the objective is that it must have
 \emph{one magnitude only}.  Often when one asks a scientist what they
@@ -562,7 +564,9 @@ When there is a generative model for the data, this problem doesn't
 arise.
 
 (Hogg: Put full frequentist description of what you do with the
-likelihoods for a ``bag of models'' if you are a frequentist!---Hogg)
+likelihoods for a ``bag of models'' if you are a frequentist!  This
+should include a pre-figuring of the fact that marginalization is what
+will make us Bayesians in the end.---Hogg)
 
 We have tried in this \documentname\ to be a bit careful with words.
 Following \citet{jaynes}, we have tried to use the word
@@ -574,21 +578,21 @@ just talking about our \emph{knowledge} about the true value of $y$
 for a data point measured to have value $y_i$, we might describe that
 with a probability distribution.  In the Bayesian context, then---to
 get extremely technical---the posterior probability distribution
-function is truly a probabiity distribution, but the likelihood factor
-is constructed from frequency distributions.  This relates to the
-difference between ``uncertainty'' and ``error'': As one of DWH's
-mentors---Gerry Neugebauer---once said, ``They are uncertainties, not
-errors; if they were \emph{errors}, we would have corrected them!''
-Data come with \emph{uncertainties}, which are limitations of
-knowledge, not \emph{mistakes}.
+function is truly a probabiity distribution, but the likelihood
+factor---really, our generative model---is constructed from frequency
+distributions.  This relates to the difference between ``uncertainty''
+and ``error'': As one of our mentors---Gerry Neugebauer---liked to
+say, ``They are uncertainties, not errors; if they were \emph{errors},
+we would have corrected them!''  Data come with \emph{uncertainties},
+which are limitations of knowledge, not \emph{mistakes}.
 
 One final note about terminology relates to the likelihood $\like$.
 The likelihood has been defined above (from among a few different
 options) as the frequency distribution for the observables evaluated
-at the observed values.  It is a function of both the data and the
-model parameters.  Although it appears as an explicit function of the
-data, this is called ``the likelihood for the parameters'' and it is
-thought of as a function of the parameters in subsequent inference.
+at the observed data $\ally$.  It is a function of both the data and
+the model parameters.  Although it appears as an explicit function of
+the data, this is called ``the likelihood for the parameters'' and it
+is thought of as a function of the parameters in subsequent inference.
 In some sense, this is because the data are \emph{not} variables but
 rather fixed observed values, and it is only the parameters that are
 permitted to vary.
@@ -652,24 +656,33 @@ Both of these are strongly preferable to sorting through the data and
 rejecting points by hand, for reasons of subjectivity and
 irreproducibility that we need not state.
 
-If we want to explicitly reject bad data, we must add to the problem a
-set of $N$ binary integers $q_i$, one per data point, each of which is
-unity if the $i$th data point is good, and zero if the $i$th data
-point is bad \citep{pressH0,jaynes}.  In addition, to construct an
-objective function, one needs a parameter $\Pbad$, the \emph{prior}
-probability that any individual data point is bad, and parameters
-$(\Ybad,\Vbad)$, the mean and variance of the distribution of bad
-points (in $y$).  We need these latter parameters because, as we have
-emphasized above, our inference comes from evaluating a probabilistic
-generative model for the data, and that model must generate the bad
-points as well as the good points!  All these $N+3$ extra parameters
-$(\allq,\Pbad,\Ybad,\Vbad)$ may seem like crazy baggage, but their
-values can be \emph{inferred} and \emph{marginalized out} so in the
-end, we need introduce \emph{no new free parameters}.
+We will start, in this \sectionname, with a very computationally
+complex method for pruning outliers objectively.  In the following
+\sectionname, we will provide a much faster method with almost all the
+good performance but far easier and cheaper to implement.
 
-In principle, to perform the marginalization we are going to have to
-define posterior probability distribution functions (more on this
-below), so let's go Bayesian.  In this case, the likelihood is
+If we want to explicitly and objectively reject bad data points, we
+must add to the problem a set of $N$ binary integers $q_i$, one per
+data point, each of which is unity if the $i$th data point is good,
+and zero if the $i$th data point is bad \citep{pressH0,jaynes}.  In
+addition, to construct an objective function, one needs a parameter
+$\Pbad$, the \emph{prior} probability that any individual data point
+is bad, and parameters $(\Ybad,\Vbad)$, the mean and variance of the
+distribution of bad points (in $y$).  We need these latter parameters
+because, as we have emphasized above, our inference comes from
+evaluating a probabilistic generative model for the data, and that
+model must generate the bad points as well as the good points!
+
+All these $N+3$ extra parameters $(\allq,\Pbad,\Ybad,\Vbad)$ may seem
+like crazy baggage, but their values can be \emph{inferred} and
+\emph{marginalized out} so in the end, we will be left with an
+inference just of the line parameters $(m,b)$.  However, that
+marginalization will require that we have a \emph{measure} on our
+parameters (integrals require measures) and that measure is provided
+by a prior.  That is, the marginalization will require, technically,
+that we become Bayesian.
+
+In this case, the likelihood is
 \begin{eqnarray}\displaystyle
 \like &\equiv& p(\ally|m,b,\allq,\Pbad,\Ybad,\Vbad,I)
  \nonumber\\
@@ -691,8 +704,26 @@ p(\allq|\Pbad,I)
  \quad ,
 \end{eqnarray}
 that is, the binomial probability of the particular sequence $\allq$.
-The priors on the other parameters should either be set according to
-an analysis of your prior knowledge or else be uninformative.
+The priors on the other parameters $(\Pbad,\Ybad,\Vbad)$ should either
+be set according to an analysis of your prior knowledge or else be
+uninformative (as in flat in $\Pbad$ in the range $[0,1]$, flat in
+$\Ybad$ in some reasonable range, and flat in the logarithm of $\Vbad$
+in some other reasonable range).  If your data are good, it won't
+matter whether you choose uninformative priors or priors that really
+represent your prior knowledge; in the end good data dominate either.
+
+We have used in this likelihood formulation a Gaussian model for the
+bad points; is that permitted?  Well, we don't know much about the bad
+points (that is one of the things that makes them bad), so this must
+be wrong in detail.  But the power of this and the methods to follow
+comes not from making an \emph{accurate} model of the outliers, it
+comes simply from \emph{modeling} them.  If you have a model for the
+origin of your bad data, use it by all means.  If you don't, the
+Gaussian is the maximum-entropy distribution described by a mean and a
+variance, and is therefore, in some sense, the \emph{least}
+restrictive assumption, given that we have allowed that mean and
+variance to vary in the fitting (and, indeed, we will marginalize over
+both in the end).
 
 The posterior probability distribution function, in general, is the
 likelihood times the prior, properly normalized.  In this case, the
@@ -716,9 +747,9 @@ p(m,b|\ally,I)=\int \d\allq\,\d\Pbad\,\d\Ybad\,\d\Vbad
 \end{equation}
 where by the integral over $\d\allq$ we really mean a sum over all of
 the $2^N$ possible settings of the $q_i$, and the integrals over the
-other parameters are over their entire prior-probable domains.
-Effectively, then this marginalization involves evaluating $2^N$
-different likelihoods and marginalizing each one of them over
+other parameters are over their entire prior support.  Effectively,
+then this marginalization involves evaluating $2^N$ different
+likelihoods and marginalizing each one of them over
 $(\Pbad,\Ybad,\Vbad)$!  Of course because very few points are true
 candidates for rejection, there are many ways to ``trim the tree'' and
 do this more quickly; the lazy can simply sample; the very lazy can
@@ -734,6 +765,121 @@ complex.  We will also say a few things about Bayesian
 methods---involving priors and marginalization---in general.  But
 first we will present an alternative to this exponentially complex
 solution to this problem.
+
+(Hogg: End this section more gracefully, admitting that we put this up
+here but that we are \emph{not} going to actually execute, because
+foreground--background modeling is so much easier.---Hogg)
+
+\begin{comments}
+(Hogg: Note that the outlier model has more parameters than data.  How
+  does \emph{that} work?---Hogg)
+
+When flagging bad data, you might not want to give all points the same
+prior probability distribution function over $\Pbad$, though it is
+rare that one has reliable information about the unreliability of
+one's data.  Complementary to this, one of the amusing things about
+the Bayesian posterior for the data rejections $\allq$ developed above
+is that you can pick a particular data point $J$ and marginalize over
+$(m,b)$ and all the $q_i$ \emph{except} $q_J$.  This will return the
+marginalized posterior probability that point $J$ is good.  This is
+good for embarassing colleagues in meta-analyses \citep{pressH0}.
+Indeed, if embarassing colleagues is your goal, then you are forced to
+work with the good/bad assignments $\allq$ (not the mixture model) and
+you will face exponential computational complexity to fairly sample
+the space of data-rejection possibilities.
+
+The standard method for removing sensitivity to outliers (in
+astrophysics, anyway) is known as ``sigma-clipping''.  This is a
+procedure that involves performing the fit, identifying the worst
+outliers in a $\chi^2$ sense---the points that contribute more than
+some threshold $Q^2$ to the $\chi^2$ sum, removing those, fitting
+again, identifying again, and so on to convergence.  This procedure is
+easy to implement, fast, and reliable (provided that the threshold
+$Q^2$ is set high enough), but it has various problems that make it
+less suitable than the methods described above.  One is that it is a
+\emph{procedure} not an \emph{objective function}.  The procedure does
+not necessarily optimize a justifiable objective.  A second is that
+the procedure gives an answer that depends, in general, on the
+starting point or initialization, and because there is there is no way
+to compare different answers (there is no objective function), the
+investigator can't decide which of two converged answers is
+``better''.  You might think that the answer with least scatter
+(smallest $\chi^2$ per data point) is better, but that will favor
+solutions that involve rejecting most of the data; you might think the
+answer that uses the most data is better, but that can have a very
+large $\chi^2$.  These issues relate to the fact that the method does
+not explicitly \emph{penalize} the rejection of data; this is another
+bad consequence of not having an explicit objective function.  A third
+problem is that the procedure does not necessarily converge to
+anything non-trivial at all; if the threshold $Q^2$ gets very small,
+there are situations in which all but two of the data points can be
+rejected by the procedure.  All that said, with a large $Q^2$ and
+standard, pretty good data, the sigma-clipping procedure is easy to
+implement and fast; we have often used it ourselves.
+
+One extremely common variation on the problem of data rejection or
+sigma-clipping is the situation in which you have to perform data
+rejection but you \emph{don't know the magnitudes of your
+  uncertainties} $\allsigmay$.  We will say a bit more about this in
+\sectionname~\ref{sec:goodness}, but the general procedure is to
+include the $\allsigmay$ as model parameters and infer them and
+marginalize over them \emph{also}.  This is only really tractable if
+you can assume that all the data-point uncertainties are identical or
+you know something else equally informative about their
+\emph{relative} magnitudes.
+
+A less commonly used method for removing sensitivity to outliers is to
+soften the objective function from $\chi^2$ (which depends
+quadratically on all residuals) to something that depends on large
+residuals to a smaller power.  The most straightforward way to soften
+the objective function is to lower the power to which residuals are
+raised.  For example, if we model the frequency distribution
+$p(y_i|x_i,\sigma_{yi},m,b)$ not with a Gaussian but rather with a
+biexponential
+\begin{equation}
+p(y_i|x_i,\sigma_{yi},m,b) = \frac{1}{2\,s_i}
+ \,\exp\left(-\frac{|y_i-m\,x_i-b|}{s_i}\right) \quad ,
+\end{equation}
+where $s_i$ is an estimate of the mean absolute error, probably
+correctly set to something like $s_i\approx \sigma_{yi}$.
+Optimization of the total log likelihood is equivalent to minimizing
+\begin{equation}\label{eq:biexp}
+X = \sum_{i=1}^N \frac{|y_i-f(x_i)|}{s_i} \quad ,
+\end{equation}
+where $f(x)$ is the straight line of \equationname~\ref{eq:fofx}.
+This approach is rarely justified, but it has the nice
+property that it introduces no new parameters.
+Another straightforward softening is to (smoothly) cut off the
+contribution of a residual as it becomes large.  For example, replace
+$\chi^2$ with
+\begin{equation}\label{eq:soft}
+\chi_Q^2 = \sum_{i=1}^N \frac{Q^2\,[y_i-f(x_i)]^2}
+  {Q^2\,\sigma_{yi}^2+[y_i-f(x_i)]^2} \quad ,
+\end{equation}
+where $Q^2$ is the maximum amount a point can contribute to $\chi_Q^2$
+\citep{hampel}.  When each residual is small, its contribution to
+$\chi_Q^2$ is nearly identical to its contribution to the standard
+$\chi^2$, but as the residual gets substantial, the contribution of
+the residual does not increase as the square.  This is about the
+simplest robust method that introduces only one new parameter ($Q$),
+and in principle, one can put a prior on $Q$, infer it, and
+marginalize it out.  In general these are both far less good
+alternatives than modeling the outliers, because objective functions
+softer than $\chi^2$ are rarely justifiable in terms of any generative
+model for the data.  In \sectionname~\ref{sec:non-Gaussian} we discuss
+(briefly) justifiable modifications to the objective function when the
+observational uncertainty distributions depart from Gaussians in known
+ways.  Nonetheless, even when there is not a good justification for
+softening the objective function, it can sometimes be useful for
+generating a robust fit with a minimum of effort.
+
+(Hogg: Should that part about exponential penalty function be moved to
+the next section?  Or what?  Confused.---Hogg)
+\end{comments}
+
+\section{Foreground--background modeling}
+
+(Hogg:  Open this section more carefully!---Hogg)
 
 There is a much faster---meaning ``less computationally
 complex''---method for modeling the outliers: Instead of requiring a
@@ -758,15 +904,16 @@ where, once again, $\Pbad$ is the probability that a data point is bad
 function in the mixture), and $(\Ybad,\Vbad)$ are the parameters of
 the bad-data distribution.
 
-Marginalization of the posterior generated by the product of the
-likelihood in \equationname~(\ref{eq:mixture}) times a prior on
+Marginalization of the posterior probability distribution function
+generated by the product of the likelihood in
+\equationname~(\ref{eq:mixture}) times a prior on
 $(m,b,\Pbad,\Ybad,\Vbad)$ does \emph{not} involve exploring an
 exponential number of alternatives; an integral over only three
-parameters produces the posterior probability distribution function
-for the straight-line parameters $(m,b)$.  This scale of problem is
-very well-suited to simple multi-dimensonal integrators, in particular
-it works very well with a simple Markov-Chain Monte Carlo, which we
-advocate below.
+parameters produces the marginalized posterior probability
+distribution function for the straight-line parameters $(m,b)$.  This
+scale of problem is very well-suited to simple multi-dimensonal
+integrators, in particular it works very well with a simple
+Markov-Chain Monte Carlo, which we advocate below.
 
 Whether to use the exponential binary assignment or mixture methods
 depends---in principle---on your generative model for the data: Are
@@ -912,105 +1059,6 @@ generative model for the data.
 
 (Hogg: Once again, what would a frequentist do with the nuisance
 parameters?  I think I know.---Hogg)
-
-When flagging bad data, you might not want to give all points the same
-prior probability distribution function over $\Pbad$, though it is
-rare that one has reliable information about the unreliability of
-one's data.  Complementary to this, one of the amusing things about
-the Bayesian posterior for the data rejections $\allq$ developed above
-is that you can pick a particular data point $J$ and marginalize over
-$(m,b)$ and all the $q_i$ \emph{except} $q_J$.  This will return the
-marginalized posterior probability that point $J$ is good.  This is
-good for embarassing colleagues in meta-analyses \citep{pressH0}.
-Indeed, if embarassing colleagues is your goal, then you are forced to
-work with the good/bad assignments $\allq$ (not the mixture model) and
-you will face exponential computational complexity to fairly sample
-the space of data-rejection possibilities.
-
-The standard method for removing sensitivity to outliers (in
-astrophysics, anyway) is known as ``sigma-clipping''.  This is a
-procedure that involves performing the fit, identifying the worst
-outliers in a $\chi^2$ sense---the points that contribute more than
-some threshold $Q^2$ to the $\chi^2$ sum, removing those, fitting
-again, identifying again, and so on to convergence.  This procedure is
-easy to implement, fast, and reliable (provided that the threshold
-$Q^2$ is set high enough), but it has various problems that make it
-less suitable than the methods described above.  One is that it is a
-\emph{procedure} not an \emph{objective function}.  The procedure does
-not necessarily optimize a justifiable objective.  A second is that
-the procedure gives an answer that depends, in general, on the
-starting point or initialization, and because there is there is no way
-to compare different answers (there is no objective function), the
-investigator can't decide which of two converged answers is
-``better''.  You might think that the answer with least scatter
-(smallest $\chi^2$ per data point) is better, but that will favor
-solutions that involve rejecting most of the data; you might think the
-answer that uses the most data is better, but that can have a very
-large $\chi^2$.  These issues relate to the fact that the method does
-not explicitly \emph{penalize} the rejection of data; this is another
-bad consequence of not having an explicit objective function.  A third
-problem is that the procedure does not necessarily converge to
-anything non-trivial at all; if the threshold $Q^2$ gets very small,
-there are situations in which all but two of the data points can be
-rejected by the procedure.  All that said, with a large $Q^2$ and
-standard, pretty good data, the sigma-clipping procedure is easy to
-implement and fast; we have often used it ourselves.
-
-One extremely common variation on the problem of data rejection or
-sigma-clipping is the situation in which you have to perform data
-rejection but you \emph{don't know the magnitudes of your
-  uncertainties} $\allsigmay$.  We will say a bit more about this in
-\sectionname~\ref{sec:goodness}, but the general procedure is to
-include the $\allsigmay$ as model parameters and infer them and
-marginalize over them \emph{also}.  This is only really tractable if
-you can assume that all the data-point uncertainties are identical or
-you know something else equally informative about their
-\emph{relative} magnitudes.
-
-A less commonly used method for removing sensitivity to outliers is to
-soften the objective function from $\chi^2$ (which depends
-quadratically on all residuals) to something that depends on large
-residuals to a smaller power.  The most straightforward way to soften
-the objective function is to lower the power to which residuals are
-raised.  For example, if we model the frequency distribution
-$p(y_i|x_i,\sigma_{yi},m,b)$ not with a Gaussian but rather with a
-biexponential
-\begin{equation}
-p(y_i|x_i,\sigma_{yi},m,b) = \frac{1}{2\,s_i}
- \,\exp\left(-\frac{|y_i-m\,x_i-b|}{s_i}\right) \quad ,
-\end{equation}
-where $s_i$ is an estimate of the mean absolute error, probably
-correctly set to something like $s_i\approx \sigma_{yi}$.
-Optimization of the total log likelihood is equivalent to minimizing
-\begin{equation}\label{eq:biexp}
-X = \sum_{i=1}^N \frac{|y_i-f(x_i)|}{s_i} \quad ,
-\end{equation}
-where $f(x)$ is the straight line of \equationname~\ref{eq:fofx}.
-This approach is rarely justified, but it has the nice
-property that it introduces no new parameters.
-Another straightforward softening is to (smoothly) cut off the
-contribution of a residual as it becomes large.  For example, replace
-$\chi^2$ with
-\begin{equation}\label{eq:soft}
-\chi_Q^2 = \sum_{i=1}^N \frac{Q^2\,[y_i-f(x_i)]^2}
-  {Q^2\,\sigma_{yi}^2+[y_i-f(x_i)]^2} \quad ,
-\end{equation}
-where $Q^2$ is the maximum amount a point can contribute to $\chi_Q^2$
-\citep{hampel}.  When each residual is small, its contribution to
-$\chi_Q^2$ is nearly identical to its contribution to the standard
-$\chi^2$, but as the residual gets substantial, the contribution of
-the residual does not increase as the square.  This is about the
-simplest robust method that introduces only one new parameter ($Q$),
-and in principle, one can put a prior on $Q$, infer it, and
-marginalize it out.  In general these are both far less good
-alternatives than modeling the outliers, because objective functions
-softer than $\chi^2$ are rarely justifiable in terms of any generative
-model for the data.  In \sectionname~\ref{sec:non-Gaussian} we discuss
-(briefly) justifiable modifications to the objective function when the
-observational uncertainty distributions depart from Gaussians in known
-ways.  Nonetheless, even when there is not a good justification for
-softening the objective function, it can sometimes be useful for
-generating a robust fit with a minimum of effort.
 \end{comments}
 
 \begin{problem}\label{prob:mixture}
@@ -1115,7 +1163,7 @@ distributions can), these likelihoods become
 \begin{equation}
 p(y_i|x_i,\sigma_{yi},m,b) = \sum_{j=1}^k
  \frac{a_j}{\sqrt{2\,\pi\,\sigma_{yij}^2}}
- \,\exp\left(-\frac{[y_i+\Delta y_{ij}-m\,x-b]^2}{2\,\sigma_{yij}^2}\right)
+ \,\exp\left(-\frac{[y_i+\Delta y_{ij}-m\,x_i-b]^2}{2\,\sigma_{yij}^2}\right)
  \quad ,
 \end{equation}
 where the $k$ Gaussians for measurement $i$ have variances
