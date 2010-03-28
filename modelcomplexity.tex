@@ -1,0 +1,157 @@
+\documentclass[12pt,twoside]{article}
+\usepackage{amssymb,amsmath,mathrsfs,deluxetable}
+\usepackage{natbib}
+\usepackage{float,graphicx}
+% hypertex insanity
+\usepackage{color,hyperref}
+\definecolor{linkcolor}{rgb}{0,0,0.25}
+\hypersetup{
+  colorlinks=true,        % false: boxed links; true: colored links
+  linkcolor=linkcolor,    % color of internal links
+  citecolor=linkcolor,    % color of links to bibliography
+  filecolor=linkcolor,    % color of file links
+  urlcolor=linkcolor      % color of external links
+}
+%%Figure caption
+\makeatletter
+\newsavebox{\tempbox}
+\newcommand{\@makefigcaption}[2]{%
+\vspace{10pt}{#1.--- #2\par}}%
+\renewcommand{\figure}{\let\@makecaption\@makefigcaption\@float{figure}}
+\makeatother
+
+\setlength{\emergencystretch}{2em}%No overflow
+
+\newcommand{\notenglish}[1]{\textsl{#1}}
+\newcommand{\aposteriori}{\notenglish{a~posteriori}}
+\newcommand{\apriori}{\notenglish{a~priori}}
+\newcommand{\adhoc}{\notenglish{ad~hoc}}
+\newcommand{\etal}{\notenglish{et al.}}
+\newcommand{\eg}{\notenglish{e.g.}}
+
+\newcommand{\documentname}{document}
+\newcommand{\sectionname}{Section}
+\newcommand{\equationname}{equation}
+\newcommand{\problemname}{Exercise}
+\newcommand{\solutionname}{Solution}
+\newcommand{\commentsname}{Comments}
+
+\newcounter{problem}
+\newenvironment{problem}{\paragraph{\problemname~\theproblem:}\refstepcounter{problem}}{}
+\newenvironment{comments}{\paragraph{\commentsname:}}{}
+
+% matrix stuff
+\newcommand{\mmatrix}[1]{\boldsymbol{#1}}
+\newcommand{\inverse}[1]{{#1}^{-1}}
+\newcommand{\transpose}[1]{{#1}^{\scriptscriptstyle \top}}
+\newcommand{\mA}{\mmatrix{A}}
+\newcommand{\mAT}{\transpose{\mA}}
+\newcommand{\mC}{\mmatrix{C}}
+\newcommand{\mCinv}{\inverse{\mC}}
+\newcommand{\mE}{\mmatrix{E}}
+\newcommand{\mQ}{\mmatrix{Q}}
+\newcommand{\mS}{\mmatrix{S}}
+\newcommand{\mX}{\mmatrix{X}}
+\newcommand{\mY}{\mmatrix{Y}}
+\newcommand{\mYT}{\transpose{\mY}}
+\newcommand{\mZ}{\mmatrix{Z}}
+\newcommand{\vhat}{\mmatrix{\hat{v}}}
+
+% parameter vectors
+\newcommand{\parametervector}[1]{\mmatrix{\vec{#1}}}
+\newcommand{\pvtheta}{\parametervector{\theta}}
+
+% set stuff
+\newcommand{\setofall}[3]{\{{#1}\}_{{#2}}^{{#3}}}
+\newcommand{\allq}{\setofall{q_i}{i=1}{N}}
+\newcommand{\allx}{\setofall{x_i}{i=1}{N}}
+\newcommand{\ally}{\setofall{y_i}{i=1}{N}}
+\newcommand{\allxy}{\setofall{x_i,y_i}{i=1}{N}}
+\newcommand{\allsigmay}{\setofall{\sigma_{yi}^2}{i=1}{N}}
+\newcommand{\allC}{\setofall{\mC_i}{i=1}{N}}
+
+% other random multiply used math symbols
+\renewcommand{\d}{\mathrm{d}}
+\newcommand{\like}{\mathscr{L}}
+\newcommand{\Pbad}{P_{\mathrm{b}}}
+\newcommand{\Ybad}{Y_{\mathrm{b}}}
+\newcommand{\Vbad}{V_{\mathrm{b}}}
+\newcommand{\bperp}{b_{\perp}}
+\newcommand{\mean}[1]{\left<{#1}\right>}
+\newcommand{\meanZ}{\mean{\mZ}}
+\newcommand{\best}{\mathrm{best}}
+
+% header stuff
+\renewcommand{\MakeUppercase}[1]{#1}
+\pagestyle{myheadings}
+\renewcommand{\sectionmark}[1]{\markright{\thesection.~#1}}
+\markboth{Fitting a straight line to data}{}
+
+\begin{document}
+\thispagestyle{plain}\raggedbottom
+%% \section*{Data analysis recipes:\ \\
+%%   Comparing models of different complexity\footnote{
+%%     Copyright 2010 by the authors.
+%%     \textbf{This is a DRAFT version dated 2010-03-28.
+%%     Please do not distribute this document.}}}
+%% %    You may copy and distribute this document
+%% %    provided that you make no changes to it whatsoever.}}
+
+%% \noindent
+%% David~W.~Hogg\footnote{\textsl{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New York University} and \textsl{Max-Planck-Institut f\"ur Astronomie, Heidelberg}},
+%% Jo~Bovy\footnote{\textsl{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New York University}}, \&
+%% Dustin~Lang\footnote{\textsl{Department of Computer Science, University of Toronto} and \textsl{Princeton University Observatory}}
+
+%% \begin{abstract}
+%%   TBD
+%% \end{abstract}
+
+\begin{equation}
+y_i = a_{ij}\,x_j + e_i
+  \quad ,
+\end{equation}
+\begin{equation}
+\mY = \mA\,\mX + \mE
+  \quad ,
+\end{equation}
+\begin{equation}
+\chi^2 = \sum_{i=1}^N
+  \frac{\left[y_i - a_{ij}\,x_j\right]^2}{\sigma_{yi}^2}
+  \quad ,
+\end{equation}
+\begin{equation}
+\chi^2 = \transpose{\left[\mY-\mA\,\mX\right]}
+  \,\mCinv\,\left[\mY-\mA\,\mX\right]
+  \quad ,
+\end{equation}
+\begin{equation}
+\mX_\best = \inverse{\left[\mAT\,\mCinv\,\mA\right]}
+  \,\left[\mAT\,\mCinv\,\mY\right]
+  \quad ,
+\end{equation}
+\begin{equation}
+\chi_r^2 = \sum_{i=1}^N
+  \frac{\left[y_i - a_{ij}\,x_j\right]^2}{\sigma_{yi}^2}
+  + \epsilon\,\sum_{j=1}^{K-1}\left[x_{j+1}-x_j\right]^2
+  \quad ,
+\end{equation}
+\begin{equation}
+\chi_r^2 = 
+\end{equation}
+\begin{equation}
+\mX_\best = \inverse{\left[\mAT\,\mCinv\,\mA + \epsilon\,\mQ\right]}
+  \,\left[\mAT\,\mCinv\,\mY\right]
+  \quad ,
+\end{equation}
+\begin{equation}
+\mQ = \left[\begin{array}{cccccc}
+    1 &-1 & 0 & 0 & 0 & 0 \\
+   -1 & 2 &-1 & 0 & 0 & 0 \\
+    0 &-1 & 2 &-1 & 0 & 0 \\
+    0 & 0 &-1 & 2 &-1 & 0 \\
+    0 & 0 & 0 &-1 & 2 &-1 \\
+    0 & 0 & 0 & 0 &-1 & 1 \\
+  \end{array}\right]
+\end{equation}
+
+\end{document}
