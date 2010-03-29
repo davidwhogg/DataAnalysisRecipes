@@ -106,43 +106,77 @@
 %%   TBD
 %% \end{abstract}
 
+Imagine a set of $N$ data points $y_i$ which deviate from a
+$K$-dimensional (or $K$-parameter) linear model by the addition of
+noise samples $e_i$ drawn from Gaussian distributions of (presumed
+known) variances $\sigma_{yi}^2$.  The model can be written as
 \begin{equation}
-y_i = a_{ij}\,x_j + e_i
+y_i = \sum_{j=1}^K
+  a_{ij}\,x_j + e_i
   \quad ,
 \end{equation}
+or, in matrix notation,
 \begin{equation}
 \mY = \mA\,\mX + \mE
   \quad ,
 \end{equation}
+where $\mY$ is an $N$-dimensional vector of the $y_i$, $\mA$ is an
+$N\times K$ matrix of (presumed known) coefficients $a_{ij}$, $\mX$ is
+a $K$-dimensional vector of the parameters $x_j$, and $\mE$ is an
+$N$-dimensional vector of the noise draws or errors $e_i$.  The
+standard thing to do is to minimize a $\chi^2$ scalar
 \begin{equation}
 \chi^2 = \sum_{i=1}^N
   \frac{\left[y_i - a_{ij}\,x_j\right]^2}{\sigma_{yi}^2}
   \quad ,
 \end{equation}
+where this is scientifically justified when all the aforementioned
+assumptions (linear model space includes the truth, noise is Gaussian
+with known variances, and so on) are true.  This objective ($\chi^2$)
+is truly a scalar in the sense that it has a compact matrix
+representation
 \begin{equation}
 \chi^2 = \transpose{\left[\mY-\mA\,\mX\right]}
   \,\mCinv\,\left[\mY-\mA\,\mX\right]
-  \quad ,
+  \quad .
 \end{equation}
+In this situation, when $N<K$, the best-fit value for the parameters
+(the elements of $\mX$) is given by
 \begin{equation}
 \mX_\best = \inverse{\left[\mAT\,\mCinv\,\mA\right]}
   \,\left[\mAT\,\mCinv\,\mY\right]
   \quad ,
 \end{equation}
+which was found by forcing the full derivative of the $\chi^2$ scalar
+to vanish.  In this formulation, if the (errors of the) $y_i$ are
+independent, the covariance matrix $\mC$ is the diagonal $N\times N$
+matrix with the noise variances $\sigma_{yi}^2$ on the diagonal.
+
+Frequently (for engineers, if not astronomers) the condition $N<K$
+does not hold, but there are smoothness expectations that provide
+enough support to set the parameters nonetheless.  The simplest
+implementation of a smoothness prior or regularization is the addition
+to $\chi^2$ of a quadratic penalty for derivatives in the parameters
+$x_j$.  In this picture, we imagine the parameters $x_j$ are ordered
+such that nearby $j$ are nearby in the appropriate sense.  The scalar
+objective gets modified in this case to
 \begin{equation}
 \chi_r^2 = \sum_{i=1}^N
   \frac{\left[y_i - a_{ij}\,x_j\right]^2}{\sigma_{yi}^2}
   + \epsilon\,\sum_{j=1}^{K-1}\left[x_{j+1}-x_j\right]^2
   \quad ,
 \end{equation}
-\begin{equation}
-\chi_r^2 = 
-\end{equation}
+where $\epsilon$ is a control parameter that controls the smoothness
+of the model, or the stiffness of it, or else the model complexity in
+some sense.  Under this objective, the best fit parameter vector is
+given by
 \begin{equation}
 \mX_\best = \inverse{\left[\mAT\,\mCinv\,\mA + \epsilon\,\mQ\right]}
   \,\left[\mAT\,\mCinv\,\mY\right]
   \quad ,
 \end{equation}
+where the $K\times K$ matrix $\mQ$ is a tri-diagonal matrix that looks
+like this
 \begin{equation}
 \mQ = \left[\begin{array}{cccccc}
     1 &-1 & 0 & 0 & 0 & 0 \\
@@ -152,6 +186,9 @@ y_i = a_{ij}\,x_j + e_i
     0 & 0 & 0 &-1 & 2 &-1 \\
     0 & 0 & 0 & 0 &-1 & 1 \\
   \end{array}\right]
+  \quad ,
 \end{equation}
+in the case of $K=6$ parameters and generalizes in the obvious way for
+different $K$.
 
 \end{document}
