@@ -16,7 +16,7 @@
 % - emphasize that the specific outlier model is not the point, *modeling* the outliers is the point
 % - make MCMC more of the point, connect to marginalization
 % - put figures used in Hauskolloquium into document and remove figures for de-emphasized methods
-% - describe outlier odds calculation
+% - describe outlier odds calculation in the mixture model case
 
 % notes from IMPRS
 % ----------------
@@ -106,6 +106,8 @@
 % other random multiply used math symbols
 \renewcommand{\d}{\mathrm{d}}
 \newcommand{\like}{\mathscr{L}}
+\newcommand{\pfg}{p_{\mathrm{fg}}}
+\newcommand{\pbg}{p_{\mathrm{bg}}}
 \newcommand{\Pbad}{P_{\mathrm{b}}}
 \newcommand{\Ybad}{Y_{\mathrm{b}}}
 \newcommand{\Vbad}{V_{\mathrm{b}}}
@@ -684,17 +686,24 @@ that we become Bayesian.
 
 In this case, the likelihood is
 \begin{eqnarray}\displaystyle
-\like &\equiv& p(\ally|m,b,\allq,\Pbad,\Ybad,\Vbad,I)
+\like &\equiv& p(\ally|m,b,\allq,\Ybad,\Vbad,I)
+ \nonumber\\
+\like &=& \prod_{i=1}^N
+ \left[\pfg(\ally|m,b,I))\right]^{q_i}\,
+ \left[\pbg(\ally|\Ybad,\Vbad,I)\right]^{[1-q_i]}
  \nonumber\\
 \like &=& \prod_{i=1}^N \left[\frac{1}{\sqrt{2\,\pi\,\sigma_{yi}^2}}
  \,\exp\left(-\frac{[y_i-m\,x_i-b]^2}{2\,\sigma_{yi}^2}\right)\right]^{q_i}
  \nonumber \\ & & \quad\times
  \left[\frac{1}{\sqrt{2\,\pi\,[\Vbad+\sigma_{yi}^2]}}
  \,\exp\left(-\frac{[y_i-\Ybad]^2}{2\,[\Vbad+\sigma_{yi}^2]}\right)\right]^{[1-q_i]}
- \quad .
+ \quad ,
 \end{eqnarray}
-Because we are permitting data rejection, there is an important prior
-probability on the $\allq$ that penalizes each rejection:
+where $\pfg(\cdot)$ and $\pbg(\cdot)$ are the generative models for
+the foreground (good, or straight-line) and background (bad, or
+outlier) points.  Because we are permitting data rejection, there is
+an important prior probability on the $\allq$ that penalizes each
+rejection:
 \begin{eqnarray}\displaystyle
 p(m,b,\allq,\Pbad,\Ybad,\Vbad|I)
  &=& p(\allq|\Pbad,I)\,p(m,b,\Pbad,\Ybad,\Vbad|I)
@@ -708,22 +717,22 @@ The priors on the other parameters $(\Pbad,\Ybad,\Vbad)$ should either
 be set according to an analysis of your prior knowledge or else be
 uninformative (as in flat in $\Pbad$ in the range $[0,1]$, flat in
 $\Ybad$ in some reasonable range, and flat in the logarithm of $\Vbad$
-in some other reasonable range).  If your data are good, it won't
-matter whether you choose uninformative priors or priors that really
+in some reasonable range).  If your data are good, it won't matter
+whether you choose uninformative priors or priors that really
 represent your prior knowledge; in the end good data dominate either.
 
 We have used in this likelihood formulation a Gaussian model for the
 bad points; is that permitted?  Well, we don't know much about the bad
-points (that is one of the things that makes them bad), so this must
-be wrong in detail.  But the power of this and the methods to follow
-comes not from making an \emph{accurate} model of the outliers, it
-comes simply from \emph{modeling} them.  If you have a model for the
-origin of your bad data, use it by all means.  If you don't, the
-Gaussian is the maximum-entropy distribution described by a mean and a
-variance, and is therefore, in some sense, the \emph{least}
-restrictive assumption, given that we have allowed that mean and
-variance to vary in the fitting (and, indeed, we will marginalize over
-both in the end).
+points (that is one of the things that makes them bad), so this
+Gaussian model must be wrong in detail.  But the power of this and the
+methods to follow comes not from making an \emph{accurate} model of
+the outliers, it comes simply from \emph{modeling} them.  If you have
+an accurate or substantiated model for your bad data, use it by all
+means.  If you don't, because the Gaussian is the maximum-entropy
+distribution described by a mean and a variance, it is therefore---in
+some sense---the \emph{least} restrictive assumption, given that we
+have allowed that mean and variance to vary in the fitting (and,
+indeed, we will marginalize over both in the end).
 
 The posterior probability distribution function, in general, is the
 likelihood times the prior, properly normalized.  In this case, the
@@ -759,12 +768,12 @@ Compared to the standard line-fitting of
 \sectionname~\ref{sec:standard}, once we imagine rejecting data, we
 are going to have to put some thought into computational methodology;
 the sum over $2^N$ settings should give any reader pause.  We will
-give, below, some advice about performing the marginalization and
-computing the posterior distribution functions, which can become
-complex.  We will also say a few things about Bayesian
-methods---involving priors and marginalization---in general.  But
-first we will present an alternative to this exponentially complex
-solution to this problem.
+give, below, some advice about performing marginalizations and
+computing posterior distribution functions, which can become complex.
+We will also say a few things about Bayesian methods---involving
+priors and marginalization---in general.  But first (in
+\sectionname~\ref{sec:mixture}) we will present an alternative to this
+exponentially complex solution to this problem.
 
 (Hogg: End this section more gracefully, admitting that we put this up
 here but that we are \emph{not} going to actually execute, because
@@ -775,18 +784,18 @@ foreground--background modeling is so much easier.---Hogg)
   does \emph{that} work?---Hogg)
 
 When flagging bad data, you might not want to give all points the same
-prior probability distribution function over $\Pbad$, though it is
+prior probability distribution function over $\Pbad$ (though it is
 rare that one has reliable information about the unreliability of
-one's data.  Complementary to this, one of the amusing things about
+one's data).  Complementary to this, one of the amusing things about
 the Bayesian posterior for the data rejections $\allq$ developed above
 is that you can pick a particular data point $J$ and marginalize over
-$(m,b)$ and all the $q_i$ \emph{except} $q_J$.  This will return the
-marginalized posterior probability that point $J$ is good.  This is
-good for embarassing colleagues in meta-analyses \citep{pressH0}.
-Indeed, if embarassing colleagues is your goal, then you are forced to
-work with the good/bad assignments $\allq$ (not the mixture model) and
-you will face exponential computational complexity to fairly sample
-the space of data-rejection possibilities.
+$(m,b,\Pbad,\Ybad,\Vbad)$ and all the $q_i$ \emph{except} $q_J$.  This
+will return the marginalized posterior probability that point $J$ is
+good.  This is valuable for embarassing colleagues in meta-analyses
+\citep{pressH0}.  Indeed, if embarassing colleagues is your goal, then
+Bayesian methods for data rejection are useful:  They permit
+parameter-independent (that is, marginalized) statements about the
+probability that individual data points are bad.
 
 The standard method for removing sensitivity to outliers (in
 astrophysics, anyway) is known as ``sigma-clipping''.  This is a
@@ -804,16 +813,16 @@ starting point or initialization, and because there is there is no way
 to compare different answers (there is no objective function), the
 investigator can't decide which of two converged answers is
 ``better''.  You might think that the answer with least scatter
-(smallest $\chi^2$ per data point) is better, but that will favor
+(smallest $\chi^2$ per data point) is best, but that will favor
 solutions that involve rejecting most of the data; you might think the
-answer that uses the most data is better, but that can have a very
+answer that uses the most data is best, but that can have a very
 large $\chi^2$.  These issues relate to the fact that the method does
 not explicitly \emph{penalize} the rejection of data; this is another
 bad consequence of not having an explicit objective function.  A third
 problem is that the procedure does not necessarily converge to
 anything non-trivial at all; if the threshold $Q^2$ gets very small,
 there are situations in which all but two of the data points can be
-rejected by the procedure.  All that said, with a large $Q^2$ and
+rejected by the procedure.  All that said, with $Q^2\gg 1$ and
 standard, pretty good data, the sigma-clipping procedure is easy to
 implement and fast; we have often used it ourselves.
 
@@ -866,20 +875,22 @@ and in principle, one can put a prior on $Q$, infer it, and
 marginalize it out.  In general these are both far less good
 alternatives than modeling the outliers, because objective functions
 softer than $\chi^2$ are rarely justifiable in terms of any generative
-model for the data.  In \sectionname~\ref{sec:non-Gaussian} we discuss
+model for the data.  In \sectionname~\ref{sec:mixture} we model
+outliers by a method that can almost be interpreted in terms of a
+softer $\chi^2$; in \sectionname~\ref{sec:non-Gaussian} we discuss
 (briefly) justifiable modifications to the objective function when the
 observational uncertainty distributions depart from Gaussians in known
 ways.  Nonetheless, even when there is not a good justification for
 softening the objective function, it can sometimes be useful for
 generating a robust fit with a minimum of effort.
-
-(Hogg: Should that part about exponential penalty function be moved to
-the next section?  Or what?  Confused.---Hogg)
 \end{comments}
 
-\section{Foreground--background modeling}
+\section{Foreground--background modeling}\label{sec:mixture}
 
-(Hogg:  Open this section more carefully!---Hogg)
+(Hogg: Open this section more carefully, drawing the connection to the
+exponentially hard methods from previous section and noting the
+generality of this kind of methodology for fitting in the presence of
+badly classified data.---Hogg)
 
 There is a much faster---meaning ``less computationally
 complex''---method for modeling the outliers: Instead of requiring a
@@ -891,6 +902,10 @@ model for the data $\ally$ is changed to
 \begin{eqnarray}\label{eq:mixture}\displaystyle
 \like &\equiv& p(\ally|m,b,\Pbad,\Ybad,\Vbad,I)
  \nonumber\\
+\like &\equiv& \prod_{i=1}^N
+ \left[ (1-\Pbad)\,\pfg(\ally|m,b,I))
+ + \Pbad\,\pbg(\ally|\Ybad,\Vbad,I) \right]
+ \nonumber\\
 \like &\propto&
  \prod_{i=1}^N \left[\frac{1-\Pbad}{\sqrt{2\,\pi\,\sigma_{yi}^2}}
  \,\exp\left(-\frac{[y_i-m\,x_i-b]^2}{2\,\sigma_{yi}^2}\right)\right.
@@ -899,16 +914,27 @@ model for the data $\ally$ is changed to
  \,\exp\left(-\frac{[y_i-\Ybad]^2}{2\,[\Vbad+\sigma_{yi}^2]}\right)\right]
  \quad ,
 \end{eqnarray}
-where, once again, $\Pbad$ is the probability that a data point is bad
-(or, more properly, the amplitude of the bad-data distribution
-function in the mixture), and $(\Ybad,\Vbad)$ are the parameters of
-the bad-data distribution.
+where $\pfg(\cdot)$ and $\pbg(\cdot)$ are the generative models for
+the foreground and background points, $\Pbad$ is the probability that
+a data point is bad (or, more properly, the amplitude of the bad-data
+distribution function in the mixture), and $(\Ybad,\Vbad)$ are
+parameters of the bad-data distribution.
+
+As in \sectionname~\ref{sec:outliers}, we have chosen a Gaussian model
+for the outliers, which is a choice, and almost certainly wrong in
+detail.  But again the point is not to model the outliers accurately,
+it is simply to model them.  If the data are mainly good,
+marginalization will take care of the deficiencies of this simplistic
+moddel.  (And, as we noted before, the Gaussian model is a
+maximum-entropy distribution and therefore in fact relatively
+conservative.)
 
 Marginalization of the posterior probability distribution function
 generated by the product of the likelihood in
 \equationname~(\ref{eq:mixture}) times a prior on
 $(m,b,\Pbad,\Ybad,\Vbad)$ does \emph{not} involve exploring an
-exponential number of alternatives; an integral over only three
+exponential number of alternatives (as in
+\sectionname~\ref{sec:outliers}); an integral over only three
 parameters produces the marginalized posterior probability
 distribution function for the straight-line parameters $(m,b)$.  This
 scale of problem is very well-suited to simple multi-dimensonal
@@ -935,43 +961,40 @@ integrate to marginalize the distribution function, and then we have
 to decide what to do with the marginalized posterior: optimize it or
 sample from it?
 
-One unfortunate thing about any Bayes\-ian method is that prior
-probabilities must be specified.  Conventional frequentists take this
-problem to be so severe that for some it invalidates Bayesian
-approaches entirely!  But, as we will discuss more in the
-\commentsname, a prior is a \emph{necessary condition} for
-marginalization, and marginalization is necessary whenever extra
-parameters are introduced beyond the two $(m,b)$ that we care about
-for our straight-line fit.  Furthermore, in any situation of
-straight-line fitting where the data are numerous and generally good,
-these priors do not matter very much to the final answer.  The way we
-have written our likelihoods, the peak in the posterior distribution
-function becomes very directly analogous to what you might call the
-maximum-likelihood answer when the (improper, non-normalizable) prior
-``flat in $m$, flat in $b$'' is adopted, and something sensible has
-been chosen for $(\Pbad,\Ybad,\Vbad)$ (broad distributions that
-include the mean and variance of the data would be a good place to
-start).  Usually the investigator \emph{does} have some basis for
-setting some more informative priors, but a deep and sensible
-discussion of priors is beyond the scope of this \documentname.
-Suffice it to say, in this situation---pruning bad data---the setting
-of priors is the \emph{least} of one's problems.
+It is unfortunate that prior probabilities must be specified.
+Conventional frequentists take this problem to be so severe that for
+some it invalidates Bayesian approaches entirely!  But, as we will
+discuss more in the \commentsname, a prior is a \emph{necessary
+  condition} for marginalization, and marginalization is necessary
+whenever extra parameters are introduced beyond the two $(m,b)$ that
+we care about for our straight-line fit.  Furthermore, in any
+situation of straight-line fitting where the data are numerous and
+generally good, these priors do not matter very much to the final
+answer.  The way we have written our likelihoods, the peak in the
+posterior distribution function becomes very directly analogous to
+what you might call the maximum-likelihood answer when the (improper,
+non-normalizable) prior ``flat in $m$, flat in $b$'' is adopted, and
+something sensible has been chosen for $(\Pbad,\Ybad,\Vbad)$.  Usually
+the investigator \emph{does} have some basis for setting some more
+informative priors, but a deep and sensible discussion of priors is
+beyond the scope of this \documentname.  Suffice it to say, in this
+situation---pruning bad data---the setting of priors is the
+\emph{least} of one's problems.
 
-The second unfortunate thing about the Bayesian schemes is that we
-must marginalize.  It is also a \emph{fortunate} thing that we
-\emph{can} marginalize.  As we have noted, marginalization is
-necessary if you want to get estimates with uncertainties or
-confidence intervals in the straight-line parameters $(m,b)$ that
-properly account for their covariances with the nuisance parameters
-$(\Pbad,\Ybad,\Vbad)$.  This marginalization can be performed by
-direct numerical integration (think gridding up the nuisance
-parameters, evaluating at every grid point, and summing), or it can be
-performed with some kind of sampler, such as a Monte-Carlo Markov
-Chain.  We strongly recommend the latter for reasons that will become
-obvious below; briefly, it is because in situations where the integral
-is of a \emph{probability distribution}, not only does the MCMC scheme
-integrate it, it also produces a \emph{sampling} from the distribution
-as a side-product for free.
+The second unfortunate thing about our problem is that we must
+marginalize.  It is also a \emph{fortunate} thing that we \emph{can}
+marginalize.  As we have noted, marginalization is necessary if you
+want to get estimates with uncertainties or confidence intervals in
+the straight-line parameters $(m,b)$ that properly account for their
+covariances with the nuisance parameters $(\Pbad,\Ybad,\Vbad)$.  This
+marginalization can be performed by direct numerical integration
+(think gridding up the nuisance parameters, evaluating at every grid
+point, and summing), or it can be performed with some kind of sampler,
+such as a Monte-Carlo Markov Chain.  We strongly recommend the latter
+for reasons that will become obvious below; briefly, it is because in
+situations where the integral is of a \emph{probability distribution},
+not only does the MCMC scheme integrate it, it also produces a
+\emph{sampling} from the distribution as a side-product for free.
 
 (Bovy: Put in one paragraph about how MCMC works and describe the
 Metropolis algorithm briefly...say something about burn-in and taking
