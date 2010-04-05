@@ -126,7 +126,7 @@
 \section*{Data analysis recipes:\ \\
   Fitting a straight line to data\footnote{
     Copyright 2010 by the authors.
-    \textbf{This is a DRAFT version dated 2010-03-18.
+    \textbf{This is a DRAFT version dated 2010-04-05.
     Please do not distribute this document.}}}
 %    You may copy and distribute this document
 %    provided that you make no changes to it whatsoever.}}
@@ -1007,44 +1007,59 @@ Metropolis algorithm briefly...say something about burn-in and taking
 every Nth sample...in principle this could get its own \sectionname;
 if you think it should let's discuss---Hogg)
 
-Now, once you have run the MCMC and obtained a chain of samples from
-the posterior probability distribution for the full parameter set
-$(m,b,\Pbad,\Ybad,\Vbad)$, what do you do?  A histogram of the samples
-in any one dimension is an approximation to the fully marginalized
-posterior probability distribution for that parameter, and in any two
-is that for the pair.  You can find the ``maximum \aposteriori'' (or
-MAP) value, by taking the peak of the marginalized posterior
-probability distribution for the line parameters $(m,b)$.  This, in
-general, will be different from the $(m,b)$ value at the peak of the
-unmarginalized probability distribution for \emph{all} the parameters
-$(m,b,\Pbad,\Ybad,\Vbad)$, because the posterior distribution can be
-very complex in the five-dimensional space.  Because, for our
-purposes, the three parameters $(\Pbad,\Ybad,\Vbad)$ are nuisance
-parameters, it is more correct to take the ``best-fit'' $(m,b)$ from
-the marginalized distribution.
+Once you have run the MCMC and obtained a chain of samples from the
+posterior probability distribution for the full parameter set
+$(m,b,\Pbad,\Ybad,\Vbad)$, you still must decide what to report about
+your this product.  A histogram of the samples in any one dimension is
+an approximation to the fully marginalized posterior probability
+distribution for that parameter, and in any two is that for the pair.
+You can find the ``maximum \aposteriori'' (or MAP) value, by taking
+the peak of the marginalized posterior probability distribution for
+the line parameters $(m,b)$.  This, in general, will be different from
+the $(m,b)$ value at the peak of the unmarginalized probability
+distribution for \emph{all} the parameters $(m,b,\Pbad,\Ybad,\Vbad)$,
+because the posterior distribution can be very complex in the
+five-dimensional space.  Because, for our purposes, the three
+parameters $(\Pbad,\Ybad,\Vbad)$ are nuisance parameters, it is more
+correct to take the ``best-fit'' $(m,b)$ from the marginalized
+distribution.
 
-While the MAP answer is an interesting one, it is worth keeping in
-mind the third unfortunate thing about any Bayesian method: It does
-not return an ``answer'' but rather it returns a \emph{posterior
-probability distribution}.  Strictly, this posterior distribution
-function \emph{is} your answer.  However, what scientists are usually
-doing is not, strictly, inference, but rather, decision-making.  That
-is, the investigator wants an answer, not a distribution.  There are
-(at least) two reactions to this.  One is to ignore the fundamental
-Bayesianism at the end, and choose simply the MAP answer.  This is the
-Bayesian's analog of maximum likelihood; the standard error on the MAP
-answer would be based on the peak curvature or variance of the
-marginalized posterior distribution.  The other reaction is to suck it
-up and sample the posterior probability distribution and carry forward
-not one answer to the problem but $M$ answers, each of which is drawn
-fairly and independently from the posterior distribution function.
-The latter is to be preferred because \textsl{(a)}~it shows the
-uncertainties very clearly, and \textsl{(b)}~the sampling can be
-carried forward to future inferences as an approximation to the
-posterior distribution function, useful for propagating uncertainty,
-or standing in as a \emph{prior} for some subsequent inference.  It is
-also returned, trivially (as we noted above) by the MCMC integrator we
-advised for performing the marginalization.
+Of course finding the MAP value from a sampling is not trivial.  At
+best, you can take the highest-probability sample.  However, this
+works only for the unmarginalized distribution.  The MAP value from
+the marginalized posterior probability distribution function for the
+two line parameters $(m,b)$ will not be the value of $(m,b)$ for the
+highest-probability sample.  To find the MAP value in the marginalized
+distribution, it will be necessary to make a histogram or perform
+density estimation in the sample; this brings up an enormous host of
+issues way beyond the scope of this \documentname.  For this reason,
+we usually advise just taking the mean or median or some other simple
+statistic on the sampling.  In the \commentsname, we will discuss also
+the establishment of confidence intervals (or credible intervals).
+
+While the MAP answer---or any other simple ``best answer''---is
+interesting, it is worth keeping in mind the third unfortunate thing
+about any Bayesian method: It does not return an ``answer'' but rather
+it returns a \emph{posterior probability distribution}.  Strictly,
+this posterior distribution function \emph{is} your answer.  However,
+what scientists are usually doing is not, strictly, inference, but
+rather, decision-making.  That is, the investigator wants an answer,
+not a distribution.  There are (at least) two reactions to this.  One
+is to ignore the fundamental Bayesianism at the end, and choose simply
+the MAP answer.  This is the Bayesian's analog of maximum likelihood;
+the standard error on the MAP answer would be based on the peak
+curvature or variance of the marginalized posterior distribution.  The
+other reaction is to suck it up and sample the posterior probability
+distribution and carry forward not one answer to the problem but $M$
+answers, each of which is drawn fairly and independently from the
+posterior distribution function.  The latter is to be preferred
+because \textsl{(a)}~it shows the uncertainties very clearly, and
+\textsl{(b)}~the sampling can be carried forward to future inferences
+as an approximation to the posterior distribution function, useful for
+propagating uncertainty, or standing in as a \emph{prior} for some
+subsequent inference.  It is also returned, trivially (as we noted
+above) by the MCMC integrator we advised for performing the
+marginalization.
 
 \begin{comments}
 The likelihood---for example, that in equation~(\ref{eq:mixture})---is
@@ -1052,15 +1067,16 @@ the likelihood ``for the parameters'' but it has units (or
 dimensions), in some sense, of inverse data, because it is computed as
 the probability distribution function for observations, evaluated at
 the observed data.  The likelihood, therefore, is not something you
-can integrate or marginalize!  The posterior probability distribution,
-on the other hand, function has units (or dimensions) of inverse
-parameters, so it can be integrated over the parameter space.
-Marginalization, therefore, is only possible after construction of a
-posterior probability distribution function; marginalization is only
-possible in Bayesian analyses.  This is related to the fact that the
-prior probability distribution function serves (in part) to define a
-measure in the parameter space.  You can't integrate without a
-measure.
+can marginalize---the integral of the likelihood over a
+\emph{parameter} has incomprehensible units.  The posterior
+probability distribution, on the other hand, function has units (or
+dimensions) of inverse parameters, so it can be integrated over the
+parameter space.  Marginalization, therefore, is only possible after
+construction of a posterior probability distribution function;
+marginalization is only possible in Bayesian analyses.  This is
+related to the fact that the prior probability distribution function
+serves (in part) to define a measure in the parameter space.  You
+can't integrate without a measure.
 
 If all you care about is parameters $(m,b)$, and, furthermore, all you
 care about is the MAP answer, you must chose the MAP values from the
@@ -1076,6 +1092,22 @@ sampling from the unmarginalized posterior will contain the same
 distribution of $(m,b)$ values as a sampling from the marginalized
 one, by definition.
 
+While on the subject of marginalization, it is worth noting that once
+again (as in \sectionname~\ref{sec:outliers}) one can use the outcome
+of the mixture model to embarass colleagues: For any data point, at
+any setting of the parameters $(m,b,\Pbad,\Ybad,\Vbad)$, the relative
+amplitude of the good and bad parts of the generative frequency
+distributions in equation~(\ref{eq:mixture}) is the very
+conservatively estimated odds that the data point is good (or bad,
+depending on the direction of the ratio and one's definition of the
+word ``odds'').  It is possible therefore to marginalize over
+\emph{all} the parameters, obtaining the mean, for each data point
+$i$, of the foreground frequency $\left<[1-\Pbad]\,\pfg(\cdot)\right>$
+(mean taken over all samples from the posterior) evaluated at the data
+point and of the background frequency
+$\left<\Pbad\,\pbg(\cdot)\right>$.  The ratio of these is the
+marginalized odds that data point $i$ is bad.
+
 This \documentname\ is not an argument in favor of Bayesian
 approaches; sometimes non-Bayesian approaches are much more expedient
 and give just the same answer.  What this \documentname\ argues for is
@@ -1085,6 +1117,10 @@ priors are hard (some say impossible) to set objectively.  But this
 difficulty---in most problems of interest---pales in comparision to
 the difficulty of writing down a justifiable or even approximate
 generative model for the data.
+
+(Hogg: Here we must talk about confidence intervals and credible
+intervals as obtained from the sampling.  The terminology issues must
+be addressed.---Hogg)
 
 (Hogg: Once again, what would a frequentist do with the nuisance
 parameters?  I think I know.---Hogg)
@@ -1117,8 +1153,9 @@ marginalized (over $m,b,\Ybad,\Vbad$) posterior distribution function
 for parameter $\Pbad$.  Is this distribution peaked about where you
 would expect, given the data?  Now repeat the problem, but dividing
 all the data uncertainty variances $\sigma_{yi}^2$ by 4 (or dividing
-the uncertainties by 2).  Again plot the fully marginalized posterior
-distribution function for parameter $\Pbad$.  Discuss.
+the uncertainties $\sigma_{yi}$ by 2).  Again plot the fully
+marginalized posterior distribution function for parameter $\Pbad$.
+Discuss.
 \end{problem}
 
 \section{Non-Gaussian uncertainties}\label{sec:non-Gaussian}
@@ -1130,16 +1167,17 @@ Gaussian; what to do?  There are three general kinds of methodologies
 for dealing with non-Gaussian errors.  Before we describe them, permit
 an aside on uncertainty and error.
 
-As we noted above, your \emph{uncertainty} is a measure of what you
-don't know, while an \emph{error} is a mistake or incorrect value.
-The fact that a measurement $y_i$ differs from some kind of ``true''
-value $Y_i$ that it would have in some kind of ``perfect experiment''
-can be for two reasons (which are not unrelated): It could be that
-there is some source of \emph{noise} in the experiment that generates
-offsets for each data point $i$ away from its true value.  Or it could
-be that the ``measurement'' $y_i$ is actually the outcome of some
-probabilistic inference \emph{itself} and therefore comes with a
-posterior probability distribution.  In either case, there is a finite
+As we noted in \sectionname~\ref{sec:objective}, your
+\emph{uncertainty} is a measure of what you don't know, while an
+\emph{error} is a mistake or incorrect value.  The fact that a
+measurement $y_i$ differs from some kind of ``true'' value $Y_i$ that
+it would have in some kind of ``perfect experiment'' can be for two
+reasons (which are not unrelated): It could be that there is some
+source of \emph{noise} in the experiment that generates offsets for
+each data point $i$ away from its true value.  Or it could be that the
+``measurement'' $y_i$ is actually the outcome of some probabilistic
+inference \emph{itself} and therefore comes with a posterior
+probability distribution.  In either case, there is a finite
 uncertainty, and in both cases it comes somehow from imperfection in
 the experiment, but the way you understand the distribution of the
 uncertainty is different.  In the first case, you have to make a model
@@ -1156,12 +1194,10 @@ of your uncertainty, and you aren't sure of anything else but the
 variance, then the Gaussian is---contrary to popular opinion---the
 \emph{most conservative} thing you can assume.  Of course it is very
 rare that you do know the variance of your uncertainty or noise; most
-uncertainty estimators (for example the standard uncertainty
-covariance $\inverse{\left[\mAT\,\mCinv\,\mA\right]}$ of
-\sectionname~\ref{sec:standard}) are measurements of the central part
-of the distribution function (not the tails) and are therefore
-\emph{not} good estimators of the total variance.  The relevant
-situations may be rare.
+simple uncertainty estimators are measurements of the central part of
+the distribution function (not the tails) and are therefore \emph{not}
+good estimators of the total variance; the relevant situations may be
+rare.
 
 Back to business.  The first approach to non-Gaussian noise or
 uncertainty is (somehow) to estimate the true or total variance of
@@ -1172,23 +1208,25 @@ uncertainties, the observed variance of a finite sample of points can
 be very much smaller than the true variance of the generating
 distribution function.  The second approach is to make no attempt to
 understand the non-guassianity, but to use one of the data-rejection
-methods of \sectionname~\ref{sec:outliers}.  This reduces the problem
-to one already solved, but has the disadvantage that the outlier
-points are effectively removed from the fit; they do not contribute
-what information they carry.  The third approach---the only approach
-that is really justified---is to fully understand and model the
-non-Gaussianity.
+methods of \sectionname~\ref{sec:outliers} and~\ref{sec:mixture}.
+This reduces the problem to one already solved, but has the
+disadvantage that the outlier points are effectively \emph{removed}
+from the fit; they do not contribute what information they carry.  The
+third approach---the only approach that is really justified---is to
+fully understand and model the non-Gaussianity.
 
 For example, if data points are generated by a process the noise from
 which looks like a sum or mixture of $k$ Gaussians with different
 variances, and the distribution can be understood well enough to be
 modeled, the investigator can replace the objective function with
-something more realistic.  For example, the generative model in
-\sectionname~\ref{sec:objective} for the standard case was built out
-of individual data-point likelihoods given in
-\equationname~(\ref{eq:objectivei}).  If the uncertainty distribution
-can be expressed as the sum of $k$ Gaussians (as all probability
-distributions can), these likelihoods become
+something more realistic.  Indeed, \emph{any} frequency distribution
+can be described as a mixture of Gaussians, so this approach is
+extremely general (in principle; it may not be easy).  For example,
+the generative model in \sectionname~\ref{sec:objective} for the
+standard case was built out of individual data-point likelihoods given
+in \equationname~(\ref{eq:objectivei}).  If the uncertainty
+distribution can be expressed as the sum of $k$ Gaussians (as all
+probability distributions can), these likelihoods become
 \begin{equation}
 p(y_i|x_i,\sigma_{yi},m,b) = \sum_{j=1}^k
  \frac{a_j}{\sqrt{2\,\pi\,\sigma_{yij}^2}}
