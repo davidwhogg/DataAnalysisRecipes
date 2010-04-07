@@ -126,7 +126,7 @@
 \section*{Data analysis recipes:\ \\
   Fitting a straight line to data\footnote{
     Copyright 2010 by the authors.
-    \textbf{This is a DRAFT version dated 2010-04-05.
+    \textbf{This is a DRAFT version dated 2010-04-07.
     Please do not distribute this document.}}}
 %    You may copy and distribute this document
 %    provided that you make no changes to it whatsoever.}}
@@ -565,10 +565,16 @@ ill-posed that the investigator does not know what is being optimized.
 When there is a generative model for the data, this problem doesn't
 arise.
 
-(Hogg: Put full frequentist description of what you do with the
-likelihoods for a ``bag of models'' if you are a frequentist!  This
-should include a pre-figuring of the fact that marginalization is what
-will make us Bayesians in the end.---Hogg)
+Of course, whether you are a frequentist or a Bayesian, the most
+scientifically responsible thing to do is not just \emph{optimize} the
+objective, but pass forward a description of the dependence of the
+objective on the parameters, so that other investigators can combine
+your results with theirs in a responsible way.  In the fully Gaussian
+case described in this \sectionname, this means passing forward the
+optimum \emph{and} second derivatives around that optimum (since a
+Gaussian is fully specified by its mode---or mean--and its second
+derivative at the mode).  In what follows, when things aren't purely
+Gaussian, more sophisticated outputs will be necessary.
 
 We have tried in this \documentname\ to be a bit careful with words.
 Following \citet{jaynes}, we have tried to use the word
@@ -779,15 +785,32 @@ computing posterior distribution functions, which can become complex.
 We will also say a few things about Bayesian methods---involving
 priors and marginalization---in general.  But first (in
 \sectionname~\ref{sec:mixture}) we will present an alternative to this
-exponentially complex solution to this problem.
-
-(Hogg: End this section more gracefully, admitting that we put this up
-here but that we are \emph{not} going to actually execute, because
-foreground--background modeling is so much easier.---Hogg)
+exponentially complex solution to this problem.  That is, we \emph{do
+  not advocate} this exponentially complex outlier removal method; we
+advocate the mixture model of the next \sectionname, which is much
+less complex and serves the same purposes.
 
 \begin{comments}
-(Hogg: Note that the outlier model has more parameters than data.  How
-  does \emph{that} work?---Hogg)
+Some readers may be disturbed that this exponential outlier model has
+$N+5$ parameters, with $N$ data points: It has more parameters than
+data!  Indeed, some would consider optimization or inference in this
+situation to be impossible.  Of course it is not impossible, and for
+reasons that are instructive, though any detailed discussion is beyond
+the scope of this \documentname.  Fundamentally, optimization of this
+model is possible only when there are \emph{informative priors}; in
+this case the informative prior is that all of the badness bits
+$\allq$ are integers, and every one of them can take on only the value
+zero or unity.  This is a very strong prior, and limits the amount of
+information that can flow from the parameters of interest ($m$ and
+$b$) into the uninteresting parameters $\allq$.  More generally, there
+is no limit on the \emph{number} of parameters that can be constrained
+with a given data set; there is only a limit on the amount of
+\emph{information} that those parameters can carry or obtain from the
+data.  There is an additional subtlety, which goes way beyond the
+scope of this document, which is that the marginalization over the
+uninteresting parameters integrates out and thereby reduces the
+degeneracies; only Bayesians are permitted to make this
+marginalization.  This will be touched upon again below.
 
 When flagging bad data, you might not want to give all points the same
 prior probability distribution function over $\Pbad$ (though it is
@@ -893,18 +916,17 @@ generating a robust fit with a minimum of effort.
 
 \section{Foreground--background modeling}\label{sec:mixture}
 
-(Hogg: Open this section more carefully, drawing the connection to the
-exponentially hard methods from previous section and noting the
-generality of this kind of methodology for fitting in the presence of
-badly classified data.---Hogg)
+The method of \sectionname~\ref{sec:outliers} was exponentially
+complex, and we discouraged any implementation, promising a much more
+practical alternative.  The method presented in this \sectionname\ is
+much less computationally complex, because it does not require the
+strict classification of each data point.
 
-There is a much faster---meaning ``less computationally
-complex''---method for modeling the outliers: Instead of requiring a
-hard assignment $q_i$ for each data point to either the straight-line
-or outlier populations, every data point can be modeled as being drawn
-from a \emph{mixture} (sum with amplitudes that sum to unity) of the
-straight-line and outlier distributions.  That is, the generative
-model for the data $\ally$ is changed to
+Instead of requiring a hard assignment $q_i$ for each data point to
+either the straight-line or outlier populations, each data point can
+be modeled as being drawn from a \emph{mixture} (sum with amplitudes
+that sum to unity) of the straight-line and outlier distributions.
+That is, the generative model for the data $\ally$ is changed to
 \begin{eqnarray}\label{eq:mixture}\displaystyle
 \like &\equiv& p(\ally|m,b,\Pbad,\Ybad,\Vbad,I)
  \nonumber\\
@@ -1002,27 +1024,31 @@ situations where the integral is of a \emph{probability distribution},
 not only does the MCMC scheme integrate it, it also produces a
 \emph{sampling} from the distribution as a side-product for free.
 
-(Bovy: Put in one paragraph about how MCMC works and describe the
-Metropolis algorithm briefly...say something about burn-in and taking
-every Nth sample...in principle this could get its own \sectionname;
-if you think it should let's discuss---Hogg)
+The standard Metropolis-Hastings MCMC procedure works extremely well
+in this problem for both the optimization and the integration and
+sampling.  A discussion of this algorithm is beyond the scope of this
+document, but suffice it to say that good descriptions abound (for
+example, \citealt{press}) and that with a small amount of
+experimentation (try Gaussians for the proposal distribution and scale
+them until the acceptance ratio is about half) rapid convergence and
+sampling is possible in this problem.
 
-Once you have run the MCMC and obtained a chain of samples from the
-posterior probability distribution for the full parameter set
-$(m,b,\Pbad,\Ybad,\Vbad)$, you still must decide what to report about
-your this product.  A histogram of the samples in any one dimension is
-an approximation to the fully marginalized posterior probability
-distribution for that parameter, and in any two is that for the pair.
-You can find the ``maximum \aposteriori'' (or MAP) value, by taking
-the peak of the marginalized posterior probability distribution for
-the line parameters $(m,b)$.  This, in general, will be different from
-the $(m,b)$ value at the peak of the unmarginalized probability
-distribution for \emph{all} the parameters $(m,b,\Pbad,\Ybad,\Vbad)$,
-because the posterior distribution can be very complex in the
-five-dimensional space.  Because, for our purposes, the three
-parameters $(\Pbad,\Ybad,\Vbad)$ are nuisance parameters, it is more
-correct to take the ``best-fit'' $(m,b)$ from the marginalized
-distribution.
+Once you have run an MCMC or equivalent and obtained a chain of
+samples from the posterior probability distribution for the full
+parameter set $(m,b,\Pbad,\Ybad,\Vbad)$, you still must decide what to
+report about your this product.  A histogram of the samples in any one
+dimension is an approximation to the fully marginalized posterior
+probability distribution for that parameter, and in any two is that
+for the pair.  You can find the ``maximum \aposteriori'' (or MAP)
+value, by taking the peak of the marginalized posterior probability
+distribution for the line parameters $(m,b)$.  This, in general, will
+be different from the $(m,b)$ value at the peak of the unmarginalized
+probability distribution for \emph{all} the parameters
+$(m,b,\Pbad,\Ybad,\Vbad)$, because the posterior distribution can be
+very complex in the five-dimensional space.  Because, for our
+purposes, the three parameters $(\Pbad,\Ybad,\Vbad)$ are nuisance
+parameters, it is more correct to take the ``best-fit'' $(m,b)$ from
+the marginalized distribution.
 
 Of course finding the MAP value from a sampling is not trivial.  At
 best, you can take the highest-probability sample.  However, this
@@ -1118,12 +1144,49 @@ difficulty---in most problems of interest---pales in comparision to
 the difficulty of writing down a justifiable or even approximate
 generative model for the data.
 
-(Hogg: Here we must talk about confidence intervals and credible
-intervals as obtained from the sampling.  The terminology issues must
-be addressed.---Hogg)
+Given a sampling of the posterior probability distribution function or
+the likelihood function of the parameters, it is most responsible to
+report---if not that entire sampling---some confidence intervals or
+credible intervals.  There is a terminology issue in which the term
+``confidence interval'' has become associated with frequentist
+statistics, which is unfortunate because Bayesian statistics is the
+calculus of plausibility or confidence.  But whether you call them
+confidence intervals or credible intervals, the standard way to
+produce the confidence interval of fractional size $f$ ($f=0.95$ for
+the 95~percent interval) on, say, your parameter $m$, is as follows:
+Rank the samples in order of increasing $m$ and take either the
+smallest interval that contains a fraction $f$ of them, or else the
+interval which excludes the first and last $[1-f]/2$ of them.  We
+usually do the latter, since it is fast and easy to explain.  Then a
+good value to report is the median of the sampling, and quantiles
+around that median.  But it does not matter much so long as the report
+is clear and sensible.
 
-(Hogg: Once again, what would a frequentist do with the nuisance
-parameters?  I think I know.---Hogg)
+While we claim to be neutral on Bayesianism relative to frequentism,
+there is one very important respect in which frequentists are at a
+disadvantage when there are nuisance parameters.  If the nuisance
+parameters are powerful, and there are acceptable fits to the data
+that show a large range in the parameters of interest---as there will
+be in these mixture models when $\Pbad$ is made large---then a
+frequentist, who is not permitted to marginalize, will be able to
+conclude nothing interesting about the parameters of interest anywhere
+other than at the maximum-likelihood point.  That is, the
+maximum-likelihood point might have a small $\Pbad$ and very good
+results for line parameters $(m,b)$, but if the frequentist wants to
+be responsible and report the full range of models that is
+\emph{acceptable} given the data, the frequentist must report that the
+data are also consistent with almost all the data being bad
+($\Pbad\approx 1$) and just about any line parameters you like.
+Marginalization stops this, because the specificity of the data
+explanation under small $\Pbad$ permits the small-$\Pbad$ regions of
+parameter space to dominate the marginalization integral.  But if you
+have no measure (no prior), you can perform no marginalization, and
+the responsible party may be forced to report that no useful
+confidence interval on the line parameters are possible in this
+mixture model.  That is a perfectly reasonable position, but
+demonstrates the cost of strict adherence to frequentism (which, for
+our purposes, is the position that there is no believable or natural
+measure or prior on the parameters).
 \end{comments}
 
 \begin{problem}\label{prob:mixture}
