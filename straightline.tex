@@ -8,15 +8,8 @@
 % - Hogg: look at every use of ``likelihood'' for correctness.
 % - Bovy: site Sivia also in the MacKay, Press citation.
 % - Hogg: should we explicitly explain the frequentist answer when there are nuisance parameters, etc?
-
-% notes from MPIA Hauskolloquium, 2009-06-24
-% ------------------------------------------
-% - emphasize that once you have a likelihood, there is *only* one thing to do; there is no choice
-% - collapse soft objective section into non-Gaussian section and emphasize vanishingly rarely correct
-% - emphasize that the specific outlier model is not the point, *modeling* the outliers is the point
 % - make MCMC more of the point, connect to marginalization
-% - put figures used in Hauskolloquium into document and remove figures for de-emphasized methods
-% - describe outlier odds calculation in the mixture model case
+% - put figures used in Hauskolloquium into document
 
 % notes from IMPRS
 % ----------------
@@ -126,7 +119,7 @@
 \section*{Data analysis recipes:\ \\
   Fitting a straight line to data\footnote{
     Copyright 2010 by the authors.
-    \textbf{This is a DRAFT version dated 2010-04-07.
+    \textbf{This is a DRAFT version dated 2010-04-08.
     Please do not distribute this document.}}}
 %    You may copy and distribute this document
 %    provided that you make no changes to it whatsoever.}}
@@ -1400,19 +1393,20 @@ This is one of the many reasons that rejection or acceptance of a
 model on the $\chi^2$ basis is dangerous; exactly the same kinds of
 problems that can make $\chi^2$ unreasonably low can make it
 unreasonably high; worse yet, it can make $\chi^2$ reasonable when the
-model is bad.  Reasons $\chi^2$ can be lower include that uncertainty
-estimates are often underestimated. The opposite of this problem can
-make $\chi^2$ high when the model is good. Even worse is the fact that
-uncertainty estimates are often correlated, which can result in a
-$\chi^2$ significantly different from the expected value.
+model is bad.  Reasons the $\chi^2$ value can be lower include that
+uncertainty estimates are often underestimated. The opposite of this
+problem can make $\chi^2$ high when the model is good. Even worse is
+the fact that uncertainty estimates are often correlated, which can
+result in a $\chi^2$ value significantly different from the expected
+value.
 
 Correlated measurements are not uncommon; the process by which the
 observations were taken often involve shared information or
-assumptions. If the individual data-point uncertainties have been
-estimated by some means that effectively marginalizes over some or all
-of that shared information, then there will be large covariances among
-the data points.  These covariances bring off-diagonal elements into
-the covariance matrix $\mC$, which was trivially constructed in
+assumptions. If the individual data-points $y_i$ have been estimated
+by some means that effectively relies on that shared information, then
+there will be large covariances among the data points.  These
+covariances bring off-diagonal elements into the covariance matrix
+$\mC$, which was trivially constructed in
 \equationname~(\ref{eq:covar}) under the assumption that all
 covariances (off-diagonal elements) are precisely zero.  Once the
 off-diagonal elements are non-zero, $\chi^2$ must be computed by the
@@ -1423,11 +1417,11 @@ and considering all cross terms
 \chi^2 =
  \transpose{\left[\mY-\mA\,\mX\right]}\,\mCinv\,\left[\mY-\mA\,\mX\right]
  = \sum_{i=1}^N \sum_{j=1}^N
- \frac{\left[y_i-f(x_i)\right]\,[y_j-f(x_j)]}
- {\sigma_{yij}} \quad,
+ w_{ij}\,\left[y_i-f(x_i)\right]\,\left[y_j-f(x_j)\right]
+ \quad,
 \end{equation} 
-where the $[1/\sigma_{yij}]$ are the elements of the inverse covariance
-matrix $\inverse{\mC}$, with $\sigma_{yii}\equiv\sigma_{yi}^2$.
+where the $w_{ij}$ are the elements of the inverse covariance
+matrix $\inverse{\mC}$, with $w_{ii}\equiv 1/\sigma_{yi}^2$.
 
 In principle, data-point uncertainty variance underestimation or mean
 point-to-point covariance can be estimated by adjusting them until
@@ -1497,9 +1491,8 @@ about the evidence for the alternatives, or for complexification of
 the current model.  So a Bayesian \emph{can} reject models on a
 $\chi^2$ basis---provided that he or she has permitted a wide enough
 range of models, and provided those models have somewhat comparable
-prior probabilities.  Model rejection and hypothesis comparison is
-only discussed here in the \commentsname\ because they are large
-topics that go beyond the scope of this \documentname.
+prior probabilities.  Model rejection and hypothesis comparison are
+large topics that go beyond the scope of this \documentname.
 
 In general, the investigator's decision-making about what models to
 consider and test have an enormous impact on her or his scientific
@@ -1566,9 +1559,9 @@ matrix
 \end{equation}
 where the ordering is defined by the ordering in matrix $\mA$.  These
 uncertainties for the model parameters \emph{only} strictly hold under
-three extremely strict conditions, almost none of which is met in real
-practice: \textsl{(a)}~The uncertainties in the data points must truly
-be Gaussian, with variances correctly described by the
+three extremely strict conditions, none of which is met in most real
+situations: \textsl{(a)}~The uncertainties in the data points must
+truly be Gaussian, with variances correctly described by the
 $\sigma_{yi}^2$; \textsl{(b)}~there must be no rejection of any data
 or any departure from the exact, standard definition of $\chi^2$ given
 in \equationname~(\ref{eq:chisquared}); and \textsl{(c)}~the
