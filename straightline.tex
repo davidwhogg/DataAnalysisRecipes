@@ -1,5 +1,7 @@
 % to-do
 % -----
+% - Bovy: should we make MCMC more of the point and expand in Section 4?
+%     Or add a Section 5?
 % - Hogg: cite and compliment the bayesian line-fitting paper (Bovy email)
 % - Hogg: should we distinguish parameters (m,b) from their best-fit values?
 % - Hogg: should we distinguish = \equiv and \leftarrow ?
@@ -7,8 +9,6 @@
 % - Hogg: look at every use of ``frequency'' for correctness.
 % - Hogg: look at every use of ``likelihood'' for correctness.
 % - Bovy: site Sivia also in the MacKay, Press citation.
-% - Hogg: should we explicitly explain the frequentist answer when there are nuisance parameters, etc?
-% - make MCMC more of the point, connect to marginalization
 % - put figures used in Hauskolloquium into document
 
 % notes from IMPRS
@@ -94,7 +94,7 @@
 \newcommand{\ally}{\setofall{y_i}{i=1}{N}}
 \newcommand{\allxy}{\setofall{x_i,y_i}{i=1}{N}}
 \newcommand{\allsigmay}{\setofall{\sigma_{yi}^2}{i=1}{N}}
-\newcommand{\allC}{\setofall{\mC_i}{i=1}{N}}
+\newcommand{\allS}{\setofall{\mS_i}{i=1}{N}}
 
 % other random multiply used math symbols
 \renewcommand{\d}{\mathrm{d}}
@@ -119,7 +119,7 @@
 \section*{Data analysis recipes:\ \\
   Fitting a straight line to data\footnote{
     Copyright 2010 by the authors.
-    \textbf{This is a DRAFT version dated 2010-04-08.
+    \textbf{This is a DRAFT version dated 2010-04-09.
     Please do not distribute this document.}}}
 %    You may copy and distribute this document
 %    provided that you make no changes to it whatsoever.}}
@@ -145,10 +145,9 @@ Dustin~Lang\footnote{\textsl{Department of Computer Science, University of Toron
   Once there is a generative model, the subsequent fitting is
   non-arbitrary because the model permits direct computation of the
   likelihood of the parameters or the posterior probability
-  distribution.  The latter is required if there are ``nuisance
-  parameters'' to marginalize away.  We advocate extremely simple
-  Markov-Chain Monte-Carlo methods for optimizing, sampling from, and
-  marginalizing any probability distribution function.
+  distribution.  Construction of a posterior probability distribution
+  is required if there are ``nuisance parameters'' to marginalize
+  away.
 \end{abstract}
 
 It is conventional to begin any scientific document with an
@@ -613,9 +612,9 @@ between the $x_i$ and the $y_i$.  The $x_i$ are considered part of the
 \emph{experimental design}; they are the input to an experiment that
 got the $y_i$ as output.  For example, the $x_i$ are the times
 (measured by your perfect and reliable clock) at which you chose
-\apriori\ to look through the telescope, and the $y_i$ are the Right
-Ascensions you measured at those times.  As soon as there is any sense
-in which the $x_i$ are themselves \emph{also} data, the
+\apriori\ to look through the telescope, and the $y_i$ are the
+declinations you measured at those times.  As soon as there is any
+sense in which the $x_i$ are themselves \emph{also} data, the
 method---Bayesian or frequentist---of this \sectionname\ is invalid.
 
 It remains a miracle (to us) that the optimization of the $\chi^2$
@@ -1578,20 +1577,21 @@ and curvature.  For these generic reasons, we much prefer empirical
 estimates of the uncertainty in the best-fit parameters.
 
 In the Bayesian outlier-modeling schemes of
-\sectionname~\ref{sec:outliers}, the output is a posterior
-distribution for the parameters $(m,b)$.  This distribution function
-is, in the sense we are using it here, an empirical measurement of the
-uncertainties of the parameters.  The uncertainty variances
-$(\sigma_m^2,\sigma_b^2)$ and the covariance $\sigma_{mb}$ can be
-computed as second moments of this posterior distribution function.
-Computing the variances this way does involve assumptions, but it is
-not extremely sensitive to the assumption that the model is a good fit
-to the data; that is, as the model becomes a bad fit to the data (for
-example when the data points are not consistent with being drawn from
-a narrow, straight line), these uncertainties change in accordance.
-That is in strong contrast to the elements of the matrix
-$\inverse{\left[\mAT\,\mCinv\,\mA\right]}$, which don't depend in any
-way on the quality of fit.
+\sectionname~\ref{sec:outliers} and~\ref{sec:mixture}, the output is a
+posterior distribution for the parameters $(m,b)$.  This distribution
+function is closer than the standard
+$\inverse{\left[\mAT\,\mCinv\,\mA\right]}$ estimate to being an
+empirical measurement of the uncertainties of the parameters.  The
+uncertainty variances $(\sigma_m^2,\sigma_b^2)$ and the covariance
+$\sigma_{mb}$ can be computed as second moments of this posterior
+distribution function.  Computing the variances this way does involve
+assumptions, but it is not extremely sensitive to the assumption that
+the model is a good fit to the data; that is, as the model becomes a
+bad fit to the data (for example when the data points are not
+consistent with being drawn from a narrow, straight line), these
+uncertainties change in accordance.  That is in strong contrast to the
+elements of the matrix $\inverse{\left[\mAT\,\mCinv\,\mA\right]}$,
+which don't depend in any way on the quality of fit.
 
 In any non-Bayesian scheme, or when the full posterior has been
 discarded in favor of only the MAP value, there are still empirical
@@ -1604,14 +1604,14 @@ sensitivity to each individual data point.
 In bootstrap, you do the unlikely-sounding thing of drawing $N$ data
 points randomly from the $N$ data points you have \emph{with
   replacement}.  That is, some data points get dropped, and some get
-doubled, but the important thing is that you select each of the $N$
-that you are going to use in each trial independently from the whole
-set of $N$ you have.  You do this selection of $N$ points once for
-each of $M$ bootstrap trials $j$.  For each of the $M$ trials $j$, you
-get an estimate---by whatever method you are using (linear fitting,
-fitting with rejection, optimizing some custom objection
-function)---of the parameters $(m_j,b_j)$, where $j$ goes from $1$ to
-$M$.  An estimate of your uncertainty variance on $m$ is
+doubled (or even tripled), but the important thing is that you select
+each of the $N$ that you are going to use in each trial independently
+from the whole set of $N$ you have.  You do this selection of $N$
+points once for each of $M$ bootstrap trials $j$.  For each of the $M$
+trials $j$, you get an estimate---by whatever method you are using
+(linear fitting, fitting with rejection, optimizing some custom
+objection function)---of the parameters $(m_j,b_j)$, where $j$ goes
+from $1$ to $M$.  An estimate of your uncertainty variance on $m$ is
 \begin{equation}
 \sigma_m^2 = \frac{1}{M}\,\sum_{j=1}^M [m_j-m]^2 \quad ,
 \end{equation}
@@ -1674,9 +1674,10 @@ tempting to use the standard uncertainty estimate.  But that is
 definitely wrong, because whatever encouraged you to do the
 sigma-clipping or to make other modifications is probably sufficient
 reason to disbelieve the standard uncertainty estimate.  In these
-cases you want either to be measuring the width of your posterior (if
-you are a Bayesian) or else using an empirical estimate of the
-uncertainty such as jackknife or bootstrap.
+cases you want either to be measuring the width of your posterior
+probability distribution function (if you are a Bayesian) or else
+using an empirical estimate of the uncertainty such as jackknife or
+bootstrap.
 
 Bayesians like to be smug here---and have some justification---because
 the posterior distribution function gives the best fit parameters and
@@ -1700,19 +1701,23 @@ and uncertainties on the data?
 \section{Arbitrary two-dimensional uncertainties}\label{sec:twod}
 
 Of course most real two-dimensional data $\allxy$ come with
-uncertainties in \emph{both} directions (both $x$ and $y$).  You might
-not know the amplitudes of these uncertainties, but it is unlikely
-that the $x$ values are known to sufficiently high accuracy that
-\emph{any} of the straight-line fitting methods given so far is valid.
+uncertainties in \emph{both} directions (in both $x$ and $y$).  You
+might not know the amplitudes of these uncertainties, but it is
+unlikely that the $x$ values are known to sufficiently high accuracy
+that any of the straight-line fitting methods given so far is valid.
 Recall that everything so far has assumed that the $x$-direction
-uncertainties were negligible.
+uncertainties were negligible.  This might be true, for example, when
+the $x_i$ are the times at which a set of stellar measurements are
+made, and the $y_i$ are the declinations of the star at those times.
+It is \emph{not} going to be true when the $x_i$ are the right
+ascensions of the star.
 
-In general, when one makes a two dimensional measurement $(x_i,y_i)$,
+In general, when one makes a two-dimensional measurement $(x_i,y_i)$,
 that measurement comes with uncertainties $(\sigma_{xi}^2,\sigma_{yi}^2)$
 in both directions, and some covariance $\sigma_{xyi}$ between them.
 These can be put together into a covariance tensor $\mS_i$
 \begin{equation}
-\mS_i = \left[\begin{array}{cc}
+\mS_i \equiv \left[\begin{array}{cc}
 \sigma_{xi}^2 & \sigma_{xyi} \\ \sigma_{xyi} & \sigma_{yi}^2
 \end{array}\right] \quad .
 \end{equation}
@@ -1736,7 +1741,7 @@ where we have implicitly made column vectors
 Now in the face of these general (though Gaussian) two-dimensional
 uncertainties, how do we fit a line?  Justified objective functions
 will have something to do with the probability of the observations
-$\allxy$ given the uncertainties $\allC$, as a function of properties
+$\allxy$ given the uncertainties $\allS$, as a function of properties
 $(m,b)$ of the line.  As in \sectionname~\ref{sec:objective}, the
 probability of the observations given model parameters $(m,b)$ is
 proportional to the \emph{likelihood} of the parameters given the
@@ -1747,15 +1752,18 @@ posterior on the parameters.
 Schematically, the construction of the likelihood involves specifying
 the line (parameterized by $m,b$), finding the probability of each
 observed data point given any true point on that line, and
-marginalizing over all possible true points on the line.  One approach
-is to think of the straight line as a two-dimensional Gaussian with an
-infinite eigenvalue corresponding to the direction of the line and a
-zero eigenvalue for the direction orthogonal to this. In the end, this
-line of argument leads to \emph{projections} of the two-dimensional
+marginalizing over all possible true points on the line.  This is a
+model in which each point really does have a true location on the
+line, but that location is not directly measured; it is, in some
+sense, a missing datum for each point.  One approach is to think of
+the straight line as a two-dimensional Gaussian with an infinite
+eigenvalue corresponding to the direction of the line and a zero
+eigenvalue for the direction orthogonal to this. In the end, this line
+of argument leads to \emph{projections} of the two-dimensional
 uncertainty Gaussians along the line (or onto the subspace that is
 orthogonal to the line), and evaluation of those at the
-\emph{projected errors}.  Projection is a standard linear algebra
-technique, so we will use linear algebra (matrix) notation.
+\emph{projected displacements}.  Projection is a standard linear
+algebra technique, so we will use linear algebra (matrix) notation.
 
 A slope $m$ can be described by a unit vector $\vhat$
 \emph{orthogonal} to the line or linear relation:
@@ -1812,18 +1820,34 @@ taken care of by methods very precisely analogous to the methods in
 \begin{comments}
 It is true that standard least-squares fitting is easy and simple;
 presumably this explains why it is used so often when it is
-inappropriate.  We hope to have convinced some that doing something
+inappropriate.  We hope to have convinced some readers that doing something
 justifiable and sensible when there are uncertainties in both
 dimensions---when standard linear fitting is inappropriate---is
 neither difficult nor complex.
 
-That said, there is something fundamental wrong with the alleged
-generative model of this \sectionname, and it is that the model
-generates \emph{only} the displacements of the points
-\emph{orthogonal} to the linear relationship.  The model is completely
-unspecified for the distribution \emph{along} the relationship.  This
-probably means that although this method works, there is something
-fishy or improper involved.
+That said, there is something fundamental wrong with the generative
+model of this \sectionname, and it is that the model generates
+\emph{only} the displacements of the points \emph{orthogonal} to the
+linear relationship.  The model is completely unspecified for the
+distribution \emph{along} the relationship.  This probably means that
+although this method works, there is something fishy or improper
+involved.  The model is only strictly correct, in some sense, when the
+distribution \emph{along} the line is uniform over the entire range of
+interest.  That's rarely true in practice.
+
+One amusing aspect of this generative model is that it is possible to
+marginalize over \emph{all} the parameters and all the true positions
+of the points along the linear relationship except for one and thereby
+produce a marginalized posterior probability distribution function for
+the true position of any data point, under the assumptions of the
+generative model.
+
+The fact that the marginalization over the true positions of the
+points reduces to a projection along the line---or onto the subspace
+orthogonal to the line---makes this method very similar to that called
+``orthogonal least squares''.  This generative model justifies that
+procedure, in the case when the orthogonal displacements are penalized
+by the properly projected uncertainties.
 
 In the astrophysics literature (see, for example, the Tully--Fisher
 literature), there is a tradition, when there are errors in both
@@ -1836,7 +1860,9 @@ sense that if you are doing something \emph{unjustifiable} you will
 certainly introduce large systematics!  This forward--reverse
 procedure is not justifiable and it gives results which differ by
 substantially more than the uncertainty in the procedure given in this
-\sectionname.
+\sectionname.  We have already (\sectionname~\ref{sec:standard})
+criticized one of the principal papers to promote this kind of hack,
+and do not need to repeat that criticism here.
 
 Another common method for finding the linear relationship in data when
 there are errors in both directions is \emph{principal components
@@ -1984,7 +2010,7 @@ the $y$ direction, or the direction perpendicular to the line (as we
 think of it in the method involving $V$ in this \sectionname).
 However, in presenting results, it must be made clear which direction
 is being assumed, and what the conversions are to the other directions
-(these involve the slope $m$ or angle $\theta$ of course).
+(these involve the angle $\theta$ or slope $m$ of course).
 \end{comments}
 
 \begin{problem}\label{prob:intrinsic}
@@ -2027,7 +2053,7 @@ matplotlib.
   \textit{Robust Statistics: The Approach Based on Influence Functions} (New York: Wiley)
 \bibitem[Isobe \etal(1990)]{isobe90}
   Isobe,~T., Feigelson, E.~D., Akritas,~M.~G., \& Babu,~G.~J.\ 1990,
-  ``Linear regression in astronomy'',
+  Linear regression in astronomy,
   \textit{Astrophysical Journal} \textbf{364} 104--103.
 \bibitem[Mackay(2003)]{mackay}
   Mackay,~D.~J.~C., 2003,
