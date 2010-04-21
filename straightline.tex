@@ -803,16 +803,17 @@ degeneracies; only Bayesians are permitted to make this
 marginalization.  This will be touched upon again below.
 
 When flagging bad data, you might not want to give all points the same
-prior probability distribution function over $\Pbad$ (though it is
-rare that one has reliable information about the unreliability of
-one's data).  Complementary to this, one of the amusing things about
-the Bayesian posterior for the data rejections $\allq$ developed above
-is that you can pick a particular data point $J$ and marginalize over
+prior probability distribution function over $\Pbad$, for example,
+when you combine data sets from different sources (though it is rare
+that one has reliable information about the unreliability of one's
+data). Complementary to this, one of the amusing things about the
+Bayesian posterior for the data rejections $\allq$ developed above is
+that you can pick a particular data point $J$ and marginalize over
 $(m,b,\Pbad,\Ybad,\Vbad)$ and all the $q_i$ \emph{except} $q_J$.  This
 will return the marginalized posterior probability that point $J$ is
 good.  This is valuable for embarassing colleagues in meta-analyses
 \citep{pressH0}.  Indeed, if embarassing colleagues is your goal, then
-Bayesian methods for data rejection are useful:  They permit
+Bayesian methods for data rejection are useful: They permit
 parameter-independent (that is, marginalized) statements about the
 probability that individual data points are bad.
 
