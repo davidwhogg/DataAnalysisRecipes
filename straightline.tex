@@ -1022,7 +1022,9 @@ document, but suffice it to say that good descriptions abound (for
 example, \citealt{press}) and that with a small amount of
 experimentation (try Gaussians for the proposal distribution and scale
 them until the acceptance ratio is about half) rapid convergence and
-sampling is possible in this problem.
+sampling is possible in this problem. A large class of MCMC algorithms
+exists, many of which outperform the simple Metropolis algorithm with
+little extra effort \citep[see, \eg,][]{gilksmcmc,neal2003a,mackay}.
 
 Once you have run an MCMC or equivalent and obtained a chain of
 samples from the posterior probability distribution for the full
@@ -2041,26 +2043,33 @@ matplotlib.
 
 \begin{thebibliography}{}
 \bibitem[Bovy, Hogg, \& Roweis(2009)]{bovy}
-  Bovy,~J., Hogg,~D.~W., \& Roweis, S.~T.~, 2009,
+  Bovy,~J., Hogg,~D.~W., \& Roweis, S.~T., 2009,
   Extreme deconvolution: inferring complete distribution functions from noisy, heterogeneous, and incomplete observations, 
   arXiv:0905.2979 [stat.ME]
 \bibitem[Jaynes(2003)]{jaynes}
   Jaynes,~E.~T., 2003,
   \textit{Probability theory: the logic of science} (Cambridge University Press)
+\bibitem[Gilks, Richardson, \& SpiegelHalter(1995)]{gilksmcmc}
+  Gilks,~W.~R., Richardson,~S., \& Spiegelhalter,~D., 1995
+  \textit{Markov chain monte carlo in practice: interdisciplinary statistics} (Chapman \& Hall/CRC)
 \bibitem[Hampel \etal(1986)]{hampel}
   Hampel,~F.~R., Ronchetti,~E.~M., Rousseeuw,~P.~J., \& Stahel,~W.~A., 1986, 
   \textit{Robust Statistics: The Approach Based on Influence Functions} (New York: Wiley)
 \bibitem[Isobe \etal(1990)]{isobe90}
-  Isobe,~T., Feigelson, E.~D., Akritas,~M.~G., \& Babu,~G.~J.\ 1990,
+  Isobe,~T., Feigelson, E.~D., Akritas,~M.~G., \& Babu,~G.~J., 1990,
   Linear regression in astronomy,
-  \textit{Astrophysical Journal} \textbf{364} 104--113.
+  \textit{Astrophysical Journal} \textbf{364} 104
 \bibitem[Kelly(2007)]{kelly07}
-  Kelly,~B.~C.\ 1990,
+  Kelly,~B.~C., 1990,
   Some aspects of measurement error in linear regression of astronomical data
-  \textit{Astrophysical Journal} \textbf{665} 1489--1506.
+  \textit{Astrophysical Journal} \textbf{665} 1489
 \bibitem[Mackay(2003)]{mackay}
   Mackay,~D.~J.~C., 2003,
   \textit{Information theory, inference, and learning algorithms} (Cambridge University Press)
+\bibitem[Neal(2003)]{neal2003a}
+  Neal.,~R.~M., 2003,
+  Slice sampling.
+  \textit{Annals of Statistics}, \textbf{31}(3), 705
 \bibitem[Press(1997)]{pressH0}
   Press,~W.~H., 1997,
   Understanding data better with Bayesian and global statistical methods,
