@@ -234,8 +234,8 @@ f(x) = m\,x + b \quad ,
 \end{equation}
 where $m$ is the slope and $b$ is the intercept, that ``best fits''
 the points.  What is meant by ``best fits'' is, of course, very
-important, and in what follows we will have more to say about that.
-(Hogg: Do we? Hogg) For now, we describe standard practice:
+important, and in what follows we will have more to say about
+that. For now, we describe standard practice:
 
 Construct the matrices
 \begin{align}\label{eq:mY}
@@ -390,14 +390,14 @@ In addition to all the above, the above-cited paper \citep{isobe90}
 makes another substantial error: When deciding whether to fit for $y$
 as a function of $x$ or $x$ as a function of $y$, the authors claim
 that the decision should be based on the ``physics'' of $x$ and $y$!
-This the ``independent variable'' fallacy mentioned above.  The truth
-is that this decision must be based on the \emph{error properties} of
-$x$ and $y$. If $x$ has much smaller errors, then you must fit $y$ as
-a function of $x$; if the other way then the other way, and if neither
-has much smaller errors, then that kind of linear fitting is invalid.
-We have more to say about this generic situation below.  What is
-written in this paper \citep{isobe90}---by professional statisticians,
-we could add---is simply wrong.
+This is the ``independent variable'' fallacy mentioned above.  The
+truth is that this decision must be based on the \emph{error
+properties} of $x$ and $y$. If $x$ has much smaller errors, then you
+must fit $y$ as a function of $x$; if the other way then the other
+way, and if neither has much smaller errors, then that kind of linear
+fitting is invalid.  We have more to say about this generic situation
+below.  What is written in this paper \citep{isobe90}---by
+professional statisticians, we could add---is simply wrong.
 \end{comments}
 
 \begin{problem}\label{prob:easy}
@@ -630,7 +630,7 @@ Imagine a set of $N$ measurements $t_i$, with uncertainty variances
 $\sigma_{ti}^2$, all of the same (unknown) quantity $T$.  Assuming the
 generative model that each $t_i$ differs from $T$ by a
 Gaussian-distributed offset, taken from a Gaussian with zero mean and
-variance $\sigma_{ti}^2$, write down an experession for the log
+variance $\sigma_{ti}^2$, write down an expression for the log
 likelihood $\ln\like$ for the data given the model parameter $T$.
 Take a derivative and show that the maximum likelihood value for $T$
 is the usual weighted mean.
@@ -1025,7 +1025,7 @@ sampling is possible in this problem.
 Once you have run an MCMC or equivalent and obtained a chain of
 samples from the posterior probability distribution for the full
 parameter set $(m,b,\Pbad,\Ybad,\Vbad)$, you still must decide what to
-report about your this product.  A histogram of the samples in any one
+report about this sampling.  A histogram of the samples in any one
 dimension is an approximation to the fully marginalized posterior
 probability distribution for that parameter, and in any two is that
 for the pair.  You can find the ``maximum \aposteriori'' (or MAP)
@@ -1129,8 +1129,8 @@ and give just the same answer.  What this \documentname\ argues for is
 \emph{generative modeling}, which \emph{is} demanding.  The standard
 objection to Bayesian methods is that they require priors, and those
 priors are hard (some say impossible) to set objectively.  But this
-difficulty---in most problems of interest---pales in comparision to
-the difficulty of writing down a justifiable or even approximate
+difficulty---in most problems of interest---pales in comparison to the
+difficulty of writing down a justifiable or even approximate
 generative model for the data.
 
 Given a sampling of the posterior probability distribution function or
@@ -1452,10 +1452,10 @@ will be reasonable too.
 \begin{comments}
 Frequentist model rejection on the basis of unnacceptable $\chi^2$
 should not be confused with model \emph{comparison} performed with
-$\chi^2$.  If $\chi^2$ differs from the the number of degrees of
-freedom ($N-2$ here) by something on the order of the square root of
-that, the model cannot be rejected on a $\chi^2$ basis.  However, if
-two equally plausible models differ from one another by a difference
+$\chi^2$.  If $\chi^2$ differs from the number of degrees of freedom
+($N-2$ here) by something on the order of the square root of that, the
+model cannot be rejected on a $\chi^2$ basis.  However, if two equally
+plausible models differ from one another by a difference
 $\Delta\chi^2$ substantially larger than unity, the model with the
 lower $\chi^2$ can be preferred and the higher rejected on that basis,
 even if the higher still shows an acceptable $\chi^2$.  This
