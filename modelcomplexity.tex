@@ -85,26 +85,49 @@
 \renewcommand{\MakeUppercase}[1]{#1}
 \pagestyle{myheadings}
 \renewcommand{\sectionmark}[1]{\markright{\thesection.~#1}}
-\markboth{Fitting a straight line to data}{}
+\markboth{Model complexity}{}
 
 \begin{document}
 \thispagestyle{plain}\raggedbottom
-%% \section*{Data analysis recipes:\ \\
-%%   Comparing models of different complexity\footnote{
-%%     Copyright 2010 by the authors.
-%%     \textbf{This is a DRAFT version dated 2010-03-28.
-%%     Please do not distribute this document.}}}
-%% %    You may copy and distribute this document
-%% %    provided that you make no changes to it whatsoever.}}
+\section*{Data analysis recipes:\ \\
+  Comparing models of different complexity\footnote{
+    Copyright 2010 by the authors.
+    \textbf{This is a DRAFT version dated 2010-04-21
+    Please do not distribute this document.}}}
+%    You may copy and distribute this document
+%    provided that you make no changes to it whatsoever.}}
 
-%% \noindent
-%% David~W.~Hogg\footnote{\textsl{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New York University} and \textsl{Max-Planck-Institut f\"ur Astronomie, Heidelberg}},
-%% Jo~Bovy\footnote{\textsl{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New York University}}, \&
-%% Dustin~Lang\footnote{\textsl{Department of Computer Science, University of Toronto} and \textsl{Princeton University Observatory}}
+\noindent
+David~W.~Hogg\footnote{\textsl{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New York University} and \textsl{Max-Planck-Institut f\"ur Astronomie, Heidelberg}},
+Jo~Bovy\footnote{\textsl{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New York University}}, \&
+Dustin~Lang\footnote{\textsl{Department of Computer Science, University of Toronto} and \textsl{Princeton University Observatory}}
 
-%% \begin{abstract}
-%%   TBD
-%% \end{abstract}
+\begin{abstract}
+  TBD
+\end{abstract}
+
+\section{Introduction}
+
+The concept of model complexity is somewhat slippery.  In the case of
+a purely linear model, the model complexity is directly related to the
+number of free parameters, but in every other case it is less
+well-defined.  We will begin with a few examples of models of
+differing or variable complexity to get at some of the issues in the
+\emph{definition} of model complexity.  After that, we will turn to
+methods for choosing among models of different complexity.
+
+linear case
+
+then consider linear components with no support at the position of the
+data; do they contribute?
+
+model selection might illuminate this.
+
+\section{Infinite complexity}
+
+sinusoidal paradox from LeCun.
+
+\section{Continuously variable complexity}
 
 Imagine a set of $N$ data points $y_i$ which deviate from a
 $K$-dimensional (or $K$-parameter) linear model by the addition of
