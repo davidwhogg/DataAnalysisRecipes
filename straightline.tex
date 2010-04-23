@@ -1,5 +1,7 @@
 % to-do
 % -----
+% - Hogg: see Bovy email of 2010-04-20 or -21
+% - Hogg: re-combine outlier and fg-bg sections noting marginalization relation
 % - Hogg: should we distinguish parameters (m,b) from their best-fit values?
 % - Hogg: should we distinguish = \equiv and \leftarrow ?
 % - Hogg: look at every use of ``probability'' for correctness.
@@ -1088,7 +1090,7 @@ the probability distribution function for observations, evaluated at
 the observed data.  The likelihood, therefore, is not something you
 can marginalize---the integral of the likelihood over a
 \emph{parameter} has incomprehensible units.  The posterior
-probability distribution, on the other hand, function has units (or
+probability distribution function, on the other hand, has units (or
 dimensions) of inverse parameters, so it can be integrated over the
 parameter space.  Marginalization, therefore, is only possible after
 construction of a posterior probability distribution function;
@@ -1127,16 +1129,6 @@ point and of the background frequency
 $\left<\Pbad\,\pbg(\cdot)\right>$.  The ratio of these is the
 marginalized odds that data point $i$ is bad.
 
-This \documentname\ is not an argument in favor of Bayesian
-approaches; sometimes non-Bayesian approaches are much more expedient
-and give just the same answer.  What this \documentname\ argues for is
-\emph{generative modeling}, which \emph{is} demanding.  The standard
-objection to Bayesian methods is that they require priors, and those
-priors are hard (some say impossible) to set objectively.  But this
-difficulty---in most problems of interest---pales in comparison to the
-difficulty of writing down a justifiable or even approximate
-generative model for the data.
-
 Given a sampling of the posterior probability distribution function or
 the likelihood function of the parameters, it is most responsible to
 report---if not that entire sampling---some confidence intervals or
@@ -1154,6 +1146,16 @@ usually do the latter, since it is fast and easy to explain.  Then a
 good value to report is the median of the sampling, and quantiles
 around that median.  But it does not matter much so long as the report
 is clear and sensible.
+
+This \documentname\ is not an argument in favor of Bayesian
+approaches; sometimes non-Bayesian approaches are much more expedient
+and give just the same answer.  What this \documentname\ argues for is
+\emph{generative modeling}, which \emph{is} demanding.  The standard
+objection to Bayesian methods is that they require priors, and those
+priors are hard (some say impossible) to set objectively.  But this
+difficulty---in most problems of interest---pales in comparison to the
+difficulty of writing down a justifiable or even approximate
+generative model for the data.
 
 While we claim to be neutral on Bayesianism relative to frequentism,
 there is one very important respect in which frequentists are at a
@@ -1421,7 +1423,7 @@ and considering all cross terms
  \quad,
 \end{equation} 
 where the $w_{ij}$ are the elements of the inverse covariance
-matrix $\inverse{\mC}$, with $w_{ii}\equiv 1/\sigma_{yi}^2$.
+matrix $\inverse{\mC}$.
 
 In principle, data-point uncertainty variance underestimation or mean
 point-to-point covariance can be estimated by adjusting them until
@@ -1580,8 +1582,8 @@ estimates of the uncertainty in the best-fit parameters.
 In the Bayesian outlier-modeling schemes of
 \sectionname~\ref{sec:outliers} and~\ref{sec:mixture}, the output is a
 posterior distribution for the parameters $(m,b)$.  This distribution
-function is closer than the standard
-$\inverse{\left[\mAT\,\mCinv\,\mA\right]}$ estimate to being an
+function is closer than the standard estimate
+$\inverse{\left[\mAT\,\mCinv\,\mA\right]}$ to being an
 empirical measurement of the uncertainties of the parameters.  The
 uncertainty variances $(\sigma_m^2,\sigma_b^2)$ and the covariance
 $\sigma_{mb}$ can be computed as second moments of this posterior
@@ -1671,14 +1673,14 @@ in the data-point uncertainty variances $\allsigmay$.
 
 If you are doing sigma-clipping or anything that looks like standard
 least-square fitting but with small modifications, it might be
-tempting to use the standard uncertainty estimate.  But that is
-definitely wrong, because whatever encouraged you to do the
-sigma-clipping or to make other modifications is probably sufficient
-reason to disbelieve the standard uncertainty estimate.  In these
-cases you want either to be measuring the width of your posterior
-probability distribution function (if you are a Bayesian) or else
-using an empirical estimate of the uncertainty such as jackknife or
-bootstrap.
+tempting to use the standard uncertainty estimate
+$\inverse{\left[\mAT\,\mCinv\,\mA\right]}$.  But that is definitely
+wrong, because whatever encouraged you to do the sigma-clipping or to
+make other modifications is probably sufficient reason to disbelieve
+the standard uncertainty estimate.  In these cases you want either to
+be measuring the width of your posterior probability distribution
+function (if you are a Bayesian) or else using an empirical estimate
+of the uncertainty such as jackknife or bootstrap.
 
 Bayesians like to be smug here---and have some justification---because
 the posterior distribution function gives the best fit parameters and
@@ -1981,7 +1983,7 @@ the function that, when convolved with each data point's intrinsic
 uncertainty Gaussian, creates a distribution function from which that
 data point is a single sample.  Such methods fall into the
 intersection of density estimation and deconvolution, and completely
-general methods exist \citep{bovy,kelly07}.
+general methods exist \citep{kelly07,bovy}.
 
 \begin{comments}
 The standard method for estimating the width of a linear relationship
