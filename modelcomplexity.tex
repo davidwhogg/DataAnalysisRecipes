@@ -39,6 +39,7 @@
 \newcounter{problem}
 \newenvironment{problem}{\paragraph{\problemname~\theproblem:}\refstepcounter{problem}}{}
 \newenvironment{comments}{\paragraph{\commentsname:}}{}
+\newcommand{\affil}[1]{{\footnotesize\textsl{#1}}}
 
 % matrix stuff
 \newcommand{\mmatrix}[1]{\boldsymbol{#1}}
@@ -92,18 +93,33 @@
 \section*{Data analysis recipes:\ \\
   Comparing models of different complexity\footnote{
     Copyright 2010 by the authors.
-    \textbf{This is a DRAFT version dated 2010-04-21
+    \textbf{This is a DRAFT version dated 2010-04-23
     Please do not distribute this document.}}}
 %    You may copy and distribute this document
 %    provided that you make no changes to it whatsoever.}}
 
 \noindent
-David~W.~Hogg\footnote{\textsl{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New York University} and \textsl{Max-Planck-Institut f\"ur Astronomie, Heidelberg}},
-Jo~Bovy\footnote{\textsl{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New York University}}, \&
-Dustin~Lang\footnote{\textsl{Department of Computer Science, University of Toronto} and \textsl{Princeton University Observatory}}
+David~W.~Hogg\\
+\affil{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New~York~University}\\
+\affil{Max-Planck-Institut f\"ur Astronomie, Heidelberg}
+\\[1ex]
+Jo~Bovy\\
+\affil{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New~York~University}
+\\[1ex]
+Dustin~Lang\\
+\affil{Princeton University Observatory}
 
 \begin{abstract}
-  TBD
+  Frequently the data analyst is faced with the comparison of models
+  of very different levels of complexity or freedom to fit or explain
+  the data.  We begin by discussing the measure of model complexity,
+  in part to criticize the idea that it is directly related to the
+  number of parameters in the model: It is not, except in rare
+  circumstances.  Model selection---choosing among models of differing
+  complexity---can often be avoided; we advocate avoiding it.  If it
+  cannot be avoided, we discuss options.  We recommend the data-driven
+  technique of leave-one-out cross-validation, which locates the model
+  that best predicts left-out data.
 \end{abstract}
 
 \section{Introduction}
@@ -125,14 +141,71 @@ model selection might illuminate this.
 
 \section{Infinite complexity}
 
-sinusoidal paradox from LeCun.
+One model that serves as an example\footnote{I owe my knowledge of
+  this model to Sam Roweis, who I think got it from
+  Yann LeCun (NYU)}. to illustrate that model complexity is not
+directly related to the \emph{number} of parameters is the following.
+Imagine having $N$ data points $(x_i,y_i)$ in some finite domain in
+$x$ and $y$, with observational uncertainties of some kind we need not
+specify precisely for the moment.  Now fit to these data the model
+\begin{equation}\label{eq:lecun}
+y_i = A\,\sin (k\,x + \phi)
+  \quad ,
+\end{equation}
+where $A$ is an amplitude, $k$ is a wave number (or frequency), and
+$\phi$ is a phase.  With suitable---and suitably
+\emph{precise}---specification of these parameters, it is possible to
+\emph{exactly fit all $N$ data points, no matter what they are}.  The
+only assumption is that $x_i \ne x_j$ for $i \ne j$.  Furthermore,
+there is not just one location in the $(A,k,\phi)$ space that fits all
+the data points, there is an enormous infinity of solutions, no matter
+how large $N$.
+
+In the standard situation of linear fitting, if there are $K$
+components---and thus $K$ free parameters---it is possible to match
+\emph{exactly} at most $K$ data points, and even this is only
+guaranteed if all of the components have support on the $x$ range of
+the data and they are appropriately independent under the $x$-sampling
+of the data.  If we equate model complexity with the power to flexibly
+fit arbitrary data, then the three-parameter sinusoidal model of
+\equationname~(\ref{eq:lecun}) has as much complexity as a linear
+model with an \emph{infinite number of parameters}.
+
+Of course the implied paradox has a simple resolution: In order to fit
+the data precisely, the parameters of the model---especially the wave
+number $k$---must be specified to enormous \emph{precision}.  That is,
+the $K$-component linear model gets its power to fit by having a large
+number of parameters.  The sinusoidal model gets its power to fit by
+having a large number of digits of accuracy devoted to the $k$
+parameter (or, in some limits, the $A$ parameter).
+
+Hogg:  Perhaps give a specific illustration of this here.---Hogg
+
+When a linear model with $K=N$ is used to exactly fit all $N$ data
+points, the $N$ parameters can be seen as a simple invertible linear
+transformation of the data; that is, the parameters are (in some
+sense) a lossless encoding of the data.  When the sinusoidal model is
+used to exactly fit all $N$ points, the model again is being used to
+losslessly encode the data, but now the encoding is nonlinear, and
+requires of the parameters enormous precision in their representation.
+This enormous precision is required because all of the information in
+all $N$ data points---all the bits, if you like---must be encoded into
+only three parameters.
 
 \section{Continuously variable complexity}
 
-Imagine a set of $N$ data points $y_i$ which deviate from a
-$K$-dimensional (or $K$-parameter) linear model by the addition of
-noise samples $e_i$ drawn from Gaussian distributions of (presumed
-known) variances $\sigma_{yi}^2$.  The model can be written as
+Another model that serves to illustrate that model complexity is not
+directly related to the number of parameters is the following, in
+which there are \emph{far more parameters} than data points, but
+nonetheless the model has limited freedom.  The freedom of the model
+is controlled by a continuous smoothness parameter, which effectively
+makes this a model with continuously variable complexity.
+
+Imagine a set of $N$ data points $(x_i,y_i)$ which deviate from a
+$K$-dimensional (or $K$-parameter) linear model by the addition (to
+the $y$ values) of noise samples $e_i$ drawn from Gaussian
+distributions of (presumed known) variances $\sigma_{yi}^2$.  The
+model can be written as
 \begin{equation}
 y_i = \sum_{j=1}^K
   a_{ij}\,x_j + e_i
