@@ -64,6 +64,7 @@
 \newcounter{problem}
 \newenvironment{problem}{\paragraph{\problemname~\theproblem:}\refstepcounter{problem}}{}
 \newenvironment{comments}{\paragraph{\commentsname:}}{}
+\newcommand{\affil}[1]{{\footnotesize\textsl{#1}}}
 
 % matrix stuff
 \newcommand{\mmatrix}[1]{\boldsymbol{#1}}
@@ -117,15 +118,22 @@
 \section*{Data analysis recipes:\ \\
   Fitting a straight line to data\footnote{
     Copyright 2010 by the authors.
-    \textbf{This is a DRAFT version dated 2010-04-09.
+    \textbf{This is a DRAFT version dated 2010-04-23.
     Please do not distribute this document.}}}
 %    You may copy and distribute this document
 %    provided that you make no changes to it whatsoever.}}
 
 \noindent
-David~W.~Hogg\footnote{\textsl{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New York University} and \textsl{Max-Planck-Institut f\"ur Astronomie, Heidelberg}},
-Jo~Bovy\footnote{\textsl{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New York University}}, \&
-Dustin~Lang\footnote{\textsl{Department of Computer Science, University of Toronto} and \textsl{Princeton University Observatory}}
+David~W.~Hogg\\
+\affil{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New York University}\\
+\affil{Max-Planck-Institut f\"ur Astronomie, Heidelberg}
+\\[1ex]
+Jo~Bovy\\
+\affil{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New York University}
+\\[1ex]
+Dustin~Lang\\
+\affil{Department of Computer Science, University of Toronto}\\
+\affil{Princeton University Observatory}
 
 \begin{abstract}
   We go through the many considerations involved in fitting a straight
