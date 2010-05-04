@@ -1,19 +1,9 @@
 % to-do
 % -----
-% - Hogg: see Bovy email of 2010-04-20 or -21
-% - Hogg: re-combine outlier and fg-bg sections noting marginalization relation
-% - Hogg: should we distinguish parameters (m,b) from their best-fit values?
+% - Bovy: make figures for all problems that call for figures
 % - Hogg: should we distinguish = \equiv and \leftarrow ?
-% - Hogg: look at every use of ``probability'' for correctness.
-% - Hogg: look at every use of ``frequency'' for correctness.
-% - Hogg: look at every use of ``likelihood'' for correctness.
-% - put figures used in Hauskolloquium into document
-
-% notes from IMPRS
-% ----------------
-% - clearly itemize the standard fitting assumptions?
-% - add a problem at the beginning of the outliers problems asking for an MCMC replacement of the standard fitting problem
-% - release code or pseudo-code to make the figures?  What about lab materials?
+% - Hogg: clearly itemize the standard fitting assumptions?
+% - Bovy: can we release your figure-making code along with the document?
 
 % style notes
 % -----------
@@ -658,22 +648,18 @@ the minimum is at the matrix location given in
 
 The standard linear fitting method is very sensitive to
 \emph{outliers}, that is, points that are substantially farther from
-the linear relation than expected because of unmodeled experimental
-error or unmodeled but rare sources of noise.  There are two general
-approaches to mitigating this sensitivity, which are not necessarily
-different.  The first is to find ways to objectively remove, reject,
-or become insensitive to ``bad'' points; this is the subject of this
-\sectionname.  The second is to better model your data-point
-uncertainties, permitting larger deviations than the Gaussian noise
-estimates; this is the subject of \sectionname~\ref{sec:non-Gaussian}.
-Both of these are strongly preferable to sorting through the data and
-rejecting points by hand, for reasons of subjectivity and
-irreproducibility that we need not state.
-
-We will start, in this \sectionname, with a very computationally
-complex method for pruning outliers objectively.  In the following
-\sectionname, we will provide a much faster method with almost all the
-good performance but far easier and cheaper to implement.
+the linear relation than expected---or not on the relation at
+all---because of unmodeled experimental error or unmodeled but rare
+sources of noise.  There are two general approaches to mitigating this
+sensitivity, which are not necessarily different.  The first is to
+find ways to objectively remove, reject, or become insensitive to
+``bad'' points; this is the subject of this \sectionname.  The second
+is to better model your data-point uncertainties, permitting larger
+deviations than the Gaussian noise estimates; this is the subject of
+\sectionname~\ref{sec:non-Gaussian}.  Both of these are strongly
+preferable to sorting through the data and rejecting points by hand,
+for reasons of subjectivity and irreproducibility that we need not
+state.
 
 If we want to explicitly and objectively reject bad data points, we
 must add to the problem a set of $N$ binary integers $q_i$, one per
@@ -741,7 +727,7 @@ methods to follow comes not from making an \emph{accurate} model of
 the outliers, it comes simply from \emph{modeling} them.  If you have
 an accurate or substantiated model for your bad data, use it by all
 means.  If you don't, because the Gaussian is the maximum-entropy
-distribution described by a mean and a variance, it is therefore---in
+distribution described by a mean and a variance, it is---in
 some sense---the \emph{least} restrictive assumption, given that we
 have allowed that mean and variance to vary in the fitting (and,
 indeed, we will marginalize over both in the end).
@@ -852,13 +838,13 @@ want to get estimates with uncertainties or confidence intervals in
 the straight-line parameters $(m,b)$ that properly account for their
 covariances with the nuisance parameters $(\Pbad,\Ybad,\Vbad)$.  This
 marginalization can be performed by direct numerical integration
-(think gridding up the nuisance parameters, evaluating at every grid
-point, and summing), or it can be performed with some kind of sampler,
-such as a Monte-Carlo Markov Chain.  We strongly recommend the latter
-for reasons that will become obvious below; briefly, it is because in
-situations where the integral is of a \emph{probability distribution},
-not only does the MCMC scheme integrate it, it also produces a
-\emph{sampling} from the distribution as a side-product for free.
+(think gridding up the nuisance parameters, evaluating the posterior
+probability at every grid point, and summing), or it can be performed
+with some kind of sampler, such as a Monte-Carlo Markov Chain.  We
+strongly recommend the latter because in situations where the integral
+is of a \emph{probability distribution}, not only does the MCMC scheme
+integrate it, it also produces a \emph{sampling} from the distribution
+as a side-product for free.
 
 The standard Metropolis-Hastings MCMC procedure works extremely well
 in this problem for both the optimization and the integration and
@@ -907,23 +893,23 @@ about any Bayesian method: It does not return an ``answer'' but rather
 it returns a \emph{posterior probability distribution}.  Strictly,
 this posterior distribution function \emph{is} your answer.  However,
 what scientists are usually doing is not, strictly, inference, but
-rather, decision-making.  That is, the investigator wants an answer,
-not a distribution.  There are (at least) two reactions to this.  One
-is to ignore the fundamental Bayesianism at the end, and choose simply
-the MAP answer.  This is the Bayesian's analog of maximum likelihood;
-the standard error on the MAP answer would be based on the peak
-curvature or variance of the marginalized posterior distribution.  The
-other reaction is to suck it up and sample the posterior probability
-distribution and carry forward not one answer to the problem but $M$
-answers, each of which is drawn fairly and independently from the
-posterior distribution function.  The latter is to be preferred
-because \textsl{(a)}~it shows the uncertainties very clearly, and
-\textsl{(b)}~the sampling can be carried forward to future inferences
-as an approximation to the posterior distribution function, useful for
-propagating uncertainty, or standing in as a \emph{prior} for some
-subsequent inference.  It is also returned, trivially (as we noted
-above) by the MCMC integrator we advised for performing the
-marginalization.
+rather, decision-making.  That is, the investigator wants a specific
+answer, not a distribution.  There are (at least) two reactions to
+this.  One is to ignore the fundamental Bayesianism at the end, and
+choose simply the MAP answer.  This is the Bayesian's analog of
+maximum likelihood; the standard error on the MAP answer would be
+based on the peak curvature or variance of the marginalized posterior
+distribution.  The other reaction is to suck it up and sample the
+posterior probability distribution and carry forward not one answer to
+the problem but $M$ answers, each of which is drawn fairly and
+independently from the posterior distribution function.  The latter is
+to be preferred because \textsl{(a)}~it shows the uncertainties very
+clearly, and \textsl{(b)}~the sampling can be carried forward to
+future inferences as an approximation to the posterior distribution
+function, useful for propagating uncertainty, or standing in as a
+\emph{prior} for some subsequent inference.  It is also returned,
+trivially (as we noted above) by the MCMC integrator we advised for
+performing the marginalization.
 
 \begin{comments}
 Some readers may be disturbed that this exponential outlier model has
@@ -944,8 +930,7 @@ with a given data set; there is only a limit on the amount of
 data.  There is an additional subtlety, which goes way beyond the
 scope of this document, which is that the marginalization over the
 uninteresting parameters integrates out and thereby reduces the
-degeneracies; only Bayesians are permitted to make this
-marginalization.  This will be touched upon again below.
+degeneracies.
 
 The standard method for removing sensitivity to outliers (in
 astrophysics, anyway) is known as ``sigma-clipping''.  This is a
@@ -1066,12 +1051,12 @@ one, by definition.
 
 When flagging bad data, you might not want to give all points the same
 prior probability distribution function over $\Pbad$, for example,
-when you combine data sets from different sources (though it is rare
-that one has reliable information about the unreliability of one's
-data).
+when you combine data sets from different sources.  Of course it is
+rare that one has reliable information about the unreliability of
+one's data.
 
 Complementary to this, one of the amusing things about the Bayesian
-posterior for the data rejections $\allq$ developed above is that you
+posterior for the data rejections $\allq$ is that you
 can pick a particular data point $J$ and marginalize over
 $(m,b,\Pbad,\Ybad,\Vbad)$ and all the $q_i$ \emph{except} $q_J$.  This
 will return the marginalized posterior probability that point $J$ is
@@ -1079,19 +1064,19 @@ good.  This is valuable for embarassing colleagues in meta-analyses
 \citep{pressH0}.  Indeed, if embarassing colleagues is your goal, then
 Bayesian methods for data rejection are useful: They permit
 parameter-independent (that is, marginalized) statements about the
-probability that individual data points are bad.  This is possible
+probabilities that individual data points are bad.  This is possible
 even in the marginalized mixture model: For any data point, at any
 setting of the parameters $(m,b,\Pbad,\Ybad,\Vbad)$, the relative
 amplitude of the good and bad parts of the generative frequency
 distributions in equation~(\ref{eq:mixture}) is the odds that the data
-point is good (or bad, depending on the direction of the ratio and
+point is bad (or good, depending on the direction of the ratio and
 one's definition of the word ``odds'').  It is possible therefore to
 marginalize over \emph{all} the parameters, obtaining the mean, for
 each data point $i$, of the foreground frequency
 $\left<[1-\Pbad]\,\pfg(\cdot)\right>$ (mean taken over all samples
 from the posterior) evaluated at the data point and of the background
 frequency $\left<\Pbad\,\pbg(\cdot)\right>$.  The ratio of these is
-the marginalized odds that data point $i$ is good.
+the marginalized odds that data point $i$ is bad.
 
 Given a sampling of the posterior probability distribution function or
 the likelihood function of the parameters, it is most responsible to
@@ -1112,14 +1097,14 @@ around that median.  But it does not matter much so long as the report
 is clear and sensible.
 
 This \documentname\ is not an argument in favor of Bayesian
-approaches; sometimes non-Bayesian approaches are much more expedient
-and give just the same answer.  What this \documentname\ argues for is
-\emph{generative modeling}, which \emph{is} demanding.  The standard
-objection to Bayesian methods is that they require priors, and those
-priors are hard (some say impossible) to set objectively.  But this
-difficulty---in most problems of interest---pales in comparison to the
-difficulty of writing down a justifiable or even approximate
-generative model for the data.
+approaches; sometimes non-Bayesian approaches are much more expedient.
+What this \documentname\ argues for is \emph{generative modeling},
+which \emph{is} demanding.  The standard objection to Bayesian methods
+is that they require priors, and those priors are hard (some say
+impossible) to set objectively.  But this difficulty---in most
+problems of interest---pales in comparison to the difficulty of
+writing down a justifiable or even approximate generative model for
+the data.
 
 While we claim to be neutral on Bayesianism relative to frequentism,
 there is one very important respect in which frequentists are at a
@@ -1360,9 +1345,9 @@ model on the $\chi^2$ basis is dangerous; exactly the same kinds of
 problems that can make $\chi^2$ unreasonably low can make it
 unreasonably high; worse yet, it can make $\chi^2$ reasonable when the
 model is bad.  Reasons the $\chi^2$ value can be lower include that
-uncertainty estimates are often underestimated. The opposite of this
-problem can make $\chi^2$ high when the model is good. Even worse is
-the fact that uncertainty estimates are often correlated, which can
+uncertainty estimates can easily be overestimated. The opposite of
+this problem can make $\chi^2$ high when the model is good. Even worse
+is the fact that uncertainty estimates are often correlated, which can
 result in a $\chi^2$ value significantly different from the expected
 value.
 
