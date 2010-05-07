@@ -1845,7 +1845,7 @@ their two-dimensional uncertainties (show them as one-sigma ellipses),
 and the best-fit line.
 \end{problem}
 
-\begin{problem}
+\begin{problem}\label{prob:twodoutlier}
 Repeat \problemname~\ref{prob:twod}, but using all of the data in
 \tablename~\ref{table:data_allerr}.  Some of the points are now
 outliers, so your fit may look worse.  Follow the fit by a robust
@@ -2070,9 +2070,15 @@ matplotlib.
 
 \clearpage
 \begin{figure}[H]
-\includegraphics[width=0.5\textwidth]{ex9.png}
-\includegraphics[width=0.5\textwidth]{ex9b.png}
-\caption{Solution to \problemname~\ref{prob:chi2}. The gray vertical line is the mean of the uncertainty variances $\sigma_{yi}^2$; the dashed line corresponds to $\chi^2 = N -2$.}\label{fig:chi2}
+\includegraphics[width=0.5\textwidth]{ex12.png}
+\caption{Solution to \problemname~\ref{prob:twod}.}\label{fig:twod}
+\end{figure}
+
+\clearpage
+\begin{figure}[H]
+\includegraphics[width=0.5\textwidth]{ex13a.png}
+%\includegraphics[width=0.5\textwidth]{ex9b.png}
+\caption{Solution to \problemname~\ref{prob:twodoutlier}.}\label{fig:twodoutlier}
 \end{figure}
 
 \clearpage
