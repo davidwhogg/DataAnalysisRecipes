@@ -402,22 +402,68 @@ professional statisticians, we could add---is simply wrong.
 \begin{problem}\label{prob:easy}
 Using the standard linear algebra method of this \sectionname, fit the
 straight line $y=m\,x+b$ to the $x$, $y$, and $\sigma_y$ values for
-data points 5 through 20 in \tablename~\ref{table:data_allerr}.  Make
-a plot showing the points, their uncertainties, and the best-fit line.
-Your plot should end up looking like \figurename~\ref{fig:easy}.  What
-is the standard uncertainty variance $\sigma_m^2$ on the slope of the
-line?
+data points 5 through 20 in \tablename~\ref{table:data_allerr} on
+page~\pageref{table:data_allerr}.  That is, ignore the first four data
+points, and also ignore the columns for $\sigma_x$ and $\rho_{xy}$.
+Make a plot showing the points, their uncertainties, and the best-fit
+line.  Your plot should end up looking like
+\figurename~\ref{fig:easy}.  What is the standard uncertainty variance
+$\sigma_m^2$ on the slope of the line?
 \end{problem}
+
+% Any changes to this table should be made IN THE CODE
+% The code is astrometry/projects/straightline/py/generate_data.py
+% It reads from astrometry/projects/straightline/py/data_yerr.dat
+\begin{deluxetable}{rrrrrr@{.}l}
+\tablecolumns{7}
+\tablehead{ID &$x$ & $y$ & $\sigma_y$ & $\sigma_x$ &  \multicolumn{2}{c}{$\rho_{xy}$}}
+\tablewidth{0pt}
+\startdata
+1 & 201 & 592 & 61 & 9 & -0 & 84\\
+2 & 244 & 401 & 25 & 4 & 0 & 31\\
+3 & 47 & 583 & 38 & 11 & 0 & 64\\
+4 & 287 & 402 & 15 & 7 & -0 & 27\\
+5 & 203 & 495 & 21 & 5 & -0 & 33\\
+6 & 58 & 173 & 15 & 9 & 0 & 67\\
+7 & 210 & 479 & 27 & 4 & -0 & 02\\
+8 & 202 & 504 & 14 & 4 & -0 & 05\\
+9 & 198 & 510 & 30 & 11 & -0 & 84\\
+10 & 158 & 416 & 16 & 7 & -0 & 69\\
+11 & 165 & 393 & 14 & 5 & 0 & 30\\
+12 & 201 & 442 & 25 & 5 & -0 & 46\\
+13 & 157 & 317 & 52 & 5 & -0 & 03\\
+14 & 131 & 311 & 16 & 6 & 0 & 50\\
+15 & 166 & 400 & 34 & 6 & 0 & 73\\
+16 & 160 & 337 & 31 & 5 & -0 & 52\\
+17 & 186 & 423 & 42 & 9 & 0 & 90\\
+18 & 125 & 334 & 26 & 8 & 0 & 40\\
+19 & 218 & 533 & 16 & 6 & -0 & 78\\
+20 & 146 & 344 & 22 & 5 & -0 & 56\\
+\tablecomments{The full uncertainty covariance matrix for each data point is given by\\ $\left[\begin{array}{cc} \sigma_x^2 & \rho_{xy}\sigma_x\sigma_y\\\rho_{xy}\sigma_x\sigma_y & \sigma_y^2\end{array}\right]$.}
+\label{table:data_allerr}
+\enddata
+\end{deluxetable}
+
+\begin{figure}[htb]
+\includegraphics[width=0.5\textwidth]{ex1.png}
+\caption{Solution to \problemname~\ref{prob:easy}.}\label{fig:easy}
+\end{figure}
 
 \begin{problem}\label{prob:standard}
 Repeat \problemname~\ref{prob:easy} but for all the data points in
-\tablename~\ref{table:data_allerr}.  Your plot should end up looking
+\tablename~\ref{table:data_allerr} on
+page~\pageref{table:data_allerr}.  Your plot should end up looking
 like \figurename~\ref{fig:standard}.  What is the standard uncertainty
 variance $\sigma_m^2$ on the slope of the line?  Is there anything you
 don't like about the result?  Is there anything different about the
 new points you have included beyond those used in
 \problemname~\ref{prob:easy}?
 \end{problem}
+
+\begin{figure}[htb]
+\includegraphics[width=0.5\textwidth]{ex2.png}
+\caption{Solution to \problemname~\ref{prob:standard}.}\label{fig:standard}
+\end{figure}
 
 \begin{problem}\label{prob:quadratic}
 Generalize the method of this \sectionname\ to fit a general quadratic
@@ -430,6 +476,11 @@ g(x) = q\,x^2 + m\,x + b \quad.
 \end{equation}
 Your plot should end up looking like \figurename~\ref{fig:quadratic}.
 \end{problem}
+
+\begin{figure}[htb]
+\includegraphics[width=0.5\textwidth]{ex3.png}
+\caption{Solution to \problemname~\ref{prob:quadratic}.}\label{fig:quadratic}
+\end{figure}
 
 \section{The objective function}\label{sec:objective}
 
@@ -1137,7 +1188,8 @@ as a mixture of a thin line containing a fraction $[1-\Pbad]$ of the
 points and a broader Gaussian containing a fraction $\Pbad$ of the
 points---find the best-fit (the maximum \aposteriori) straight line
 $y=m\,x+b$ for the $x$, $y$, and $\sigma_y$ for the data in
-\tablename~\ref{table:data_allerr}.  Before choosing the MAP line,
+\tablename~\ref{table:data_allerr} on
+page~\pageref{table:data_allerr}.  Before choosing the MAP line,
 marginalize over parameters $(\Pbad,\Ybad,\Vbad)$.  That is, if you
 take a sampling approach, this means sampling the full
 five-dimensional parameter space but then choosing the peak value in
@@ -1149,8 +1201,15 @@ How does this compare to the standard result you obtained in
 worse?  For extra credit, plot a sampling of 10 lines drawn from the
 marginalized posterior distribution for $(m,b)$ (marginalized over
 $\Pbad,\Ybad,\Vbad$) and plot the samples as a set of light grey or
-transparent lines.
+transparent lines.  Your plot should look like
+\figurename~\ref{fig:mixture}.
 \end{problem}
+
+\begin{figure}[htb]
+\includegraphics[width=0.5\textwidth]{exMix1a.png}
+\includegraphics[width=0.5\textwidth]{exMix1b.png}
+\caption{Solution to \problemname~\ref{prob:mixture}.}\label{fig:mixture}
+\end{figure}
 
 \begin{problem}\label{prob:badfraction}
 Solve \problemname~\ref{prob:mixture} but now plot the fully
@@ -1160,8 +1219,15 @@ would expect, given the data?  Now repeat the problem, but dividing
 all the data uncertainty variances $\sigma_{yi}^2$ by 4 (or dividing
 the uncertainties $\sigma_{yi}$ by 2).  Again plot the fully
 marginalized posterior distribution function for parameter $\Pbad$.
-Discuss.
+Your plot should look something like
+\figurename~\ref{fig:badfraction}.  Discuss.
 \end{problem}
+
+\begin{figure}[htb]
+\includegraphics[width=0.5\textwidth]{exMix1c.png}
+\includegraphics[width=0.5\textwidth]{exMix2c.png}
+\caption{Solution to \problemname~\ref{prob:badfraction}.}\label{fig:badfraction}
+\end{figure}
 
 \section{Non-Gaussian uncertainties}\label{sec:non-Gaussian}
 
@@ -1470,10 +1536,17 @@ already).  Is the fit good?  What about for the fit performed in
 \begin{problem}\label{prob:chi2}
 Re-do the fit of \problemname~\ref{prob:easy} but setting all
 $\sigma_{yi}^2=S$, that is, ignoring the uncertainties and replacing
-them all with the same value $S$.  Now what uncertainty variance $S$
-would make $\chi^2 = N-2$?  How does it compare to the mean and median
-of the uncertainty variances $\allsigmay$?
+them all with the same value $S$.  Your result should look like what
+is shown in \figurename~\ref{fig:chi2}.  What uncertainty variance
+$S$ would make $\chi^2 = N-2$?  How does it compare to the mean and
+median of the uncertainty variances $\allsigmay$?
 \end{problem}
+
+\begin{figure}[htb]
+\includegraphics[width=0.5\textwidth]{ex9.png}
+\includegraphics[width=0.5\textwidth]{ex9b.png}
+\caption{Solution to \problemname~\ref{prob:chi2}.}\label{fig:chi2}
+\end{figure}
 
 \begin{problem}\label{prob:bayeschi2}
 Flesh out and write all equations for the Bayesian uncertainty
@@ -1483,16 +1556,24 @@ very expensive without excellent sampling tools!  Make the additional
 (unjustified) assumption that all the uncertainties have the same
 variance $\sigma_{yi}^2=S$ to make the problem tractable.  Apply the
 method to the $x$ and $y$ values for points 5 through 20 in
-\tablename~\ref{table:data_allerr}.  Make a plot showing the points,
-the maximum \aposteriori\ value of the uncertainty variance as error
-bars, and the maximum \aposteriori\ straight line.  For extra credit,
-plot two straight lines, one that is maximum \aposteriori\ for the
-full posterior and one that is the same but for the posterior after
-the uncertainty variance $S$ has been marginalized out.  Also plot two
+\tablename~\ref{table:data_allerr} on
+page~\pageref{table:data_allerr}.  Make a plot showing the points, the
+maximum \aposteriori\ value of the uncertainty variance as error bars,
+and the maximum \aposteriori\ straight line.  For extra credit, plot
+two straight lines, one that is maximum \aposteriori\ for the full
+posterior and one that is the same but for the posterior after the
+uncertainty variance $S$ has been marginalized out.  Your result
+should look like $\figurename~\ref{fig:bayeschi2}$.  Also plot two
 sets of error bars, one that shows the maximum for the full posterior
 and one for the posterior after the line parameters $(m,b)$ have been
 marginalized out.
 \end{problem}
+
+\begin{figure}[htb]
+\includegraphics[width=0.5\textwidth]{ex10a.png}
+\includegraphics[width=0.5\textwidth]{ex10b.png}
+\caption{Solution to \problemname~\ref{prob:bayeschi2}.}\label{fig:bayeschi2}
+\end{figure}
 
 \section{Uncertainties in the best-fit parameters}\label{sec:uncertainty}
 
@@ -1838,14 +1919,22 @@ case everything is trivial anyway).
 Using the method of this \sectionname, fit the straight line
 $y=m\,x+b$ to the $x$, $y$, $\sigma_x^2$, $\sigma_{xy}$, and
 $\sigma_y^2$ values of points 5 through 20 taken from
-\tablename~\ref{table:data_allerr}.  Make a plot showing the points,
+\tablename~\ref{table:data_allerr} on
+page~\pageref{table:data_allerr}.  Make a plot showing the points,
 their two-dimensional uncertainties (show them as one-sigma ellipses),
-and the best-fit line.
+and the best-fit line.  Your plot should look like
+\figurename~\ref{fig:twod}.
 \end{problem}
+
+\begin{figure}[htb]
+\includegraphics[width=0.5\textwidth]{ex12.png}
+\caption{Solution to \problemname~\ref{prob:twod}.}\label{fig:twod}
+\end{figure}
 
 \begin{problem}\label{prob:twodoutlier}
 Repeat \problemname~\ref{prob:twod}, but using all of the data in
-\tablename~\ref{table:data_allerr}.  Some of the points are now
+\tablename~\ref{table:data_allerr} on
+page~\pageref{table:data_allerr}.  Some of the points are now
 outliers, so your fit may look worse.  Follow the fit by a robust
 procedure analogous to the Bayesian mixture model with bad-data
 probability $\Pbad$ described in \sectionname~\ref{sec:outliers}.  Use
@@ -1855,24 +1944,39 @@ credit, plot a sampling of 10 lines drawn from the marginalized
 posterior distribution for $(m,b)$ and plot the samples as a set of
 light grey or transparent lines.  For extra extra credit, mark each
 data point on your plot with the fully marginalized probability that
-the point is good (that is, not rejected, or has $q=1$).
+the point is good (that is, not rejected, or has $q=1$).  Your result
+should look like \figurename~\ref{fig:twodoutlier}.
 \end{problem}
+
+\begin{figure}[htb]
+\includegraphics[width=0.5\textwidth]{ex13a.png}
+\includegraphics[width=0.5\textwidth]{ex13b.png}
+\caption{Solution to \problemname~\ref{prob:twodoutlier}.}\label{fig:twodoutlier}
+\end{figure}
 
 \begin{problem}\label{prob:forwardreverse}
 Perform the abominable forward--reverse fitting procedure on points 5
-through 20 from \tablename~\ref{table:data_allerr}.  That is, fit a
-straight line to the $y$ values of the points, using the $y$-direction
-uncertainties $\sigma_y^2$ only, by the standard method described in
+through 20 from \tablename~\ref{table:data_allerr} on
+page~\pageref{table:data_allerr}.  That is, fit a straight line to the
+$y$ values of the points, using the $y$-direction uncertainties
+$\sigma_y^2$ only, by the standard method described in
 \sectionname~\ref{sec:standard}.  Now transpose the problem and fit
 the same data but fitting the $x$ values using the $x$-direction
 uncertainties $\sigma_x^2$ only.  Make a plot showing the data points,
 the $x$-direction and $y$-direction uncertainties, and the two
-best-fit lines.  Comment.
+best-fit lines.  Your plot should look like
+\figurename~\ref{fig:forwardreverse}.  Comment.
 \end{problem}
+
+\begin{figure}[htb]
+\includegraphics[width=0.5\textwidth]{ex14.png}
+\caption{Solution to \problemname~\ref{prob:forwardreverse}.}\label{fig:forwardreverse}
+\end{figure}
 
 \begin{problem}\label{prob:pca}
 Perform principal components analysis on points 5 through 20 from
-\tablename~\ref{table:data_allerr}.  That is, diagonalize the $2\times
+\tablename~\ref{table:data_allerr} on
+page~\pageref{table:data_allerr}.  That is, diagonalize the $2\times
 2$ matrix $\mQ$ given by
 \begin{equation}
 \mQ = \sum_{i=1}^N\,\left[\mZ_i-\meanZ\right]
@@ -1884,8 +1988,14 @@ Perform principal components analysis on points 5 through 20 from
 Find the eigenvector of $\mQ$ with the largest eigenvalue.  Now make a
 plot showing the data points, and the line that goes through the mean
 $\meanZ$ of the data with the slope corresponding to the direction of
-the principal eigenvector.  Comment.
+the principal eigenvector.  Your plot should look like
+\figurename~\ref{fig:pca}.  Comment.
 \end{problem}
+
+\begin{figure}[htb]
+\includegraphics[width=0.5\textwidth]{ex15.png}
+\caption{Solution to \problemname~\ref{prob:pca}.}\label{fig:pca}
+\end{figure}
 
 \section{Intrinsic scatter}\label{sec:scatter}
 
@@ -1967,8 +2077,14 @@ Re-do \problemname~\ref{prob:twod}, but now allowing for an orthogonal
 intrinsic Gaussian variance $V$ and only excluding data point 3.
 Re-make the plot, showing not the best-fit line but rather the
 $\pm\sqrt{V}$ lines for the maximum-likelihood \emph{intrinsic}
-relation.
+relation.  Your figure should look like
+\figurename~\ref{fig:intrinsic}.
 \end{problem}
+
+\begin{figure}[htb]
+\includegraphics[width=0.5\textwidth]{ex16.png}
+\caption{Solution to \problemname~\ref{prob:intrinsic}.}\label{fig:intrinsic}
+\end{figure}
 
 \begin{problem}\label{prob:bayesintrinsic}
 Re-do \problemname~\ref{prob:intrinsic} but as a Bayesian, with
@@ -1976,9 +2092,15 @@ sensible Bayesian priors on $(\theta,\bperp,V)$.  Find and marginalize
 the posterior distribution over $(\theta,\bperp)$ to generate a
 marginalized posterior probability for the intrinsic variance
 parameter $V$.  Plot this posterior with the 95 and 99~percent
-\emph{upper limits} on $V$ marked.  Why did we ask only for upper
+\emph{upper limits} on $V$ marked.  Your plot should look like
+\figurename~\ref{fig:bayesintrinsic}.  Why did we ask only for upper
 limits?
 \end{problem}
+
+\begin{figure}[htb]
+\includegraphics[width=0.5\textwidth]{ex17.png}
+\caption{Solution to \problemname~\ref{prob:bayesintrinsic}.}\label{fig:bayesintrinsic}
+\end{figure}
 
 \paragraph{Acknowlegments}\markright{End matter}
 We owe a debt above all to Sam Roweis (Toronto), who taught us to find
@@ -2032,123 +2154,5 @@ matplotlib.
   Sivia,~D.~S. \& Skilling,~J., 2006,
   \textit{Data analysis: a Bayesian tutorial} (Oxford University Press)
 \end{thebibliography}
-
-\clearpage
-\markright{Figures}
-\begin{figure}[H]
-\includegraphics[width=0.5\textwidth]{ex1.png}
-\caption{Solution to \problemname~\ref{prob:easy}.}\label{fig:easy}
-\end{figure}
-
-\clearpage
-\begin{figure}[H]
-\includegraphics[width=0.5\textwidth]{ex2.png}
-\caption{Solution to \problemname~\ref{prob:standard}.}\label{fig:standard}
-\end{figure}
-
-\clearpage
-\begin{figure}[H]
-\includegraphics[width=0.5\textwidth]{ex3.png}
-\caption{Solution to \problemname~\ref{prob:quadratic}.}\label{fig:quadratic}
-\end{figure}
-
-\clearpage
-\begin{figure}[H]
-\includegraphics[width=0.5\textwidth]{exMix1a.png}
-\includegraphics[width=0.5\textwidth]{exMix1b.png}
-\caption{Solution to \problemname~\ref{prob:mixture}.}\label{fig:mixture}
-\end{figure}
-
-\clearpage
-\begin{figure}[H]
-\includegraphics[width=0.5\textwidth]{exMix1c.png}
-\includegraphics[width=0.5\textwidth]{exMix2c.png}
-\caption{Solution to \problemname~\ref{prob:badfraction}.}\label{fig:badfraction}
-\end{figure}
-
-\clearpage
-\begin{figure}[H]
-\includegraphics[width=0.5\textwidth]{ex9.png}
-\includegraphics[width=0.5\textwidth]{ex9b.png}
-\caption{Solution to \problemname~\ref{prob:chi2}.}\label{fig:chi2}
-\end{figure}
-
-\clearpage
-\begin{figure}[H]
-\includegraphics[width=0.5\textwidth]{ex10a.png}
-\includegraphics[width=0.5\textwidth]{ex10b.png}
-\caption{Solution to \problemname~\ref{prob:bayeschi2}.}\label{fig:bayeschi2}
-\end{figure}
-
-\clearpage
-\begin{figure}[H]
-\includegraphics[width=0.5\textwidth]{ex12.png}
-\caption{Solution to \problemname~\ref{prob:twod}.}\label{fig:twod}
-\end{figure}
-
-\clearpage
-\begin{figure}[H]
-\includegraphics[width=0.5\textwidth]{ex13a.png}
-\includegraphics[width=0.5\textwidth]{ex13b.png}
-\caption{Solution to \problemname~\ref{prob:twodoutlier}.}\label{fig:twodoutlier}
-\end{figure}
-
-\clearpage
-\begin{figure}[H]
-\includegraphics[width=0.5\textwidth]{ex14.png}
-\caption{Solution to \problemname~\ref{prob:forwardreverse}.}\label{fig:forwardreverse}
-\end{figure}
-
-\clearpage
-\begin{figure}[H]
-\includegraphics[width=0.5\textwidth]{ex15.png}
-\caption{Solution to \problemname~\ref{prob:pca}.}\label{fig:pca}
-\end{figure}
-
-\clearpage
-\begin{figure}[H]
-\includegraphics[width=0.5\textwidth]{ex16.png}
-\caption{Solution to \problemname~\ref{prob:intrinsic}.}\label{fig:intrinsic}
-\end{figure}
-
-\clearpage
-\begin{figure}[H]
-\includegraphics[width=0.5\textwidth]{ex17.png}
-\caption{Solution to \problemname~\ref{prob:bayesintrinsic}.}\label{fig:bayesintrinsic}
-\end{figure}
-
-\clearpage
-% Any changes to this table should be made IN THE CODE
-% The code is astrometry/projects/straightline/py/generate_data.py
-% It reads from astrometry/projects/straightline/py/data_yerr.dat
-\begin{deluxetable}{rrrrrr@{.}l}
-\tablecolumns{7}
-\tablehead{ID &$x$ & $y$ & $\sigma_y$ & $\sigma_x$ &  \multicolumn{2}{c}{$\rho_{xy}$}}
-\tablewidth{0pt}
-\startdata
-1 & 201 & 592 & 61 & 9 & -0 & 84\\
-2 & 244 & 401 & 25 & 4 & 0 & 31\\
-3 & 47 & 583 & 38 & 11 & 0 & 64\\
-4 & 287 & 402 & 15 & 7 & -0 & 27\\
-5 & 203 & 495 & 21 & 5 & -0 & 33\\
-6 & 58 & 173 & 15 & 9 & 0 & 67\\
-7 & 210 & 479 & 27 & 4 & -0 & 02\\
-8 & 202 & 504 & 14 & 4 & -0 & 05\\
-9 & 198 & 510 & 30 & 11 & -0 & 84\\
-10 & 158 & 416 & 16 & 7 & -0 & 69\\
-11 & 165 & 393 & 14 & 5 & 0 & 30\\
-12 & 201 & 442 & 25 & 5 & -0 & 46\\
-13 & 157 & 317 & 52 & 5 & -0 & 03\\
-14 & 131 & 311 & 16 & 6 & 0 & 50\\
-15 & 166 & 400 & 34 & 6 & 0 & 73\\
-16 & 160 & 337 & 31 & 5 & -0 & 52\\
-17 & 186 & 423 & 42 & 9 & 0 & 90\\
-18 & 125 & 334 & 26 & 8 & 0 & 40\\
-19 & 218 & 533 & 16 & 6 & -0 & 78\\
-20 & 146 & 344 & 22 & 5 & -0 & 56\\
-\tablecomments{The full uncertainty covariance matrix for each data point is given by\\ $\left[\begin{array}{cc} \sigma_x^2 & \rho_{xy}\sigma_x\sigma_y\\\rho_{xy}\sigma_x\sigma_y & \sigma_y^2\end{array}\right]$.}
-\label{table:data_allerr}
-\enddata
-\end{deluxetable}
 
 \end{document}
