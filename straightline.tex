@@ -1219,7 +1219,7 @@ would expect, given the data?  Now repeat the problem, but dividing
 all the data uncertainty variances $\sigma_{yi}^2$ by 4 (or dividing
 the uncertainties $\sigma_{yi}$ by 2).  Again plot the fully
 marginalized posterior distribution function for parameter $\Pbad$.
-Your plot should look something like
+Your plots should look something like those in
 \figurename~\ref{fig:badfraction}.  Discuss.
 \end{problem}
 
@@ -1728,6 +1728,27 @@ bootstrap estimates for the uncertainty $\sigma_m^2$.  How do the
 uncertainties compare and which seems most reasonable, given the data
 and uncertainties on the data?
 \end{problem}
+
+\begin{problem}\label{prob:reduceerror}
+Re-do \problemname~\ref{prob:mixture}---the mixture-based outlier
+model---but just with the ``inlier'' points 5 through 20 from
+\tablename~\ref{table:data_allerr} on
+page~\pageref{table:data_allerr}.  Then do the same again, but with
+all measurement uncertainties reduced by a factor of 2 (uncertainty
+variances reduced by a factor of 4).  Plot the marginalized posterior
+probability distributions for line parameters $(m,b)$ in both cases.
+Your plots should look like those in
+\figurename~\ref{fig:reduceerror}.  Did these posterior distributions
+get smaller or larger with the reduction in the data-point
+uncertainties?  Compare this with the dependence of the standard
+uncertainty estimate $\inverse{\left[\mAT\,\mCinv\,\mA\right]}$.
+\end{problem}
+
+\begin{figure}[htb]
+\includegraphics[width=0.5\textwidth]{exNew1a.png}
+\includegraphics[width=0.5\textwidth]{exNew2a.png}
+\caption{Solution to \problemname~\ref{prob:reduceerror}.}\label{fig:reduceerror}
+\end{figure}
 
 \section{Arbitrary two-dimensional uncertainties}\label{sec:twod}
 
