@@ -1,6 +1,8 @@
 % to-do
 % -----
 % - Hogg: Schiminovich say: move comments to endnotes ; ack Schiminovich
+%   - In doing this, take each comment, put *one sentence* in the text to indicate the issue, and put the rest in an \endnote{}
+%   - Also, remove all \cite commands and put full citations into \endnote{}.
 % - Hogg: Burles email of 2010-05-13 ; ack Burles
 % - Hogg: Kelly email of 2010-05-16 ; ack Kelly
 % - Hogg: Murray email of 2010-05-19 ; ack Murray
@@ -11,6 +13,8 @@
 
 % style notes
 % -----------
+% - when at the end of the sentence, put the \endnote AFTER the period
+% - make sure the endnotes can be read on their own, outside of context
 % - careful with the words ``error'', ``uncertainty''
 % - careful with the words ``probability'', ``frequency'', ``likelihood''
 % - use () for function arguments, and [] for grouping/precedence
@@ -18,11 +22,10 @@
 % - put new terms in \emph{}, put only referred-to words in quotation marks.
 
 \documentclass[12pt,twoside]{article}
-\usepackage{amssymb,amsmath,mathrsfs,deluxetable}
+\usepackage{amssymb,amsmath,mathrsfs,deluxetable,endnotes}
 \usepackage{natbib}
-\usepackage{float,graphicx}
+\usepackage{float,graphicx,color,hyperref}
 % hypertex insanity
-\usepackage{color,hyperref}
 \definecolor{linkcolor}{rgb}{0,0,0.25}
 \hypersetup{
   colorlinks=true,        % false: boxed links; true: colored links
@@ -54,6 +57,7 @@
 \newcommand{\problemname}{Exercise}
 \newcommand{\solutionname}{Solution}
 \newcommand{\commentsname}{Comments}
+\newcommand{\notename}{Note}
 
 \newcounter{problem}
 \newenvironment{problem}{\paragraph{\problemname~\theproblem:}\refstepcounter{problem}}{}
@@ -110,9 +114,9 @@
 \begin{document}
 \thispagestyle{plain}\raggedbottom
 \section*{Data analysis recipes:\ \\
-  Fitting a straight line to data\footnote{
+  Fitting a straight line to data\endnote{
     Copyright 2010 by the authors.
-    \textbf{This is a DRAFT version dated 2010-05-08.
+    \textbf{This is a DRAFT version dated 2010-06-30.
     Please do not distribute this document.}}}
 %    You may copy and distribute this document
 %    provided that you make no changes to it whatsoever.}}
@@ -204,27 +208,83 @@ consensus; when the choice of method is not arbitrary, consensus will
 emerge automatically.  We present below simple, straightforward,
 comprehensible, and---above all---\emph{justifiable} methods for
 fitting a straight line to data with general, non-trivial, and
-uncertain properties.
+uncertain properties.  Most methods of ``linear regression'' (a term
+we avoid\endnote{The words ``linear regression'' are used in many
+  different contexts, but in the most common, they seem to mean
+  ``linear fitting without any use of the errors''.  In other words,
+  linear regression is usually just the procedure outlined in this
+  \sectionname, but with the covariance matrix $\mC$ set equal to the
+  identity matrix.  This is equivalent to fitting under the assumption
+  not just that the $x$-direction uncertainties are negligible, but
+  also that all of the $y$-direction uncertainties are simultaneously
+  identical and Gaussian.
+
+  Sometimes the words ``linear regression'' is meant to cover a much
+  larger range of options; in our field of astrophysics there have
+  been attempts to test them all (for example, see \citealt{isobe90}).
+  This kind of work---testing \adhoc\ procedures on simulated
+  data---can only be peformed if you are willing to simultaneously
+  commit (at least) two errors: \emph{First,} the linear regression
+  methods are \emph{procedures}; they do not (necessarily) optimize
+  anything that a scientist would care about. That is, the vast
+  majority of procedures fail to produce a best-fit line in any
+  possible sense of the word ``best''.  Of course, some procedures do
+  produce a best-fit line under some assumptions, but scientific
+  procedures should flow from assumptions and not the other way
+  around.  Scientists do not trade in procedures, they trade in
+  objectives, and choose procedures only when they are demonstrated to
+  optimize their objectives (we very much hope).  \emph{Second,} in
+  this kind of testing, the investigator must decide which procedure
+  ``performs'' best by applying the procedures to sets of
+  \emph{simulated data}, where truth---the true generative model---is
+  known.  All that possibly can be shown is which procedure does well
+  at reproducing the parameters of the model with which the simulated
+  data are generated!  This has no necessary relationship with
+  anything by which the \emph{real} data are generated.  Even if the
+  generative model for the artificial data matches perfectly the
+  generation of the true data, it is still much better to analyze the
+  likelihood created by this generative model than to explore
+  procedure space for a procedure that comes close to doing that by
+  accident---unless, perhaps, when computational limitations demand
+  that only a small number of simple operations be performed on the
+  data.}) performed in science are either unjustifiable or else
+unjustified in the situations in almost all situations in which they
+are used.
 
 Perhaps because there is no agreed-upon bible or cookbook to turn to,
 or perhaps because most investigators would rather make some stuff up
 that works ``good enough'' under deadline, or perhaps because many
 realize, deep down, that much fitting is really unnecessary anyway,
 there are some egregious procedures and associated errors and
-absurdities in the literature.  When an investigator cites, relies upon,
-or transmits a best-fit slope or intercept reported in the literature,
-he or she may be propagating more noise than signal.
+absurdities in the literature.\endnote{In addition to the complaints
+  in the previous \notename, the above-cited paper \citep{isobe90}
+  makes another substantial error: When deciding whether to fit for
+  $y$ as a function of $x$ or $x$ as a function of $y$, the authors
+  claim that the decision should be based on the ``physics'' of $x$
+  and $y$!  This is the ``independent variable'' fallacy mentioned
+  above.  The truth is that this decision must be based on the
+  \emph{error properties} of $x$ and $y$. If $x$ has much smaller
+  errors, then you must fit $y$ as a function of $x$; if the other way
+  then the other way, and if neither has much smaller errors, then
+  that kind of linear fitting is invalid.  We have more to say about
+  this generic situation below.  What is written in this paper
+  \citep{isobe90}---by professional statisticians, we could add---is
+  simply wrong.}  When an investigator cites, relies upon, or
+transmits a best-fit slope or intercept reported in the literature, he
+or she may be propagating more noise than signal.
 
-This \documentname\ is part polemic, part attempt at establishing standards,
-and part notes for our own future re-use.  We apologize in advance for
-some astrophysics bias and failure to review basic ideas of linear
-algebra, function optimization, and practical statistics.  Very good
-reviews of the latter exist in abundance \citep{mackay,press,sivia}.
-Our focus is on the specific problems of linear fitting that we so
-often face; the general ideas appear in the context of these concrete
-and relatively realistic example problems.  The reader is encouraged
-to do the \problemname s; many of these ask you to produce plots which
-can be compared with the \figurename s.
+This \documentname\ is part polemic, part attempt at establishing
+standards, and part notes for our own future re-use.  We apologize in
+advance for some astrophysics bias and failure to review basic ideas
+of linear algebra, function optimization, and practical statistics.
+Very good reviews of the latter exist in
+abundance\endnote{\cite{mackay,press,sivia}}.  We also apologize for
+not reviewing the literature; this is a cheat-sheet not a survey.  Our
+focus is on the specific problems of linear fitting that we so often
+face; the general ideas appear in the context of these concrete and
+relatively realistic example problems.  The reader is encouraged to do
+the \problemname s; many of these ask you to produce plots which can
+be compared with the \figurename s.
 
 \section{Standard practice}\label{sec:standard}
 
@@ -273,9 +333,30 @@ of a column vector $\mX$ found by
 \end{equation}
 This is actually the simplest thing that can be written down that is
 linear, obeys matrix multiplication rules, and has the right relative
-sensitivity to data of different statistical significance.  It can be
-justified in one of several ways; the linear algebra justification
-starts by noting that you want to solve the equation
+sensitivity to data of different statistical
+significance.\endnote{Even when the conditions of standard practice
+  are met, it is \emph{still} often done wrong!  It is not unusual to
+  see the individual data-point error estimates ignored, even when
+  they are known at least approximately.  It is also common for the
+  problem to get ``transposed'' such that the coordinates for which
+  errors are negligible are put into the $\mY$ vector and the
+  coordinates for which errors are \emph{not} negligible are put into
+  the $\mA$ matrix.  In this latter case, the procedure makes no sense
+  at all really; it happens when the investigator thinks of some
+  quantity ``really being'' the dependent variable, despite the fact
+  that it has the smaller error.  For example there are mistakes in
+  the Hubble expansion literature, because many have an intuition that
+  the ``velocity depends on the distance'' when in fact velocities are
+  measured better, so from the point of view of fitting, it is better
+  to think of the distance depending on the velocity.  In the context
+  of fitting, there is no meaning to the (ill-chosen) terms
+  ``independent variable'' and ``dependent variable'' beyond the error
+  properties of the data.  In performing this standard fit, the
+  investigator is effectively assuming that the $x$ values have
+  negligible uncertainties; if they do \emph{not}, then the
+  investigator is \emph{making a mistake}.}  It can be justified in
+one of several ways; the linear algebra justification starts by noting
+that you want to solve the equation
 \begin{equation}
 \mY = \mA\,\mX \quad ,
 \end{equation}
@@ -297,125 +378,50 @@ uncertainties, or
  \quad ,
 \end{equation}
 that is, \equationname~(\ref{eq:lsf}) yields the values for $m$ and
-$b$ that minimize $\chi^2$.  This, of course, is only one possible
-meaning of the phrase ``best fit''; that issue is the main subject of
-the rest of this \documentname.
+$b$ that minimize $\chi^2$.  Conceptually, $\chi^2$ is like a metric
+distance in the data space.\endnote{The inverse covariance matrix
+  appears in the construction of the $\chi^2$ objective function like
+  a linear ``metric'' for the data space: It is used to turn a
+  $N$-dimensional vector displacement into a scalar squared distance
+  between the observed values and the values predicted by the
+  model. This distance can then be minimized.  This idea---that the
+  covariance matrix is a metric---is sometimes useful for thinking
+  about statistics as a physicist; it will return in
+  \sectionname~\ref{sec:twod} when we think about data for which there
+  are uncertainties in both the $x$ and $y$ directions.
+
+  Because of the purely quadratic nature of this metric distance, the
+  standard problem solved in this \sectionname\ has a linear solution.
+  Not only that, but the objective function ``landscape'' is also
+  \emph{convex} so the optimum is global and the solution is unique.
+  This is remarkable, and almost no perturbation of this problem (as
+  we will see below) has either of these properties, let alone both.
+  For this standard problem, the linearity and convexity permit a
+  one-step solution with no significant engineering challenges, even
+  when $N$ gets exceedingly large.  As we modify (and make more
+  realistic) this problem, linearity and convexity will \emph{both} be
+  broken; some thought will have to be put into the optimization.}
+This, of course, is only one possible meaning of the phrase ``best
+fit''; that issue is the main subject of the rest of this
+\documentname.
 
 When the uncertainties are Gaussian and their variances $\sigma_{yi}$
 are correctly estimated, the matrix
 $\inverse{\left[\mAT\,\mCinv\,\mA\right]}$ that appears in
 \equationname~(\ref{eq:lsf}) is just the covariance matrix (Gaussian
-uncertainty variances on the diagonal, covariances off the diagonal)
-for the parameters in $\mX$.  The justification of this will have to
-wait for a discussion of the objective function, if it comes at all.
-
-\begin{comments}
-Even when the conditions of standard practice are met, it is
-\emph{still} often done wrong!  It is not unusual to see the
-individual data-point error estimates ignored, even when they are
-known at least approximately.  It is also common for the problem to
-get ``transposed'' such that the coordinates for which errors are
-negligible are put into the $\mY$ vector and the coordinates for which
-errors are \emph{not} negligible are put into the $\mA$ matrix.  In
-this latter case, the procedure makes no sense at all really; it
-happens when the investigator thinks of some quantity ``really being''
-the dependent variable, despite the fact that it has the smaller
-error.  For example there are mistakes in the Hubble expansion
-literature, because many have an intuition that the ``velocity depends
-on the distance'' when in fact velocities are measured better, so from
-the point of view of fitting, it is better to think of the distance
-depending on the velocity.  In the context of fitting, there is no
-meaning to the (ill-chosen) terms ``independent variable'' and ``dependent
-variable'' beyond the error properties of the data.  In performing
-this standard fit, the investigator is effectively assuming that the
-$x$ values have negligible uncertainties; if they do \emph{not}, then
-the investigator is \emph{making a mistake}.
-
-Conceptually, the inverse covariance matrix appears in the
-construction of the $\chi^2$ objective function like a linear
-``metric'' for the data space: It is used to turn a $N$-dimensional
-vector displacement into a scalar squared distance between the
-observed values and the values predicted by the model. This distance
-is then minimized.  This idea---that the covariance matrix is a
-metric---is sometimes useful for thinking about statistics as a
-physicist; it will return in \sectionname~\ref{sec:twod} when we think
-about data for which there are uncertainties in both the $x$ and $y$
-directions.
-
-Because of the purely quadratic nature of this metric distance, the
-standard problem solved in this \sectionname\ has a linear solution.
-Not only that, but the objective function ``landscape'' is also
-\emph{convex} so the optimum is global and the solution is unique.
-This is remarkable, and almost no perturbation of this problem (as we
-will see below) has either of these properties, let alone both.  For
-this standard problem, the linearity and convexity permit a one-step
-solution with no significant engineering challenges, even when $N$
-gets exceedingly large.  As we modify (and make more realistic) this
-problem, linearity and convexity will \emph{both} be broken; some
-thought will have to be put into the optimization.
-
-The words ``linear regression'' are used in many different contexts,
-but in the most common, they seem to mean ``linear fitting without any
-use of the errors''.  In other words, linear regression is usually
-just the procedure outlined in this \sectionname, but with the
-covariance matrix $\mC$ set equal to the identity matrix.  This is
-equivalent to fitting under the assumption not just that the
-$x$-direction uncertainties are negligible, but also that all of the
-$y$-direction uncertainties are simultaneously identical and Gaussian.
-
-Sometimes the words ``linear regression'' is meant to cover a much
-larger range of options; in our field of astrophysics there have been
-attempts to test them all (for example, \citealt{isobe90}).  This kind
-of work---testing \adhoc\ procedures on simulated data---can only be
-peformed if you are willing to simultaneously commit (at least) two
-errors: \emph{First,} the linear regression methods are
-\emph{procedures}; they do not (necessarily) optimize anything that a
-scientist would care about. That is, the vast majority of procedures
-fail to produce a best-fit line in any possible sense of the word
-``best''.  Of course, some procedures do produce a best-fit line under
-some assumptions, but scientific procedures should flow from
-assumptions and not the other way around.  Scientists do not trade in
-procedures, they trade in objectives, and choose procedures only when
-they are demonstrated to optimize their objectives (we very much
-hope).  \emph{Second,} in this kind of testing, the investigator must
-decide which procedure ``performs'' best by applying the procedures to
-sets of \emph{simulated data}, where truth---the true generative
-model---is known.  All that possibly can be shown is which procedure
-does well at reproducing the parameters of the model with which the
-simulated data are generated!  This has no necessary relationship with
-anything by which the \emph{real} data are generated.  Even if the
-generative model for the artificial data matches perfectly the
-generation of the true data, it is still much better to analyze the
-likelihood created by this generative model than to explore procedure
-space for a procedure that comes close to doing that by
-accident---unless, perhaps, when computational limitations demand that
-only a small number of simple operations be performed on the data.
-
-In addition to all the above, the above-cited paper \citep{isobe90}
-makes another substantial error: When deciding whether to fit for $y$
-as a function of $x$ or $x$ as a function of $y$, the authors claim
-that the decision should be based on the ``physics'' of $x$ and $y$!
-This is the ``independent variable'' fallacy mentioned above.  The
-truth is that this decision must be based on the \emph{error
-properties} of $x$ and $y$. If $x$ has much smaller errors, then you
-must fit $y$ as a function of $x$; if the other way then the other
-way, and if neither has much smaller errors, then that kind of linear
-fitting is invalid.  We have more to say about this generic situation
-below.  What is written in this paper \citep{isobe90}---by
-professional statisticians, we could add---is simply wrong.
-\end{comments}
-
-\begin{problem}\label{prob:easy}
-Using the standard linear algebra method of this \sectionname, fit the
-straight line $y=m\,x+b$ to the $x$, $y$, and $\sigma_y$ values for
-data points 5 through 20 in \tablename~\ref{table:data_allerr} on
-page~\pageref{table:data_allerr}.  That is, ignore the first four data
-points, and also ignore the columns for $\sigma_x$ and $\rho_{xy}$.
-Make a plot showing the points, their uncertainties, and the best-fit
-line.  Your plot should end up looking like
-\figurename~\ref{fig:easy}.  What is the standard uncertainty variance
-$\sigma_m^2$ on the slope of the line?
-\end{problem}
+uncertainty---uncertainty not error\endnote{There is a difference
+  between ``uncertainty'' and ``error'': For some reason, the
+  uncertainty estimates assigned to data points are often called
+  ``errors'' or ``error bars'' or ``standard errors''.  That
+  terminology is wrong: ``They are uncertainties, not errors; if they
+  were \emph{errors}, we would have corrected them!''  DWH's mentor
+  Gerry Neugebauer liked to say this; Neugebauer credits the quotation
+  to physicist Matthew Sands.  Data come with \emph{uncertainties},
+  which are limitations of knowledge, not
+  \emph{mistakes}.}---variances on the diagonal, covariances off the
+diagonal) for the parameters in $\mX$.  The justification of this will
+have to wait for a discussion of the objective function, if it comes
+at all.
 
 % Any changes to this table should be made IN THE CODE
 % The code is astrometry/projects/straightline/py/generate_data.py
@@ -449,6 +455,18 @@ $\sigma_m^2$ on the slope of the line?
 \label{table:data_allerr}
 \enddata
 \end{deluxetable}
+
+\begin{problem}\label{prob:easy}
+Using the standard linear algebra method of this \sectionname, fit the
+straight line $y=m\,x+b$ to the $x$, $y$, and $\sigma_y$ values for
+data points 5 through 20 in \tablename~\ref{table:data_allerr} on
+page~\pageref{table:data_allerr}.  That is, ignore the first four data
+points, and also ignore the columns for $\sigma_x$ and $\rho_{xy}$.
+Make a plot showing the points, their uncertainties, and the best-fit
+line.  Your plot should end up looking like
+\figurename~\ref{fig:easy}.  What is the standard uncertainty variance
+$\sigma_m^2$ on the slope of the line?
+\end{problem}
 
 \begin{figure}[htb]
 \includegraphics[width=0.5\textwidth]{ex1.png}
@@ -495,13 +513,52 @@ appeal purely to abstract ideas of linear algebra, but must originate
 from the scientific question at hand.  Here and in what follows, we
 will advocate that the only reliable procedure is to use all one's
 knowledge about the problem to construct a (preferably) justified,
-(necessarily) scalar (or, at a minimum, one-dimensional), \emph{objective
-  function} that represents monotonically the quality of the fit.  In
-this framework, fitting anything to anything involves a scientific
-question about the objective function representing ``goodness of fit''
-and then a separate and subsequent engineering question about how to
-\emph{find the optimum} and, possibly, the posterior probability
-distribution function around that optimum.  Note that in the above
+(necessarily) scalar (or, at a minimum, one-dimensional),
+\emph{objective function} that represents monotonically the quality of
+the fit.\endnote{In geometry or physics, a ``scalar'' is not just a
+  quantity with a magnitude; it is a quantity with a magnitude that
+  has certain transformation properties: It is invariant under some
+  relevant transformations of the coordinates.  The objective ought to
+  be something like a scalar in this sense, because we want the
+  inference to be as insensitive to coordinate choices as possible.
+  The standard $\chi^2$ objective function is a scalar in the sense
+  that it is invariant to translations or rescalings of the data in
+  the $\mY$ vector space defined in \equationname~(\ref{eq:mY}).  Of
+  course a \emph{rotation} of the data in the $N$-dimensional space of
+  the $\ally$ would be pretty strange, and would make the covariance
+  matrix $\mC$ much more complicated, so perhaps the fact that the
+  objective is literally a linear algebra scalar---this is clear from
+  its matrix representation in
+  \equationname~(\ref{eq:chisquared})---is something of a red
+  herring.
+
+  The more important thing about the objective is that it must have
+  \emph{one magnitude only}.  Often when one asks a scientist what
+  they are trying to optimize, they will tell you something like ``I
+  am trying to maximize the resolution, minimize the noise, and
+  minimize the error in measured fluxes''.  Well, those are good
+  objectives, but \emph{you can't optimize them all}.  You either have
+  to pick one, or make a convex combination of them (such as by adding
+  them together in quadrature with weights).  This point is so
+  obvious, it is not clear what else to say, except that many
+  scientific investigations are so ill-posed that the investigator
+  does not know what is being optimized.  When there is a generative
+  model for the data, this problem doesn't arise.}  In this framework,
+fitting anything to anything involves a scientific question about the
+objective function representing ``goodness of fit'' and then a
+separate and subsequent engineering question about how to \emph{find
+  the optimum} and, possibly, the posterior probability distribution
+function around that optimum.\endnote{Of course, whether you are a
+  frequentist or a Bayesian, the most scientifically responsible thing
+  to do is not just \emph{optimize} the objective, but pass forward a
+  description of the dependence of the objective on the parameters, so
+  that other investigators can combine your results with theirs in a
+  responsible way.  In the fully Gaussian case described in this
+  \sectionname, this means passing forward the optimum \emph{and}
+  second derivatives around that optimum (since a Gaussian is fully
+  specified by its mode---or mean--and its second derivative at the
+  mode).  In what follows, when things aren't purely Gaussian, more
+  sophisticated outputs will be necessary.}  Note that in the above
 \sectionname\ we did \emph{not} proceed according to these rules;
 indeed the procedure was introduced prior to the objective function,
 and the objective function was not justified.
@@ -528,8 +585,21 @@ p(y_i|x_i,\sigma_{yi},m,b) = \frac{1}{\sqrt{2\,\pi\,\sigma_{yi}^2}}
  \,\exp\left(-\frac{[y_i - m\,x_i - b]^2}{2\,\sigma_{yi}^2}\right) \quad ,
 \end{equation}
 where this gives the expected frequency (in a hypothetical set of
-repeated experiments) of getting a value in the infinitesimal range
-$[y_i,y_i+\d y]$ per unit $\d y$.
+repeated experiments\endnote{We have tried in this \documentname\ to
+  be a bit careful with words.  Following \citet{jaynes}, we have
+  tried to use the word ``probability'' for our knowledge or
+  uncertainty about a parameter in the problem, and ``frequency'' for
+  the rate at which a random variable comes a particular way.  So the
+  noise process that sets the uncertainty $\sigma_{yi}$ has a
+  frequency distribution, but if we are just talking about our
+  \emph{knowledge} about the true value of $y$ for a data point
+  measured to have value $y_i$, we might describe that with a
+  probability distribution.  In the Bayesian context, then---to get
+  extremely technical---the posterior probability distribution
+  function is truly a probabiity distribution, but the likelihood
+  factor---really, our generative model---is constructed from
+  frequency distributions.}) of getting a value in the infinitesimal
+range $[y_i,y_i+\d y]$ per unit $\d y$.
 
 The generative model provides us with a natural, justified, scalar
 objective: We seek the line (parameters $m$ and $b$) that maximize the
@@ -581,70 +651,6 @@ function of the data.  This makes the optimum a linear function
 of the data, and therefore trivial to obtain.
 
 \begin{comments}
-In geometry or physics, a ``scalar'' is not just a quantity with a
-magnitude; it is a quantity with a magnitude that has certain
-transformation properties: It is invariant under some relevant
-transformations of the coordinates.  The objective ought to be
-something like a scalar in this sense, because we want the inference
-to be as insensitive to coordinate choices as possible.  The standard
-$\chi^2$ objective function is a scalar in the sense that it is
-invariant to translations or rescalings of the data in the $\mY$
-vector space defined in \equationname~(\ref{eq:mY}).  Of course a
-\emph{rotation} of the data in the $N$-dimensional space of the
-$\ally$ would be pretty strange, and would make the covariance matrix
-$\mC$ much more complicated, so perhaps the fact that the objective is
-literally a linear algebra scalar---this is clear from its matrix
-representation in \equationname~(\ref{eq:chisquared})---is a red
-herring.
-
-The more important thing about the objective is that it must have
-\emph{one magnitude only}.  Often when one asks a scientist what they
-are trying to optimize, they will tell you something like ``I am
-trying to maximize the resolution, minimize the noise, and minimize
-the error in measured fluxes''.  Well, those are good objectives, but
-\emph{you can't optimize them all}.  You either have to pick one, or
-make a convex combination of them (such as by adding them together in
-quadrature with weights).  This point is so obvious, it is not clear
-what else to say, except that many scientific investigations are so
-ill-posed that the investigator does not know what is being optimized.
-When there is a generative model for the data, this problem doesn't
-arise.
-
-Of course, whether you are a frequentist or a Bayesian, the most
-scientifically responsible thing to do is not just \emph{optimize} the
-objective, but pass forward a description of the dependence of the
-objective on the parameters, so that other investigators can combine
-your results with theirs in a responsible way.  In the fully Gaussian
-case described in this \sectionname, this means passing forward the
-optimum \emph{and} second derivatives around that optimum (since a
-Gaussian is fully specified by its mode---or mean--and its second
-derivative at the mode).  In what follows, when things aren't purely
-Gaussian, more sophisticated outputs will be necessary.
-
-We have tried in this \documentname\ to be a bit careful with words.
-Following \citet{jaynes}, we have tried to use the word
-``probability'' for our knowledge or uncertainty about a parameter in
-the problem, and ``frequency'' for the rate at which a random variable
-comes a particular way.  So the noise process that sets the
-uncertainty $\sigma_{yi}$ has a frequency distribution, but if we are
-just talking about our \emph{knowledge} about the true value of $y$
-for a data point measured to have value $y_i$, we might describe that
-with a probability distribution.  In the Bayesian context, then---to
-get extremely technical---the posterior probability distribution
-function is truly a probabiity distribution, but the likelihood
-factor---really, our generative model---is constructed from frequency
-distributions.
-
-This also somehow relates to the difference between ``uncertainty''
-and ``error'': For some reason, the uncertainty estimates assigned to
-data points are often called ``errors'' or ``error bars'' or
-``standard errors''.  That terminology is wrong: ``They are
-uncertainties, not errors; if they were \emph{errors}, we would have
-corrected them!''\footnote{DWH's mentor Gerry Neugebauer liked to say
-  this; Neugebauer credits the quotation to physicist Matthew Sands.}
-Data come with \emph{uncertainties}, which are limitations of
-knowledge, not \emph{mistakes}.
-
 One final note about terminology relates to the likelihood $\like$.
 The likelihood has been defined above (from among a few different
 options) as the frequency distribution for the observables evaluated
@@ -2132,12 +2138,13 @@ limits?
 \paragraph{Acknowlegments}\markright{End matter}
 We owe a debt above all to Sam Roweis (Toronto), who taught us to find
 and optimize justified scalar objective functions.  In addition it is
-a pleasure to thank Mike Blanton (NYU) and Hans-Walter Rix (MPIA) for
-valuable discussions.  This research was partially supported by NASA
-(ADP grant NNX08AJ48G) and a Research Fellowship of the Alexander von
-Humboldt Foundation.  This research made use of the Python programming
-language and the open-source Python packages scipy, numpy, and
-matplotlib.
+a pleasure to thank Mike Blanton (NYU), Hans-Walter Rix (MPIA), and
+David Schiminovich (Columbia) for valuable comments and discussions.
+This research was partially supported by NASA (ADP grant NNX08AJ48G),
+NSF (grant AST-0908357), and a Research Fellowship of the Alexander
+von Humboldt Foundation.  This research made use of the Python
+programming language and the open-source Python packages scipy, numpy,
+and matplotlib.
 
 \begin{thebibliography}{}
 \bibitem[Bovy, Hogg, \& Roweis(2009)]{bovy}
@@ -2181,5 +2188,7 @@ matplotlib.
   Sivia,~D.~S. \& Skilling,~J., 2006,
   \textit{Data analysis: a Bayesian tutorial} (Oxford University Press)
 \end{thebibliography}
+
+\theendnotes
 
 \end{document}
