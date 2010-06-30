@@ -14,6 +14,7 @@
 % style notes
 % -----------
 % - when at the end of the sentence, put the \endnote AFTER the period
+% - when at the end of a phrase, put the \endnote BEFORE the comma or parens
 % - make sure the endnotes can be read on their own, outside of context
 % - careful with the words ``error'', ``uncertainty''
 % - careful with the words ``probability'', ``frequency'', ``likelihood''
@@ -267,8 +268,8 @@ absurdities in the literature.\endnote{In addition to the complaints
   errors, then you must fit $y$ as a function of $x$; if the other way
   then the other way, and if neither has much smaller errors, then
   that kind of linear fitting is invalid.  We have more to say about
-  this generic situation below.  What is written in this paper
-  \citep{isobe90}---by professional statisticians, we could add---is
+  this generic situation in later \sectionname s.  What is written in
+  \cite{isobe90}---by professional statisticians, we could add---is
   simply wrong.}  When an investigator cites, relies upon, or
 transmits a best-fit slope or intercept reported in the literature, he
 or she may be propagating more noise than signal.
@@ -395,15 +396,15 @@ distance in the data space.\endnote{The inverse covariance matrix
   Not only that, but the objective function ``landscape'' is also
   \emph{convex} so the optimum is global and the solution is unique.
   This is remarkable, and almost no perturbation of this problem (as
-  we will see below) has either of these properties, let alone both.
-  For this standard problem, the linearity and convexity permit a
-  one-step solution with no significant engineering challenges, even
-  when $N$ gets exceedingly large.  As we modify (and make more
-  realistic) this problem, linearity and convexity will \emph{both} be
-  broken; some thought will have to be put into the optimization.}
-This, of course, is only one possible meaning of the phrase ``best
-fit''; that issue is the main subject of the rest of this
-\documentname.
+  we will see in later \sectionname s) has either of these properties,
+  let alone both.  For this standard problem, the linearity and
+  convexity permit a one-step solution with no significant engineering
+  challenges, even when $N$ gets exceedingly large.  As we modify (and
+  make more realistic) this problem, linearity and convexity will
+  \emph{both} be broken; some thought will have to be put into the
+  optimization.}  This, of course, is only one possible meaning of the
+phrase ``best fit''; that issue is the main subject of the rest of
+this \documentname.
 
 When the uncertainties are Gaussian and their variances $\sigma_{yi}$
 are correctly estimated, the matrix
@@ -604,9 +605,19 @@ range $[y_i,y_i+\d y]$ per unit $\d y$.
 The generative model provides us with a natural, justified, scalar
 objective: We seek the line (parameters $m$ and $b$) that maximize the
 probability of the observed data given the model or (in standard
-parlance) the \emph{likelihood of the parameters}.  In our generative
-model the data points are independently drawn (implicitly), so the
-likelihood $\like$ is the product of conditional probabilities
+parlance) the \emph{likelihood of the parameters}.\endnote{The
+  likelihood $\like$ has been defined in this \documentname\ (from
+  among a few different options) as the frequency distribution for the
+  observables evaluated at the observed data $\ally$.  It is a
+  function of both the data and the model parameters.  Although it
+  appears as an explicit function of the data, this is called ``the
+  likelihood for the parameters'' and it is thought of as a function
+  of the parameters in subsequent inference.  In some sense, this is
+  because the data are \emph{not} variables but rather fixed observed
+  values, and it is only the parameters that are permitted to vary.}
+In our generative model the data points are independently drawn
+(implicitly), so the likelihood $\like$ is the product of conditional
+probabilities
 \begin{equation}\label{eq:like}
 \like = \prod_{i=1}^N p(y_i|x_i,\sigma_{yi},m,b) \quad .
 \end{equation}
@@ -627,65 +638,52 @@ p(m,b|\ally,I) = \frac{p(\ally|m,b,I)\,p(m,b|I)}{p(\ally|I)} \quad ,
 where $m$ and $b$ are the model parameters, $\ally$ is a short-hand
 for all the data $y_i$, $I$ is a short-hand for all the prior
 knowledge of the $x_i$ and the $\sigma_{yi}$ and everything else about
-the problem, $p(m,b|\ally,I)$ is the \emph{posterior} probability
-distribution for the parameters given the data and the prior
-knowledge, $p(\ally|m,b,I)$ is the likelihood $\like$ just computed in
-\equationname~(\ref{eq:like}) (which is a frequency distribution for
-the data), $p(m,b|I)$ is the \emph{prior} probability distribution for
-the parameters that represents all knowledge \emph{except} the data
-$\ally$, and the denominator can---for our purposes---be thought of as
-a normalization constant, obtained by marginalizing the numerator over
-all parameters. Unless the prior $p(m,b|I)$ has a lot of variation in
-the region of interest, the posterior distribution function
-$p(m,b|\ally,I)$ here is going to look very similar to the likelihood
-function in \equationname~(\ref{eq:like}) above.  That is, with an
-uninformative prior, the straight line that maximizes the likelihood
-will come extremely close to maximizing the posterior probability
-distribution function; we will return to this later.
+the problem\endnote{One oddity in this \sectionname\ is that when we
+  set up the Bayesian problem we put the $\allx$ and $\allsigmay$ into
+  the prior information $I$ and \emph{not} into the data.  These were
+  not considered data.  Why not?  This was a choice, but we made it to
+  emphasize that in the standard approach to fitting, there is a
+  \emph{total asymmetry} between the $x_i$ and the $y_i$.  The $x_i$
+  are considered part of the \emph{experimental design}; they are the
+  input to an experiment that got the $y_i$ as output.  For example,
+  the $x_i$ are the times (measured by your perfect and reliable
+  clock) at which you chose \apriori\ to look through the telescope,
+  and the $y_i$ are the declinations you measured at those times.  As
+  soon as there is any sense in which the $x_i$ are themselves
+  \emph{also} data, the method---Bayesian or frequentist---of this
+  \sectionname\ is invalid.}, $p(m,b|\ally,I)$ is the \emph{posterior}
+probability distribution for the parameters given the data and the
+prior knowledge, $p(\ally|m,b,I)$ is the likelihood $\like$ just
+computed in \equationname~(\ref{eq:like}) (which is a frequency
+distribution for the data), $p(m,b|I)$ is the \emph{prior} probability
+distribution for the parameters that represents all knowledge
+\emph{except} the data $\ally$, and the denominator can---for our
+purposes---be thought of as a normalization constant, obtained by
+marginalizing the numerator over all parameters. Unless the prior
+$p(m,b|I)$ has a lot of variation in the region of interest, the
+posterior distribution function $p(m,b|\ally,I)$ here is going to look
+very similar to the likelihood function in
+\equationname~(\ref{eq:like}) above.  That is, with an uninformative
+prior, the straight line that maximizes the likelihood will come
+extremely close to maximizing the posterior probability distribution
+function; we will return to this later.
 
 We have succeeded in justifying the standard method as optimizing a
 justified, scalar objective function; the likelihood of a generative
 model for the data.  It is just the great good luck of Gaussian
 distributions that the objective can be written as a quadratic
-function of the data.  This makes the optimum a linear function
-of the data, and therefore trivial to obtain.
-
-\begin{comments}
-One final note about terminology relates to the likelihood $\like$.
-The likelihood has been defined above (from among a few different
-options) as the frequency distribution for the observables evaluated
-at the observed data $\ally$.  It is a function of both the data and
-the model parameters.  Although it appears as an explicit function of
-the data, this is called ``the likelihood for the parameters'' and it
-is thought of as a function of the parameters in subsequent inference.
-In some sense, this is because the data are \emph{not} variables but
-rather fixed observed values, and it is only the parameters that are
-permitted to vary.
-
-One oddity in this \sectionname\ is that when we set up the Bayesian
-problem we put the $\allx$ and $\allsigmay$ into the prior information
-$I$ and \emph{not} into the data.  These were not considered data.
-Why not?  This was a choice, but we made it to emphasize that in the
-standard approach to fitting, there is a \emph{total asymmetry}
-between the $x_i$ and the $y_i$.  The $x_i$ are considered part of the
-\emph{experimental design}; they are the input to an experiment that
-got the $y_i$ as output.  For example, the $x_i$ are the times
-(measured by your perfect and reliable clock) at which you chose
-\apriori\ to look through the telescope, and the $y_i$ are the
-declinations you measured at those times.  As soon as there is any
-sense in which the $x_i$ are themselves \emph{also} data, the
-method---Bayesian or frequentist---of this \sectionname\ is invalid.
-
-It remains a miracle (to us) that the optimization of the $\chi^2$
-objective, which is the only sensible objective under the assumptions
-of the standard problem, has a linear solution.  One can attribute
-this to the magical properties of the Gaussian distribution, but the
-Gaussian distribution is also the maximum entropy distribution (the
-least informative possible distribution) constrained to have zero mean
-and a known variance; it is the limiting distribution of the central
-limit theorem.  That this leads to a convex, linear algebra solution
-is something for which we all ought to give thanks.
-\end{comments}
+function of the data.  This makes the optimum a linear function of the
+data, and therefore trivial to obtain.  This is a miracle.\endnote{It
+  remains a miracle (to us) that the optimization of the $\chi^2$
+  objective, which is the only sensible objective under the
+  assumptions of the standard problem, has a linear solution.  One can
+  attribute this to the magical properties of the Gaussian
+  distribution, but the Gaussian distribution is also the maximum
+  entropy distribution (the least informative possible distribution)
+  constrained to have zero mean and a known variance; it is the
+  limiting distribution of the central limit theorem.  That this leads
+  to a convex, linear algebra solution is something for which we all
+  ought to give thanks.}
 
 \begin{problem}
 Imagine a set of $N$ measurements $t_i$, with uncertainty variances
