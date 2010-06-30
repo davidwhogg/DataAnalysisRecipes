@@ -23,8 +23,7 @@
 % - put new terms in \emph{}, put only referred-to words in quotation marks.
 
 \documentclass[12pt,twoside]{article}
-\usepackage{amssymb,amsmath,mathrsfs,deluxetable,endnotes}
-\usepackage{natbib}
+\usepackage{amssymb,amsmath,mathrsfs,deluxetable,endnotes,natbib}
 \usepackage{float,graphicx,color,hyperref}
 % hypertex insanity
 \definecolor{linkcolor}{rgb}{0,0,0.25}
@@ -534,35 +533,35 @@ the fit.\endnote{In geometry or physics, a ``scalar'' is not just a
   herring.
 
   The more important thing about the objective is that it must have
-  \emph{one magnitude only}.  Often when one asks a scientist what
-  they are trying to optimize, they will tell you something like ``I
-  am trying to maximize the resolution, minimize the noise, and
-  minimize the error in measured fluxes''.  Well, those are good
-  objectives, but \emph{you can't optimize them all}.  You either have
-  to pick one, or make a convex combination of them (such as by adding
-  them together in quadrature with weights).  This point is so
-  obvious, it is not clear what else to say, except that many
-  scientific investigations are so ill-posed that the investigator
-  does not know what is being optimized.  When there is a generative
-  model for the data, this problem doesn't arise.}  In this framework,
-fitting anything to anything involves a scientific question about the
-objective function representing ``goodness of fit'' and then a
-separate and subsequent engineering question about how to \emph{find
-  the optimum} and, possibly, the posterior probability distribution
-function around that optimum.\endnote{Of course, whether you are a
-  frequentist or a Bayesian, the most scientifically responsible thing
-  to do is not just \emph{optimize} the objective, but pass forward a
-  description of the dependence of the objective on the parameters, so
-  that other investigators can combine your results with theirs in a
-  responsible way.  In the fully Gaussian case described in this
-  \sectionname, this means passing forward the optimum \emph{and}
-  second derivatives around that optimum (since a Gaussian is fully
-  specified by its mode---or mean--and its second derivative at the
-  mode).  In what follows, when things aren't purely Gaussian, more
-  sophisticated outputs will be necessary.}  Note that in the above
-\sectionname\ we did \emph{not} proceed according to these rules;
-indeed the procedure was introduced prior to the objective function,
-and the objective function was not justified.
+  \emph{one magnitude only}.  Often when one asks scientists what they
+  are trying to optimize, they say things like ``I am trying to
+  maximize the resolution, minimize the noise, and minimize the error
+  in measured fluxes''.  Well, those are good objectives, but
+  \emph{you can't optimize them all}.  You either have to pick one, or
+  make a convex combination of them (such as by adding them together
+  in quadrature with weights).  This point is so obvious, it is not
+  clear what else to say, except that many scientific investigations
+  are so ill-posed that the investigator does not know what is being
+  optimized.  When there is a generative model for the data, this
+  problem doesn't arise.}  In this framework, fitting anything to
+anything involves a scientific question about the objective function
+representing ``goodness of fit'' and then a separate and subsequent
+engineering question about how to \emph{find the optimum} and,
+possibly, the posterior probability distribution function around that
+optimum.\endnote{Of course, whether you are a frequentist or a
+  Bayesian, the most scientifically responsible thing to do is not
+  just \emph{optimize} the objective, but pass forward a description
+  of the dependence of the objective on the parameters, so that other
+  investigators can combine your results with theirs in a responsible
+  way.  In the fully Gaussian case described in this \sectionname,
+  this means passing forward the optimum \emph{and} second derivatives
+  around that optimum (since a Gaussian is fully specified by its
+  mode---or mean--and its second derivative at the mode).  In what
+  follows, when things aren't purely Gaussian, more sophisticated
+  outputs will be necessary.}  Note that in the above \sectionname\ we
+did \emph{not} proceed according to these rules; indeed the procedure
+was introduced prior to the objective function, and the objective
+function was not justified.
 
 In principle, there are many choices for objective function.  But the
 only procedure that is truly justified---in the sense that it leads to
@@ -2062,15 +2061,15 @@ Actually, that term existed in \equationname~(\ref{eq:twodlike}) as
 well, but because there was no $V$ parameter, it did not enter into
 any optimization so we absorbed it into $K$.
 
-As we noted in the \commentsname\ of \sectionname~\ref{sec:twod},
-there are limitations to this procedure because it models only the
-distribution \emph{orthogonal} to the relationship.  Probably all good
-methods fully model the intrinsic two-dimensional density function,
-the function that, when convolved with each data point's intrinsic
-uncertainty Gaussian, creates a distribution function from which that
-data point is a single sample.  Such methods fall into the
-intersection of density estimation and deconvolution, and completely
-general methods exist \citep{kelly07,bovy}.
+As we noted in \notename~HOGG, there are limitations to this procedure
+because it models only the distribution \emph{orthogonal} to the
+relationship.  Probably all good methods fully model the intrinsic
+two-dimensional density function, the function that, when convolved
+with each data point's intrinsic uncertainty Gaussian, creates a
+distribution function from which that data point is a single sample.
+Such methods fall into the intersection of density estimation and
+deconvolution, and completely general methods exist
+\citep{kelly07,bovy}.
 
 \begin{comments}
 The standard method for estimating the width of a linear relationship
