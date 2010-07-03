@@ -1,8 +1,5 @@
 % to-do
 % -----
-% - Hogg: Schiminovich say: move comments to endnotes ; ack Schiminovich
-%   - In doing this, take each comment, put *one sentence* in the text to indicate the issue, and put the rest in an \note{}
-%   - Also, remove all \cite commands and put full citations into \note{}.
 % - Hogg: Burles email of 2010-05-13 ; ack Burles
 % - Hogg: Kelly email of 2010-05-16 ; ack Kelly
 % - Hogg: Murray email of 2010-05-19 ; ack Murray
@@ -23,7 +20,7 @@
 % - put new terms in \emph{}, put only referred-to words in quotation marks.
 
 \documentclass[12pt,twoside]{article}
-\usepackage{amssymb,amsmath,mathrsfs,deluxetable,endnotes,natbib}
+\usepackage{amssymb,amsmath,mathrsfs,deluxetable,hogg_endnotes,natbib}
 \usepackage{float,graphicx,color,hyperref}
 % hypertex insanity
 \definecolor{linkcolor}{rgb}{0,0,0.25}
@@ -56,10 +53,10 @@
 \newcommand{\equationname}{equation}
 \newcommand{\problemname}{Exercise}
 \newcommand{\solutionname}{Solution}
-\newcommand{\notename}{Note}
+\newcommand{\notename}{note}
 
-\newcommand{\note}[1]{\footnote{#1}}
-\renewcommand{\theendnotes}{}
+\newcommand{\note}[1]{\endnote{#1}}
+\def\enotesize{\normalsize}
 
 \newcounter{problem}
 \newenvironment{problem}{\paragraph{\problemname~\theproblem:}\refstepcounter{problem}}{}
@@ -116,9 +113,9 @@
 \begin{document}
 \thispagestyle{plain}\raggedbottom
 \section*{Data analysis recipes:\ \\
-  Fitting a straight line to data\note{
+  Fitting a straight line to data\note{%
     Copyright 2010 by the authors.
-    \textbf{This is a DRAFT version dated 2010-06-30.
+    \textbf{This is a DRAFT version dated 2010-07-03.
     Please do not distribute this document.}}}
 %    You may copy and distribute this document
 %    provided that you make no changes to it whatsoever.}}
@@ -207,8 +204,8 @@ opens up to the investigator a wide range of possible \emph{options}
 with little but aesthetics to distinguish them!  Most of these methods
 of ``linear regression'' (a term we avoid) performed in science are
 either unjustifiable or else unjustified in the situations in almost
-all situations in which they are used.\note{The words ``linear
-  regression'' are used in many different contexts, but in the most
+all situations in which they are used.\note{The term ``linear
+  regression'' is used in many different contexts, but in the most
   common, they seem to mean ``linear fitting without any use of the
   errors''.  In other words, linear regression is usually just the
   procedure outlined in this \sectionname, but with the covariance
@@ -217,7 +214,7 @@ all situations in which they are used.\note{The words ``linear
   uncertainties are negligible, but also that all of the $y$-direction
   uncertainties are simultaneously identical and Gaussian.
 
-  Sometimes the words ``linear regression'' is meant to cover a much
+  Sometimes the term ``linear regression'' is meant to cover a much
   larger range of options; in our field of astrophysics there have
   been attempts to test them all (for example, see \citealt{isobe90}).
   This kind of work---testing \adhoc\ procedures on simulated
@@ -282,18 +279,21 @@ comprehensible, and---above all---\emph{justifiable} methods for
 fitting a straight line to data with general, non-trivial, and
 uncertain properties.
 
-This \documentname\ is part polemic, part attempt at establishing
-standards, and part notes for our own future re-use.  We apologize in
-advance for some astrophysics bias and failure to review basic ideas
-of linear algebra, function optimization, and practical statistics.
-Very good reviews of the latter exist in
-abundance.\note{\cite{mackay,press,sivia}}  We also apologize for
-not reviewing the literature; this is a cheat-sheet not a survey.  Our
-focus is on the specific problems of linear fitting that we so often
-face; the general ideas appear in the context of these concrete and
-relatively realistic example problems.  The reader is encouraged to do
-the \problemname s; many of these ask you to produce plots which can
-be compared with the \figurename s.
+This \documentname\ is part polemic (though we have tried to keep most
+of the polemic in the \notename s), part attempt at establishing
+standards, and part crib sheet for our own future re-use.  We
+apologize in advance for some astrophysics bias and failure to review
+basic ideas of linear algebra, function optimization, and practical
+statistics.  Very good reviews of the latter exist in
+abundance.\note{For getting started with modern data modeling and
+  inference, the texts \cite{mackay}, \cite{press}, and \cite{sivia}
+  are all very useful.}  We also apologize for not reviewing the
+literature; this is a cheat-sheet not a survey.  Our focus is on the
+specific problems of linear fitting that we so often face; the general
+ideas appear in the context of these concrete and relatively realistic
+example problems.  The reader is encouraged to do the \problemname s;
+many of these ask you to produce plots which can be compared with the
+\figurename s.
 
 \section{Standard practice}\label{sec:standard}
 
@@ -613,19 +613,18 @@ range $[y_i,y_i+\d y]$ per unit $\d y$.
 The generative model provides us with a natural, justified, scalar
 objective: We seek the line (parameters $m$ and $b$) that maximize the
 probability of the observed data given the model or (in standard
-parlance) the \emph{likelihood of the parameters}.\note{The
-  likelihood $\like$ has been defined in this \documentname\ (from
-  among a few different options) as the frequency distribution for the
-  observables evaluated at the observed data $\ally$.  It is a
-  function of both the data and the model parameters.  Although it
-  appears as an explicit function of the data, this is called ``the
-  likelihood for the parameters'' and it is thought of as a function
-  of the parameters in subsequent inference.  In some sense, this is
-  because the data are \emph{not} variables but rather fixed observed
-  values, and it is only the parameters that are permitted to vary.}
-In our generative model the data points are independently drawn
-(implicitly), so the likelihood $\like$ is the product of conditional
-probabilities
+parlance) the \emph{likelihood of the parameters}.\note{The likelihood
+  $\like$ has been defined in this \documentname\ to be the frequency
+  distribution for the observables evaluated at the observed data
+  $\ally$.  It is a function of both the data and the model
+  parameters.  Although it appears as an explicit function of the
+  data, this is called ``the likelihood for the parameters'' and it is
+  thought of as a function of the parameters in subsequent inference.
+  In some sense, this is because the data are \emph{not} variables but
+  rather fixed observed values, and it is only the parameters that are
+  permitted to vary.}  In our generative model the data points are
+independently drawn (implicitly), so the likelihood $\like$ is the
+product of conditional probabilities
 \begin{equation}\label{eq:like}
 \like = \prod_{i=1}^N p(y_i|x_i,\sigma_{yi},m,b) \quad .
 \end{equation}
@@ -738,25 +737,26 @@ and not the outcome of justifiable modeling.\note{\emph{Sigma
   it has various problems that make it less suitable than methods in
   which the outliers are modeled.  One is that sigma clipping is a
   \emph{procedure} and not the result of optimizing an \emph{objective
-    function}.  The procedure does not necessarily optimize a
-  justifiable objective.  A second is that the procedure gives an
-  answer that depends, in general, on the starting point or
-  initialization, and because there is there is no way to compare
-  different answers (there is no objective function), the investigator
-  can't decide which of two converged answers is ``better''.  You
-  might think that the answer with least scatter (smallest $\chi^2$
-  per data point) is best, but that will favor solutions that involve
-  rejecting most of the data; you might think the answer that uses the
-  most data is best, but that can have a very large $\chi^2$.  These
-  issues relate to the fact that the method does not explicitly
-  \emph{penalize} the rejection of data; this is another bad
-  consequence of not having an explicit objective function.  A third
-  problem is that the procedure does not necessarily converge to
-  anything non-trivial at all; if the threshold $Q^2$ gets very small,
-  there are situations in which all but two of the data points can be
-  rejected by the procedure.  All that said, with $Q^2\gg 1$ and
-  standard, pretty good data, the sigma-clipping procedure is easy to
-  implement and fast; we have often used it ourselves.
+    function}.  The procedure does not necessarily optimize any
+  objective (let alone any \emph{justifiable} objective).  A second is
+  that the procedure gives an answer that depends, in general, on the
+  starting point or initialization, and because there is there is no
+  way to compare different answers (there is no objective function),
+  the investigator can't decide which of two converged answers is
+  ``better''.  You might think that the answer with least scatter
+  (smallest $\chi^2$ per data point) is best, but that will favor
+  solutions that involve rejecting most of the data; you might think
+  the answer that uses the most data is best, but that can have a very
+  large $\chi^2$.  These issues relate to the fact that the method
+  does not explicitly \emph{penalize} the rejection of data; this is
+  another bad consequence of not having an explicit objective
+  function.  A third problem is that the procedure does not
+  necessarily converge to anything non-trivial at all; if the
+  threshold $Q^2$ gets very small, there are situations in which all
+  but two of the data points can be rejected by the procedure.  All
+  that said, with $Q^2\gg 1$ and standard, pretty good data, the
+  sigma-clipping procedure is easy to implement and fast; we have
+  often used it ourselves.
 
   Complicating matters is the fact that sigma clipping is often
   employed in the common situation in which you have to perform data
@@ -772,14 +772,17 @@ and not the outcome of justifiable modeling.\note{\emph{Sigma
 If we want to explicitly and objectively reject bad data points, we
 must add to the problem a set of $N$ binary integers $q_i$, one per
 data point, each of which is unity if the $i$th data point is good,
-and zero if the $i$th data point is bad \citep{pressH0,jaynes}.  In
-addition, to construct an objective function, one needs a parameter
-$\Pbad$, the \emph{prior} probability that any individual data point
-is bad, and parameters $(\Ybad,\Vbad)$, the mean and variance of the
-distribution of bad points (in $y$).  We need these latter parameters
-because, as we have emphasized above, our inference comes from
-evaluating a probabilistic generative model for the data, and that
-model must generate the bad points as well as the good points!
+and zero if the $i$th data point is bad.\note{Outlier modeling of this
+  kind was used by \cite{pressH0} to perform a meta-analysis of
+  astronomical results, and is discussed at some length in a general
+  way by \cite{jaynes}.}.  In addition, to construct an objective
+function, one needs a parameter $\Pbad$, the \emph{prior} probability
+that any individual data point is bad, and parameters $(\Ybad,\Vbad)$,
+the mean and variance of the distribution of bad points (in $y$).  We
+need these latter parameters because, as we have emphasized above, our
+inference comes from evaluating a probabilistic generative model for
+the data, and that model must generate the bad points as well as the
+good points!
 
 All these $N+3$ extra parameters $(\allq,\Pbad,\Ybad,\Vbad)$ may seem
 like crazy baggage, but their values can be \emph{inferred} and
@@ -1073,16 +1076,20 @@ is of a \emph{probability distribution}, not only does the MCMC scheme
 integrate it, it also produces a \emph{sampling} from the distribution
 as a side-product for free.
 
-The standard Metropolis-Hastings MCMC procedure works extremely well
+The standard Metropolis--Hastings MCMC procedure works extremely well
 in this problem for both the optimization and the integration and
 sampling.  A discussion of this algorithm is beyond the scope of this
-document, but suffice it to say that good descriptions abound (for
-example, \citealt{press}) and that with a small amount of
-experimentation (try Gaussians for the proposal distribution and scale
-them until the acceptance ratio is about half) rapid convergence and
-sampling is possible in this problem. A large class of MCMC algorithms
-exists, many of which outperform the simple Metropolis algorithm with
-little extra effort \citep[see, \eg,][]{gilksmcmc,neal2003a,mackay}.
+document, but suffice it to say that good descriptions
+abound\note{There is a good introduction to Metropolis--Hastings MCMC
+  in \citealt{press}, among other places.} and that with a small
+amount of experimentation (try Gaussians for the proposal distribution
+and scale them until the acceptance ratio is about half) rapid
+convergence and sampling is possible in this problem. A large class of
+MCMC algorithms exists, many of which outperform the simple Metropolis
+algorithm with little extra effort.\note{Variations of MCMC that go
+  beyond Metropolis--Hastings---and the conditions under such
+  variations make sense---are described in, for example,
+  \cite{gilksmcmc}, \cite{neal2003a}, and \cite{mackay}.}
 
 Once you have run an MCMC or equivalent and obtained a chain of
 samples from the posterior probability distribution for the full
@@ -1258,7 +1265,7 @@ data-rejection methods, but there is a third approach in which the
 likelihood is artificially or heuristically softened to reduce the
 influence of the outliers; they are not usually a good idea when they
 make the objective function far from anything justifiable.\note{We
-  don't recommend it, but there are many non-Gaussian methods for
+  don't recommend them, but there are many non-Gaussian methods for
   removing sensitivity to outliers, which involve softening the
   objective function from $\chi^2$ (which depends quadratically on all
   residuals) to something that depends on large residuals to a smaller
@@ -1935,27 +1942,27 @@ systematic uncertainty.  This is unjustified.\note{The difference
   This forward--reverse procedure is not justifiable and it gives
   results which differ by substantially more than the uncertainty in
   the procedure given in this \sectionname.  We have already
-  (\notename~\ref{note:isobe}) criticized one of the principal papers
-  to promote this kind of hack, and do not need to repeat that
-  criticism here.}  Another common method for finding the linear
-relationship in data when there are errors in both directions is
-\emph{principal components analysis}.  The manifold reasons \emph{not}
-to use PCA are beyond the scope of this \documentname.\note{Why not
-  use principal components analysis?  In a nutshell: The method of PCA
-  \emph{does} return a linear relationship for a data set, in the form
-  of the dominant principal component.  However, this is the dominant
-  principal component of the observed data, not of the underlying
-  linear relationship that, when noise is added, generates the
-  observations.  For this reason, the output of PCA will be strongly
-  drawn or affected by the individual data point noise covariances
-  $\mS_i$.  This point is a subtle one, but in astrophysics it is
-  almost certainly having a large effect in the standard literature on
-  the ``fundamental plane'' of elliptical galaxies, and in other areas
-  where a fit is being made to data with substantial uncertainties.
-  Of course PCA is another trivial, linear method, so it is often
-  useful despite its inapplicability; and it becomes applicable in the
-  limit that the data uncertainties are negligible (but in that case
-  everything is trivial anyway).}
+  (\notename~\ref{note:isobe}) criticized one of the
+  principal papers to promote this kind of hack, and do not need to
+  repeat that criticism here.}  Another common method for finding the
+linear relationship in data when there are errors in both directions
+is \emph{principal components analysis}.  The manifold reasons
+\emph{not} to use PCA are beyond the scope of this
+\documentname.\note{Why not use principal components analysis?  In a
+  nutshell: The method of PCA \emph{does} return a linear relationship
+  for a data set, in the form of the dominant principal component.
+  However, this is the dominant principal component of the observed
+  data, not of the underlying linear relationship that, when noise is
+  added, generates the observations.  For this reason, the output of
+  PCA will be strongly drawn or affected by the individual data point
+  noise covariances $\mS_i$.  This point is a subtle one, but in
+  astrophysics it is almost certainly having a large effect in the
+  standard literature on the ``fundamental plane'' of elliptical
+  galaxies, and in other areas where a fit is being made to data with
+  substantial uncertainties.  Of course PCA is another trivial, linear
+  method, so it is often useful despite its inapplicability; and it
+  becomes applicable in the limit that the data uncertainties are
+  negligible (but in that case everything is trivial anyway).}
 
 \begin{problem}\label{prob:twod}
 Using the method of this \sectionname, fit the straight line
@@ -2097,10 +2104,10 @@ Actually, that term existed in \equationname~(\ref{eq:twodlike}) as
 well, but because there was no $V$ parameter, it did not enter into
 any optimization so we absorbed it into $K$.
 
-As we noted in \notename~\ref{note:orthogonal}, there are limitations
-to this procedure because it models only the distribution
-\emph{orthogonal} to the relationship.\note{One confusing issue in
-  the subject of intrinsic scatter is the \emph{direction} for the
+As we mentioned in \notename~\ref{note:orthogonal}, there are
+limitations to this procedure because it models only the distribution
+\emph{orthogonal} to the relationship.\note{One confusing issue in the
+  subject of intrinsic scatter is the \emph{direction} for the
   scatter.  If things are Gaussian, it doesn't matter whether you
   think of the scatter being in the $x$ direction, the $y$ direction,
   or the direction perpendicular to the line (as we think of it in the
@@ -2113,7 +2120,9 @@ the function that, when convolved with each data point's intrinsic
 uncertainty Gaussian, creates a distribution function from which that
 data point is a single sample.  Such methods fall into the
 intersection of density estimation and deconvolution, and completely
-general methods exist \citep{kelly07,bovy}.
+general methods exist.\note{Density estimation by generative modeling,
+  in situations of heteroscedastic data, has been solved for
+  situations of varying generality by \cite{kelly07} and \cite{bovy}.}
 
 \begin{problem}\label{prob:intrinsic}
 Re-do \problemname~\ref{prob:twod}, but now allowing for an orthogonal
@@ -2145,7 +2154,9 @@ limits?
 \caption{Solution to \problemname~\ref{prob:bayesintrinsic}.}\label{fig:bayesintrinsic}
 \end{figure}
 
-\paragraph{Acknowlegments}\markright{End matter}
+\markright{Notes}\theendnotes
+
+\paragraph{Acknowlegments:}
 We owe a debt above all to Sam Roweis (Toronto), who taught us to find
 and optimize justified scalar objective functions.  In addition it is
 a pleasure to thank Mike Blanton (NYU), Hans-Walter Rix (MPIA), and
@@ -2156,7 +2167,7 @@ von Humboldt Foundation.  This research made use of the Python
 programming language and the open-source Python packages scipy, numpy,
 and matplotlib.
 
-\begin{thebibliography}{}
+\begin{thebibliography}{}\markright{References}
 \bibitem[Bovy, Hogg, \& Roweis(2009)]{bovy}
   Bovy,~J., Hogg,~D.~W., \& Roweis, S.~T., 2009,
   Extreme deconvolution: inferring complete distribution functions from noisy, heterogeneous, and incomplete observations, 
@@ -2199,10 +2210,4 @@ and matplotlib.
   \textit{Data analysis: a Bayesian tutorial} (Oxford University Press)
 \end{thebibliography}
 
-\theendnotes
-
 \end{document}
-
-ORPHAN COMMENTS:
-
-
