@@ -2,7 +2,6 @@
 % -----
 % - Hogg: Kelly email of 2010-05-16
 % - Hogg: Murray email of 2010-05-19
-% - Hogg: Foreman-Mackey email of 2010-06-25
 % - Hogg: should we distinguish = \equiv and \leftarrow ?
 % - Hogg: clearly itemize the standard fitting assumptions?
 % - Bovy: can we release your figure-making code along with the document?
@@ -182,9 +181,11 @@ fitting an overly simple model.
 That said, it must be admitted that one of the most effective ways to
 communicate scientific results is with catchy punchlines and compact,
 approximate representations, even when those are unjustified and
-unnecessary.  For this reason---and the reason that in rare cases the
-fit \emph{is} justifiable and essential---the problem of fitting a
-line to data comes up very frequently in the life of a scientist.
+unnecessary.  It can also sometimes be useful for predicting new data,
+given existing data, even in the absence of a physical model.  For
+these reasons---and the reason that in rare cases the fit \emph{is}
+justifiable and essential---the problem of fitting a line to data
+comes up very frequently in the life of a scientist.
 
 It is a miracle with which we hope everyone reading this is familiar
 that \emph{if} you have a set of two-dimensional points $(x,y)$ that
@@ -242,7 +243,7 @@ all situations in which they are used.\note{The term ``linear
   procedure space for a procedure that comes close to doing that by
   accident---unless, perhaps, when computational limitations demand
   that only a small number of simple operations be performed on the
-  data.\label{note:isobe}} Perhaps because of this plethora of
+  data.\label{note:regression}} Perhaps because of this plethora of
 options, or perhaps because there is no agreed-upon bible or cookbook
 to turn to, or perhaps because most investigators would rather make
 some stuff up that works ``good enough'' under deadline, or perhaps
@@ -260,15 +261,15 @@ errors and absurdities in the literature.\note{Along the lines of
   depends on the distance, not the distance that depends on the
   velocity'' and other statistically meaningless intuitions).  The
   truth is that this decision must be based on the \emph{uncertainty
-    properties} of $x$ and $y$. If $x$ has much smaller uncertainties, then
-  you must fit $y$ as a function of $x$; if the other way then the
-  other way, and if neither has much smaller uncertainties, then that kind of
-  linear fitting is invalid.  We have more to say about this generic
-  situation in later \sectionname s.  What is written in
+    properties} of $x$ and $y$. If $x$ has much smaller uncertainties,
+  then you must fit $y$ as a function of $x$; if the other way then
+  the other way, and if neither has much smaller uncertainties, then
+  that kind of linear fitting is invalid.  We have more to say about
+  this generic situation in later \sectionname s.  What is written in
   \cite{isobe90}---by professional statisticians, we could add---is
-  simply wrong.}  When an investigator cites, relies upon, or
-transmits a best-fit slope or intercept reported in the literature, he
-or she may be propagating more noise than signal.
+  simply wrong.\label{note:fallacy}} When an investigator cites,
+relies upon, or transmits a best-fit slope or intercept reported in
+the literature, he or she may be propagating more noise than signal.
 
 It is one of the objectives of this \documentname\ to promote an
 understanding that if the data can be \emph{modeled} statistically
@@ -360,12 +361,14 @@ sensitivity to data of different statistical significance.\note{Even
   to think of the distance depending on the velocity.  In the context
   of fitting, there is no meaning to the (ill-chosen) terms
   ``independent variable'' and ``dependent variable'' beyond the
-  uncertainty or noise properties of the data.  In performing this
-  standard fit, the investigator is effectively assuming that the $x$
-  values have negligible uncertainties; if they do \emph{not}, then
-  the investigator is \emph{making a mistake}.}  It can be justified
-in one of several ways; the linear algebra justification starts by
-noting that you want to solve the equation
+  uncertainty or noise properties of the data.  This is the
+  independent variable fallacy mentioned in
+  \notename~\ref{note:fallacy}.  In performing this standard fit, the
+  investigator is effectively assuming that the $x$ values have
+  negligible uncertainties; if they do \emph{not}, then the
+  investigator is \emph{making a mistake}.}  It can be justified in
+one of several ways; the linear algebra justification starts by noting
+that you want to solve the equation
 \begin{equation}
 \mY = \mA\,\mX \quad ,
 \end{equation}
@@ -376,9 +379,13 @@ left-multiply everything by $\mAT$ to reduce the dimensionality, and
 then \equationname~(\ref{eq:lsf}) is the solution of that
 reduced-dimensionality equation.
 
-This procedure is not arbitrary; it minimizes a quantity $\chi^2$
-(``chi-squared''), which is the total squared error, scaled by the
-uncertainties, or
+This procedure is not arbitrary; it minimizes an objective
+function\note{As we mention in \notename~\ref{note:regression},
+  scientific procedures should achieve justified objectives; this
+  objective function makes that statement well posed.  The objective
+  function is also sometimes called the ``loss function'' in the
+  statistics literature.} $\chi^2$ (``chi-squared''), which is the
+total squared error, scaled by the uncertainties, or
 \begin{equation}\label{eq:chisquared}
 \chi^2
  = \sum_{i=1}^N \frac{\left[y_i - f(x_i)\right]^2}{\sigma_{yi}^2}
@@ -1433,12 +1440,18 @@ maximum entropy distribution for a fixed \emph{variance}.  That means
 that if you have some (perhaps magical) way to estimate the variance
 of your uncertainty, and you aren't sure of anything else but the
 variance, then the Gaussian is---contrary to popular opinion---the
-\emph{most conservative} thing you can assume.  Of course it is very
-rare that you do know the variance of your uncertainty or noise; most
-simple uncertainty estimators are measurements of the central part of
-the distribution function (not the tails) and are therefore \emph{not}
-good estimators of the total variance; the relevant situations may be
-rare.
+\emph{most conservative} thing you can assume.\note{Assuming a
+  Gaussian form is only conservative when you truly know the
+  \emph{variance} of the noise.  Gaussians penalize heavily outliers,
+  so they are not conservative in most situations.  But if you
+  included the outliers in your variance calculation, then it is
+  conservative to make the Gaussian assumption.  The issue is that it
+  is almost impossible to make a variance estimate that captures the
+  outliers properly.}  Of course it is very rare that you do know the
+variance of your uncertainty or noise; most simple uncertainty
+estimators are measurements of the central part of the distribution
+function (not the tails) and are therefore \emph{not} good estimators
+of the total variance.
 
 Back to business.  The first approach to non-Gaussian noise or
 uncertainty is (somehow) to estimate the true or total variance of
@@ -1500,22 +1513,29 @@ make the objective function far from anything justifiable.\note{We
   the observational uncertainty distributions depart from Gaussians in
   known ways.  Nonetheless, even when there is not a good
   justification for softening the objective function, it can sometimes
-  be useful for generating a robust fit with a minimum of effort.}
-The fourth approach---the only approach that is really justified---is
-to fully understand and model the non-Gaussianity.
+  be useful for generating a robust fit with a minimum of effort.
+
+  Sometimes it \emph{is} justifiable to use the $t$-distribution for a
+  softened objective.  That is because the distribution is what you
+  get when you believe that the uncertainties are Gaussian, you don't
+  know their variances, but you imagine that the variances are drawn
+  from some particular distribution (inverse chi-squared), and you
+  marginalize.}  The fourth approach---the only approach that is
+really justified---is to fully understand and model the
+non-Gaussianity.
 
 For example, if data points are generated by a process the noise from
 which looks like a sum or mixture of $k$ Gaussians with different
 variances, and the distribution can be understood well enough to be
 modeled, the investigator can replace the objective function with
-something more realistic.  Indeed, \emph{any} frequency distribution
-can be described as a mixture of Gaussians, so this approach is
-extremely general (in principle; it may not be easy).  For example,
-the generative model in \sectionname~\ref{sec:objective} for the
-standard case was built out of individual data-point likelihoods given
-in \equationname~(\ref{eq:objectivei}).  If the frequency distribution
-for the noise contribution to data point $y_i$ has been expressed as
-the sum of $k$ Gaussians, these likelihoods become
+something more realistic.  Indeed, \emph{any} (reasonable) frequency
+distribution can be described as a mixture of Gaussians, so this
+approach is extremely general (in principle; it may not be easy).  For
+example, the generative model in \sectionname~\ref{sec:objective} for
+the standard case was built out of individual data-point likelihoods
+given in \equationname~(\ref{eq:objectivei}).  If the frequency
+distribution for the noise contribution to data point $y_i$ has been
+expressed as the sum of $k$ Gaussians, these likelihoods become
 \begin{equation}
 p(y_i|x_i,\sigma_{yi},m,b) = \sum_{j=1}^k
  \frac{a_{ij}}{\sqrt{2\,\pi\,\sigma_{yij}^2}}
@@ -1953,7 +1973,7 @@ systematic uncertainty.  This is unjustified.\note{The difference
   This forward--reverse procedure is not justifiable and it gives
   results which differ by substantially more than the uncertainty in
   the procedure given in this \sectionname.  We have already
-  (\notename~\ref{note:isobe}) criticized one of the
+  (\notename~\ref{note:regression}) criticized one of the
   principal papers to promote this kind of hack, and do not need to
   repeat that criticism here.}  Another common method for finding the
 linear relationship in data when there are uncertainties in both directions
