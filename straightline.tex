@@ -1,9 +1,8 @@
 % to-do
 % -----
-% - Hogg: Burles email of 2010-05-13 ; ack Burles
-% - Hogg: Kelly email of 2010-05-16 ; ack Kelly
-% - Hogg: Murray email of 2010-05-19 ; ack Murray
-% - Hogg: Foreman-Mackey email of 2010-06-25 ; ack F-M
+% - Hogg: Kelly email of 2010-05-16
+% - Hogg: Murray email of 2010-05-19
+% - Hogg: Foreman-Mackey email of 2010-06-25
 % - Hogg: should we distinguish = \equiv and \leftarrow ?
 % - Hogg: clearly itemize the standard fitting assumptions?
 % - Bovy: can we release your figure-making code along with the document?
@@ -51,6 +50,7 @@
 \newcommand{\documentname}{document}
 \newcommand{\sectionname}{Section}
 \newcommand{\equationname}{equation}
+\newcommand{\figurenames}{\figurename s}
 \newcommand{\problemname}{Exercise}
 \newcommand{\solutionname}{Solution}
 \newcommand{\notename}{note}
@@ -207,8 +207,8 @@ either unjustifiable or else unjustified in the situations in almost
 all situations in which they are used.\note{The term ``linear
   regression'' is used in many different contexts, but in the most
   common, they seem to mean ``linear fitting without any use of the
-  errors''.  In other words, linear regression is usually just the
-  procedure outlined in this \sectionname, but with the covariance
+  uncertainties''.  In other words, linear regression is usually just
+  the procedure outlined in this \sectionname, but with the covariance
   matrix $\mC$ set equal to the identity matrix.  This is equivalent
   to fitting under the assumption not just that the $x$-direction
   uncertainties are negligible, but also that all of the $y$-direction
@@ -259,10 +259,10 @@ errors and absurdities in the literature.\note{Along the lines of
   ``seems'' independent (as in ``it is really the velocity that
   depends on the distance, not the distance that depends on the
   velocity'' and other statistically meaningless intuitions).  The
-  truth is that this decision must be based on the \emph{error
-    properties} of $x$ and $y$. If $x$ has much smaller errors, then
+  truth is that this decision must be based on the \emph{uncertainty
+    properties} of $x$ and $y$. If $x$ has much smaller uncertainties, then
   you must fit $y$ as a function of $x$; if the other way then the
-  other way, and if neither has much smaller errors, then that kind of
+  other way, and if neither has much smaller uncertainties, then that kind of
   linear fitting is invalid.  We have more to say about this generic
   situation in later \sectionname s.  What is written in
   \cite{isobe90}---by professional statisticians, we could add---is
@@ -293,7 +293,7 @@ specific problems of linear fitting that we so often face; the general
 ideas appear in the context of these concrete and relatively realistic
 example problems.  The reader is encouraged to do the \problemname s;
 many of these ask you to produce plots which can be compared with the
-\figurename s.
+\figurenames.
 
 \section{Standard practice}\label{sec:standard}
 
@@ -342,30 +342,30 @@ of a column vector $\mX$ found by
 \end{equation}
 This is actually the simplest thing that can be written down that is
 linear, obeys matrix multiplication rules, and has the right relative
-sensitivity to data of different statistical
-significance.\note{Even when the conditions of standard practice
-  are met, it is \emph{still} often done wrong!  It is not unusual to
-  see the individual data-point error estimates ignored, even when
-  they are known at least approximately.  It is also common for the
-  problem to get ``transposed'' such that the coordinates for which
-  errors are negligible are put into the $\mY$ vector and the
-  coordinates for which errors are \emph{not} negligible are put into
-  the $\mA$ matrix.  In this latter case, the procedure makes no sense
-  at all really; it happens when the investigator thinks of some
-  quantity ``really being'' the dependent variable, despite the fact
-  that it has the smaller error.  For example there are mistakes in
-  the Hubble expansion literature, because many have an intuition that
-  the ``velocity depends on the distance'' when in fact velocities are
+sensitivity to data of different statistical significance.\note{Even
+  when the conditions of standard practice are met, it is \emph{still}
+  often done wrong!  It is not unusual to see the individual
+  data-point uncertainty estimates ignored, even when they are known
+  at least approximately.  It is also common for the problem to get
+  ``transposed'' such that the coordinates for which uncertainties s
+  are negligible are put into the $\mY$ vector and the coordinates for
+  which uncertainties are \emph{not} negligible are put into the $\mA$
+  matrix.  In this latter case, the procedure makes no sense at all
+  really; it happens when the investigator thinks of some quantity
+  ``really being'' the dependent variable, despite the fact that it
+  has the smaller uncertainty.  For example there are mistakes in the
+  Hubble expansion literature, because many have an intuition that the
+  ``velocity depends on the distance'' when in fact velocities are
   measured better, so from the point of view of fitting, it is better
   to think of the distance depending on the velocity.  In the context
   of fitting, there is no meaning to the (ill-chosen) terms
-  ``independent variable'' and ``dependent variable'' beyond the error
-  properties of the data.  In performing this standard fit, the
-  investigator is effectively assuming that the $x$ values have
-  negligible uncertainties; if they do \emph{not}, then the
-  investigator is \emph{making a mistake}.}  It can be justified in
-one of several ways; the linear algebra justification starts by noting
-that you want to solve the equation
+  ``independent variable'' and ``dependent variable'' beyond the
+  uncertainty or noise properties of the data.  In performing this
+  standard fit, the investigator is effectively assuming that the $x$
+  values have negligible uncertainties; if they do \emph{not}, then
+  the investigator is \emph{making a mistake}.}  It can be justified
+in one of several ways; the linear algebra justification starts by
+noting that you want to solve the equation
 \begin{equation}
 \mY = \mA\,\mX \quad ,
 \end{equation}
@@ -418,19 +418,18 @@ When the uncertainties are Gaussian and their variances $\sigma_{yi}$
 are correctly estimated, the matrix
 $\inverse{\left[\mAT\,\mCinv\,\mA\right]}$ that appears in
 \equationname~(\ref{eq:lsf}) is just the covariance matrix (Gaussian
-uncertainty---uncertainty not error\note{There is a difference
-  between ``uncertainty'' and ``error'': For some reason, the
-  uncertainty estimates assigned to data points are often called
-  ``errors'' or ``error bars'' or ``standard errors''.  That
-  terminology is wrong: ``They are uncertainties, not errors; if they
-  were \emph{errors}, we would have corrected them!''  DWH's mentor
-  Gerry Neugebauer liked to say this; Neugebauer credits the quotation
-  to physicist Matthew Sands.  Data come with \emph{uncertainties},
-  which are limitations of knowledge, not
-  \emph{mistakes}.}---variances on the diagonal, covariances off the
-diagonal) for the parameters in $\mX$.  The justification of this will
-have to wait for a discussion of the objective function, if it comes
-at all.
+uncertainty---uncertainty not error\note{There is a difference between
+  ``uncertainty'' and ``error'': For some reason, the uncertainty
+  estimates assigned to data points are often called ``errors'' or
+  ``error bars'' or ``standard errors''.  That terminology is wrong:
+  ``They are uncertainties, not errors; if they were \emph{errors}, we
+  would have corrected them!''  DWH's mentor Gerry Neugebauer liked to
+  say this; Neugebauer credits the quotation to physicist Matthew
+  Sands.  Data come with \emph{uncertainties}, which are limitations
+  of knowledge, not \emph{mistakes}.\label{note:error}}---variances on
+the diagonal, covariances off the diagonal) for the parameters in
+$\mX$.  The justification of this will have to wait for a discussion
+of the objective function, if it comes at all.
 
 % Any changes to this table should be made IN THE CODE
 % The code is astrometry/projects/straightline/py/generate_data.py
@@ -715,10 +714,10 @@ the minimum is at the matrix location given in
 The standard linear fitting method is very sensitive to
 \emph{outliers}, that is, points that are substantially farther from
 the linear relation than expected---or not on the relation at
-all---because of unmodeled experimental error or unmodeled but rare
-sources of noise.  There are two general approaches to mitigating this
-sensitivity, which are not necessarily different.  The first is to
-find ways to objectively remove, reject, or become insensitive to
+all---because of unmodeled experimental uncertainty or unmodeled but
+rare sources of noise.  There are two general approaches to mitigating
+this sensitivity, which are not necessarily different.  The first is
+to find ways to objectively remove, reject, or become insensitive to
 ``bad'' points; this is the subject of this \sectionname.  The second
 is to better model your data-point uncertainties, permitting larger
 deviations than the Gaussian noise estimates; this is the subject of
@@ -1149,7 +1148,7 @@ rather, decision-making.  That is, the investigator wants a specific
 answer, not a distribution.  There are (at least) two reactions to
 this.  One is to ignore the fundamental Bayesianism at the end, and
 choose simply the MAP answer.  This is the Bayesian's analog of
-maximum likelihood; the standard error on the MAP answer would be
+maximum likelihood; the standard uncertainty on the MAP answer would be
 based on the peak curvature or variance of the marginalized posterior
 distribution.  The other reaction is to suck it up and sample the
 posterior probability distribution and carry forward not one answer to
@@ -1210,32 +1209,222 @@ Your plots should look something like those in
 \caption{Solution to \problemname~\ref{prob:badfraction}.}\label{fig:badfraction}
 \end{figure}
 
+\section{Uncertainties in the best-fit parameters}\label{sec:uncertainty}
+
+In the standard linear-algebra method of $\chi^2$ minimization given
+in \sectionname~\ref{sec:standard}, the uncertainties in the best-fit
+parameters $(m,b)$ are given by the two-dimensional output covariance
+matrix
+\begin{equation}
+\left[\begin{array}{cc}
+\sigma_{b}^2 & \sigma_{mb} \\
+\sigma_{mb} & \sigma_{m}^2
+\end{array}\right] = \inverse{\left[\mAT\,\mCinv\,\mA\right]} \quad ,
+\end{equation}
+where the ordering is defined by the ordering in matrix $\mA$.  These
+uncertainties for the model parameters \emph{only} strictly hold under
+three extremely strict conditions, none of which is met in most real
+situations: \textsl{(a)}~The uncertainties in the data points must
+truly be Gaussian, with variances correctly described by the
+$\sigma_{yi}^2$; \textsl{(b)}~there must be no rejection of any data
+or any departure from the exact, standard definition of $\chi^2$ given
+in \equationname~(\ref{eq:chisquared}); and \textsl{(c)}~the
+generative model of the data implied by the method---that is, that the
+data are truly drawn from a negligible-scatter linear relationship and
+subsequently had noise added, where the noise offsets were generated
+by a Gaussian process---must be an accurate description of the data.
+
+These conditions are rarely met in practice.  Often the noise
+estimates are rough (or missing entirely!), the uncertainties are
+known not to be Gaussian, the investigator has applied data rejection
+or equivalent conditioning, and the relationship has intrinsic scatter
+and curvature.\note{If you are sigma clipping or doing anything
+  that looks like standard least-square fitting but with small
+  modifications, it might be tempting to use the standard uncertainty
+  estimate $\inverse{\left[\mAT\,\mCinv\,\mA\right]}$.  But that is
+  definitely wrong, because whatever encouraged you to do the
+  sigma clipping or to make other modifications is probably sufficient
+  reason to disbelieve the standard uncertainty estimate.  In these
+  cases you want either to be measuring the width of your posterior
+  probability distribution function (if you are a Bayesian) or else
+  using an empirical estimate of the uncertainty such as jackknife or
+  bootstrap.
+
+  Bayesians like to be smug here---and have some
+  justification---because the posterior distribution function gives
+  the best fit parameters and the full distribution around that
+  best-fit point in parameter space.  However, the smugness must be
+  tempered by the fact that \emph{within} the context of a single
+  model (such as the generative model described in
+  \sectionname~\ref{sec:objective}), the Bayesian analysis does not
+  return any useful goodness-of-fit information; a bad model can be
+  constrained well by the data but still dead wrong.}  For these
+generic reasons, we much prefer empirical estimates of the uncertainty
+in the best-fit parameters.
+
+In the Bayesian outlier-modeling schemes of
+\sectionname~\ref{sec:outliers}, the output is a
+posterior distribution for the parameters $(m,b)$.  This distribution
+function is closer than the standard estimate
+$\inverse{\left[\mAT\,\mCinv\,\mA\right]}$ to being an
+empirical measurement of the uncertainties of the parameters.  The
+uncertainty variances $(\sigma_m^2,\sigma_b^2)$ and the covariance
+$\sigma_{mb}$ can be computed as second moments of this posterior
+distribution function.  Computing the variances this way does involve
+assumptions, but it is not extremely sensitive to the assumption that
+the model is a good fit to the data; that is, as the model becomes a
+bad fit to the data (for example when the data points are not
+consistent with being drawn from a narrow, straight line), these
+uncertainties change in accordance.  That is in strong contrast to the
+elements of the matrix $\inverse{\left[\mAT\,\mCinv\,\mA\right]}$,
+which don't depend in any way on the quality of fit.
+
+Either way, unless the output of the fit is being used \emph{only} to
+estimate the slope, and nothing else, it is a mistake to ignore the
+off-diagonal terms of the uncertainty variance tensor.  That is, you
+generally know some linear combinations of $m$ and $b$ much, much
+better than you know either individually (see, for example,
+\figurenames~\ref{fig:mixture} and \ref{fig:reduceerror}).  When the
+data are good, this covariance is related to the location of the data
+relative to the origin, but any non-trivial propagation of the
+best-fit results requires use of either the full $2\times 2$
+uncertainty tensor or else a two-dimensional sampling of the
+two-dimensional (marginalized, perhaps) posterior distribution.
+
+In any non-Bayesian scheme, or when the full posterior has been
+discarded in favor of only the MAP value, or when data-point
+uncertainties are not trusted, there are still empirical methods for
+determining the uncertainties in the best-fit parameters.  The two
+most common are \emph{bootstrap} and \emph{jackknife}.  The first
+attempts to empirically create new data sets that are similar to your
+actual data set.  The second measures your differential sensitivity to
+each individual data point.
+
+In bootstrap, you do the unlikely-sounding thing of drawing $N$ data
+points randomly from the $N$ data points you have \emph{with
+  replacement}.  That is, some data points get dropped, and some get
+doubled (or even tripled), but the important thing is that you select
+each of the $N$ that you are going to use in each trial independently
+from the whole set of $N$ you have.  You do this selection of $N$
+points once for each of $M$ bootstrap trials $j$.  For each of the $M$
+trials $j$, you get an estimate---by whatever method you are using
+(linear fitting, fitting with rejection, optimizing some custom
+objection function)---of the parameters $(m_j,b_j)$, where $j$ goes
+from $1$ to $M$.  An estimate of your uncertainty variance on $m$ is
+\begin{equation}
+\sigma_m^2 = \frac{1}{M}\,\sum_{j=1}^M [m_j-m]^2 \quad ,
+\end{equation}
+where $m$ stands in for the best-fit $m$ using all the data.  The
+uncertainty variance on $b$ is the same but with $[b_j-b]^2$ in the
+sum, and the covariance $\sigma_{mb}$ is the same but with
+$[m_j-m]\,[b_j-b]$.   Bootstrap
+creates a new parameter, the number $M$ of trials.  There is a huge
+literature on this, so we won't say anything too specific, but one
+intuition is that once you have $M$ comparable to $N$, there probably
+isn't much else you can learn, unless you got terribly unlucky with
+your random number generator.
+
+In jackknife, you make your measurement $N$ times, each time
+\emph{leaving out} data point $i$.  Again, it doesn't matter what
+method you are using, for each leave-one-out trial $i$ you get an
+estimate $(m_i,b_i)$ found by fitting with all the data \emph{except}
+point $i$.  Then you calculate
+\begin{equation}
+m = \frac{1}{N}\,\sum_{i=1}^N m_i \quad ,
+\end{equation}
+and the uncertainty variance becomes
+\begin{equation}
+\sigma_m^2 = \frac{N-1}{N}\,\sum_{i=1}^N [m_i-m]^2 \quad ,
+\end{equation}
+with the obvious modifications to make $\sigma_b^2$ and $\sigma_{mb}$.
+The factor $[N-1]/N$ accounts, magically, for the fact that the
+samples are not independent in any sense; this factor can only be
+justified in the limit that everything is Gaussian and all the points
+are identical in their noise properties.
+
+Jackknife and bootstrap are both extremely useful when you don't know
+or don't trust your uncertainties $\allsigmay$.  However, they
+\emph{do} make assumptions about the problem.  For example, they can
+only be justified when data represent a reasonable sampling from some
+stationary frequency distribution of \emph{possible data} from a set
+of hypothetical, similar experiments.  This assumption is, in some
+ways, very strong, and often violated.\note{Neither jackknife nor
+  bootstrap make sense, in their naive forms if there is a significant
+  dynamic range in the uncertainty variances $\sigma_{yi}^2$ of the
+  data points.  This is because these techniques effectively treat all
+  of the data equally.  Of course, both methods could be adjusted to
+  account for this; bootstrap could be made to randomly select points
+  somehow proportionally to their contribution to the total inverse
+  uncertainty variance (it is the sum of the $\sigma_{yi}^{-2}$ that
+  determines the total amount of information), and jackknife trials
+  could be combined in a weighted way, weighted by the total inverse
+  uncertainty variance.  But these generalizations require significant
+  research; probably the methods should be avoided if there is a large
+  diversity in the $\sigma_{yi}^2$.}  For another example, these
+methods will not give correct answers if the model is very wrong or if
+there are large outliers.  That said, if you \emph{do} believe your
+uncertainty estimates, any differences between the jackknife,
+bootstrap, and traditional uncertainty estimates for the best-fit line
+parameters undermine confidence in the validity of the model.  If you
+believe the model, then any differences between the jackknife,
+bootstrap, and traditional uncertainty estimates undermine confidence
+in the data-point uncertainty variances $\allsigmay$.
+
+\begin{problem}
+Compute the standard uncertainty $\sigma_m^2$ obtained for the slope
+of the line found by the standard fit you did in
+\problemname~\ref{prob:standard}.  Now make jackknife (20 trials) and
+bootstrap estimates for the uncertainty $\sigma_m^2$.  How do the
+uncertainties compare and which seems most reasonable, given the data
+and uncertainties on the data?
+\end{problem}
+
+\begin{problem}\label{prob:reduceerror}
+Re-do \problemname~\ref{prob:mixture}---the mixture-based outlier
+model---but just with the ``inlier'' points 5 through 20 from
+\tablename~\ref{table:data_allerr} on
+page~\pageref{table:data_allerr}.  Then do the same again, but with
+all measurement uncertainties reduced by a factor of 2 (uncertainty
+variances reduced by a factor of 4).  Plot the marginalized posterior
+probability distributions for line parameters $(m,b)$ in both cases.
+Your plots should look like those in
+\figurename~\ref{fig:reduceerror}.  Did these posterior distributions
+get smaller or larger with the reduction in the data-point
+uncertainties?  Compare this with the dependence of the standard
+uncertainty estimate $\inverse{\left[\mAT\,\mCinv\,\mA\right]}$.
+\end{problem}
+
+\begin{figure}[htb]
+\includegraphics[width=0.5\textwidth]{exNew1a.png}
+\includegraphics[width=0.5\textwidth]{exNew2a.png}
+\caption{Solution to \problemname~\ref{prob:reduceerror}.}\label{fig:reduceerror}
+\end{figure}
+
 \section{Non-Gaussian uncertainties}\label{sec:non-Gaussian}
 
 The standard method of \sectionname~\ref{sec:standard} is only
 justified when the measurement uncertainties are Gaussians with known
 variances.  Many noise processes in the real world are \emph{not}
 Gaussian; what to do?  There are three general kinds of methodologies
-for dealing with non-Gaussian errors.  Before we describe them, permit
+for dealing with non-Gaussian uncertainties.  Before we describe them, permit
 an aside on uncertainty and error.
 
-As we noted in \sectionname~\ref{sec:objective}, your
-\emph{uncertainty} is a measure of what you don't know, while an
-\emph{error} is a mistake or incorrect value.  The fact that a
-measurement $y_i$ differs from some kind of ``true'' value $Y_i$ that
-it would have in some kind of ``perfect experiment'' can be for two
-reasons (which are not unrelated): It could be that there is some
-source of \emph{noise} in the experiment that generates offsets for
-each data point $i$ away from its true value.  Or it could be that the
-``measurement'' $y_i$ is actually the outcome of some probabilistic
-inference \emph{itself} and therefore comes with a posterior
-probability distribution.  In either case, there is a finite
-uncertainty, and in both cases it comes somehow from imperfection in
-the experiment, but the way you understand the distribution of the
-uncertainty is different.  In the first case, you have to make a model
-for the noise in the experiment.  In the second, you have to analyze
-some posteriors.  In either case, clearly, the uncertainty can be
-non-Gaussian.
+In \notename~\ref{note:error}, we point out that an \emph{uncertainty} is
+a measure of what you don't know, while an \emph{error} is a mistake
+or incorrect value.  The fact that a measurement $y_i$ differs from
+some kind of ``true'' value $Y_i$ that it would have in some kind of
+``perfect experiment'' can be for two reasons (which are not
+unrelated): It could be that there is some source of \emph{noise} in
+the experiment that generates offsets for each data point $i$ away
+from its true value.  Or it could be that the ``measurement'' $y_i$ is
+actually the outcome of some probabilistic inference \emph{itself} and
+therefore comes with a posterior probability distribution.  In either
+case, there is a finite uncertainty, and in both cases it comes
+somehow from imperfection in the experiment, but the way you
+understand the distribution of the uncertainty is different.  In the
+first case, you have to make a model for the noise in the experiment.
+In the second, you have to analyze some posteriors.  In either case,
+clearly, the uncertainty can be non-Gaussian.
 
 All that said, and even when you \emph{suspect} that the sources of
 noise are not Gaussian, it is still sometimes okay to treat the
@@ -1278,8 +1467,8 @@ make the objective function far from anything justifiable.\note{We
   p(y_i|x_i,\sigma_{yi},m,b) = \frac{1}{2\,s_i}
    \,\exp\left(-\frac{|y_i-m\,x_i-b|}{s_i}\right) \quad ,
   \end{equation}
-  where $s_i$ is an estimate of the mean absolute error, probably
-  correctly set to something like $s_i\approx \sigma_{yi}$.
+  where $s_i$ is an estimate of the mean absolute uncertainty,
+  probably correctly set to something like $s_i\approx \sigma_{yi}$.
   Optimization of the total log likelihood is equivalent to minimizing
   \begin{equation}\label{eq:biexp}
   X = \sum_{i=1}^N \frac{|y_i-f(x_i)|}{s_i} \quad ,
@@ -1349,18 +1538,18 @@ measurement uncertainties.
 
 One very common non-Gaussian situation is one in which the data points
 include upper or lower limits, or the investigator has a value with an
-error bar but knows that the true value can't enter into some region
-(for example, there are many situations in which one knows that all
-the true $Y_i$ must be greater than zero).  In all these
+uncertainty estimate but knows that the true value can't enter into
+some region (for example, there are many situations in which one knows
+that all the true $Y_i$ must be greater than zero).  In all these
 situations---of upper limits or lower limits or otherwise limited
 uncertainties---the best thing to do is to model the uncertainty
 distribution as well as possible, construct the proper justified
-scalar objective function, and carry on.\note{The possibility
-  arises of having data points that are not true measurements but
-  only, for example, upper limits.  In most contexts (in astrophysics,
-  anyway) an ``upper limit'' is caused by one of two things.  Either
-  the investigator has taken the logarithm of a quantity that in fact,
-  for some measurements, went to zero or negative; or else the
+scalar objective function, and carry on.\note{The possibility arises
+  of having data points that are not true measurements but only, for
+  example, upper limits.  In most contexts (in astrophysics, anyway)
+  an ``upper limit'' is caused by one of two things.  Either the
+  investigator has taken the logarithm of a quantity that in fact, for
+  some measurements, went to zero or negative; or else the
   investigator is fitting a model to a binned quantity and in some
   bins there are no objects or data.  In the first case, the best
   advice is not to take the logarithm at all.  Fit a power-law or
@@ -1415,20 +1604,20 @@ large $N$ the rule of thumb is that---when the model is a good fit,
 the uncertainties are Gaussian with known variances, and there are two
 linear parameters ($m$ and $b$ in this case),
 \begin{equation}
-\chi^2 = [N-2] \pm \sqrt{2[N-2]} \quad ,
+\chi^2 = [N-2] \pm \sqrt{2\,[N-2]} \quad ,
 \end{equation}
 where the $\pm$ symbol is used loosely to indicate something close to
-a standard error (something close to a 68-percent confidence
+a standard uncertainty (something close to a 68-percent confidence
 interval).  If you find $\chi^2$ in this ballpark, it is conceivable
-that the model is good.\note{Frequentist model rejection on the
-  basis of unnacceptable $\chi^2$ should not be confused with model
+that the model is good.\note{Frequentist model rejection on the basis
+  of unnacceptable $\chi^2$ should not be confused with model
   \emph{comparison} performed with $\chi^2$.  If $\chi^2$ differs from
-  the number of degrees of freedom ($N-2$ here) by something on the
-  order of the square root of that, the model cannot be rejected on a
-  $\chi^2$ basis.  However, if two equally plausible models differ
-  from one another by a difference $\Delta\chi^2$ substantially larger
-  than unity, the model with the lower $\chi^2$ can be preferred and
-  the higher rejected on that basis, even if the higher still shows an
+  the number of degrees of freedom $[N-2]$ by something on the order
+  of $\sqrt{2\,[N-2]}$, the model cannot be rejected on a $\chi^2$
+  basis.  However, if two equally plausible models differ from one
+  another by a difference $\Delta\chi^2$ substantially larger than
+  unity, the model with the lower $\chi^2$ can be preferred and the
+  higher rejected on that basis, even if the higher still shows an
   acceptable $\chi^2$.  This difference between model rejection and
   model comparison is counterintuitive, but it emerges from the
   difference that in the model comparison case, there are \emph{two}
@@ -1588,7 +1777,7 @@ and the maximum \aposteriori\ straight line.  For extra credit, plot
 two straight lines, one that is maximum \aposteriori\ for the full
 posterior and one that is the same but for the posterior after the
 uncertainty variance $S$ has been marginalized out.  Your result
-should look like $\figurename~\ref{fig:bayeschi2}$.  Also plot two
+should look like \figurename~\ref{fig:bayeschi2}.  Also plot two
 sets of error bars, one that shows the maximum for the full posterior
 and one for the posterior after the line parameters $(m,b)$ have been
 marginalized out.
@@ -1598,184 +1787,6 @@ marginalized out.
 \includegraphics[width=0.5\textwidth]{ex10a.png}
 \includegraphics[width=0.5\textwidth]{ex10b.png}
 \caption{Solution to \problemname~\ref{prob:bayeschi2}.}\label{fig:bayeschi2}
-\end{figure}
-
-\section{Uncertainties in the best-fit parameters}\label{sec:uncertainty}
-
-In the standard linear-algebra method of $\chi^2$ minimization given
-in \sectionname~\ref{sec:standard}, the uncertainties in the best-fit
-parameters $(m,b)$ are given by the two-dimensional output covariance
-matrix
-\begin{equation}
-\left[\begin{array}{cc}
-\sigma_{b}^2 & \sigma_{mb} \\
-\sigma_{mb} & \sigma_{m}^2
-\end{array}\right] = \inverse{\left[\mAT\,\mCinv\,\mA\right]} \quad ,
-\end{equation}
-where the ordering is defined by the ordering in matrix $\mA$.  These
-uncertainties for the model parameters \emph{only} strictly hold under
-three extremely strict conditions, none of which is met in most real
-situations: \textsl{(a)}~The uncertainties in the data points must
-truly be Gaussian, with variances correctly described by the
-$\sigma_{yi}^2$; \textsl{(b)}~there must be no rejection of any data
-or any departure from the exact, standard definition of $\chi^2$ given
-in \equationname~(\ref{eq:chisquared}); and \textsl{(c)}~the
-generative model of the data implied by the method---that is, that the
-data are truly drawn from a negligible-scatter linear relationship and
-subsequently had noise added, where the noise offsets were generated
-by a Gaussian process---must be an accurate description of the data.
-
-These conditions are rarely met in practice.  Often the noise
-estimates are rough (or missing entirely!), the uncertainties are
-known not to be Gaussian, the investigator has applied data rejection
-or equivalent conditioning, and the relationship has intrinsic scatter
-and curvature.\note{If you are sigma clipping or doing anything
-  that looks like standard least-square fitting but with small
-  modifications, it might be tempting to use the standard uncertainty
-  estimate $\inverse{\left[\mAT\,\mCinv\,\mA\right]}$.  But that is
-  definitely wrong, because whatever encouraged you to do the
-  sigma clipping or to make other modifications is probably sufficient
-  reason to disbelieve the standard uncertainty estimate.  In these
-  cases you want either to be measuring the width of your posterior
-  probability distribution function (if you are a Bayesian) or else
-  using an empirical estimate of the uncertainty such as jackknife or
-  bootstrap.
-
-  Bayesians like to be smug here---and have some
-  justification---because the posterior distribution function gives
-  the best fit parameters and the full distribution around that
-  best-fit point in parameter space.  However, the smugness must be
-  tempered by the fact that \emph{within} the context of a single
-  model (such as the generative model described in
-  \sectionname~\ref{sec:objective}), the Bayesian analysis does not
-  return any useful goodness-of-fit information; a bad model can be
-  constrained well by the data but still dead wrong.}  For these
-generic reasons, we much prefer empirical estimates of the uncertainty
-in the best-fit parameters.
-
-In the Bayesian outlier-modeling schemes of
-\sectionname~\ref{sec:outliers}, the output is a
-posterior distribution for the parameters $(m,b)$.  This distribution
-function is closer than the standard estimate
-$\inverse{\left[\mAT\,\mCinv\,\mA\right]}$ to being an
-empirical measurement of the uncertainties of the parameters.  The
-uncertainty variances $(\sigma_m^2,\sigma_b^2)$ and the covariance
-$\sigma_{mb}$ can be computed as second moments of this posterior
-distribution function.  Computing the variances this way does involve
-assumptions, but it is not extremely sensitive to the assumption that
-the model is a good fit to the data; that is, as the model becomes a
-bad fit to the data (for example when the data points are not
-consistent with being drawn from a narrow, straight line), these
-uncertainties change in accordance.  That is in strong contrast to the
-elements of the matrix $\inverse{\left[\mAT\,\mCinv\,\mA\right]}$,
-which don't depend in any way on the quality of fit.
-
-In any non-Bayesian scheme, or when the full posterior has been
-discarded in favor of only the MAP value, there are still empirical
-methods for determining the uncertainties in the best-fit parameters.
-The two most common are \emph{bootstrap} and \emph{jackknife}.  The
-first attempts to empirically create new data sets that are similar to
-your actual data set.  The second measures your differential
-sensitivity to each individual data point.
-
-In bootstrap, you do the unlikely-sounding thing of drawing $N$ data
-points randomly from the $N$ data points you have \emph{with
-  replacement}.  That is, some data points get dropped, and some get
-doubled (or even tripled), but the important thing is that you select
-each of the $N$ that you are going to use in each trial independently
-from the whole set of $N$ you have.  You do this selection of $N$
-points once for each of $M$ bootstrap trials $j$.  For each of the $M$
-trials $j$, you get an estimate---by whatever method you are using
-(linear fitting, fitting with rejection, optimizing some custom
-objection function)---of the parameters $(m_j,b_j)$, where $j$ goes
-from $1$ to $M$.  An estimate of your uncertainty variance on $m$ is
-\begin{equation}
-\sigma_m^2 = \frac{1}{M}\,\sum_{j=1}^M [m_j-m]^2 \quad ,
-\end{equation}
-where $m$ stands in for the best-fit $m$ using all the data.  The
-uncertainty variance on $b$ is the same but with $[b_j-b]^2$ in the
-sum, and the covariance $\sigma_{mb}$ is the same but with
-$[m_j-m]\,[b_j-b]$.   Bootstrap
-creates a new parameter, the number $M$ of trials.  There is a huge
-literature on this, so we won't say anything too specific, but one
-intuition is that once you have $M$ comparable to $N$, there probably
-isn't much else you can learn, unless you got terribly unlucky with
-your random number generator.
-
-In jackknife, you make your measurement $N$ times, each time
-\emph{leaving out} data point $i$.  Again, it doesn't matter what
-method you are using, for each leave-one-out trial $i$ you get an
-estimate $(m_i,b_i)$ found by fitting with all the data \emph{except}
-point $i$.  Then you calculate
-\begin{equation}
-m = \frac{1}{N}\,\sum_{i=1}^N m_i \quad ,
-\end{equation}
-and the uncertainty variance becomes
-\begin{equation}
-\sigma_m^2 = \frac{N-1}{N}\,\sum_{i=1}^N [m_i-m]^2 \quad ,
-\end{equation}
-with the obvious modifications to make $\sigma_b^2$ and $\sigma_{mb}$.
-The factor $[N-1]/N$ accounts, magically, for the fact that the
-samples are not independent in any sense; this factor can only be
-justified in the limit that everything is Gaussian and all the points
-are identical in their error properties.
-
-Jackknife and bootstrap are both extremely useful when you don't know
-or don't trust your uncertainties $\allsigmay$.  However, they
-\emph{do} make assumptions about the problem.  For example, they can
-only be justified when data represent a reasonable sampling from some
-stationary frequency distribution of \emph{possible data} from a set
-of hypothetical, similar experiments.  This assumption is, in some
-ways, very strong, and often violated.\note{Neither jackknife nor
-  bootstrap make sense, in their naive forms if there is a significant
-  dynamic range in the uncertainty variances $\sigma_{yi}^2$ of the
-  data points.  This is because these techniques effectively treat all
-  of the data equally.  Of course, both methods could be adjusted to
-  account for this; bootstrap could be made to randomly select points
-  somehow proportionally to their contribution to the total inverse
-  uncertainty variance (it is the sum of the $\sigma_{yi}^{-2}$ that
-  determines the total amount of information), and jackknife trials
-  could be combined in a weighted way, weighted by the total inverse
-  uncertainty variance.  But these generalizations require significant
-  research; probably the methods should be avoided if there is a large
-  diversity in the $\sigma_{yi}^2$.}  For another example, these
-methods will not give correct answers if the model is very wrong or if
-there are large outliers.  That said, if you \emph{do} believe your
-uncertainty estimates, any differences between the jackknife,
-bootstrap, and traditional uncertainty estimates for the best-fit line
-parameters undermine confidence in the validity of the model.  If you
-believe the model, then any differences between the jackknife,
-bootstrap, and traditional uncertainty estimates undermine confidence
-in the data-point uncertainty variances $\allsigmay$.
-
-\begin{problem}
-Compute the standard uncertainty $\sigma_m^2$ obtained for the slope
-of the line found by the standard fit you did in
-\problemname~\ref{prob:standard}.  Now make jackknife (20 trials) and
-bootstrap estimates for the uncertainty $\sigma_m^2$.  How do the
-uncertainties compare and which seems most reasonable, given the data
-and uncertainties on the data?
-\end{problem}
-
-\begin{problem}\label{prob:reduceerror}
-Re-do \problemname~\ref{prob:mixture}---the mixture-based outlier
-model---but just with the ``inlier'' points 5 through 20 from
-\tablename~\ref{table:data_allerr} on
-page~\pageref{table:data_allerr}.  Then do the same again, but with
-all measurement uncertainties reduced by a factor of 2 (uncertainty
-variances reduced by a factor of 4).  Plot the marginalized posterior
-probability distributions for line parameters $(m,b)$ in both cases.
-Your plots should look like those in
-\figurename~\ref{fig:reduceerror}.  Did these posterior distributions
-get smaller or larger with the reduction in the data-point
-uncertainties?  Compare this with the dependence of the standard
-uncertainty estimate $\inverse{\left[\mAT\,\mCinv\,\mA\right]}$.
-\end{problem}
-
-\begin{figure}[htb]
-\includegraphics[width=0.5\textwidth]{exNew1a.png}
-\includegraphics[width=0.5\textwidth]{exNew2a.png}
-\caption{Solution to \problemname~\ref{prob:reduceerror}.}\label{fig:reduceerror}
 \end{figure}
 
 \section{Arbitrary two-dimensional uncertainties}\label{sec:twod}
@@ -1801,12 +1812,12 @@ These can be put together into a covariance tensor $\mS_i$
 \sigma_{xi}^2 & \sigma_{xyi} \\ \sigma_{xyi} & \sigma_{yi}^2
 \end{array}\right] \quad .
 \end{equation}
-If the errors are Gaussian, or if all that is known about the
+If the uncertainties are Gaussian, or if all that is known about the
 uncertainties is their variances, then the covariance tensor can be
 used in a two-dimensional Gaussian representation of the probability
 of getting measurement $(x_i,y_i)$ when the ``true value'' (the value
 you would have for this data point if it had been observed with
-negligible error) is $(x,y)$:
+negligible noise) is $(x,y)$:
 \begin{equation}
 p(x_i,y_i|\mS_i,x,y) = \frac{1}{2\,\pi\,\sqrt{\det(\mS_i)}}
   \,\exp\left(-\frac{1}{2}\,\transpose{\left[\mZ_i - \mZ\right]}
@@ -1930,7 +1941,7 @@ relationship.\note{This probably means that
   practice.\label{note:orthogonal}}
 
 In the astrophysics literature (see, for example, the Tully--Fisher
-literature), there is a tradition, when there are errors in both
+literature), there is a tradition, when there are uncertainties in both
 directions, of fitting the ``forward'' and ``reverse''
 relations---that is, fitting $y$ as a function of $x$ and then $x$ as
 a function of $y$---and then splitting the difference between the two
@@ -1945,7 +1956,7 @@ systematic uncertainty.  This is unjustified.\note{The difference
   (\notename~\ref{note:isobe}) criticized one of the
   principal papers to promote this kind of hack, and do not need to
   repeat that criticism here.}  Another common method for finding the
-linear relationship in data when there are errors in both directions
+linear relationship in data when there are uncertainties in both directions
 is \emph{principal components analysis}.  The manifold reasons
 \emph{not} to use PCA are beyond the scope of this
 \documentname.\note{Why not use principal components analysis?  In a
@@ -2159,13 +2170,14 @@ limits?
 \paragraph{Acknowlegments:}
 We owe a debt above all to Sam Roweis (Toronto), who taught us to find
 and optimize justified scalar objective functions.  In addition it is
-a pleasure to thank Mike Blanton (NYU), Hans-Walter Rix (MPIA), and
-David Schiminovich (Columbia) for valuable comments and discussions.
-This research was partially supported by NASA (ADP grant NNX08AJ48G),
-NSF (grant AST-0908357), and a Research Fellowship of the Alexander
-von Humboldt Foundation.  This research made use of the Python
-programming language and the open-source Python packages scipy, numpy,
-and matplotlib.
+a pleasure to thank Mike Blanton (NYU), Scott Burles (D. E. Shaw),
+Daniel Foreman-Mackey (Queens), Brandon C. Kelly (Harvard), Iain
+Murray (Edinburgh), Hans-Walter Rix (MPIA), and David Schiminovich
+(Columbia) for valuable comments and discussions.  This research was
+partially supported by NASA (ADP grant NNX08AJ48G), NSF (grant
+AST-0908357), and a Research Fellowship of the Alexander von Humboldt
+Foundation.  This research made use of the Python programming language
+and the open-source Python packages scipy, numpy, and matplotlib.
 
 \begin{thebibliography}{}\markright{References}
 \bibitem[Bovy, Hogg, \& Roweis(2009)]{bovy}
