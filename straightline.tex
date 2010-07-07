@@ -1,6 +1,6 @@
 % to-do
 % -----
-% - Hogg: should we distinguish = \equiv and \leftarrow ?
+% - Hogg: should we distinguish =, \equiv, and \leftarrow ?
 % - Hogg: clearly itemize the standard fitting assumptions?
 % - Bovy: can we release your figure-making code along with the document?
 
@@ -171,19 +171,19 @@ fitting an overly simple model.
 That said, it must be admitted that one of the most effective ways to
 communicate scientific results is with catchy punchlines and compact,
 approximate representations, even when those are unjustified and
-unnecessary.  It can also sometimes be useful for predicting new data,
-given existing data, even in the absence of a physical
-model.\note{When fitting is used for data-driven prediction---that is,
-  using existing data to predict the properties of new data not yet
-  acquired---the conditions for model applicability are weaker.  For
-  example, a line fit by the standard method outlined in
-  \sectionname~\ref{sec:standard} can be, under a range of
-  assumptions, the best linear predictor of new data, even when it is
-  not a good or appropriate model.  A full discussion of this, which
-  involves model selection and clarity about exactly what is being
-  predicted (it is different to predict $y$ given $x$ than to predict
-  $x$ given $y$ or $x$ and $y$ together), is beyond the scope of this
-  \documentname, especially since in astrophysics and other
+unnecessary.  It can also sometimes be useful to fit a simple model to
+predict new data, given existing data, even in the absence of a
+physical justification for the fit.\note{When fitting is used for
+  data-driven prediction---that is, using existing data to predict the
+  properties of new data not yet acquired---the conditions for model
+  applicability are weaker.  For example, a line fit by the standard
+  method outlined in \sectionname~\ref{sec:standard} can be, under a
+  range of assumptions, the best linear predictor of new data, even
+  when it is not a good or appropriate model.  A full discussion of
+  this, which involves model selection and clarity about exactly what
+  is being predicted (it is different to predict $y$ given $x$ than to
+  predict $x$ given $y$ or $x$ and $y$ together), is beyond the scope
+  of this \documentname, especially since in astrophysics and other
   observational sciences it is relatively rare that data prediction is
   the goal of fitting.}  For these reasons---and the reason that in
 rare cases the fit \emph{is} justifiable and essential---the problem
@@ -308,10 +308,10 @@ find the function $f(x)$ of the form
 \begin{equation}\label{eq:fofx}
 f(x) = m\,x + b \quad ,
 \end{equation}
-where $m$ is the slope and $b$ is the intercept, that ``best fits''
-the points.  What is meant by ``best fits'' is, of course, very
-important, and in what follows we will have more to say about
-that. For now, we describe standard practice:
+where $m$ is the slope and $b$ is the intercept, that \emph{best fits}
+the points.  What is meant by the term ``best fit'' is, of course,
+very important; we are making a choice here to which we will return.
+For now, we describe standard practice:
 
 Construct the matrices
 \begin{align}\label{eq:mY}
@@ -346,26 +346,27 @@ of a column vector $\mX$ found by
 \end{equation}
 This is actually the simplest thing that can be written down that is
 linear, obeys matrix multiplication rules, and has the right relative
-sensitivity to data of different statistical significance.\note{Even
-  when the conditions of standard practice are met, it is \emph{still}
-  often done wrong!  It is not unusual to see the individual
-  data-point uncertainty estimates ignored, even when they are known
-  at least approximately.  It is also common for the problem to get
-  ``transposed'' such that the coordinates for which uncertainties s
-  are negligible are put into the $\mY$ vector and the coordinates for
-  which uncertainties are \emph{not} negligible are put into the $\mA$
-  matrix.  In this latter case, the procedure makes no sense at all
-  really; it happens when the investigator thinks of some quantity
-  ``really being'' the dependent variable, despite the fact that it
-  has the smaller uncertainty.  For example there are mistakes in the
-  Hubble expansion literature, because many have an intuition that the
-  ``velocity depends on the distance'' when in fact velocities are
-  measured better, so from the point of view of fitting, it is better
-  to think of the distance depending on the velocity.  In the context
-  of fitting, there is no meaning to the (ill-chosen) terms
-  ``independent variable'' and ``dependent variable'' beyond the
-  uncertainty or noise properties of the data.  This is the
-  independent variable fallacy mentioned in
+sensitivity to data of different statistical significance.  It is not
+just the simplest thing; it is the correct thing, when the assumptions
+hold.\note{Even in situations in which linear fitting is appropriate,
+  it is \emph{still} often done wrong!  It is not unusual to see the
+  individual data-point uncertainty estimates ignored, even when they
+  are known at least approximately.  It is also common for the problem
+  to get ``transposed'' such that the coordinates for which
+  uncertainties s are negligible are put into the $\mY$ vector and the
+  coordinates for which uncertainties are \emph{not} negligible are
+  put into the $\mA$ matrix.  In this latter case, the procedure makes
+  no sense at all really; it happens when the investigator thinks of
+  some quantity ``really being'' the dependent variable, despite the
+  fact that it has the smaller uncertainty.  For example there are
+  mistakes in the Hubble expansion literature, because many have an
+  intuition that the ``velocity depends on the distance'' when in fact
+  velocities are measured better, so from the point of view of
+  fitting, it is better to think of the distance depending on the
+  velocity.  In the context of fitting, there is no meaning to the
+  (ill-chosen) terms ``independent variable'' and ``dependent
+  variable'' beyond the uncertainty or noise properties of the data.
+  This is the independent variable fallacy mentioned in
   \notename~\ref{note:fallacy}.  In performing this standard fit, the
   investigator is effectively assuming that the $x$ values have
   negligible uncertainties; if they do \emph{not}, then the
@@ -421,8 +422,7 @@ distance in the data space.\note{The inverse covariance matrix
   make more realistic) this problem, linearity and convexity will
   \emph{both} be broken; some thought will have to be put into the
   optimization.}  This, of course, is only one possible meaning of the
-phrase ``best fit''; that issue is the main subject of the rest of
-this \documentname.
+phrase ``best fit''; that issue is addressed more below.
 
 When the uncertainties are Gaussian and their variances $\sigma_{yi}$
 are correctly estimated, the matrix
