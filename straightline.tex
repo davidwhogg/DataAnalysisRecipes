@@ -1,7 +1,5 @@
 % to-do
 % -----
-% - Hogg: Kelly email of 2010-05-16
-% - Hogg: Murray email of 2010-05-19
 % - Hogg: should we distinguish = \equiv and \leftarrow ?
 % - Hogg: clearly itemize the standard fitting assumptions?
 % - Bovy: can we release your figure-making code along with the document?
@@ -106,7 +104,7 @@
 \section*{Data analysis recipes:\ \\
   Fitting a straight line to data\note{%
     Copyright 2010 by the authors.
-    \textbf{This is a DRAFT version dated 2010-07-03.
+    \textbf{This is a DRAFT version dated 2010-07-07.
     Please do not distribute this document.}}}
 %    You may copy and distribute this document
 %    provided that you make no changes to it whatsoever.}}
@@ -1251,29 +1249,29 @@ where the ordering is defined by the ordering in matrix $\mA$.  These
 uncertainties for the model parameters \emph{only} strictly hold under
 three extremely strict conditions, none of which is met in most real
 situations: \textsl{(a)}~The uncertainties in the data points must
-truly be Gaussian, with variances correctly described by the
-$\sigma_{yi}^2$; \textsl{(b)}~there must be no rejection of any data
-or any departure from the exact, standard definition of $\chi^2$ given
-in \equationname~(\ref{eq:chisquared}); and \textsl{(c)}~the
-generative model of the data implied by the method---that is, that the
-data are truly drawn from a negligible-scatter linear relationship and
+have variances correctly described by the $\sigma_{yi}^2$;
+\textsl{(b)}~there must be no rejection of any data or any departure
+from the exact, standard definition of $\chi^2$ given in
+\equationname~(\ref{eq:chisquared}); and \textsl{(c)}~the generative
+model of the data implied by the method---that is, that the data are
+truly drawn from a negligible-scatter linear relationship and
 subsequently had noise added, where the noise offsets were generated
 by a Gaussian process---must be an accurate description of the data.
 
 These conditions are rarely met in practice.  Often the noise
-estimates are rough (or missing entirely!), the uncertainties are
-known not to be Gaussian, the investigator has applied data rejection
-or equivalent conditioning, and the relationship has intrinsic scatter
-and curvature.\note{If you are sigma clipping or doing anything
-  that looks like standard least-square fitting but with small
-  modifications, it might be tempting to use the standard uncertainty
-  estimate $\inverse{\left[\mAT\,\mCinv\,\mA\right]}$.  But that is
-  definitely wrong, because whatever encouraged you to do the
-  sigma clipping or to make other modifications is probably sufficient
-  reason to disbelieve the standard uncertainty estimate.  In these
-  cases you want either to be measuring the width of your posterior
-  probability distribution function (if you are a Bayesian) or else
-  using an empirical estimate of the uncertainty such as jackknife or
+estimates are rough (or missing entirely!), the investigator has
+applied data rejection or equivalent conditioning, and the
+relationship has intrinsic scatter and curvature.\note{If you are
+  sigma clipping or doing anything that looks like standard
+  least-square fitting but with small modifications, it might be
+  tempting to use the standard uncertainty estimate
+  $\inverse{\left[\mAT\,\mCinv\,\mA\right]}$.  But that is definitely
+  wrong, because whatever encouraged you to do the sigma clipping or
+  to make other modifications is probably sufficient reason to
+  disbelieve the standard uncertainty estimate.  In these cases you
+  want either to be measuring the width of your posterior probability
+  distribution function (if you are a Bayesian) or else using an
+  empirical estimate of the uncertainty such as jackknife or
   bootstrap.
 
   Bayesians like to be smug here---and have some
@@ -1674,17 +1672,17 @@ option.  A Bayesian can't interpret the data without a model, so there
 is no meaning to the question ``is this model good?''.  Bayesians only
 answer questions of the form ``is this model better than that one?''.
 Because we are only considering the straight-line model in this
-\documentname, further discussion of this point goes beyond our
-scope.\note{Technically, Bayesians cannot reject a model outright
-  on the basis of bad $\chi^2$ alone; Bayesians can only
-  \emph{compare} comparable models.  A Bayesian will only consider the
-  absolute value of $\chi^2$ to provide hints about what might be
-  going wrong.  Part of the reason for this is that a Bayesian
-  analysis returns a probability distribution over mutually exclusive
-  hypotheses.  This distribution or this set of probabilities
-  integrates or sums to unity.  If only one model (``the data are
-  drawn from a straight line, plus noise'') is considered, the
-  probabilities for the parameters of that model will integrate to
+\documentname, further discussion of this (controversial, it turns
+out) point goes beyond our scope.\note{Technically, Bayesians cannot
+  reject a model outright on the basis of bad $\chi^2$ alone;
+  Bayesians can only \emph{compare} comparable models.  A Bayesian
+  will only consider the absolute value of $\chi^2$ to provide hints
+  about what might be going wrong.  Part of the reason for this is
+  that a Bayesian analysis returns a probability distribution over
+  mutually exclusive hypotheses.  This distribution or this set of
+  probabilities integrates or sums to unity.  If only one model (``the
+  data are drawn from a straight line, plus noise'') is considered,
+  the probabilities for the parameters of that model will integrate to
   unity and the model cannot be disfavored in any sense.  Of course,
   any time an investigator considers only one model, he or she is
   almost certainly making a mistake, and any conservative Bayesian
@@ -1696,18 +1694,30 @@ scope.\note{Technically, Bayesians cannot reject a model outright
   probabilities.  Model rejection and hypothesis comparison are large
   topics that go beyond the scope of this \documentname.
 
+  Many Bayesians argue that they \emph{can} reject models without
+  alternatives, by, for example, comparing likelihood (or Bayes
+  factor---the likelihood integrated over the prior) under the data
+  and under artificial data generated with the same model (with
+  parameters drawn from the prior).  This is true, and it is a good
+  idea for any Bayesian to perform this test, but there is still no
+  correct proababilistic statement that can be made about model
+  rejection in the single-model situation (you can't reject your only
+  model).
+
   In general, the investigator's decision-making about what models to
-  consider and test have an enormous impact on her or his scientific
-  conclusions.  At the beginning of an investigation, this problem
-  lies in the setting of priors.  An investigator who considers
-  \emph{only} a straight-line model for her or his points is
-  effectively setting insanely informative priors---the prior
-  probability of every alternative model is precisely zero!.  At the
-  end of an investigation, this problem---what models to report or
-  treat as confirmed---lies in the area of \emph{decision theory},
-  another topic beyond the scope of this \documentname.  But even in a
-  context as limited as straight-line fitting, it is worth remembering
-  that, as scientists, we are not just inferring things, we are making
+  consider (which will be informed by tests like comparisons between
+  likelihoods and fake-data likelihoods) have an enormous impact on
+  her or his scientific conclusions.  At the beginning of an
+  investigation, this problem lies in the setting of priors.  An
+  investigator who considers \emph{only} a straight-line model for her
+  or his points is effectively setting insanely informative
+  priors---the prior probability of every alternative model is
+  precisely zero!.  At the end of an investigation, this
+  problem---what models to report or treat as confirmed---lies in the
+  area of \emph{decision theory}, another topic beyond the scope of
+  this \documentname.  But even in a context as limited as
+  straight-line fitting, it is worth remembering that, as scientists,
+  we are not just inferring things, we are making
   \emph{decisions}---about what is right and wrong, about what to
   investigate, about what to report, and about what to advocate---and
   these decisions are only indirectly related to the inferences we
@@ -2110,29 +2120,21 @@ narrow.  This gets into the complicated area of estimating density
 given finite and noisy samples; again this is a huge subject so we
 will only consider one simple solution.  We will not consider anything
 that looks like subtraction of variances in quadrature; that is pure
-procedure and almost never justifiable.\note{The standard method
-  for estimating the width of a linear relationship is to compare the
+procedure and almost never justifiable.\note{The standard method for
+  estimating the width of a linear relationship is to compare the
   scatter of the data points to the scatter expected if the
   relationship is narrow.  The estimated intrinsic scatter can be
-  found in this case by a procedure of subtracting in quadrature
+  ``found'' in this case by a procedure of subtracting in quadrature
   (intrinsic variance is observed variance minus expected variance
-  given observational uncertainties), which is not a good idea in
-  general.  For example, it doesn't work if the data points have a
+  given observational uncertainties).  This is not a good idea in
+  general.  It doesn't work at all if the data points have a
   significant dynamic range in their measurement uncertainties, it can
   produce an estimate of the intrinsic scatter variance that is
   negative, and it returns no confidence interval or uncertainty.  In
   the case of negligible $x$-direction uncertainties, a better method
-  is to add a variance $V_y$ to every data-point uncertainty variance
-  $\sigma_{yi}^2$, and then vary $V_y$ until $\chi^2$ becomes close to
-  its expected value of $[N-2]$ (or perhaps $[N-3]$ since we have
-  added another parameter).  In performing this test, one performs the
-  standard linear least-squares fitting of
-  \sectionname~\ref{sec:standard} at each value of $V$.  This method
-  does return an estimate of the intrinsic scatter in the
-  $y$-direction, but it can also return a negative value for the
-  intrinsic scatter variance, and it doesn't return an uncertainty
-  either (though one can be approximated using the expectation for
-  $\chi^2$).}
+  is to add a parameter $V_y$ which is a variance to be added in
+  quadrature to every data-point uncertainty variance; this is what we
+  advocate in the main text.}
 
 Introduce an intrinsic Gaussian variance $V$, orthogonal to the line.
 In this case, the parameters of the relationship become
