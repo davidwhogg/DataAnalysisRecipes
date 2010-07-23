@@ -1,17 +1,6 @@
 \documentclass[12pt,twoside]{article}
-\usepackage{amssymb,amsmath,mathrsfs,deluxetable}
-\usepackage{natbib}
-\usepackage{float,graphicx}
-% hypertex insanity
-\usepackage{color,hyperref}
-\definecolor{linkcolor}{rgb}{0,0,0.25}
-\hypersetup{
-  colorlinks=true,        % false: boxed links; true: colored links
-  linkcolor=linkcolor,    % color of internal links
-  citecolor=linkcolor,    % color of links to bibliography
-  filecolor=linkcolor,    % color of file links
-  urlcolor=linkcolor      % color of external links
-}
+\usepackage{amssymb,amsmath,mathrsfs,natbib}
+
 %%Figure caption
 \makeatletter
 \newsavebox{\tempbox}
@@ -122,7 +111,20 @@ Dustin~Lang\\
   that best predicts left-out data.
 \end{abstract}
 
-\section{Introduction}
+\section{Model complexity every day}
+
+A scientist makes model complexity decisions---implicitly or
+explicitly---every day.  For example, on a trivial scale, any decision
+about binning a histogram (small bins or big bins) or fitting a curve
+(linear or quadratic) or combining data (average all the data taken on
+the same day or all the data taken in the same year) is a decision
+about model complexity, as it is a decision about how much freedom to
+give to some free function.
+
+At a grander scale, many important scientific discoveries are model
+complexity decisions.  For example...
+
+\section{The standard lore}
 
 The concept of model complexity is somewhat slippery.  In the case of
 a purely linear model, the model complexity is directly related to the
@@ -286,5 +288,11 @@ like this
 \end{equation}
 in the case of $K=6$ parameters and generalizes in the obvious way for
 different $K$.
+
+\section{Standard decision criteria}
+
+\section{Cross-validation}
+
+\section{No need to decide?}
 
 \end{document}
