@@ -194,7 +194,7 @@ def main_stiffline():
 		clf()
 		plot_yerr(x, y, sigmay)
 		for a,nil in loo:
-			plot_stiffline(xa, a)
+			plot_stiffline(xa, a, **{'alpha':0.25})
 		xlim(*xlimits)
 		ylim(*ylimits)
 		title('$K = %i$ ; $\log_2(\epsilon) =  %i$' % (len(xa), log2eps));
@@ -257,7 +257,7 @@ def main_poly():
 			clf()
 			plot_yerr(x, y, sigmay*efrac)
 			for a,nil in loo:
-				plot_poly(a)
+				plot_poly(a, **{'alpha':0.25})
 			xlim(*xlimits)
 			ylim(*ylimits)
 			title('order %i ; $K=%i$' % (order, order+1))
