@@ -10,6 +10,11 @@
 #   - gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=foo.pdf poly-fits*.pdf
 
 from numpy import *
+# this rc block must be before the matplotlib import?
+from matplotlib import rc
+rc('font',**{'family':'serif','serif':'Computer Modern Roman','size':18})
+rc('text', usetex=True)
+# now import matplotlib
 import matplotlib
 matplotlib.use('Agg')
 from pylab import *
@@ -222,6 +227,7 @@ def main_poly():
 		plot_yerr(x, y, sigmay*efrac)
 		xlim(*xlimits)
 		ylim(*ylimits)
+		title(cvtit)
 		savefig(prefix + 'data' + plot_format)
 		clf()
 		plot_yerr(x, y, sigmay*efrac)
@@ -277,7 +283,7 @@ def main_poly():
 		xlim(-1, 15)
 		axvline(trueorder, color='k', alpha=0.5, lw=2.)
 		xlabel('polynomial order')
-		ylabel('$\\chi^2$')
+		ylabel(r'$\chi^2$')
 		title(cvtit)
 		savefig(prefix + 'chi2' + plot_format)
 
@@ -289,7 +295,7 @@ def main_poly():
 		xlim(-1, 15)
 		axvline(trueorder, color='k', alpha=0.5, lw=2.)
 		xlabel('polynomial order')
-		ylabel('AIC $\\chi^2+2\\,K$')
+		ylabel(r'AIC:~~$\chi^2+2\,K$')
 		title(cvtit)
 		savefig(prefix + 'aic' + plot_format)
 
@@ -301,7 +307,7 @@ def main_poly():
 		xlim(-1, 15)
 		axvline(trueorder, color='k', alpha=0.5, lw=2.)
 		xlabel('polynomial order')
-		ylabel('BIC $\\chi^2+K\\,\\ln(N)$')
+		ylabel(r'BIC:~~$\chi^2+K\,\ln(N)$')
 		title(cvtit)
 		savefig(prefix + 'bic' + plot_format)
 
@@ -321,5 +327,5 @@ if __name__ == '__main__':
 	main_black()
 	main_poly()
 	main_stiffline()
-	cmdstr = gscmd + 'black.pdf crossvalidate.pdf poly-order.pdf poly-.pdf poly-fits-*.pdf poly-crossval.pdf poly-data.pdf poly-wrong-.pdf black.pdf stiffline-.pdf black.pdf'
+	cmdstr = gscmd + 'crossvalidate.pdf black.pdf poly-order.pdf poly-.pdf poly-truth.pdf poly-fits-*.pdf poly-crossval.pdf poly-data.pdf poly-wrong-.pdf black.pdf stiffline-.pdf black.pdf'
 	print os.system(cmdstr)
