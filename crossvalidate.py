@@ -71,6 +71,34 @@ def plot_poly(a, **kwargs):
 	p = plot(x, y, 'k-', **kwargs)
 	return p
 
+def poly_chi2(x, y, sigmay, a):
+	return sum(((y - polynomial(x, a)) / sigmay)**2)
+
+# Weighted least squares method.  Returns best-fit "a"
+def poly_wls(x, y, sigmay, order):
+	N = len(x)
+	Cinv = diag(1./sigmay**2)
+	X = zeros((N,order+1))
+	for i in range(order+1):
+		X[:,i] = x**i
+	XTCinvX = dot(dot(X.T, Cinv), X)
+	XTCinvy = dot(dot(X.T, Cinv), y)
+	beta = dot(inv(XTCinvX), XTCinvy)
+	print 'beta', beta
+	return beta
+
+def ln_loo_stiffline(x, y, sigmay, xa, epsilon, iout):
+	I = (arange(len(x)) != iout)
+	a = stiffline_wls(x[I], y[I], sigmay[I], xa, epsilon)
+	yiout = stiffline(array([x[iout]]), xa, a)
+	return (a, ln_gaussian_1d(y[iout], yiout, sigmay[iout]**2))
+
+def ln_loo_poly(x, y, sigmay, order, iout):
+	I = (arange(len(x)) != iout)
+	a = poly_wls(x[I], y[I], sigmay[I], order)
+	yiout = polynomial(x[iout], a)
+	return (a, ln_gaussian_1d(y[iout], yiout, sigmay[iout]**2))
+
 def plot_stiffline(xa, a, **kwargs):
 	if not 'alpha' in kwargs:
 		kwargs['alpha'] = 0.5
@@ -130,31 +158,6 @@ def stiffline_wls(x, y, sigmay, xa, epsilon):
 	print '  chi2', chi2
 	print '  dchi2', dchi2
 	return a
-
-# Weighted least squares method.  Returns best-fit "a"
-def poly_wls(x, y, sigmay, order):
-	N = len(x)
-	Cinv = diag(1./sigmay**2)
-	X = zeros((N,order+1))
-	for i in range(order+1):
-		X[:,i] = x**i
-	XTCinvX = dot(dot(X.T, Cinv), X)
-	XTCinvy = dot(dot(X.T, Cinv), y)
-	beta = dot(inv(XTCinvX), XTCinvy)
-	print 'beta', beta
-	return beta
-
-def ln_loo_stiffline(x, y, sigmay, xa, epsilon, iout):
-	I = (arange(len(x)) != iout)
-	a = stiffline_wls(x[I], y[I], sigmay[I], xa, epsilon)
-	yiout = stiffline(array([x[iout]]), xa, a)
-	return (a, ln_gaussian_1d(y[iout], yiout, sigmay[iout]**2))
-
-def ln_loo_poly(x, y, sigmay, order, iout):
-	I = (arange(len(x)) != iout)
-	a = poly_wls(x[I], y[I], sigmay[I], order)
-	yiout = polynomial(x[iout], a)
-	return (a, ln_gaussian_1d(y[iout], yiout, sigmay[iout]**2))
 
 def main_black():
 	print 'making black page, you tool'
@@ -229,14 +232,17 @@ def main_poly():
 		savefig(prefix + 'truth' + plot_format)
 
 		maxorder = 16
+		chi2 = zeros(maxorder)
 		ln_crossval_like = zeros(maxorder)
 		for order in range(maxorder):
 			clf()
 			plot_yerr(x, y, sigmay/efrac)
-			plot_poly(poly_wls(x, y, sigmay/efrac, order))
+			a = poly_wls(x, y, sigmay/efrac, order)
+			plot_poly(a)
+			chi2[order] = poly_chi2(x, y, sigmay/efrac, a)
 			xlim(*xlimits)
 			ylim(*ylimits)
-			title('order %i' % order)
+			title('order %i ; $K=%i$' % (order, order+1))
 			savefig(prefix + 'order-%02i' % order + plot_format)
 
 			loo = [ln_loo_poly(x, y, sigmay/efrac, order, iout) for iout in range(len(x))]
@@ -248,7 +254,7 @@ def main_poly():
 				plot_poly(a)
 			xlim(*xlimits)
 			ylim(*ylimits)
-			title('order %i' % order)
+			title('order %i ; $K=%i$' % (order, order+1))
 			savefig(prefix + 'fits-%02i' % order + plot_format)
 
 		clf()
@@ -263,6 +269,29 @@ def main_poly():
 		ylabel('cross-validation log-likelihood')
 		title(cvtit)
 		savefig(prefix + 'crossval' + plot_format)
+
+		clf()
+		mx = min(chi2)
+		plot(chi2, 'ko-')
+		ylim(mx-2, mx+20)
+		xlim(-1, 15)
+		axvline(trueorder, color='k', alpha=0.5, lw=2.)
+		xlabel('polynomial order')
+		ylabel('$\\xi^2$')
+		title(cvtit)
+		savefig(prefix + 'chi2' + plot_format)
+
+		clf()
+		aic = chi2 + 2.0*(arange(maxorder)+1.0)
+		mx = min(aic)
+		plot(aic, 'ko-')
+		ylim(mx-2, mx+20)
+		xlim(-1, 15)
+		axvline(trueorder, color='k', alpha=0.5, lw=2.)
+		xlabel('polynomial order')
+		ylabel('AIC $\\xi^2+2\\,K$')
+		title(cvtit)
+		savefig(prefix + 'aic' + plot_format)
 
 		cmdstr = gscmd + '%sorder.pdf %sorder-*.pdf' % (prefix, prefix)
 		print os.system(cmdstr)
