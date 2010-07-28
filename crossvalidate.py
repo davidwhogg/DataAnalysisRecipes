@@ -32,7 +32,7 @@ def polynomial(x, a):
 	return y
 
 data_y = polynomial(data_x, true_a_val)
-data_sigmay = random.uniform(low=0.1, high=0.5, size=data_y.shape)
+data_sigmay = random.uniform(low=0.1, high=0.2, size=data_y.shape)
 data_y += random.normal(size=data_y.shape) * data_sigmay
 xlimits = [min(data_x-0.1),max(data_x+0.1)]
 ylimits = [min(data_y-data_sigmay-0.2),max(data_y+data_sigmay+0.2)]
@@ -217,14 +217,14 @@ def main_stiffline():
 def main_poly():
 	(x, y, sigmay) = get_data_no_outliers()
 
-	for efrac,prefix,cvtit in [(1,'poly-',''), (3,'poly-three-', '1/3 error bars')]:
+	for efrac,prefix,cvtit in [(1,'poly-',''), (0.6,'poly-wrong-', 'errors underestimated by 40 percent')]:
 		clf()
-		plot_yerr(x, y, sigmay/efrac)
+		plot_yerr(x, y, sigmay*efrac)
 		xlim(*xlimits)
 		ylim(*ylimits)
 		savefig(prefix + 'data' + plot_format)
 		clf()
-		plot_yerr(x, y, sigmay/efrac)
+		plot_yerr(x, y, sigmay*efrac)
 		plot_poly(true_a())
 		xlim(*xlimits)
 		ylim(*ylimits)
@@ -236,20 +236,20 @@ def main_poly():
 		ln_crossval_like = zeros(maxorder)
 		for order in range(maxorder):
 			clf()
-			plot_yerr(x, y, sigmay/efrac)
-			a = poly_wls(x, y, sigmay/efrac, order)
+			plot_yerr(x, y, sigmay*efrac)
+			a = poly_wls(x, y, sigmay*efrac, order)
 			plot_poly(a)
-			chi2[order] = poly_chi2(x, y, sigmay/efrac, a)
+			chi2[order] = poly_chi2(x, y, sigmay*efrac, a)
 			xlim(*xlimits)
 			ylim(*ylimits)
 			title('order %i ; $K=%i$' % (order, order+1))
 			savefig(prefix + 'order-%02i' % order + plot_format)
 
-			loo = [ln_loo_poly(x, y, sigmay/efrac, order, iout) for iout in range(len(x))]
+			loo = [ln_loo_poly(x, y, sigmay*efrac, order, iout) for iout in range(len(x))]
 			ln_crossval_like[order] = sum([lnlike for (a,lnlike) in loo])
 
 			clf()
-			plot_yerr(x, y, sigmay/efrac)
+			plot_yerr(x, y, sigmay*efrac)
 			for a,nil in loo:
 				plot_poly(a)
 			xlim(*xlimits)
@@ -261,8 +261,8 @@ def main_poly():
 		mx = max(ln_crossval_like)
 		I = argsort(-ln_crossval_like)
 		print ln_crossval_like[I]
-		plot(maximum(mx-1000*efrac**2, ln_crossval_like), 'ko-')
-		ylim(mx-20*efrac**2, mx+2*efrac**2)
+		plot(maximum(mx-1000, ln_crossval_like), 'ko-')
+		ylim(mx-20, mx+2)
 		xlim(-1, 15)
 		axvline(trueorder, color='k', alpha=0.5, lw=2.)
 		xlabel('polynomial order')
@@ -293,11 +293,23 @@ def main_poly():
 		title(cvtit)
 		savefig(prefix + 'aic' + plot_format)
 
+		clf()
+		bic = chi2 + log(len(x))*(arange(maxorder)+1.0)
+		mx = min(bic)
+		plot(bic, 'ko-')
+		ylim(mx-2, mx+20)
+		xlim(-1, 15)
+		axvline(trueorder, color='k', alpha=0.5, lw=2.)
+		xlabel('polynomial order')
+		ylabel('BIC $\\xi^2+K\\,\\ln(N)$')
+		title(cvtit)
+		savefig(prefix + 'bic' + plot_format)
+
 		cmdstr = gscmd + '%sorder.pdf %sorder-*.pdf' % (prefix, prefix)
 		print os.system(cmdstr)
 		cmdstr = gscmd + '%sfits.pdf %sfits-*.pdf' % (prefix, prefix)
 		print os.system(cmdstr)
-		cmdstr = gscmd + '%s.pdf black.pdf %sdata.pdf %struth.pdf %sorder.pdf %sfits.pdf %scrossval.pdf' % (prefix, prefix, prefix, prefix, prefix, prefix)
+		cmdstr = gscmd + '%s.pdf black.pdf %sdata.pdf %struth.pdf %sorder.pdf %schi2.pdf %saic.pdf %sbic.pdf %scrossval.pdf' % (prefix, prefix, prefix, prefix, prefix, prefix, prefix, prefix)
 		print os.system(cmdstr)
 	return
 
@@ -309,5 +321,5 @@ if __name__ == '__main__':
 	main_black()
 	main_poly()
 	main_stiffline()
-	cmdstr = gscmd + 'crossvalidate.pdf poly-.pdf poly-three-.pdf stiffline-.pdf black.pdf'
+	cmdstr = gscmd + 'crossvalidate.pdf poly-.pdf poly-fits-*.pdf poly-crossval.pdf poly-wrong-.pdf stiffline-.pdf black.pdf'
 	print os.system(cmdstr)
