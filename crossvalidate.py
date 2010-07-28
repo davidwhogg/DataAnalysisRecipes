@@ -32,7 +32,7 @@ def polynomial(x, a):
 	return y
 
 data_y = polynomial(data_x, true_a_val)
-data_sigmay = random.uniform(low=0.1, high=0.2, size=data_y.shape)
+data_sigmay = random.uniform(low=0.1, high=0.4, size=data_y.shape)
 data_y += random.normal(size=data_y.shape) * data_sigmay
 xlimits = [min(data_x-0.1),max(data_x+0.1)]
 ylimits = [min(data_y-data_sigmay-0.2),max(data_y+data_sigmay+0.2)]
@@ -271,13 +271,13 @@ def main_poly():
 		savefig(prefix + 'crossval' + plot_format)
 
 		clf()
-		mx = min(chi2)
+		mx = chi2[trueorder]
 		plot(chi2, 'ko-')
-		ylim(mx-2, mx+20)
+		ylim(mx-10, mx+10)
 		xlim(-1, 15)
 		axvline(trueorder, color='k', alpha=0.5, lw=2.)
 		xlabel('polynomial order')
-		ylabel('$\\xi^2$')
+		ylabel('$\\chi^2$')
 		title(cvtit)
 		savefig(prefix + 'chi2' + plot_format)
 
@@ -289,7 +289,7 @@ def main_poly():
 		xlim(-1, 15)
 		axvline(trueorder, color='k', alpha=0.5, lw=2.)
 		xlabel('polynomial order')
-		ylabel('AIC $\\xi^2+2\\,K$')
+		ylabel('AIC $\\chi^2+2\\,K$')
 		title(cvtit)
 		savefig(prefix + 'aic' + plot_format)
 
@@ -301,7 +301,7 @@ def main_poly():
 		xlim(-1, 15)
 		axvline(trueorder, color='k', alpha=0.5, lw=2.)
 		xlabel('polynomial order')
-		ylabel('BIC $\\xi^2+K\\,\\ln(N)$')
+		ylabel('BIC $\\chi^2+K\\,\\ln(N)$')
 		title(cvtit)
 		savefig(prefix + 'bic' + plot_format)
 
