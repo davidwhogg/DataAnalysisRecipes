@@ -196,7 +196,7 @@ def ln_loo_stiffline(x, y, sigmay, xa, epsilon, iout, a=None):
 	I = (arange(len(x)) != iout)
 	a = stiffline_wls(x[I], y[I], sigmay[I], xa, epsilon, a=a)
 	yiout = stiffline(array([x[iout]]), xa, a)
-	return (a, ln_gaussian_1d(y[iout], yiout, sigmay[iout]**2))
+	return (a.copy(), ln_gaussian_1d(y[iout], yiout, sigmay[iout]**2))
 
 def plot_stiffline(xa, a, **kwargs):
 	if not 'alpha' in kwargs:
@@ -229,6 +229,7 @@ def stiffline_chi2(x, y, sigmay, xa, a, epsilon):
 	return chi2
 
 # stupid-ass iterative WLS algo; returns best-fit "a"
+# this is NOT CORRECT though it doesn't do badly
 def stiffline_wls(x, y, sigmay, xa, epsilon, a=None):
 	d = 1
 	maxiter = 10000
