@@ -210,7 +210,7 @@ def main_stiffline():
 	print os.system(cmdstr)
 	cmdstr = gscmd + '%sfits.pdf %sfits-*.pdf' % (prefix, prefix)
 	print os.system(cmdstr)
-	cmdstr = gscmd + '%s.pdf black.pdf poly-data.pdf poly-truth.pdf %slog2eps.pdf %sfits.pdf %scrossval.pdf' % (prefix, prefix, prefix, prefix)
+	cmdstr = gscmd + '%s.pdf poly-data.pdf poly-truth.pdf %slog2eps.pdf %scrossval.pdf' % (prefix, prefix, prefix)
 	print os.system(cmdstr)
 	return
 
@@ -309,7 +309,7 @@ def main_poly():
 		print os.system(cmdstr)
 		cmdstr = gscmd + '%sfits.pdf %sfits-*.pdf' % (prefix, prefix)
 		print os.system(cmdstr)
-		cmdstr = gscmd + '%s.pdf black.pdf %sdata.pdf %struth.pdf %sorder.pdf %schi2.pdf %saic.pdf %sbic.pdf %scrossval.pdf' % (prefix, prefix, prefix, prefix, prefix, prefix, prefix, prefix)
+		cmdstr = gscmd + '%s.pdf %sdata.pdf %schi2.pdf %saic.pdf %sbic.pdf %scrossval.pdf' % (prefix, prefix, prefix, prefix, prefix, prefix)
 		print os.system(cmdstr)
 	return
 
@@ -321,5 +321,5 @@ if __name__ == '__main__':
 	main_black()
 	main_poly()
 	main_stiffline()
-	cmdstr = gscmd + 'crossvalidate.pdf poly-.pdf poly-fits-*.pdf poly-crossval.pdf poly-wrong-.pdf stiffline-.pdf black.pdf'
+	cmdstr = gscmd + 'black.pdf crossvalidate.pdf poly-order.pdf poly-.pdf poly-fits-*.pdf poly-crossval.pdf poly-data.pdf poly-wrong-.pdf black.pdf stiffline-.pdf black.pdf'
 	print os.system(cmdstr)
