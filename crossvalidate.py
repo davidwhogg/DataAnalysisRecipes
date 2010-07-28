@@ -323,5 +323,5 @@ if __name__ == '__main__':
 	main_black()
 	main_poly()
 	main_stiffline()
-	cmdstr = gscmd + 'crossvalidate.pdf black.pdf poly-order.pdf poly-.pdf poly-truth.pdf poly-fits-*.pdf poly-crossval.pdf poly-data.pdf poly-wrong-.pdf black.pdf stiffline-.pdf black.pdf'
+	cmdstr = gscmd + 'crossvalidate.pdf black.pdf poly-order.pdf poly-.pdf poly-truth.pdf poly-fits-*.pdf poly-crossval.pdf black.pdf poly-data.pdf poly-wrong-.pdf black.pdf stiffline-.pdf black.pdf'
 	print os.system(cmdstr)
