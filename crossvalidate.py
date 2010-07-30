@@ -209,11 +209,12 @@ def plot_stiffline(xa, a, **kwargs):
 def stiffline(x, xa, a):
 	m = stiffline_match(x, xa)
 	mint = floor(m).astype(int)
-	return ((m-mint)*a[mint]
-		+(mint+1-m)*a[mint+1])
+	return ((mint+1-m)*a[mint]
+		+(m-mint)*a[mint+1])
 
+# assumes xa[ii] < xa[ii+1] (DWH thinks)
 def stiffline_match(x, xa):
-	matcha= zeros_like(x.astype(int))
+	matcha= zeros_like(x)
 	for ii,xx in enumerate(x):
 		indx = argmin((xa-xx)**2)
 		if xx < xa[indx]:
@@ -255,16 +256,18 @@ def stiffline_wls(x, y, sigmay, xa, epsilon, a=None):
 				denominator += epsilon
 			for (ii,mm) in enumerate(matcha):
 				jj = floor(mm)
-				weight = 0.0
 				if jj == j:
-					weight = (mm - jj) / sigmay[ii]**2
+					ww = jj + 1 - mm
+					numerator += (y[ii] - (1.0 - ww) * a[j+1]) * ww / sigmay[ii]**2
+					denominator += ww**2 / sigmay[ii]**2
 				if (jj+1) == j:
-					weight = (jj + 1 - mm) / sigmay[ii]**2
-				numerator += weight * y[ii]
-				denominator += weight
+					ww = mm - jj
+					numerator += (y[ii] - (1.0 - ww) * a[j-1]) * ww / sigmay[ii]**2
+					denominator += ww**2 / sigmay[ii]**2
 			a[j] = numerator / denominator
 		chi2 = stiffline_chi2(x, y, sigmay, xa, a, epsilon)
 		dchi2 = oldchi2 - chi2
+		assert dchi2 > 0
 		iter += 1
 	print 'iteration', iter
 	print '  chi2', chi2
