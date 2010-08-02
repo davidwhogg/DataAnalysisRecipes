@@ -328,12 +328,13 @@ def main_black():
 	print 'making black page, you tool'
 	axes([0,0,1,1], axisbg='k')
 	savefig('black' + plot_format)
+	return
 
 if __name__ == '__main__':
 	args = sys.argv[1:]
 	if not 'pdfjoin' in args:
-#		main_black()
-#		main_poly()
+		main_black()
+		main_poly()
 		main_stiffline()
 	cmdstr = gscmd + 'crossvalidate.pdf black.pdf poly-data.pdf poly-order-*.pdf poly-.pdf poly-truth.pdf poly-fits-*.pdf poly-crossval.pdf black.pdf poly-data.pdf poly-wrong-data.pdf poly-wrong-.pdf black.pdf stiffline-.pdf black.pdf'
 	print os.system(cmdstr)
