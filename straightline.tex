@@ -46,10 +46,10 @@
 
 \newcommand{\note}[1]{\endnote{#1}}
 \def\enotesize{\normalsize}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}} % the ONE footnote needs this
 
 \newcounter{problem}
 \newenvironment{problem}{\paragraph{\problemname~\theproblem:}\refstepcounter{problem}}{}
-\newenvironment{comments}{\paragraph{fix this:}}{}
 \newcommand{\affil}[1]{{\footnotesize\textsl{#1}}}
 
 % matrix stuff
@@ -102,12 +102,27 @@
 \begin{document}
 \thispagestyle{plain}\raggedbottom
 \section*{Data analysis recipes:\ \\
-  Fitting a straight line to data\note{%
-    Copyright 2010 by the authors.
-    \textbf{This is a DRAFT version dated 2010-07-07.
-    Please do not distribute this document.}}}
-%    You may copy and distribute this document
+  Fitting a model to data\footnotemark}
+
+\footnotetext{%
+The \notename s begin on page~\pageref{note:first},
+including the license\note{\label{note:first}%
+Copyyright 2010 by the authors.
+\textbf{This is a DRAFT version dated 2010-07-07.
+Please do not distribute this document.}}
+%    You may copy and distribute this documenta
 %    provided that you make no changes to it whatsoever.}}
+and the acknowledgements\note{%
+We owe a debt above all to Sam Roweis (Toronto), who taught us to find
+and optimize justified scalar objective functions.  In addition it is
+a pleasure to thank Mike Blanton (NYU), Scott Burles (D. E. Shaw),
+Daniel Foreman-Mackey (Queens), Brandon C. Kelly (Harvard), Iain
+Murray (Edinburgh), Hans-Walter Rix (MPIA), and David Schiminovich
+(Columbia) for valuable comments and discussions.  This research was
+partially supported by NASA (ADP grant NNX08AJ48G), NSF (grant
+AST-0908357), and a Research Fellowship of the Alexander von Humboldt
+Foundation.  This research made use of the Python programming language
+and the open-source Python packages scipy, numpy, and matplotlib.}.}
 
 \noindent
 David~W.~Hogg\\
@@ -122,24 +137,24 @@ Dustin~Lang\\
 \affil{Princeton University Observatory}
 
 \begin{abstract}
-  We go through the many considerations involved in fitting a straight
-  line to a set of points in a two-dimensional plane.  Standard
-  weighted least-squares fitting is only appropriate when there is a
-  dimension along which the data points have negligible uncertainties,
-  and another along which all the uncertainties can be described by
-  Gaussians of known variance; these conditions are rarely met in
-  practice.  We consider cases of general, heterogeneous, and
-  arbitrarily covariant two-dimensional uncertainties, and situations
-  in which there are bad data (large outliers), unknown uncertainties,
-  and unknown but expected intrinsic scatter in the linear
-  relationship being fit.  Above all we emphasize the importance of
-  having a ``generative model'' for the data, even an approximate one.
-  Once there is a generative model, the subsequent fitting is
-  non-arbitrary because the model permits direct computation of the
-  likelihood of the parameters or the posterior probability
-  distribution.  Construction of a posterior probability distribution
-  is required if there are ``nuisance parameters'' to marginalize
-  away.
+  We go through the many considerations involved in fitting a model to
+  data, using as an example the fit of a straight line to a set of
+  points in a two-dimensional plane.  Standard weighted least-squares
+  fitting is only appropriate when there is a dimension along which
+  the data points have negligible uncertainties, and another along
+  which all the uncertainties can be described by Gaussians of known
+  variance; these conditions are rarely met in practice.  We consider
+  cases of general, heterogeneous, and arbitrarily covariant
+  two-dimensional uncertainties, and situations in which there are bad
+  data (large outliers), unknown uncertainties, and unknown but
+  expected intrinsic scatter in the linear relationship being fit.
+  Above all we emphasize the importance of having a ``generative
+  model'' for the data, even an approximate one.  Once there is a
+  generative model, the subsequent fitting is non-arbitrary because
+  the model permits direct computation of the likelihood of the
+  parameters or the posterior probability distribution.  Construction
+  of a posterior probability distribution is required if there are
+  ``nuisance parameters'' to marginalize away.
 \end{abstract}
 
 It is conventional to begin any scientific document with an
@@ -2206,20 +2221,10 @@ limits?
 \caption{Solution to \problemname~\ref{prob:bayesintrinsic}.}\label{fig:bayesintrinsic}
 \end{figure}
 
+\clearpage
 \markright{Notes}\theendnotes
 
-\paragraph{Acknowlegments:}
-We owe a debt above all to Sam Roweis (Toronto), who taught us to find
-and optimize justified scalar objective functions.  In addition it is
-a pleasure to thank Mike Blanton (NYU), Scott Burles (D. E. Shaw),
-Daniel Foreman-Mackey (Queens), Brandon C. Kelly (Harvard), Iain
-Murray (Edinburgh), Hans-Walter Rix (MPIA), and David Schiminovich
-(Columbia) for valuable comments and discussions.  This research was
-partially supported by NASA (ADP grant NNX08AJ48G), NSF (grant
-AST-0908357), and a Research Fellowship of the Alexander von Humboldt
-Foundation.  This research made use of the Python programming language
-and the open-source Python packages scipy, numpy, and matplotlib.
-
+\clearpage
 \begin{thebibliography}{}\markright{References}
 \bibitem[Bovy, Hogg, \& Roweis(2009)]{bovy}
   Bovy,~J., Hogg,~D.~W., \& Roweis, S.~T., 2009,
