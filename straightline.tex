@@ -37,6 +37,13 @@
 \includegraphics[width=0.5\textwidth]{#1}%
 \end{center}%
 }
+\newcommand{\exampleplottwo}[2]{%
+\begin{center}%
+\includegraphics[width=0.5\textwidth]{#1}%
+\includegraphics[width=0.5\textwidth]{#2}%
+\end{center}%
+}
+
 
 \setlength{\emergencystretch}{2em}%No overflow
 
@@ -381,7 +388,7 @@ hold.\note{Even in situations in which linear fitting is appropriate,
   individual data-point uncertainty estimates ignored, even when they
   are known at least approximately.  It is also common for the problem
   to get ``transposed'' such that the coordinates for which
-  uncertainties s are negligible are put into the $\mY$ vector and the
+  uncertainties are negligible are put into the $\mY$ vector and the
   coordinates for which uncertainties are \emph{not} negligible are
   put into the $\mA$ matrix.  In this latter case, the procedure makes
   no sense at all really; it happens when the investigator thinks of
@@ -1239,10 +1246,7 @@ transparent lines.  Your plot should look like
 \end{problem}
 
 \begin{figure}[htbp]
-\begin{center}%
-\includegraphics[width=0.5\textwidth]{exMix1a}%
-\includegraphics[width=0.5\textwidth]{exMix1b}%
-\end{center}
+\exampleplottwo{exMix1a}{exMix1b}
 \caption{Solution to \problemname~\ref{prob:mixture}.}\label{fig:mixture}
 \end{figure}
 
@@ -1259,10 +1263,7 @@ Your plots should look something like those in
 \end{problem}
 
 \begin{figure}[htbp]
-\begin{center}%
-\includegraphics[width=0.5\textwidth]{exMix1c}%
-\includegraphics[width=0.5\textwidth]{exMix2c}%
-\end{center}
+\exampleplottwo{exMix1c}{exMix2c}
 \caption{Solution to \problemname~\ref{prob:badfraction}.}\label{fig:badfraction}
 \end{figure}
 
@@ -1452,8 +1453,7 @@ uncertainty estimate $\inverse{\left[\mAT\,\mCinv\,\mA\right]}$.
 \end{problem}
 
 \begin{figure}[htbp]
-\includegraphics[width=0.5\textwidth]{exNew1a.png}
-\includegraphics[width=0.5\textwidth]{exNew2a.png}
+\exampleplottwo{exMix3a}{exMix4a}
 \caption{Solution to \problemname~\ref{prob:reduceerror}.}\label{fig:reduceerror}
 \end{figure}
 
@@ -1840,8 +1840,7 @@ median of the uncertainty variances $\allsigmay$?
 \end{problem}
 
 \begin{figure}[htbp]
-\includegraphics[width=0.5\textwidth]{ex9.png}
-\includegraphics[width=0.5\textwidth]{ex9b.png}
+\exampleplottwo{ex9a}{ex9b}
 \caption{Solution to \problemname~\ref{prob:chi2}.}\label{fig:chi2}
 \end{figure}
 
@@ -1867,8 +1866,7 @@ marginalized out.
 \end{problem}
 
 \begin{figure}[htbp]
-\includegraphics[width=0.5\textwidth]{ex10a.png}
-\includegraphics[width=0.5\textwidth]{ex10b.png}
+\exampleplottwo{ex10a}{ex10b}
 \caption{Solution to \problemname~\ref{prob:bayeschi2}.}\label{fig:bayeschi2}
 \end{figure}
 
@@ -2070,7 +2068,7 @@ and the best-fit line.  Your plot should look like
 \end{problem}
 
 \begin{figure}[htbp]
-\includegraphics[width=0.5\textwidth]{ex12.png}
+\exampleplot{ex12}
 \caption{Solution to \problemname~\ref{prob:twod}.}\label{fig:twod}
 \end{figure}
 
@@ -2092,8 +2090,7 @@ should look like \figurename~\ref{fig:twodoutlier}.
 \end{problem}
 
 \begin{figure}[htbp]
-\includegraphics[width=0.5\textwidth]{ex13a.png}
-\includegraphics[width=0.5\textwidth]{ex13b.png}
+\exampleplottwo{ex13a}{ex13b}
 \caption{Solution to \problemname~\ref{prob:twodoutlier}.}\label{fig:twodoutlier}
 \end{figure}
 
@@ -2112,7 +2109,7 @@ best-fit lines.  Your plot should look like
 \end{problem}
 
 \begin{figure}[htbp]
-\includegraphics[width=0.5\textwidth]{ex14.png}
+\exampleplot{ex14}
 \caption{Solution to \problemname~\ref{prob:forwardreverse}.}\label{fig:forwardreverse}
 \end{figure}
 
@@ -2136,7 +2133,7 @@ the principal eigenvector.  Your plot should look like
 \end{problem}
 
 \begin{figure}[htbp]
-\includegraphics[width=0.5\textwidth]{ex15.png}
+\exampleplot{ex15}
 \caption{Solution to \problemname~\ref{prob:pca}.}\label{fig:pca}
 \end{figure}
 
@@ -2215,12 +2212,11 @@ Re-do \problemname~\ref{prob:twod}, but now allowing for an orthogonal
 intrinsic Gaussian variance $V$ and only excluding data point 3.
 Re-make the plot, showing not the best-fit line but rather the
 $\pm\sqrt{V}$ lines for the maximum-likelihood \emph{intrinsic}
-relation.  Your figure should look like
-\figurename~\ref{fig:intrinsic}.
+relation.  Your plot should look like \figurename~\ref{fig:intrinsic}.
 \end{problem}
 
 \begin{figure}[htbp]
-\includegraphics[width=0.5\textwidth]{ex16.png}
+\exampleplot{ex16}
 \caption{Solution to \problemname~\ref{prob:intrinsic}.}\label{fig:intrinsic}
 \end{figure}
 
@@ -2236,7 +2232,7 @@ limits?
 \end{problem}
 
 \begin{figure}[htbp]
-\includegraphics[width=0.5\textwidth]{ex17.png}
+\exampleplot{ex17}
 \caption{Solution to \problemname~\ref{prob:bayesintrinsic}.}\label{fig:bayesintrinsic}
 \end{figure}
 
