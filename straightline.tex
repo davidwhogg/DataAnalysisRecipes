@@ -8,6 +8,7 @@
 % - use () for function arguments, and [] for grouping/precedence
 % - define macros; remember 1, 2, infinity
 % - put new terms in \emph{}, put only referred-to words in quotation marks.
+% - do in-text itemized lists with \textsl{(a)}~ and so on.
 
 \documentclass[12pt,twoside]{article}
 \usepackage{amssymb,amsmath,mathrsfs,deluxetable,hogg_endnotes,natbib}
@@ -118,24 +119,23 @@
   Fitting a model to data\footnotemark}
 
 \footnotetext{%
-The \notename s begin on page~\pageref{note:first},
-including the license\note{\label{note:first}%
-Copyyright 2010 by the authors.
-\textbf{This is a DRAFT version dated 2010-07-07.
-Please do not distribute this document.}}
-%    You may copy and distribute this documenta
-%    provided that you make no changes to it whatsoever.}}
-and the acknowledgements\note{%
-We owe a debt above all to Sam Roweis (Toronto), who taught us to find
-and optimize justified scalar objective functions.  In addition it is
-a pleasure to thank Mike Blanton (NYU), Scott Burles (D. E. Shaw),
-Daniel Foreman-Mackey (Queens), Brandon C. Kelly (Harvard), Iain
-Murray (Edinburgh), Hans-Walter Rix (MPIA), and David Schiminovich
-(Columbia) for valuable comments and discussions.  This research was
-partially supported by NASA (ADP grant NNX08AJ48G), NSF (grant
-AST-0908357), and a Research Fellowship of the Alexander von Humboldt
-Foundation.  This research made use of the Python programming language
-and the open-source Python packages scipy, numpy, and matplotlib.}.}
+  The \notename s begin on page~\pageref{note:first}, including the
+  license\note{\label{note:first}%
+    Copyyright 2010 by the authors.  You may copy and distribute this
+    document provided that you make no changes to it whatsoever.}  and
+  the acknowledgements\note{%
+    We owe a debt above all to Sam Roweis (Toronto \& NYU, now
+    deceased), who taught us to find and optimize justified scalar
+    objective functions.  In addition it is a pleasure to thank Mike
+    Blanton (NYU), Scott Burles (D. E. Shaw), Daniel Foreman-Mackey
+    (Queens), Brandon C. Kelly (Harvard), Iain Murray (Edinburgh),
+    Hans-Walter Rix (MPIA), and David Schiminovich (Columbia) for
+    valuable comments and discussions.  This research was partially
+    supported by NASA (ADP grant NNX08AJ48G), NSF (grant AST-0908357),
+    and a Research Fellowship of the Alexander von Humboldt
+    Foundation.  This research made use of the Python programming
+    language and the open-source Python packages scipy, numpy, and
+    matplotlib.}.}
 
 \noindent
 David~W.~Hogg\\
@@ -166,8 +166,8 @@ Dustin~Lang\\
   generative model, the subsequent fitting is non-arbitrary because
   the model permits direct computation of the likelihood of the
   parameters or the posterior probability distribution.  Construction
-  of a posterior probability distribution is required if there are
-  ``nuisance parameters'' to marginalize away.
+  of a posterior probability distribution is indispensible if there
+  are ``nuisance parameters'' to marginalize away.
 \end{abstract}
 
 \numberparagraphs
@@ -761,12 +761,14 @@ The standard linear fitting method is very sensitive to
 \emph{outliers}, that is, points that are substantially farther from
 the linear relation than expected---or not on the relation at
 all---because of unmodeled experimental uncertainty or unmodeled but
-rare sources of noise.  There are two general approaches to mitigating
-this sensitivity, which are not necessarily different.  The first is
-to find ways to objectively remove, reject, or become insensitive to
-``bad'' points; this is the subject of this \sectionname.  The second
-is to better model your data-point uncertainties, permitting larger
-deviations than the Gaussian noise estimates; this is the subject of
+rare sources of noise (or because the model has a restricted scope and
+doesn't apply to all the data).  There are two general approaches to
+mitigating this sensitivity, which are not necessarily different.  The
+first is to find ways to objectively remove, reject, or become
+insensitive to ``bad'' points; this is the subject of
+this \sectionname.  The second is to better model your data-point
+uncertainties, permitting larger deviations than the Gaussian noise
+estimates; this is the subject of
 \sectionname~\ref{sec:non-Gaussian}.  Both of these are strongly
 preferable to sorting through the data and rejecting points by hand,
 for reasons of subjectivity and irreproducibility that we need not
@@ -1124,17 +1126,26 @@ as a side-product for free.
 The standard Metropolis--Hastings MCMC procedure works extremely well
 in this problem for both the optimization and the integration and
 sampling.  A discussion of this algorithm is beyond the scope of this
-document, but suffice it to say that good descriptions
-abound\note{There is a good introduction to Metropolis--Hastings MCMC
-  in \citealt{press}, among other places.} and that with a small
-amount of experimentation (try Gaussians for the proposal distribution
-and scale them until the acceptance ratio is about half) rapid
-convergence and sampling is possible in this problem. A large class of
-MCMC algorithms exists, many of which outperform the simple Metropolis
-algorithm with little extra effort.\note{Variations of MCMC that go
-  beyond Metropolis--Hastings---and the conditions under such
-  variations make sense---are described in, for example,
-  \cite{gilksmcmc}, \cite{neal2003a}, and \cite{mackay}.}
+document, but briefly the algorithm is this simple: Starting at some
+position in parameter space, where you know the posterior probability,
+iterate the following: \textsl{(a)}~Step randomly in parameter
+space. \textsl{(b)}~Compute the new posterior probability at the new
+position in parameter space. \textsl{(c)}~Draw a random number $R$ in
+the range $0<R<1$.  \textsl{(d)}~If $R$ is less than the ratio of the
+new posterior probability to the old (pre-step) probability, accept
+the step, add the new parameters to the chain; if it is greater,
+reject the step, re-add the old parameters to the chain.  The devil is
+in the details, but good descriptions abound\note{There is a good
+  introduction to Metropolis--Hastings MCMC in \citealt{press}, among
+  other places.} and that with a small amount of experimentation (try
+Gaussians for the proposal distribution and scale them until the
+acceptance ratio is about half) rapid convergence and sampling is
+possible in this problem. A large class of MCMC algorithms exists,
+many of which outperform the simple Metropolis algorithm with little
+extra effort.\note{Variations of MCMC that go beyond
+  Metropolis--Hastings---and the conditions under such variations make
+  sense---are described in, for example, \cite{gilksmcmc},
+  \cite{neal2003a}, and \cite{mackay}.}
 
 Once you have run an MCMC or equivalent and obtained a chain of
 samples from the posterior probability distribution for the full
@@ -1414,26 +1425,27 @@ only be justified when data represent a reasonable sampling from some
 stationary frequency distribution of \emph{possible data} from a set
 of hypothetical, similar experiments.  This assumption is, in some
 ways, very strong, and often violated.\note{Neither jackknife nor
-  bootstrap make sense, in their naive forms, if there is a significant
-  dynamic range in the uncertainty variances $\sigma_{yi}^2$ of the
-  data points.  This is because these techniques effectively treat all
-  of the data equally.  Of course, both methods could be adjusted to
-  account for this; bootstrap could be made to randomly select points
-  somehow proportionally to their contribution to the total inverse
-  uncertainty variance (it is the sum of the $\sigma_{yi}^{-2}$ that
-  determines the total amount of information), and jackknife trials
-  could be combined in a weighted way, weighted by the total inverse
-  uncertainty variance.  But these generalizations require significant
-  research; probably the methods should be avoided if there is a large
-  diversity in the $\sigma_{yi}^2$.}  For another example, these
-methods will not give correct answers if the model is very wrong or if
-there are large outliers.  That said, if you \emph{do} believe your
-uncertainty estimates, any differences between the jackknife,
-bootstrap, and traditional uncertainty estimates for the best-fit line
-parameters undermine confidence in the validity of the model.  If you
-believe the model, then any differences between the jackknife,
-bootstrap, and traditional uncertainty estimates undermine confidence
-in the data-point uncertainty variances $\allsigmay$.
+  bootstrap make sense, in their naive forms, if there is a
+  significant dynamic range in the uncertainty variances
+  $\sigma_{yi}^2$ of the data points.  This is because these
+  techniques effectively treat all of the data equally.  Of course,
+  both methods could be adjusted to account for this; bootstrap could
+  be made to randomly select points somehow proportionally to their
+  contribution to the total inverse uncertainty variance (it is the
+  sum of the $\sigma_{yi}^{-2}$ that determines the total amount of
+  information), and jackknife trials could be combined in a weighted
+  way, weighted by the total inverse uncertainty variance.  But these
+  generalizations require significant research; probably the methods
+  should be avoided if there is a large diversity in the
+  $\sigma_{yi}^2$.}  For another example, these methods will not give
+correct answers if the model does not fit the data reasonably well.
+That said, if you \emph{do} believe your uncertainty estimates, any
+differences between the jackknife, bootstrap, and traditional
+uncertainty estimates for the best-fit line parameters undermine
+confidence in the validity of the model.  If you believe the model,
+then any differences between the jackknife, bootstrap, and traditional
+uncertainty estimates undermine confidence in the data-point
+uncertainty variances $\allsigmay$.
 
 \begin{problem}
 Compute the standard uncertainty $\sigma_m^2$ obtained for the slope
@@ -1664,7 +1676,7 @@ correctness.
 How can you decide if your fit is a good one, or that your assumptions
 are justified?  And how can you infer or assess the individual
 data-point uncertainties if you don't know them, or don't trust them?
-These problems are related problems, but they are coupled: In the
+These seem like different questions, but they are coupled: In the
 standard (frequentist) paradigm, you can't test your assumptions
 unless you are very confident about your uncertainty estimates, and
 you can't test your uncertainty estimates unless you are very
@@ -2130,7 +2142,8 @@ best-fit lines.  Your plot should look like
 \begin{figure}[htbp]
 \exampleplot{ex14}
 \caption{Partial solution to \problemname~\ref{prob:forwardreverse}:
-Don't ever do this.}\label{fig:forwardreverse}
+  Results of ``forward and reverse'' fitting.  Don't ever do
+  this.}\label{fig:forwardreverse}
 \end{figure}
 
 \begin{problem}\label{prob:pca}
@@ -2165,28 +2178,35 @@ truly is a narrow linear relationship between $x$ and $y$ (or there
 would be if they were both measured with negligible uncertainties).
 The words ``narrow'' and ``linear'' are both problematic, since there
 are very few problems in science, especially in astrophysics, in which
-a relationship between two observables is expected to be either.  To
-generalize beyond linear is to go beyond the scope of this
-\documentname, so let's consider relationships that are linear but not
-narrow.  This gets into the complicated area of estimating density
-given finite and noisy samples; again this is a huge subject so we
-will only consider one simple solution.  We will not consider anything
-that looks like subtraction of variances in quadrature; that is pure
-procedure and almost never justifiable.\note{The standard method for
-  estimating the width of a linear relationship is to compare the
-  scatter of the data points to the scatter expected if the
-  relationship is narrow.  The estimated intrinsic scatter can be
-  ``found'' in this case by a procedure of subtracting in quadrature
-  (intrinsic variance is observed variance minus expected variance
-  given observational uncertainties).  This is not a good idea in
-  general.  It doesn't work at all if the data points have a
-  significant dynamic range in their measurement uncertainties, it can
-  produce an estimate of the intrinsic scatter variance that is
-  negative, and it returns no confidence interval or uncertainty.  In
-  the case of negligible $x$-direction uncertainties, a better method
-  is to add a parameter $V_y$ which is a variance to be added in
-  quadrature to every data-point uncertainty variance; this is what we
-  advocate in the main text.}
+a relationship between two observables is expected to be either.  The
+reasons for intrinsic scatter abound; but generically the quantities
+being measured are produced or affected by a large number of
+additional, unmeasured or unmeasurable quantities; the relation
+between $x$ and $y$ is rarely exact, even in when observed by
+theoretically perfect, noise-free observations.
+
+Proper treatment of these problems gets into the complicated area of
+estimating density given finite and noisy samples; again this is a
+huge subject so we will only consider one simple solution to the one
+simple problem of a relationship that is linear but not narrow.  We
+will not consider anything that looks like subtraction of variances in
+quadrature; that is pure procedure and almost never
+justifiable.\note{The standard method for estimating the width of a
+  linear relationship is to compare the scatter of the data points to
+  the scatter expected if the relationship is narrow.  The estimated
+  intrinsic scatter can be ``found'' in this case by a procedure of
+  subtracting in quadrature (intrinsic variance is observed variance
+  minus expected variance given observational uncertainties).  This is
+  not a good idea in general.  It doesn't work at all if the data
+  points have a significant dynamic range in their measurement
+  uncertainties, it can produce an estimate of the intrinsic scatter
+  variance that is negative, and it returns no confidence interval or
+  uncertainty.  In the case of negligible $x$-direction uncertainties,
+  a better method is to add a parameter $V_y$ which is a variance to
+  be added in quadrature to every data-point uncertainty variance;
+  this is what we advocate in the main text.}  Instead---as usual---we
+introduce a model that generates the data and infer the parameters of
+that model.
 
 Introduce an intrinsic Gaussian variance $V$, orthogonal to the line.
 In this case, the parameters of the relationship become
