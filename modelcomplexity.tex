@@ -1,5 +1,5 @@
 \documentclass[12pt,twoside]{article}
-\usepackage{amssymb,amsmath,mathrsfs,natbib}
+\usepackage{amssymb,amsmath,mathrsfs,,hogg_endnotes,natbib}
 
 %%Figure caption
 \makeatletter
@@ -23,7 +23,7 @@
 \newcommand{\equationname}{equation}
 \newcommand{\problemname}{Exercise}
 \newcommand{\solutionname}{Solution}
-\newcommand{\commentsname}{Comments}
+\newcommand{\notename}{note}
 
 \newcounter{problem}
 \newenvironment{problem}{\paragraph{\problemname~\theproblem:}\refstepcounter{problem}}{}
@@ -77,15 +77,29 @@
 \renewcommand{\sectionmark}[1]{\markright{\thesection.~#1}}
 \markboth{Model complexity}{}
 
+% note stuff
+\newcommand{\note}[1]{\endnote{#1}}
+\def\enotesize{\normalsize}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}} % the ONE footnote needs this
+
 \begin{document}
 \thispagestyle{plain}\raggedbottom
 \section*{Data analysis recipes:\ \\
-  Comparing models of different complexity\footnote{
-    Copyright 2010 by the authors.
-    \textbf{This is a DRAFT version dated 2010-04-23
-    Please do not distribute this document.}}}
-%    You may copy and distribute this document
-%    provided that you make no changes to it whatsoever.}}
+  Comparing models of different complexity\footnotemark}
+
+\footnotetext{The \notename s begin on page~\pageref{note:first},
+  including the license\note{\label{note:first} Copyright 2011 by the
+    authors.  You may copy and distribute this document provided that
+    you make no changes to it whatsoever.}  and the
+  acknowledgements\note{Above all we owe a debt to Sam Roweis (Toronto
+    \& NYU, now deceased), who taught us everything we know about
+    model selection.  In addition it is a pleasure to thank Iain
+    Murray (Edinburgh) and Hans-Walter Rix (MPIA) for valuable
+    comments and discussions.  This research was partially supported
+    by NASA (ADP grant NNX08AJ48G), NSF (grant AST-0908357), and a
+    Research Fellowship of the Alexander von Humboldt Foundation.
+    This research made use of the Python programming language and the
+    open-source Python packages scipy, numpy, and matplotlib.}.}
 
 \noindent
 David~W.~Hogg\\
@@ -118,11 +132,43 @@ explicitly---every day.  For example, on a trivial scale, any decision
 about binning a histogram (small bins or big bins) or fitting a curve
 (linear or quadratic) or combining data (average all the data taken on
 the same day or all the data taken in the same year) is a decision
-about model complexity, as it is a decision about how much freedom to
-give to some free function.
+about model complexity; in each case the decision is about how much
+freedom to give to some free function.
 
 At a grander scale, many important scientific discoveries are model
-complexity decisions.  For example...
+complexity decisions.  For example, the decision that data on a star's
+radial velocity as a function of time is better described by a model
+that includes perturbations from an orbiting exoplanet is
+simultaneously a model selection decision (a model that includes the
+freedom of an exoplanet perturbation is a better description than a
+model that doesn't have that freedom) and an exoplanet discovery.
+That discovery is a decision to increase model complexity, but also
+many scientific discoveries are decisions to decrease model
+complexity; consider for example the heliocentric model of the Solar
+System.  It was adopted in part because it led to an enormous decrease
+in the complexity of the quantitative Solar System model, reducing
+greatly the number of free parameters.
+
+Of course a model with more freedom will, in general, lead to a better
+description of the data in the trivial sense that it can reproduce the
+observed features more closely.  But a model with more freedom will
+also, in general, be less predictive, because finite uncertainties in
+the parameters will propagate into greater uncertainty in prediction
+as the number of imprecisely determined (independent) parameters
+increases.  The challenge of model selection is to balance these
+considerations; a scientifically good model must both describe the
+existing data well and also predict new or left-out data well.\note{In
+  this sense, Ockham's Razor, na\"ively construed, is wrong, or
+  perhaps useless: It is not the case that the simplest model that
+  explains the data is the best.  First of all, the scientist is
+  (almost) never presented with two models that are \emph{equally}
+  good at explaining the data.  Second of all, even if the two models
+  \emph{are} equal at explaining existing data, are they equal at
+  predicting new data?  Some Bayesians have taken Ockham's Razor very
+  seriously, claiming that Bayesian inference and Bayesian model
+  selection justifies Ockham's Razor, but this view relies on a
+  careful interpretation of Ockham that doesn't necessarily do justice
+  to the original.}
 
 \section{The standard lore}
 
@@ -143,13 +189,13 @@ model selection might illuminate this.
 
 \section{Infinite complexity}
 
-One model that serves as an example\footnote{I owe my knowledge of
-  this model to Sam Roweis, who I think got it from
-  Yann LeCun (NYU)}. to illustrate that model complexity is not
-directly related to the \emph{number} of parameters is the following.
-Imagine having $N$ data points $(x_i,y_i)$ in some finite domain in
-$x$ and $y$, with observational uncertainties of some kind we need not
-specify precisely for the moment.  Now fit to these data the model
+One model that serves as an example to illustrate that model
+complexity is not directly related to the \emph{number} of parameters
+is the following.\note{We owe this model to Yann LeCun (NYU), via Sam
+  Roweis.}  Imagine having $N$ data points $(x_i,y_i)$ in some finite
+domain in $x$ and $y$, with observational uncertainties of some kind
+we need not specify precisely for the moment.  Now fit to these data
+the model
 \begin{equation}\label{eq:lecun}
 y_i = A\,\sin (k\,x + \phi)
   \quad ,
@@ -294,5 +340,16 @@ different $K$.
 \section{Cross-validation}
 
 \section{No need to decide?}
+
+\clearpage
+\markright{Notes}\theendnotes
+
+\clearpage
+\begin{thebibliography}{}\markright{References}
+\bibitem[Bovy, Hogg, \& Roweis(2009)]{bovy}
+  Bovy,~J., Hogg,~D.~W., \& Roweis, S.~T., 2009,
+  Extreme deconvolution: inferring complete distribution functions from noisy, heterogeneous, and incomplete observations, 
+  arXiv:0905.2979 [stat.ME]
+\end{thebibliography}
 
 \end{document}
