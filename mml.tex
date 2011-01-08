@@ -1,0 +1,109 @@
+\documentclass[letterpaper]{article}
+\usepackage[in]{fullpage}
+
+\newcommand{\dd}{\mathrm{d}}
+
+\title{From Minimum-Message-Length to Bayesian Model Selection}
+\author{Dustin Lang}
+\date{25 July 2008}
+
+\begin{document}
+
+\maketitle
+
+Imagine that we want to communicate a large number of images over a
+communication channel.  We could just send the raw bytes of each image.
+Or, we could use our favourite compression program and send the
+compressed bytes.  Or, we could build a model of each image and then send
+the residuals of the image minus the model; the model plus residuals would
+allow the receiver to reconstruct the image exactly.  We want to discover which
+of these methods will be superior.
+
+Note that in each case the sender and receiver have to have some shared knowledge
+about how the raw bytes sent through the channel are to be interpreted.  When using
+a standard compression algorithm, the receiver has to know the algorithm for
+decompression.  Likewise, in the modelling scheme, the receiver has to have the
+algorithm which, when given the model parameters, produces the model image (to which
+the residuals must be added to produce the original image).  Since we are sending
+many images, the sender and receiver don't get to share knowledge about any
+particular image, but only about a class of images.
+
+Alternatively, we can imagine a scheme in which the sender and receiver agree
+to choose to the best method for each image; then each message must begin with
+a code that tells the receiver which method is being used for this image.  This
+switching scheme has the same form as the other schemes: it sends a header
+(which scheme to use) followed by the body (the body when encoded by the scheme
+being used).
+
+We wish to find the communication scheme which sends an image using the smallest
+message length (number of bits) $L$, where the message is composed of the model
+parameters $\theta$ followed by the residuals of the image data $D$;
+we seek to minimize
+\[ L = L(\theta) + L(D | \theta) \]
+
+Shannon tells us that if we have an optimal coding scheme, an event $e$ that
+occurs with probability $P(e)$ can be encoded with a number of bits
+\[ L(e) = -\log_2 P(e) \]
+(we'll ignore rounding to the nearest bit).
+%This makes intuitive sense: imagine that half of your image pixels have the
+%value zero.  You could compress the image by sending a $0$ bit to
+%indicate a zero pixel, and for nonzero pixels sending a $1$ bit, followed by the
+%pixel's value.
+This allows us to make the connection between message lengths and probabilities:
+probable events can be described by few bits.
+
+Minimizing the message length $L$ is therefore equivalent to maximizing the
+probability
+\[ P = P(\theta) P(D | \theta) \quad . \]
+and for a given model scheme $M$, we can write
+\begin{equation}
+P_M = P(\theta | M) P(D | \theta, M) \quad .
+\label{eq:mmlprob}
+\end{equation}
+
+\vspace{12pt}
+
+In Bayesian model selection, we want to decide which of several competing models
+best explains some data $D$.
+We want to compare
+\[ P(M_i | D) = \frac{P(M_i) P(D | M_i)}{P(D)} \]
+and since the $P(D)$ factors are the same for different models $M_i$,
+we end up comparing
+\[ P(M_i | D) \propto P(M_i) P(D | M_i) \quad . \]
+
+The $P(M_i)$ is the prior probability of model $M_i$; if we're being fair, we set
+these equal.  There is a connection here to the ``switching'' communication scheme --
+$P(M_i)$ is how many bits it takes at the beginning of the message to indicate that
+we're going to use model $M_i$.
+
+We then introduce the parameters of our model, $\theta$, giving
+\begin{eqnarray}
+  P(D | M_i) &=& \int P(D, \theta | M_i) \dd\theta \\
+  & = & \int P(D | \theta, M_i) P(\theta | M_i) \dd\theta
+\end{eqnarray}
+where now $P(D | \theta, M_i)$ are the residuals and $P(\theta | M_i)$ is the
+prior over the parameter values.  Remember that in our communication scheme the
+sender and receiver get to share some information, and this function is one of
+those things; this shared information lets them encode likely parameters using
+fewer bits.
+
+But what about that integral?  We run inference to find the model parameters.  In
+general the probability distribution of the model parameters is some complicated
+function, but we usually approximate it by a Gaussian around the maximum-likelihood
+value:
+\[ P(\theta | M_i) \simeq N( \theta_{ML}, \sigma^2(\theta_{ML}) ) \]
+
+We then get
+\begin{eqnarray}
+ P(D | M_i) &=& \int P(D | \theta, M_i) P(\theta | M_i) \dd\theta \\
+ & \simeq & P(D | \theta_{ML}, M_i) P(\theta_{ML} | M_i) \sigma(\theta_{ML})
+\end{eqnarray}
+where the first term describes the residuals, the second term describes how
+high the maximum-likelihood peak is, and the $\sigma(\theta_{ML})$ term nicely
+captures the intuition that if the model
+is not really sensitive to the parameters $\theta$, then they can be sent using fewer
+bits.  Note the similarity to equation \ref{eq:mmlprob}.
+
+
+
+\end{document}
