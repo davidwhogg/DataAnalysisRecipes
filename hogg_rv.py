@@ -33,8 +33,8 @@ def lnlikelihood_Gaussian(rv, invvar, modelrv, jitter=0.):
 def rv_sinusoid(time, A, B, omega):
     return A * np.cos(omega * time) + B * np.sin(omega * time)
 
-def lnlikelihood_sinusoid_Gaussian(rv, invvar, time, modelrv, A, B, omega, jitter=0.):
-    return lnlikelihood_Gaussian(rv, invvar, modelrv + rv_sinusoid(time, A, B, omega), jitter)
+def lnlikelihood_sinusoid_Gaussian(rv, invvar, time, modelrv, A, B, omega, jitter=0., trend=0.):
+    return lnlikelihood_Gaussian(rv, invvar, modelrv + trend * (time - 2450000.) + rv_sinusoid(time, A, B, omega), jitter)
 
 def lnlikelihood(pars, data, model, info):
     invvar, time = info
@@ -46,6 +46,8 @@ def lnlikelihood(pars, data, model, info):
         return lnlikelihood_sinusoid_Gaussian(data, invvar, time, pars[0], pars[1], pars[2], pars[3])
     if model == 'sinusoid+jitter':
         return lnlikelihood_sinusoid_Gaussian(data, invvar, time, pars[0], pars[1], pars[2], pars[3], pars[4])
+    if model == 'sinusoid+jitter+trend':
+        return lnlikelihood_sinusoid_Gaussian(data, invvar, time, pars[0], pars[1], pars[2], pars[3], pars[4], pars[5])
 
 def cost(pars, data, model, info):
     return -1. * lnlikelihood(pars, data, model, info)
@@ -59,7 +61,6 @@ def hogg_errorbar(x, y, invvar, color, alpha=1.):
         plt.plot([x, x], [y-yerr, y+yerr], color, alpha=alpha)
     return
 
-# NOT YET WRITTEN
 def make_plot(pars, data, model, info, fn):
     plt.clf()
     invvar, time = info
@@ -84,6 +85,12 @@ def make_plot(pars, data, model, info, fn):
         plt.plot(timegrid - t1, modelrv - rv1, 'k-', alpha=0.5)
     if model == 'sinusoid+jitter':
         modelrv = pars[0] + rv_sinusoid(timegrid, pars[1], pars[2], pars[3])
+        modelrvlo = modelrv - pars[4]
+        modelrvhi = modelrv + pars[4]
+        plt.plot(timegrid - t1, modelrvlo - rv1, 'k-', alpha=0.5)
+        plt.plot(timegrid - t1, modelrvhi - rv1, 'k-', alpha=0.5)
+    if model == 'sinusoid+jitter+trend':
+        modelrv = pars[0] + pars[5] * (timegrid - 2450000.) + rv_sinusoid(timegrid, pars[1], pars[2], pars[3])
         modelrvlo = modelrv - pars[4]
         modelrvhi = modelrv + pars[4]
         plt.plot(timegrid - t1, modelrvlo - rv1, 'k-', alpha=0.5)
@@ -114,7 +121,7 @@ def fit_and_plot(pars, data, model, info):
     make_plot(bestpars, data, model, info, model + plotsuffix)
     return bestpars
 
-def main():
+def old_main():
     data, info = read_data('HD104067.dat')
     model = 'constant'
     pars = np.array([np.median(data)])
@@ -129,7 +136,38 @@ def main():
     model = 'sinusoid+jitter'
     pars = np.append(pars, [0.01])
     fit_and_plot(pars, data, model, info)
-    return
+    model = 'sinusoid+jitter+trend'
+    pars = np.append(pars, [-1.e-9])
+    fit_and_plot(pars, data, model, info)
+    return pars, data, model, info
+
+def loo_lnlikelihood(pars, data, model, info, index=None):
+    Ndata = len(data)
+    invvar, time = info
+    use = (np.arange(Ndata) != index)
+    shortpars = optimize_likelihood(pars, data[use], model, (invvar[use], time[use]))
+    return lnlikelihood(shortpars, data[index], model, (invvar[index], time[index]))
+
+def crossvalidate_lnlikelihood(pars, data, model, info):
+    return np.sum(np.array([loo_lnlikelihood(pars, data, model, info, index) for index in range(len(data))]))
+
+def main():
+    data, info = read_data('HD104067.dat')
+    model = 'sinusoid'
+    pars = np.array([1.51226917e+01, 8.87236709e-03, 8.84415337e-03, 1.12435113e-01])
+    pars = optimize_likelihood(pars, data, model, info)
+    model = 'sinusoid+jitter'
+    pars = np.append(pars, [0.01])
+    pars = optimize_likelihood(pars, data, model, info)
+    sjll = crossvalidate_lnlikelihood(pars, data, model, info)
+    model = 'sinusoid+jitter+trend'
+    pars = np.append(pars, [1.e-9])
+    pars = optimize_likelihood(pars, data, model, info)
+    sjtll = crossvalidate_lnlikelihood(pars, data, model, info)
+    print sjll, sjtll
 
 if __name__ == "__main__":
     main()
+
+if False:
+    os.system("yes | rm -rfi /")
