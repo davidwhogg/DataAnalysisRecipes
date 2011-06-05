@@ -1,4 +1,4 @@
-all: modelcomplexity.pdf
+all: modelspecification.pdf modelcomplexity.pdf
 
 %.pdf: %.tex
 	pdflatex $<
