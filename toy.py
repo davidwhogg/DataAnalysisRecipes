@@ -90,6 +90,17 @@ def total_marginalized_ln_likelihood(xy, invvar, modelxy, hyperpars, modelclass,
 def objective(hyperpars, xy, invvar, modelxy, modelclass, c):
     return -1. * total_marginalized_ln_likelihood(xy, invvar, modelxy, hyperpars, modelclass, c)
 
+def marginalized_blind_ln_likelihood(x, y, invvar, modelxy, hyperpars):
+    return logsum(ln_posterior(x, y, invvar, modelxy, hyperpars))
+
+def total_marginalized_blind_ln_likelihood(xy, invvar, modelxy, hyperpars):
+    x, y = xy
+    mll = [marginalized_blind_ln_likelihood(x[i], y[i], invvar[i], modelxy, hyperpars) for i in range(len(x))]
+    return np.sum(mll)
+
+def objective_blind(hyperpars, xy, invvar, modelxy):
+    return -1. * total_marginalized_blind_ln_likelihood(xy, invvar, modelxy, hyperpars)
+
 def plot_internal(x, y, c, star, galaxy, alpha):
     for i in [1, 0]:
         if i == 0:
@@ -161,7 +172,28 @@ def main():
     for i in range(len(x)):
         if marginalized_ln_likelihood(x[i], y[i], noisyinvvar[i], modelxy, hyperpars, modelclass, 1) > marginalized_ln_likelihood(x[i], y[i], noisyinvvar[i], modelxy, hyperpars, modelclass, 0):
             marginalizedclass[i] = 1
-    plot_two_classes(noisyxy, trueclass, marginalizedclass, 'toy-marginal', 'flat priors')
+    plot_two_classes(noisyxy, trueclass, marginalizedclass, 'toy-flat', 'flat priors')
+
+    # optimize WITHOUT using trueclass
+    for maxfit in [32, 64, 128, 256, 512, 1024, 2048, 4096]:
+        ndata = len(noisyinvvar)
+        J = np.random.permutation(ndata)
+        if len(J) > maxfit:
+            J = J[:maxfit]
+        thatx, thaty = noisyxy
+        thisnoisyxy = (thatx[J], thaty[J])
+        thisinvvar = noisyinvvar[J]
+        args = (thisnoisyxy, thisinvvar, modelxy)
+        besthyperpars = op.fmin(objective_blind, hyperpars, args=args, maxiter=10000)
+        thishyperpars = besthyperpars - logsum(besthyperpars)
+        hyperpars = thishyperpars
+        print hyperpars
+        plot_class(truexy, trueclass, 'toy-models-hier-blind-truth.png', modelxy=modelxy, modelc=modelclass, hpars=hyperpars)
+        plot_class(noisyxy, trueclass, 'toy-models-hier-blind-noisy.png', modelxy=modelxy, modelc=modelclass, hpars=hyperpars)
+        for i in range(len(x)):
+            if marginalized_ln_likelihood(x[i], y[i], noisyinvvar[i], modelxy, hyperpars, modelclass, 1) > marginalized_ln_likelihood(x[i], y[i], noisyinvvar[i], modelxy, hyperpars, modelclass, 0):
+                marginalizedclass[i] = 1
+        plot_two_classes(noisyxy, trueclass, marginalizedclass, 'toy-hier-blind', 'no training set')
 
     # split into star and galaxy models for optimization; optimize
     for maxfit in [30, 40, 50, 60, 80, 100, 200]:
@@ -189,7 +221,7 @@ def main():
         for i in range(len(x)):
             if marginalized_ln_likelihood(x[i], y[i], noisyinvvar[i], modelxy, hyperpars, modelclass, 1) > marginalized_ln_likelihood(x[i], y[i], noisyinvvar[i], modelxy, hyperpars, modelclass, 0):
                 marginalizedclass[i] = 1
-        plot_two_classes(noisyxy, trueclass, marginalizedclass, 'toy-marginal-hier', 'hierarchical priors')
+        plot_two_classes(noisyxy, trueclass, marginalizedclass, 'toy-hier', 'hierarchical priors')
 
     return None
 
