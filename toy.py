@@ -101,23 +101,25 @@ def total_marginalized_blind_ln_likelihood(xy, invvar, modelxy, hyperpars):
 def objective_blind(hyperpars, xy, invvar, modelxy):
     return -1. * total_marginalized_blind_ln_likelihood(xy, invvar, modelxy, hyperpars)
 
-def plot_internal(x, y, c, star, galaxy, alpha):
+def plot_internal(x, y, c, label):
+    marker = 'ko'
+    a = 0.5
     for i in [1, 0]:
-        if i == 0:
-            marker = star
-            a = 1.
-        else:
-            marker = galaxy
-            a = alpha
+        if label and i == 0:
+            marker = 'go'
+            a = 0.5
+        if label and i == 1:
+            marker = 'bo'
+            a = 0.5
         I = (c == i)
         if np.sum(I) > 0:
-            plt.plot(x[I], y[I], marker, alpha=a)
+            plt.plot(x[I], y[I], marker, mew=0, alpha=a)
     return None
 
-def plot_class(xy, c, fn, title='', modelxy=None, modelc=None, hpars=None):
+def plot_class(xy, c, fn, title='', modelxy=None, modelc=None, hpars=None, label=True):
     x, y = xy
     plt.clf()
-    plot_internal(x, y, c, 'go', 'bo', 0.25)
+    plot_internal(x, y, c, label)
     if modelxy is not None:
         mx, my = modelxy
         alphasum = [logsum(hpars[modelc == i]) for i in range(2)]
@@ -129,9 +131,9 @@ def plot_class(xy, c, fn, title='', modelxy=None, modelc=None, hpars=None):
             else:
                 alpha = np.exp(hpars[i] - alphasum[1])
                 marker = 'rx'
-                mew = 15. * np.exp(0.5 * (hpars[i] - alphasum[0]))
-                ms = 35. * np.exp(0.5 * (hpars[i] - alphasum[0]))
-            plt.plot([mx[i], ], [my[i], ], marker, alpha=1.0, mew=mew, ms=ms)
+                mew = 15. * np.exp(0.5 * (hpars[i] - alphasum[1]))
+                ms = 35. * np.exp(0.5 * (hpars[i] - alphasum[1]))
+            plt.plot([mx[i], ], [my[i], ], marker, alpha=0.75, mew=mew, ms=ms)
     plt.xlim(-2., 5.)
     plt.ylim(-1.5, 4.5)
     plt.title(title)
@@ -158,10 +160,12 @@ def main():
     plot_class(truexy, trueclass, 'toy-truth.png')
     noisyxy, noisyclass, noisyinvvar = noisify(truexy, trueclass)
     plot_class(noisyxy, trueclass, 'toy-noisy.png')
+    plot_class(noisyxy, trueclass, 'toy-nolab.png', label=False)
     modelxy, modelclass = make_models()
     hyperpars = np.ones(len(modelclass)).astype('float')
     plot_class(truexy, trueclass, 'toy-models-truth.png', modelxy=modelxy, modelc=modelclass, hpars=hyperpars)
     plot_class(noisyxy, trueclass, 'toy-models-noisy.png', modelxy=modelxy, modelc=modelclass, hpars=hyperpars)
+    plot_class(noisyxy, trueclass, 'toy-models-nolab.png', modelxy=modelxy, modelc=modelclass, hpars=hyperpars, label=False)
     plot_two_classes(noisyxy, trueclass, trueclass, 'toy-true', 'truth')
     x, y = noisyxy
     maxlclass = np.zeros(len(x)) - 1
@@ -190,6 +194,7 @@ def main():
         print hyperpars
         plot_class(truexy, trueclass, 'toy-models-hier-blind-truth.png', modelxy=modelxy, modelc=modelclass, hpars=hyperpars)
         plot_class(noisyxy, trueclass, 'toy-models-hier-blind-noisy.png', modelxy=modelxy, modelc=modelclass, hpars=hyperpars)
+        plot_class(noisyxy, trueclass, 'toy-models-hier-blind-nolab.png', modelxy=modelxy, modelc=modelclass, hpars=hyperpars, label=False)
         for i in range(len(x)):
             if marginalized_ln_likelihood(x[i], y[i], noisyinvvar[i], modelxy, hyperpars, modelclass, 1) > marginalized_ln_likelihood(x[i], y[i], noisyinvvar[i], modelxy, hyperpars, modelclass, 0):
                 marginalizedclass[i] = 1
@@ -218,6 +223,7 @@ def main():
         print hyperpars
         plot_class(truexy, trueclass, 'toy-models-hier-truth.png', modelxy=modelxy, modelc=modelclass, hpars=hyperpars)
         plot_class(noisyxy, trueclass, 'toy-models-hier-noisy.png', modelxy=modelxy, modelc=modelclass, hpars=hyperpars)
+        plot_class(noisyxy, trueclass, 'toy-models-hier-nolab.png', modelxy=modelxy, modelc=modelclass, hpars=hyperpars, label=False)
         for i in range(len(x)):
             if marginalized_ln_likelihood(x[i], y[i], noisyinvvar[i], modelxy, hyperpars, modelclass, 1) > marginalized_ln_likelihood(x[i], y[i], noisyinvvar[i], modelxy, hyperpars, modelclass, 0):
                 marginalizedclass[i] = 1
