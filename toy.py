@@ -125,7 +125,7 @@ def plot_class(xy, c, fn, title='', modelxy=None, modelc=None, hpars=None, label
         alphasum = [logsum(hpars[modelc == i]) for i in range(2)]
         for i in range(len(mx)):
             if modelc[i] == 0:
-                marker = 'r+'
+                marker = 'ro'
                 mew = 15. * np.exp(0.5 * (hpars[i] - alphasum[0]))
                 ms = 45. * np.exp(0.5 * (hpars[i] - alphasum[0]))
             else:
@@ -133,9 +133,11 @@ def plot_class(xy, c, fn, title='', modelxy=None, modelc=None, hpars=None, label
                 marker = 'rx'
                 mew = 15. * np.exp(0.5 * (hpars[i] - alphasum[1]))
                 ms = 35. * np.exp(0.5 * (hpars[i] - alphasum[1]))
-            plt.plot([mx[i], ], [my[i], ], marker, alpha=0.75, mew=mew, ms=ms)
+            plt.plot([mx[i], ], [my[i], ], marker, alpha=0.75, mfc='none', mew=mew, mec='r', ms=ms)
     plt.xlim(-2., 5.)
+    plt.xlabel('color A')
     plt.ylim(-1.5, 4.5)
+    plt.ylabel('color B')
     plt.title(title)
     plt.savefig(fn)
     print 'plot_class: wrote ' + fn

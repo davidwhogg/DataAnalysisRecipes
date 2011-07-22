@@ -61,10 +61,12 @@ def quantiles(x):
         splits[i] = 0.5 * (np.max(x[q==i]) + np.min(x[q==(i+1)]))
     return q, splits
 
-def straight_cut(t, c):
+def straight_cut(t, c, ntotal=None):
     nc = len(c)
     cuts = np.arange(0.9,1.4,0.01)
-    completeness = np.array([float(np.sum(c[t < cut] == 0)) / float(np.sum(c == 0)) for cut in cuts])
+    if ntotal is None:
+        ntotal = np.sum(c == 0)
+    completeness = np.array([float(np.sum(c[t < cut] == 0)) / float(ntotal) for cut in cuts])
     purity = np.array([float(np.sum(c[t < cut] == 0)) / float(np.sum(c[t < cut] < 3)) for cut in cuts])
     return cuts, completeness, purity
 
@@ -106,7 +108,7 @@ def cost(pars, args):
     ts = args
     return -1. * total_log_probability(ts, pstar, scale)
 
-if __name__ == '__main__':
+def main():
     np.random.seed(42)
 
     mstar, tstar, mgala, tgala = make_truth()
@@ -120,6 +122,7 @@ if __name__ == '__main__':
     plt.hist(mgala, bins=5, histtype='step', color='b', alpha=0.5)
     plt.hist(mstar, bins=5, histtype='step', color='g', alpha=0.5)
     plt.xlim(20., 25.)
+    plt.xlabel('magnitude $m$')
     plt.semilogy()
     plt.savefig('%s-hist.%s' % (prefix, suffix))
 
@@ -128,18 +131,22 @@ if __name__ == '__main__':
     plt.plot(tstar, mstar, 'go', mew=0, alpha=0.5)
     sizelim = (0.0, 10.0)
     plt.xlim(sizelim)
+    plt.xlabel(r'size $\theta$')
     maglim = (25., 20.)
     plt.ylim(maglim)
+    plt.ylabel('magnitude $m$')
     plt.savefig('%s-labeled-data.%s' % (prefix, suffix))
 
     plt.clf()
     plt.plot(t, m, 'ko', mew=0, alpha=0.5)
     plt.xlim(sizelim)
+    plt.xlabel(r'size $\theta$')
     plt.ylim(maglim)
+    plt.ylabel('magnitude $m$')
     plt.savefig('%s-data.%s' % (prefix, suffix))
     quants, splits = quantiles(m)
     for split in splits:
-        plt.axhline(split, color='r', alpha=0.75)
+        plt.axhline(split, color='r', lw=2., alpha=0.75)
     plt.savefig('%s-data-qs.%s' % (prefix, suffix))
 
     lstar = likelihood_star(t)
@@ -166,16 +173,18 @@ if __name__ == '__main__':
             baseline = splits[q]
         else:
             baseline = 25.
-        plt.plot(tplot, baseline - 0.5 * pplot / np.max(pplot), 'r-', alpha=0.75)
+        plt.plot(tplot, baseline - 0.5 * pplot / np.max(pplot), 'r-', lw=2., alpha=0.75)
     plt.savefig('%s-data-models.%s' % (prefix, suffix))
     print pstarbest, scalebest
 
     plt.clf()
     plt.plot(t, m, 'ko', mew=0, alpha=0.5)
     plt.xlim(sizelim)
+    plt.xlabel(r'size $\theta$')
     plt.ylim(maglim)
+    plt.ylabel('magnitude $m$')
     excut = 1.1
-    plt.axvline(excut, color='r', alpha=0.75)
+    plt.axvline(excut, color='r', lw=2, alpha=0.75)
     plt.savefig('%s-data-cut.%s' % (prefix, suffix))
 
     cuts, completeness, purity = straight_cut(t, c)
@@ -183,6 +192,7 @@ if __name__ == '__main__':
     plt.plot(cuts, completeness, 'k-')
     plt.plot(cuts, purity, 'k--')
     plt.xlim(np.min(cuts), np.max(cuts))
+    plt.xlabel(r'size cut $\theta_c$')
     plt.ylim(0., 1.)
     plt.title('hard cut: completeness and purity')
     plt.savefig('%s-hard.%s' % (prefix, suffix))
@@ -190,15 +200,18 @@ if __name__ == '__main__':
     plt.clf()
     plt.plot(t, m, 'ko', mew=0, alpha=0.5)
     plt.xlim(sizelim)
+    plt.xlabel(r'size $\theta$')
     plt.ylim(maglim)
-    plt.plot([excut, excut, -1.], [0., 24., 24.], 'r-', alpha=0.75)
+    plt.ylabel('magnitude $m$')
+    plt.plot([excut, excut, -1.], [0., 24., 24.], 'r-', lw=2, alpha=0.75)
     plt.savefig('%s-data-cut-24.%s' % (prefix, suffix))
 
-    cuts, completeness, purity = straight_cut(t[m < 24.], c[m < 24.])
+    cuts, completeness, purity = straight_cut(t[m < 24.], c[m < 24.], ntotal=np.sum(c==0))
     plt.clf()
     plt.plot(cuts, completeness, 'k-')
     plt.plot(cuts, purity, 'k--')
     plt.xlim(np.min(cuts), np.max(cuts))
+    plt.xlabel(r'size cut $\theta_c$')
     plt.ylim(0., 1.)
     plt.title('hard cut: completeness and purity for $m < 24$')
     plt.savefig('%s-hard-24.%s' % (prefix, suffix))
@@ -208,15 +221,20 @@ if __name__ == '__main__':
     plt.plot(cuts, completeness, 'k-')
     plt.plot(cuts, purity, 'k--')
     plt.xlim(np.min(cuts), np.max(cuts))
+    plt.xlabel('ln likelihood ratio cut')
     plt.ylim(0., 1.)
     plt.title('likelihood ratio cut: completeness and purity')
-    plt.savefig('%s-like-24.%s' % (prefix, suffix))
+    plt.savefig('%s-like.%s' % (prefix, suffix))
 
     cuts, completeness, purity = prob_cut(np.log(pstar / pgala), c)
     plt.clf()
     plt.plot(cuts, completeness, 'k-')
     plt.plot(cuts, purity, 'k--')
     plt.xlim(np.min(cuts), np.max(cuts))
+    plt.xlabel('ln probability ratio cut')
     plt.ylim(0., 1.)
     plt.title('probability ratio cut: completeness and purity')
-    plt.savefig('%s-prob-24.%s' % (prefix, suffix))
+    plt.savefig('%s-prob.%s' % (prefix, suffix))
+
+if __name__ == '__main__':
+    main()
