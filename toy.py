@@ -198,7 +198,7 @@ def main():
         for i in range(len(x)):
             if marginalized_ln_likelihood(x[i], y[i], noisyinvvar[i], modelxy, hyperpars, modelclass, 1) > marginalized_ln_likelihood(x[i], y[i], noisyinvvar[i], modelxy, hyperpars, modelclass, 0):
                 marginalizedclass[i] = 1
-        plot_two_classes(noisyxy, trueclass, marginalizedclass, 'toy-hier-blind', 'no training set')
+        plot_two_classes(noisyxy, trueclass, marginalizedclass, 'toy-hier-blind', 'hierarchical')
 
     # split into star and galaxy models for optimization; optimize
     for maxfit in [30, 40, 50, 60, 80, 100, 200]:
@@ -221,13 +221,13 @@ def main():
             print thishyperpars
             hyperpars[I] = thishyperpars - logsum(thishyperpars) + np.log(len(I))
         print hyperpars
-        plot_class(truexy, trueclass, 'toy-models-hier-truth.png', modelxy=modelxy, modelc=modelclass, hpars=hyperpars)
-        plot_class(noisyxy, trueclass, 'toy-models-hier-noisy.png', modelxy=modelxy, modelc=modelclass, hpars=hyperpars)
-        plot_class(noisyxy, trueclass, 'toy-models-hier-nolab.png', modelxy=modelxy, modelc=modelclass, hpars=hyperpars, label=False)
+        plot_class(truexy, trueclass, 'toy-models-hier-train-truth.png', modelxy=modelxy, modelc=modelclass, hpars=hyperpars)
+        plot_class(noisyxy, trueclass, 'toy-models-hier-train-noisy.png', modelxy=modelxy, modelc=modelclass, hpars=hyperpars)
+        plot_class(noisyxy, trueclass, 'toy-models-hier-train-nolab.png', modelxy=modelxy, modelc=modelclass, hpars=hyperpars, label=False)
         for i in range(len(x)):
             if marginalized_ln_likelihood(x[i], y[i], noisyinvvar[i], modelxy, hyperpars, modelclass, 1) > marginalized_ln_likelihood(x[i], y[i], noisyinvvar[i], modelxy, hyperpars, modelclass, 0):
                 marginalizedclass[i] = 1
-        plot_two_classes(noisyxy, trueclass, marginalizedclass, 'toy-hier', 'hierarchical priors')
+        plot_two_classes(noisyxy, trueclass, marginalizedclass, 'toy-hier-train', 'hierarchical w/ training')
 
     return None
 

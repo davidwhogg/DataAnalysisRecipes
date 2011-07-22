@@ -16,6 +16,7 @@ import scipy.optimize as op
 
 prefix = 'toy-morph'
 suffix = 'png'
+size_sigma = 0.05
 
 def get_integral(alpha, S):
     return S**(1. - alpha) / (1. - alpha)
@@ -27,7 +28,7 @@ def make_flux(alpha, Shi, Slo, size=(1)):
     return ((1. - alpha) * (np.random.uniform(size=size) * integrate_over_bin(alpha, Shi, Slo) + get_integral(alpha, Slo)))**(1. / (1. - alpha))
 
 def observed_size(truesize):
-    return np.sqrt(truesize**2 + 1.0) + 0.05 * np.random.normal(size=truesize.shape)
+    return np.sqrt(truesize**2 + 1.0) + size_sigma * np.random.normal(size=truesize.shape)
 
 def mag_from_flux(flux):
     return 25. - 2.5 * np.log(flux) / np.log(10.)
@@ -49,11 +50,65 @@ def make_truth():
     sizegala = observed_size(truesizegala)
     return magstar, sizestar, maggala, sizegala
 
+def quantiles(x):
+    nx = len(x)
+    I = np.argsort(x)
+    q = np.zeros(nx).astype(int)
+    for i in range(4):
+        q[I[(i * nx / 4):((i + 1) * nx / 4)]] = i
+    splits = np.zeros(3).astype(float)
+    for i in range(3):
+        splits[i] = 0.5 * (np.max(x[q==i]) + np.min(x[q==(i+1)]))
+    return q, splits
+
+def straight_cut(t, c):
+    nc = len(c)
+    cuts = np.arange(0.9,1.4,0.01)
+    completeness = np.array([float(np.sum(c[t < cut] == 0)) / float(np.sum(c == 0)) for cut in cuts])
+    purity = np.array([float(np.sum(c[t < cut] == 0)) / float(np.sum(c[t < cut] < 3)) for cut in cuts])
+    print cuts
+    print completeness
+    print purity
+    return cuts, completeness, purity
+
+def Gaussian(x, m, sigma):
+    return np.exp(-0.5 * (x - m)**2 / sigma**2) / np.sqrt(2. * np.pi * sigma**2)
+
+def likelihood_star(t):
+    return Gaussian(t, 1.0, size_sigma)
+
+gamma_sample = np.random.gamma(3., size=10000)
+gamma_weight = np.ones_like(gamma_sample)
+gamma_weight /= np.sum(gamma_weight)
+
+# assumes the t, m come in one gala at a time
+# scale is the scale of the size distribution, not of an individual galaxy
+def likelihood_gala(t, scale):
+    return np.sum(gamma_weight * Gaussian(t, np.sqrt(1. + (scale * gamma_sample)**2), size_sigma))
+
+def probability(ts, pstar, scale):
+    lstar = likelihood_star(ts)
+    lgala = np.array([likelihood_gala(t, scale) for t in ts])
+    return pstar * lstar + (1. - pstar) * lgala
+
+def total_log_probability(ts, pstar, scale):
+    return np.sum(np.log(probability(ts, pstar, scale)))
+
+def cost(pars, args):
+    logodds, scale = pars
+    pstar = np.exp(logodds) / (1. + np.exp(logodds))
+    print pstar, scale
+    ts = args
+    return -1. * total_log_probability(ts, pstar, scale)
+
 if __name__ == '__main__':
     np.random.seed(42)
     mstar, tstar, mgala, tgala = make_truth()
+    cstar = np.zeros_like(mstar).astype(int)
+    cgala = np.ones_like(mgala).astype(int)
     m = np.append(mstar, mgala)
     t = np.append(tstar, tgala)
+    c = np.append(cstar, cgala)
     plt.clf()
     plt.hist(mgala, bins=5, histtype='step', color='b', alpha=0.5)
     plt.hist(mstar, bins=5, histtype='step', color='g', alpha=0.5)
@@ -63,11 +118,65 @@ if __name__ == '__main__':
     plt.clf()
     plt.plot(tgala, mgala, 'bo', mew=0, alpha=0.5)
     plt.plot(tstar, mstar, 'go', mew=0, alpha=0.5)
-    plt.xlim(0.0, 10.0)
-    plt.ylim(25., 20.)
+    sizelim = (0.0, 10.0)
+    plt.xlim(sizelim)
+    maglim = (25., 20.)
+    plt.ylim(maglim)
     plt.savefig('%s-labeled-data.%s' % (prefix, suffix))
     plt.clf()
     plt.plot(t, m, 'ko', mew=0, alpha=0.5)
-    plt.xlim(0.0, 10.0)
-    plt.ylim(25., 20.)
+    plt.xlim(sizelim)
+    plt.ylim(maglim)
     plt.savefig('%s-data.%s' % (prefix, suffix))
+    quants, splits = quantiles(m)
+    for split in splits:
+        plt.axhline(split, color='r', alpha=0.75)
+    plt.savefig('%s-data-qs.%s' % (prefix, suffix))
+    pstarbest = np.array([])
+    scalebest = np.array([])
+    lo, scale = 0.0, 1.0
+    for q in range(4):
+        tfit = t[quants == q]
+        lo, scale = op.fmin(cost, (lo, scale), args=(tfit,))
+        pstar = np.exp(lo) / (1. + np.exp(lo))
+        np.append(pstarbest, pstar)
+        np.append(scalebest, scale)
+        tplot = np.arange(0.8, 10.0)
+        pplot = probability(tplot, pstar, scale)
+        if q < 3:
+            baseline = splits[q]
+        else:
+            baseline = 25.
+        plt.plot(tplot, pplot + baseline, 'r-', alpha=0.75)
+    plt.savefig('%s-data-models.%s' % (prefix, suffix))
+    print pstarbest, scalebest
+
+    plt.clf()
+    plt.plot(t, m, 'ko', mew=0, alpha=0.5)
+    plt.xlim(sizelim)
+    plt.ylim(maglim)
+    excut = 1.1
+    plt.axvline(excut, color='r', alpha=0.75)
+    plt.savefig('%s-data-cut.%s' % (prefix, suffix))
+    cuts, completeness, purity = straight_cut(t, c)
+    plt.clf()
+    plt.plot(cuts, completeness, 'k-', lw=2.)
+    plt.plot(cuts, purity, 'k-', lw=2.)
+    plt.xlim(np.min(cuts), np.max(cuts))
+    plt.ylim(0., 1.)
+    plt.title('hard cut: completeness and purity')
+    plt.savefig('%s-comp-pure.%s' % (prefix, suffix))
+    plt.clf()
+    plt.plot(t, m, 'ko', mew=0, alpha=0.5)
+    plt.xlim(sizelim)
+    plt.ylim(maglim)
+    plt.plot([excut, excut, -1.], [0., 24., 24.], 'r-', alpha=0.75)
+    plt.savefig('%s-data-cut-24.%s' % (prefix, suffix))
+    cuts, completeness, purity = straight_cut(t[m < 24.], c[m < 24.])
+    plt.clf()
+    plt.plot(cuts, completeness, 'k-', lw=2.)
+    plt.plot(cuts, purity, 'k-', lw=2.)
+    plt.xlim(np.min(cuts), np.max(cuts))
+    plt.ylim(0., 1.)
+    plt.title('hard cut: completeness and purity for $m < 24$')
+    plt.savefig('%s-comp-pure-24.%s' % (prefix, suffix))
