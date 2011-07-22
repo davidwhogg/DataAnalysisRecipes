@@ -138,7 +138,7 @@ def main():
     plt.savefig('%s-labeled-data.%s' % (prefix, suffix))
 
     plt.clf()
-    plt.plot(t, m, 'ko', mew=0, alpha=0.25)
+    plt.plot(t, m, 'ko', mew=0, alpha=0.5)
     plt.xlim(sizelim)
     plt.xlabel(r'size $\theta$')
     plt.ylim(maglim)
