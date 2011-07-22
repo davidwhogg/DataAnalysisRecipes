@@ -119,8 +119,8 @@ def main():
     c = np.append(cstar, cgala)
 
     plt.clf()
-    plt.hist(mgala, bins=5, histtype='step', color='b', alpha=0.5)
-    plt.hist(mstar, bins=5, histtype='step', color='g', alpha=0.5)
+    plt.hist(mgala, bins=5, histtype='step', color='b')
+    plt.hist(mstar, bins=5, histtype='step', color='g')
     plt.xlim(20., 25.)
     plt.xlabel('magnitude $m$')
     plt.semilogy()
