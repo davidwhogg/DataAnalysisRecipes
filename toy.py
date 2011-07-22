@@ -227,7 +227,7 @@ def main():
         for i in range(len(x)):
             if marginalized_ln_likelihood(x[i], y[i], noisyinvvar[i], modelxy, hyperpars, modelclass, 1) > marginalized_ln_likelihood(x[i], y[i], noisyinvvar[i], modelxy, hyperpars, modelclass, 0):
                 marginalizedclass[i] = 1
-        plot_two_classes(noisyxy, trueclass, marginalizedclass, 'toy-hier-train', 'hierarchical w/ training')
+        plot_two_classes(noisyxy, trueclass, marginalizedclass, 'toy-hier-train', 'hierarchical w training')
 
     return None
 

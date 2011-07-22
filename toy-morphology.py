@@ -66,9 +66,13 @@ def straight_cut(t, c):
     cuts = np.arange(0.9,1.4,0.01)
     completeness = np.array([float(np.sum(c[t < cut] == 0)) / float(np.sum(c == 0)) for cut in cuts])
     purity = np.array([float(np.sum(c[t < cut] == 0)) / float(np.sum(c[t < cut] < 3)) for cut in cuts])
-    print cuts
-    print completeness
-    print purity
+    return cuts, completeness, purity
+
+def prob_cut(logr, c):
+    nc = len(c)
+    cuts = np.arange(-5., 5., 0.1)
+    completeness = np.array([float(np.sum(c[logr > cut] == 0)) / float(np.sum(c == 0)) for cut in cuts])
+    purity = np.array([float(np.sum(c[logr > cut] == 0)) / float(np.sum(c[logr > cut] < 3)) for cut in cuts])
     return cuts, completeness, purity
 
 def Gaussian(x, m, sigma):
@@ -77,18 +81,19 @@ def Gaussian(x, m, sigma):
 def likelihood_star(t):
     return Gaussian(t, 1.0, size_sigma)
 
-gamma_sample = np.random.gamma(3., size=10000)
+np.random.seed(21)
+gamma_sample = np.random.gamma(3., size=20000)
 gamma_weight = np.ones_like(gamma_sample)
 gamma_weight /= np.sum(gamma_weight)
 
 # assumes the t, m come in one gala at a time
 # scale is the scale of the size distribution, not of an individual galaxy
-def likelihood_gala(t, scale):
-    return np.sum(gamma_weight * Gaussian(t, np.sqrt(1. + (scale * gamma_sample)**2), size_sigma))
+def likelihood_gala(ts, scale):
+    return np.array([np.sum(gamma_weight * Gaussian(t, np.sqrt(1. + (scale * gamma_sample)**2), size_sigma)) for t in ts])
 
 def probability(ts, pstar, scale):
     lstar = likelihood_star(ts)
-    lgala = np.array([likelihood_gala(t, scale) for t in ts])
+    lgala = likelihood_gala(ts, scale)
     return pstar * lstar + (1. - pstar) * lgala
 
 def total_log_probability(ts, pstar, scale):
@@ -103,18 +108,21 @@ def cost(pars, args):
 
 if __name__ == '__main__':
     np.random.seed(42)
+
     mstar, tstar, mgala, tgala = make_truth()
     cstar = np.zeros_like(mstar).astype(int)
     cgala = np.ones_like(mgala).astype(int)
     m = np.append(mstar, mgala)
     t = np.append(tstar, tgala)
     c = np.append(cstar, cgala)
+
     plt.clf()
     plt.hist(mgala, bins=5, histtype='step', color='b', alpha=0.5)
     plt.hist(mstar, bins=5, histtype='step', color='g', alpha=0.5)
     plt.xlim(20., 25.)
     plt.semilogy()
     plt.savefig('%s-hist.%s' % (prefix, suffix))
+
     plt.clf()
     plt.plot(tgala, mgala, 'bo', mew=0, alpha=0.5)
     plt.plot(tstar, mstar, 'go', mew=0, alpha=0.5)
@@ -123,6 +131,7 @@ if __name__ == '__main__':
     maglim = (25., 20.)
     plt.ylim(maglim)
     plt.savefig('%s-labeled-data.%s' % (prefix, suffix))
+
     plt.clf()
     plt.plot(t, m, 'ko', mew=0, alpha=0.5)
     plt.xlim(sizelim)
@@ -132,22 +141,32 @@ if __name__ == '__main__':
     for split in splits:
         plt.axhline(split, color='r', alpha=0.75)
     plt.savefig('%s-data-qs.%s' % (prefix, suffix))
+
+    lstar = likelihood_star(t)
+    lgala = np.zeros_like(lstar)
+    pstar = np.zeros_like(lstar)
+    pgala = np.zeros_like(lstar)
+
     pstarbest = np.array([])
     scalebest = np.array([])
     lo, scale = 0.0, 1.0
     for q in range(4):
-        tfit = t[quants == q]
+        I = (quants == q)
+        tfit = t[I]
         lo, scale = op.fmin(cost, (lo, scale), args=(tfit,))
-        pstar = np.exp(lo) / (1. + np.exp(lo))
-        np.append(pstarbest, pstar)
+        thispstar = np.exp(lo) / (1. + np.exp(lo))
+        np.append(pstarbest, thispstar)
         np.append(scalebest, scale)
-        tplot = np.arange(0.8, 10.0)
-        pplot = probability(tplot, pstar, scale)
+        lgala[I] = likelihood_gala(t[I], scale)
+        pstar[I] = thispstar * lstar[I]
+        pgala[I] = (1. - thispstar) * lgala[I]
+        tplot = np.arange(0.8, 10.0, 0.01)
+        pplot = probability(tplot, thispstar, scale)
         if q < 3:
             baseline = splits[q]
         else:
             baseline = 25.
-        plt.plot(tplot, pplot + baseline, 'r-', alpha=0.75)
+        plt.plot(tplot, baseline - 0.5 * pplot / np.max(pplot), 'r-', alpha=0.75)
     plt.savefig('%s-data-models.%s' % (prefix, suffix))
     print pstarbest, scalebest
 
@@ -158,25 +177,46 @@ if __name__ == '__main__':
     excut = 1.1
     plt.axvline(excut, color='r', alpha=0.75)
     plt.savefig('%s-data-cut.%s' % (prefix, suffix))
+
     cuts, completeness, purity = straight_cut(t, c)
     plt.clf()
-    plt.plot(cuts, completeness, 'k-', lw=2.)
-    plt.plot(cuts, purity, 'k-', lw=2.)
+    plt.plot(cuts, completeness, 'k-')
+    plt.plot(cuts, purity, 'k--')
     plt.xlim(np.min(cuts), np.max(cuts))
     plt.ylim(0., 1.)
     plt.title('hard cut: completeness and purity')
-    plt.savefig('%s-comp-pure.%s' % (prefix, suffix))
+    plt.savefig('%s-hard.%s' % (prefix, suffix))
+
     plt.clf()
     plt.plot(t, m, 'ko', mew=0, alpha=0.5)
     plt.xlim(sizelim)
     plt.ylim(maglim)
     plt.plot([excut, excut, -1.], [0., 24., 24.], 'r-', alpha=0.75)
     plt.savefig('%s-data-cut-24.%s' % (prefix, suffix))
+
     cuts, completeness, purity = straight_cut(t[m < 24.], c[m < 24.])
     plt.clf()
-    plt.plot(cuts, completeness, 'k-', lw=2.)
-    plt.plot(cuts, purity, 'k-', lw=2.)
+    plt.plot(cuts, completeness, 'k-')
+    plt.plot(cuts, purity, 'k--')
     plt.xlim(np.min(cuts), np.max(cuts))
     plt.ylim(0., 1.)
     plt.title('hard cut: completeness and purity for $m < 24$')
-    plt.savefig('%s-comp-pure-24.%s' % (prefix, suffix))
+    plt.savefig('%s-hard-24.%s' % (prefix, suffix))
+
+    cuts, completeness, purity = prob_cut(np.log(lstar / lgala), c)
+    plt.clf()
+    plt.plot(cuts, completeness, 'k-')
+    plt.plot(cuts, purity, 'k--')
+    plt.xlim(np.min(cuts), np.max(cuts))
+    plt.ylim(0., 1.)
+    plt.title('likelihood ratio cut: completeness and purity')
+    plt.savefig('%s-like-24.%s' % (prefix, suffix))
+
+    cuts, completeness, purity = prob_cut(np.log(pstar / pgala), c)
+    plt.clf()
+    plt.plot(cuts, completeness, 'k-')
+    plt.plot(cuts, purity, 'k--')
+    plt.xlim(np.min(cuts), np.max(cuts))
+    plt.ylim(0., 1.)
+    plt.title('probability ratio cut: completeness and purity')
+    plt.savefig('%s-prob-24.%s' % (prefix, suffix))
