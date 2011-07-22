@@ -138,7 +138,7 @@ def main():
     plt.savefig('%s-labeled-data.%s' % (prefix, suffix))
 
     plt.clf()
-    plt.plot(t, m, 'ko', mew=0, alpha=0.5)
+    plt.plot(t, m, 'ko', mew=0, alpha=0.25)
     plt.xlim(sizelim)
     plt.xlabel(r'size $\theta$')
     plt.ylim(maglim)
@@ -162,8 +162,8 @@ def main():
         tfit = t[I]
         lo, scale = op.fmin(cost, (lo, scale), args=(tfit,))
         thispstar = np.exp(lo) / (1. + np.exp(lo))
-        np.append(pstarbest, thispstar)
-        np.append(scalebest, scale)
+        pstarbest = np.append(pstarbest, thispstar)
+        scalebest = np.append(scalebest, scale)
         lgala[I] = likelihood_gala(t[I], scale)
         pstar[I] = thispstar * lstar[I]
         pgala[I] = (1. - thispstar) * lgala[I]
@@ -173,7 +173,7 @@ def main():
             baseline = splits[q]
         else:
             baseline = 25.
-        plt.plot(tplot, baseline - 0.5 * pplot / np.max(pplot), 'r-', lw=2., alpha=0.75)
+        plt.plot(tplot, baseline - 0.7 * pplot / np.max(pplot), 'r-', lw=2., alpha=0.75)
     plt.savefig('%s-data-models.%s' % (prefix, suffix))
     print pstarbest, scalebest
 

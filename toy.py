@@ -203,7 +203,7 @@ def main():
         plot_two_classes(noisyxy, trueclass, marginalizedclass, 'toy-hier-blind', 'hierarchical')
 
     # split into star and galaxy models for optimization; optimize
-    for maxfit in [30, 40, 50, 60, 80, 100, 200]:
+    for maxfit in [32, 64, 128, 256, 512, 1024, 2048, 4096]:
         for c in [0, 1]:
             I = np.flatnonzero(modelclass == c)
             thisx, thisy = modelxy
