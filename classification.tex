@@ -8,10 +8,70 @@
 % - post
 
 \documentclass[12pt, letterpaper]{article}
+\usepackage{amssymb,amsmath,mathrsfs}
+
+\newcommand{\data}{D}
+\newcommand{\alldata}{\{D_i\}_{{\mathrm{all}}\,i}}
+\newcommand{\galpars}{\theta}
+\newcommand{\hyperpars}{\alpha}
+\newcommand{\amplitude}{C}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\normal}{\mathscr{N}}
 
 \begin{document}
 \section*{Data analysis recipes:\\
           Classification at low signal-to-noise}
 
-Hello world!
+\begin{abstract}
+In classification problems of interest to physicists and astronomers,
+it is not usually appropriate to use ``black-box'' classifiers (SVMs,
+neural nets, and the like) trained on well-classified training sets.
+This is because training data tend to be different---in selection,
+calibration, signal-to-noise, or other important properties---from the
+data on which the classification is to be performed.  Furthermore, the
+data set to be classified is usually itself the best source of data
+about the classification; if it weren't, the investigator wouldn't be
+wanting to classify it!  Furthermore, the investigator usually wants
+(whether or not he or she knows it) probabilistic classifications, for
+use in subsequent utility-based hard classification or
+forward-modeling projects.  Here we show that if the investigator has
+generally useful information about the different classes and a noise
+model for the data, hierarchical probabilistic inference can be used
+to construct extremely successful classifiers even with no training
+data whatsoever.  The method works by building a mixture-of-classes
+model for the observed data, finding class probabilities and parameter
+distributions that optimize the probability of the data under the
+model (the marginalized likelihood), and then competing the classes
+(mixture components) probabilistically.
+\end{abstract}
+
+The general problem of classification with noisy data has generated an
+enormous literature, and a wide range of very capable and useful
+techniques.  Most of these techniques are useless for the kind of
+problems and objectives that physical scientists encounter: These are
+problems where there are not extremely reliable training sets, where
+the noise in the data is at least partially understood, and where the
+objective is to propagate uncertainty through the classification
+process.
+
+For example, consider the astronomical problem of star--galaxy
+separation: The goal is to take a set of images of the sky through
+different filter bandpasses, and determine which of the astronomical
+sources in the image are stars and which are galaxies.
+
+Equations we will encounter include the following:
+\begin{eqnarray}\displaystyle
+p(\data_i|S,I) &=& \normal(\data_i|0,\sigma_i^2) \\
+p(\data_i|G,\galpars,I) &=& \normal(\data_i|\galpars_i,\sigma_i^2) \\
+p(\data_i|G,I,\hyperpars) &=& \int p(\data_i|G,\galpars,I)\,p(\galpars|G,\hyperpars)\,\dd \galpars \\
+p(\data_i|I,\hyperpars) &=& \sum_{q=S}^G p(\data_i|q,I,\hyperpars)\,P_q \\
+1 &=& \sum_{q=S}^G P_q \\
+p(\alldata|I,\hyperpars) &=& \prod_i p(\data_i|I,\hyperpars) \\
+p(\data_i|k,\amplitude_{ki},I) &=& \normal(\data_i|\amplitude_{ki},\Sigma_i^2) \\
+p(\data_i|k,I,\hyperpars) &=& \int p(\data_i|k,\amplitude_{ki},I)\,p(\amplitude_{ki}|k,\hyperpars)\,\dd \amplitude_{ki} \\
+p(\data_i|I,\hyperpars) &=& \sum_k p(\data_i|k,I,\hyperpars)\,P_k \\
+1 &=& \sum_k P_k \\
+p(\alldata|I,\hyperpars) &=& \prod_i p(\data_i|I,\hyperpars) \\
+\end{eqnarray}
+
 \end{document}
