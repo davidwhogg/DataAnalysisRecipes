@@ -14,6 +14,9 @@ matplotlib.use('Agg')
 import pylab as plt
 import scipy.optimize as op
 
+prefix = 'toy-colors'
+suffix = 'png'
+
 def make_truth():
     nstar = 100
     ngalaxy = 1000
@@ -159,26 +162,26 @@ def plot_two_classes(xy, truec, plotc, prefix, method):
 def main():
     np.random.seed(42)
     truexy, trueclass = make_truth()
-    plot_class(truexy, trueclass, 'toy-truth.png')
+    plot_class(truexy, trueclass, '%s-truth.%s' % (prefix, suffix))
     noisyxy, noisyclass, noisyinvvar = noisify(truexy, trueclass)
-    plot_class(noisyxy, trueclass, 'toy-noisy.png')
-    plot_class(noisyxy, trueclass, 'toy-nolab.png', label=False)
+    plot_class(noisyxy, trueclass, '%s-noisy.%s' % (prefix, suffix))
+    plot_class(noisyxy, trueclass, '%s-nolab.%s' % (prefix, suffix), label=False)
     modelxy, modelclass = make_models()
     hyperpars = np.ones(len(modelclass)).astype('float')
-    plot_class(truexy, trueclass, 'toy-models-truth.png', modelxy=modelxy, modelc=modelclass, hpars=hyperpars)
-    plot_class(noisyxy, trueclass, 'toy-models-noisy.png', modelxy=modelxy, modelc=modelclass, hpars=hyperpars)
-    plot_class(noisyxy, trueclass, 'toy-models-nolab.png', modelxy=modelxy, modelc=modelclass, hpars=hyperpars, label=False)
-    plot_two_classes(noisyxy, trueclass, trueclass, 'toy-true', 'truth')
+    plot_class(truexy, trueclass, '%s-models-truth.%s' % (prefix, suffix), modelxy=modelxy, modelc=modelclass, hpars=hyperpars)
+    plot_class(noisyxy, trueclass, '%s-models-noisy.%s' % (prefix, suffix), modelxy=modelxy, modelc=modelclass, hpars=hyperpars)
+    plot_class(noisyxy, trueclass, '%s-models-nolab.%s' % (prefix, suffix), modelxy=modelxy, modelc=modelclass, hpars=hyperpars, label=False)
+    plot_two_classes(noisyxy, trueclass, trueclass, '%s-true' % (prefix), 'truth')
     x, y = noisyxy
     maxlclass = np.zeros(len(x)) - 1
     for i in range(len(x)):
         maxlclass[i] = modelclass[ml_model(x[i], y[i], noisyinvvar[i], modelxy, hyperpars)]
-    plot_two_classes(noisyxy, trueclass, maxlclass, 'toy-maxl', 'maximum likelihood')
+    plot_two_classes(noisyxy, trueclass, maxlclass, '%s-maxl' % (prefix), 'maximum likelihood')
     marginalizedclass = np.zeros(len(x))
     for i in range(len(x)):
         if marginalized_ln_likelihood(x[i], y[i], noisyinvvar[i], modelxy, hyperpars, modelclass, 1) > marginalized_ln_likelihood(x[i], y[i], noisyinvvar[i], modelxy, hyperpars, modelclass, 0):
             marginalizedclass[i] = 1
-    plot_two_classes(noisyxy, trueclass, marginalizedclass, 'toy-flat', 'flat priors')
+    plot_two_classes(noisyxy, trueclass, marginalizedclass, '%s-flat' % (prefix), 'flat priors')
 
     # optimize WITHOUT using trueclass
     for maxfit in [32, 64, 128, 256, 512, 1024, 2048, 4096]:
@@ -194,13 +197,13 @@ def main():
         thishyperpars = besthyperpars - logsum(besthyperpars)
         hyperpars = thishyperpars
         print hyperpars
-        plot_class(truexy, trueclass, 'toy-models-hier-blind-truth.png', modelxy=modelxy, modelc=modelclass, hpars=hyperpars)
-        plot_class(noisyxy, trueclass, 'toy-models-hier-blind-noisy.png', modelxy=modelxy, modelc=modelclass, hpars=hyperpars)
-        plot_class(noisyxy, trueclass, 'toy-models-hier-blind-nolab.png', modelxy=modelxy, modelc=modelclass, hpars=hyperpars, label=False)
+        plot_class(truexy, trueclass, '%s-models-hier-blind-truth.%s' % (prefix, suffix), modelxy=modelxy, modelc=modelclass, hpars=hyperpars)
+        plot_class(noisyxy, trueclass, '%s-models-hier-blind-noisy.%s' % (prefix, suffix), modelxy=modelxy, modelc=modelclass, hpars=hyperpars)
+        plot_class(noisyxy, trueclass, '%s-models-hier-blind-nolab.%s' % (prefix, suffix), modelxy=modelxy, modelc=modelclass, hpars=hyperpars, label=False)
         for i in range(len(x)):
             if marginalized_ln_likelihood(x[i], y[i], noisyinvvar[i], modelxy, hyperpars, modelclass, 1) > marginalized_ln_likelihood(x[i], y[i], noisyinvvar[i], modelxy, hyperpars, modelclass, 0):
                 marginalizedclass[i] = 1
-        plot_two_classes(noisyxy, trueclass, marginalizedclass, 'toy-hier-blind', 'hierarchical')
+        plot_two_classes(noisyxy, trueclass, marginalizedclass, '%s-hier-blind' % (prefix), 'hierarchical')
 
     # split into star and galaxy models for optimization; optimize
     for maxfit in [32, 64, 128, 256, 512, 1024, 2048, 4096]:
@@ -223,13 +226,13 @@ def main():
             print thishyperpars
             hyperpars[I] = thishyperpars - logsum(thishyperpars) + np.log(len(I))
         print hyperpars
-        plot_class(truexy, trueclass, 'toy-models-hier-train-truth.png', modelxy=modelxy, modelc=modelclass, hpars=hyperpars)
-        plot_class(noisyxy, trueclass, 'toy-models-hier-train-noisy.png', modelxy=modelxy, modelc=modelclass, hpars=hyperpars)
-        plot_class(noisyxy, trueclass, 'toy-models-hier-train-nolab.png', modelxy=modelxy, modelc=modelclass, hpars=hyperpars, label=False)
+        plot_class(truexy, trueclass, '%s-models-hier-train-truth.%s' % (prefix, suffix), modelxy=modelxy, modelc=modelclass, hpars=hyperpars)
+        plot_class(noisyxy, trueclass, '%s-models-hier-train-noisy.%s' % (prefix, suffix), modelxy=modelxy, modelc=modelclass, hpars=hyperpars)
+        plot_class(noisyxy, trueclass, '%s-models-hier-train-nolab.%s' % (prefix, suffix), modelxy=modelxy, modelc=modelclass, hpars=hyperpars, label=False)
         for i in range(len(x)):
             if marginalized_ln_likelihood(x[i], y[i], noisyinvvar[i], modelxy, hyperpars, modelclass, 1) > marginalized_ln_likelihood(x[i], y[i], noisyinvvar[i], modelxy, hyperpars, modelclass, 0):
                 marginalizedclass[i] = 1
-        plot_two_classes(noisyxy, trueclass, marginalizedclass, 'toy-hier-train', 'hierarchical w training')
+        plot_two_classes(noisyxy, trueclass, marginalizedclass, '%s-hier-train' % (prefix), 'hierarchical w training')
 
     return None
 
