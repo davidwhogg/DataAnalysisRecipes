@@ -18,35 +18,37 @@ reserved.
 If you have interest in using or re-using any of this content, get in
 touch with Hogg.
 
-### Notes to selves: ###
+### Notes to self: ###
 
 When I want to import stuff from the old SVN repository, I do the
 following:
 
-* I create a new github repository called `foo` and follow the svn
-  import instructions.
+1. I create a new github repository called `foo` and follow the svn
+   import instructions.
 
-* I `git clone` that repository and do things like move the files into
-  a directory structure that won't conflict with the current
-  structure, like:
+2. I `git clone` that repository and do things like move the files into
+   a directory structure that won't conflict with the current
+   structure, like:
 
-    git clone git@github.com:davidwhogg/foo.git
-    cd foo
-    mkdir straightline
-    git mv *.pdf straightline
-    # etc
-    # . . .
-    git commit -a -m "fixed up directory structure"
-    git push
+     git clone git@github.com:davidwhogg/foo.git
+     cd foo
+     mkdir straightline
+     git mv *.pdf straightline
+     # etc
+     # . . .
+     git commit -a -m "fixed up directory structure"
+     git push
 
-* I make a subtree merge or something like that (I am new to all this)
-  like so:
+3. I make a subtree merge or something like that (I am new to all this)
+   like so:
 
-    cd
-    cd DataAnalysisRecipes
-    git pull # to get up-to-date
-    git remote add foo git@github.com:davidwhogg/foo.git
-    git fetch foo
-    git merge foo/master
-    # possibly need a git commit here?
-    git push
+     cd
+     cd DataAnalysisRecipes
+     git pull # to get up-to-date
+     git remote add foo git@github.com:davidwhogg/foo.git
+     git fetch foo
+     git merge foo/master
+     # possibly need a git commit here?
+     git push
+
+4. Then I delete the foo repo from github so as not to confuse me.
