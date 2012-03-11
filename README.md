@@ -6,7 +6,7 @@ Chapters from Hogg's non-existent book.
 
 (Contributions have come from all of the following.)
 
-* David W. Hogg, New York University, <http://cosmo.nyu.edu/hogg/>
+* David W. Hogg, New York University
 * Jo Bovy, Institute for Advanced Study
 * Dustin Lang, Princeton University
 
@@ -49,7 +49,6 @@ following:
      git remote add foo git@github.com:davidwhogg/foo.git
      git fetch foo
      git merge foo/master
-     # possibly need a git commit here?
      git push
 
 4. Then I delete the foo repo from github so as not to confuse me.
