@@ -50,4 +50,4 @@ following:
         git merge foo/master
         git push
 
-4. Then I delete the foo repo from github so as not to confuse me.
+4. Then I delete the `foo` repo from github so as not to confuse me.
