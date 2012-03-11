@@ -28,17 +28,16 @@ following:
 2. I `git clone` that repository and do things like move the files into
    a directory structure that won't conflict with the current
    structure, like:
-   ```
-   cd
-   git clone git@github.com:davidwhogg/foo.git
-   cd foo
-   mkdir straightline
-   git mv *.pdf straightline
-   # etc
-   # . . .
-   git commit -a -m "fixed up directory structure"
-   git push
-   ```
+
+        cd
+        git clone git@github.com:davidwhogg/foo.git
+        cd foo
+        mkdir straightline
+	git mv *.pdf straightline
+	# etc
+	# . . .
+	git commit -a -m "fixed up directory structure"
+	git push
 
 3. I make a subtree merge or something like that (I am new to all this)
    like so:
