@@ -18,26 +18,6 @@
 \usepackage{amssymb,amsmath,mathrsfs,../hogg_endnotes,natbib}
 \usepackage{float,graphicx}
 
-%%Figure caption
-\makeatletter
-\newsavebox{\tempbox}
-\newcommand{\@makefigcaption}[2]{%
-\vspace{10pt}{#1.--- #2\par}}%
-\renewcommand{\figure}{\let\@makecaption\@makefigcaption\@float{figure}}
-\makeatother
-
-\newcommand{\exampleplot}[1]{%
-\begin{center}%
-\includegraphics[width=0.5\textwidth]{#1}%
-\end{center}%
-}
-\newcommand{\exampleplottwo}[2]{%
-\begin{center}%
-\includegraphics[width=0.5\textwidth]{#1}%
-\includegraphics[width=0.5\textwidth]{#2}%
-\end{center}%
-}
-
 \setlength{\emergencystretch}{2em}%No overflow
 
 \newcommand{\notenglish}[1]{\textsl{#1}}
@@ -45,7 +25,6 @@
 \newcommand{\apriori}{\notenglish{a~priori}}
 \newcommand{\adhoc}{\notenglish{ad~hoc}}
 \newcommand{\etal}{\notenglish{et al.}}
-\newcommand{\eg}{\notenglish{e.g.}}
 
 \newcommand{\documentname}{document}
 \newcommand{\sectionname}{Section}
@@ -133,16 +112,17 @@ specific examples.
 \end{abstract}
 
 \noindent
-What is my goal in writing this \documentname?  It is to put a wet blanket
-on some of the fires burning in data analysis between frequentists and
-Bayesians, because (of course) there is no conflict between these
-groups.  Often there are seeming conflicts at ``punchline level''
-between some kind of frequentist conclusion and some kind of Bayesian
-conclusion.  However, when each case is considered carefully, there
-can't be a conflict, because frequentist and Bayesian analyses
-\emph{answer different questions}.  One answers questions about how
-well models explain data, the other can also answer questions about
-which model is more probable and by how much.
+What is my goal in writing this \documentname?  It is to put a wet
+blanket on some of the fires burning in data analysis between
+frequentists and Bayesians, because (of course) there is no conflict
+between these groups.  Often there are seeming conflicts at
+``punchline level'' between some kind of frequentist conclusion and
+some kind of Bayesian conclusion.  However, when each case is
+considered carefully, there can't be a conflict, because frequentist
+and Bayesian analyses \emph{answer different questions}.  One answers
+questions about how well models explain data, the other can also
+answer questions about the relative plausibilities of the models, or
+how to weight them when making new predictions.
 
 Many punchline-level differences between frequentists and Bayesians
 are phrased in terms of what each investigator would \emph{decide} in
