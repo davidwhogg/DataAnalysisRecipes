@@ -12,8 +12,7 @@ Chapters from Hogg's non-existent book.
 
 ### License: ###
 
-All content Copyright 2010 2011 2012 the authors.  All rights
-reserved.
+**Copyright 2010 2011 2012 the authors.  All rights reserved.**
 
 If you have interest in using or re-using any of this content, get in
 touch with Hogg.
@@ -29,26 +28,28 @@ following:
 2. I `git clone` that repository and do things like move the files into
    a directory structure that won't conflict with the current
    structure, like:
-
-     cd
-     git clone git@github.com:davidwhogg/foo.git
-     cd foo
-     mkdir straightline
-     git mv *.pdf straightline
-     # etc
-     # . . .
-     git commit -a -m "fixed up directory structure"
-     git push
+   ```
+   cd
+   git clone git@github.com:davidwhogg/foo.git
+   cd foo
+   mkdir straightline
+   git mv *.pdf straightline
+   # etc
+   # . . .
+   git commit -a -m "fixed up directory structure"
+   git push
+   ```
 
 3. I make a subtree merge or something like that (I am new to all this)
    like so:
-
-     cd
-     cd DataAnalysisRecipes
-     git pull # to get up-to-date
-     git remote add foo git@github.com:davidwhogg/foo.git
-     git fetch foo
-     git merge foo/master
-     git push
+   ```
+   cd
+   cd DataAnalysisRecipes
+   git pull # to get up-to-date
+   git remote add foo git@github.com:davidwhogg/foo.git
+   git fetch foo
+   git merge foo/master
+   git push
+   ```
 
 4. Then I delete the foo repo from github so as not to confuse me.
