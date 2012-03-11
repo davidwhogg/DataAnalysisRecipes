@@ -1,0 +1,149 @@
+% All content Copyright 2011 David W. Hogg (NYU).
+% All rights reserved.
+
+% to-do
+% -----
+% - Write!
+% - Make consistent style file that deals with all the definitions, etc, for this and the other notes.
+
+\documentclass[12pt,twoside]{article}
+\usepackage{amssymb,amsmath,mathrsfs,,hogg_endnotes,natbib}
+
+%%Figure caption
+\makeatletter
+\newsavebox{\tempbox}
+\newcommand{\@makefigcaption}[2]{%
+\vspace{10pt}{#1.--- #2\par}}%
+\renewcommand{\figure}{\let\@makecaption\@makefigcaption\@float{figure}}
+\makeatother
+
+\setlength{\emergencystretch}{2em}%No overflow
+
+\newcommand{\notenglish}[1]{\textsl{#1}}
+\newcommand{\aposteriori}{\notenglish{a~posteriori}}
+\newcommand{\apriori}{\notenglish{a~priori}}
+\newcommand{\adhoc}{\notenglish{ad~hoc}}
+\newcommand{\etal}{\notenglish{et al.}}
+\newcommand{\eg}{\notenglish{e.g.}}
+
+\newcommand{\documentname}{document}
+\newcommand{\sectionname}{Section}
+\newcommand{\equationname}{equation}
+\newcommand{\problemname}{Exercise}
+\newcommand{\solutionname}{Solution}
+\newcommand{\notename}{note}
+
+\newcounter{problem}
+\newenvironment{problem}{\paragraph{\problemname~\theproblem:}\refstepcounter{problem}}{}
+\newenvironment{comments}{\paragraph{\commentsname:}}{}
+\newcommand{\affil}[1]{{\footnotesize\textsl{#1}}}
+
+% matrix stuff
+\newcommand{\mmatrix}[1]{\boldsymbol{#1}}
+\newcommand{\inverse}[1]{{#1}^{-1}}
+\newcommand{\transpose}[1]{{#1}^{\scriptscriptstyle \top}}
+\newcommand{\mA}{\mmatrix{A}}
+\newcommand{\mAT}{\transpose{\mA}}
+\newcommand{\mC}{\mmatrix{C}}
+\newcommand{\mCinv}{\inverse{\mC}}
+\newcommand{\mE}{\mmatrix{E}}
+\newcommand{\mQ}{\mmatrix{Q}}
+\newcommand{\mS}{\mmatrix{S}}
+\newcommand{\mX}{\mmatrix{X}}
+\newcommand{\mY}{\mmatrix{Y}}
+\newcommand{\mYT}{\transpose{\mY}}
+\newcommand{\mZ}{\mmatrix{Z}}
+\newcommand{\vhat}{\mmatrix{\hat{v}}}
+
+% parameter vectors
+\newcommand{\parametervector}[1]{\mmatrix{\vec{#1}}}
+\newcommand{\pvtheta}{\parametervector{\theta}}
+
+% set stuff
+\newcommand{\setofall}[3]{\{{#1}\}_{{#2}}^{{#3}}}
+\newcommand{\allq}{\setofall{q_i}{i=1}{N}}
+\newcommand{\allx}{\setofall{x_i}{i=1}{N}}
+\newcommand{\ally}{\setofall{y_i}{i=1}{N}}
+\newcommand{\allxy}{\setofall{x_i,y_i}{i=1}{N}}
+\newcommand{\allsigmay}{\setofall{\sigma_{yi}^2}{i=1}{N}}
+\newcommand{\allC}{\setofall{\mC_i}{i=1}{N}}
+
+% other random multiply used math symbols
+\renewcommand{\d}{\mathrm{d}}
+\newcommand{\like}{\mathscr{L}}
+\newcommand{\Pbad}{P_{\mathrm{b}}}
+\newcommand{\Ybad}{Y_{\mathrm{b}}}
+\newcommand{\Vbad}{V_{\mathrm{b}}}
+\newcommand{\bperp}{b_{\perp}}
+\newcommand{\mean}[1]{\left<{#1}\right>}
+\newcommand{\meanZ}{\mean{\mZ}}
+\newcommand{\best}{\mathrm{best}}
+
+% header stuff
+\renewcommand{\MakeUppercase}[1]{#1}
+\pagestyle{myheadings}
+\renewcommand{\sectionmark}[1]{\markright{\thesection.~#1}}
+\markboth{Model complexity}{}
+
+% note stuff
+\newcommand{\note}[1]{\endnote{#1}}
+\def\enotesize{\normalsize}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}} % the ONE footnote needs this
+
+\begin{document}
+\thispagestyle{plain}\raggedbottom
+\section*{Data analysis recipes:\ \\
+  What is a model?\footnotemark}
+
+\footnotetext{The \notename s begin on page~\pageref{note:first},
+  including the license\note{\label{note:first} Copyright 2011 by the
+    author.  You may copy and distribute this document provided that
+    you make no changes to it whatsoever.}  and the
+  acknowledgements\note{It is a pleasure to thank Coryn Bailer-Jones
+    (MPIA), Jo Bovy (IAS), Dustin Lang (Princeton) and Sam Roweis
+    (deceased) for valuable discussions.  This research was partially
+    supported by NASA, the NSF, and the Alexander von Humboldt
+    Foundation.  This research made use of the Python programming
+    language and the open-source Python packages scipy, numpy, and
+    matplotlib.}.}
+
+\noindent
+David~W.~Hogg\\
+\affil{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New~York~University}\\
+\affil{Max-Planck-Institut f\"ur Astronomie, Heidelberg}
+%% \\[1ex]
+%% Jo~Bovy\\
+%% \affil{Institute~for~Advanced~Study, Princeton}
+%% \\[1ex]
+%% Dustin~Lang\\
+%% \affil{Princeton University Observatory}
+
+\begin{abstract}
+  All the inference in this (nonexistent, never to be completed) book
+  involves the comparison of models and data.  Here we lay out our
+  specific meaning of the word ``model''; the short summary is that a
+  model is an approximate but justified expression for (something
+  proportional to) the probability of the data, usually as a function
+  of model parameters.  This is also called a ``likelihood function''
+  in many contexts.  Importantly, model specification requires
+  specification of the noise properties of the data.  Many things
+  conventionally described as ``models'' do not meet the criteria
+  outlined here.
+\end{abstract}
+
+Hello world!
+
+\clearpage
+\markright{Notes}\theendnotes
+
+\clearpage
+\begin{thebibliography}{}\markright{References}
+\bibitem[Bovy, Hogg, \& Roweis(2009)]{bovy}
+  Bovy,~J., Hogg,~D.~W., \& Roweis, S.~T., 2009,
+  Extreme deconvolution: inferring complete distribution functions from noisy, heterogeneous, and incomplete observations, 
+  arXiv:0905.2979 [stat.ME]
+\end{thebibliography}
+
+\end{document}
+
+\end{document}

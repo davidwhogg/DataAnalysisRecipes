@@ -1,0 +1,355 @@
+\documentclass[12pt,twoside]{article}
+\usepackage{amssymb,amsmath,mathrsfs,,hogg_endnotes,natbib}
+
+%%Figure caption
+\makeatletter
+\newsavebox{\tempbox}
+\newcommand{\@makefigcaption}[2]{%
+\vspace{10pt}{#1.--- #2\par}}%
+\renewcommand{\figure}{\let\@makecaption\@makefigcaption\@float{figure}}
+\makeatother
+
+\setlength{\emergencystretch}{2em}%No overflow
+
+\newcommand{\notenglish}[1]{\textsl{#1}}
+\newcommand{\aposteriori}{\notenglish{a~posteriori}}
+\newcommand{\apriori}{\notenglish{a~priori}}
+\newcommand{\adhoc}{\notenglish{ad~hoc}}
+\newcommand{\etal}{\notenglish{et al.}}
+\newcommand{\eg}{\notenglish{e.g.}}
+
+\newcommand{\documentname}{document}
+\newcommand{\sectionname}{Section}
+\newcommand{\equationname}{equation}
+\newcommand{\problemname}{Exercise}
+\newcommand{\solutionname}{Solution}
+\newcommand{\notename}{note}
+
+\newcounter{problem}
+\newenvironment{problem}{\paragraph{\problemname~\theproblem:}\refstepcounter{problem}}{}
+\newenvironment{comments}{\paragraph{\commentsname:}}{}
+\newcommand{\affil}[1]{{\footnotesize\textsl{#1}}}
+
+% matrix stuff
+\newcommand{\mmatrix}[1]{\boldsymbol{#1}}
+\newcommand{\inverse}[1]{{#1}^{-1}}
+\newcommand{\transpose}[1]{{#1}^{\scriptscriptstyle \top}}
+\newcommand{\mA}{\mmatrix{A}}
+\newcommand{\mAT}{\transpose{\mA}}
+\newcommand{\mC}{\mmatrix{C}}
+\newcommand{\mCinv}{\inverse{\mC}}
+\newcommand{\mE}{\mmatrix{E}}
+\newcommand{\mQ}{\mmatrix{Q}}
+\newcommand{\mS}{\mmatrix{S}}
+\newcommand{\mX}{\mmatrix{X}}
+\newcommand{\mY}{\mmatrix{Y}}
+\newcommand{\mYT}{\transpose{\mY}}
+\newcommand{\mZ}{\mmatrix{Z}}
+\newcommand{\vhat}{\mmatrix{\hat{v}}}
+
+% parameter vectors
+\newcommand{\parametervector}[1]{\mmatrix{\vec{#1}}}
+\newcommand{\pvtheta}{\parametervector{\theta}}
+
+% set stuff
+\newcommand{\setofall}[3]{\{{#1}\}_{{#2}}^{{#3}}}
+\newcommand{\allq}{\setofall{q_i}{i=1}{N}}
+\newcommand{\allx}{\setofall{x_i}{i=1}{N}}
+\newcommand{\ally}{\setofall{y_i}{i=1}{N}}
+\newcommand{\allxy}{\setofall{x_i,y_i}{i=1}{N}}
+\newcommand{\allsigmay}{\setofall{\sigma_{yi}^2}{i=1}{N}}
+\newcommand{\allC}{\setofall{\mC_i}{i=1}{N}}
+
+% other random multiply used math symbols
+\renewcommand{\d}{\mathrm{d}}
+\newcommand{\like}{\mathscr{L}}
+\newcommand{\Pbad}{P_{\mathrm{b}}}
+\newcommand{\Ybad}{Y_{\mathrm{b}}}
+\newcommand{\Vbad}{V_{\mathrm{b}}}
+\newcommand{\bperp}{b_{\perp}}
+\newcommand{\mean}[1]{\left<{#1}\right>}
+\newcommand{\meanZ}{\mean{\mZ}}
+\newcommand{\best}{\mathrm{best}}
+
+% header stuff
+\renewcommand{\MakeUppercase}[1]{#1}
+\pagestyle{myheadings}
+\renewcommand{\sectionmark}[1]{\markright{\thesection.~#1}}
+\markboth{Model complexity}{}
+
+% note stuff
+\newcommand{\note}[1]{\endnote{#1}}
+\def\enotesize{\normalsize}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}} % the ONE footnote needs this
+
+\begin{document}
+\thispagestyle{plain}\raggedbottom
+\section*{Data analysis recipes:\ \\
+  Comparing models of different complexity\footnotemark}
+
+\footnotetext{The \notename s begin on page~\pageref{note:first},
+  including the license\note{\label{note:first} Copyright 2011 by the
+    authors.  You may copy and distribute this document provided that
+    you make no changes to it whatsoever.}  and the
+  acknowledgements\note{Above all we owe a debt to Sam Roweis (Toronto
+    \& NYU, now deceased), who taught us everything we know about
+    model selection.  In addition it is a pleasure to thank Iain
+    Murray (Edinburgh) and Hans-Walter Rix (MPIA) for valuable
+    comments and discussions.  This research was partially supported
+    by NASA (ADP grant NNX08AJ48G), NSF (grant AST-0908357), and a
+    Research Fellowship of the Alexander von Humboldt Foundation.
+    This research made use of the Python programming language and the
+    open-source Python packages scipy, numpy, and matplotlib.}.}
+
+\noindent
+David~W.~Hogg\\
+\affil{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New~York~University}\\
+\affil{Max-Planck-Institut f\"ur Astronomie, Heidelberg}
+\\[1ex]
+Jo~Bovy\\
+\affil{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New~York~University}
+\\[1ex]
+Dustin~Lang\\
+\affil{Princeton University Observatory}
+
+\begin{abstract}
+  Frequently the data analyst is faced with the comparison of models
+  of very different levels of complexity or freedom to fit or explain
+  the data.  We begin by discussing the measure of model complexity,
+  in part to criticize the idea that it is directly related to the
+  number of parameters in the model: It is not, except in rare
+  circumstances.  Model selection---choosing among models of differing
+  complexity---can often be avoided; we advocate avoiding it.  If it
+  cannot be avoided, we discuss options.  We recommend the data-driven
+  technique of leave-one-out cross-validation, which locates the model
+  that best predicts left-out data.
+\end{abstract}
+
+\section{Model complexity every day}
+
+A scientist makes model complexity decisions---implicitly or
+explicitly---every day.  For example, on a trivial scale, any decision
+about binning a histogram (small bins or big bins) or fitting a curve
+(linear or quadratic) or combining data (average all the data taken on
+the same day or all the data taken in the same year) is a decision
+about model complexity; in each case the decision is about how much
+freedom to give to some free function.
+
+At a grander scale, many important scientific discoveries are model
+complexity decisions.  For example, the decision that data on a star's
+radial velocity as a function of time is better described by a model
+that includes perturbations from an orbiting exoplanet is
+simultaneously a model selection decision (a model that includes the
+freedom of an exoplanet perturbation is a better description than a
+model that doesn't have that freedom) and an exoplanet discovery.
+That discovery is a decision to increase model complexity, but also
+many scientific discoveries are decisions to decrease model
+complexity; consider for example the heliocentric model of the Solar
+System.  It was adopted in part because it led to an enormous decrease
+in the complexity of the quantitative Solar System model, reducing
+greatly the number of free parameters.
+
+Of course a model with more freedom will, in general, lead to a better
+description of the data in the trivial sense that it can reproduce the
+observed features more closely.  But a model with more freedom will
+also, in general, be less predictive, because finite uncertainties in
+the parameters will propagate into greater uncertainty in prediction
+as the number of imprecisely determined (independent) parameters
+increases.  The challenge of model selection is to balance these
+considerations; a scientifically good model must both describe the
+existing data well and also predict new or left-out data well.\note{In
+  this sense, Ockham's Razor, na\"ively construed, is wrong, or
+  perhaps useless: It is not the case that the simplest model that
+  explains the data is the best.  First of all, the scientist is
+  (almost) never presented with two models that are \emph{equally}
+  good at explaining the data.  Second of all, even if the two models
+  \emph{are} equal at explaining existing data, are they equal at
+  predicting new data?  Some Bayesians have taken Ockham's Razor very
+  seriously, claiming that Bayesian inference and Bayesian model
+  selection justifies Ockham's Razor, but this view relies on a
+  careful interpretation of Ockham that doesn't necessarily do justice
+  to the original.}
+
+\section{The standard lore}
+
+The concept of model complexity is somewhat slippery.  In the case of
+a purely linear model, the model complexity is directly related to the
+number of free parameters, but in every other case it is less
+well-defined.  We will begin with a few examples of models of
+differing or variable complexity to get at some of the issues in the
+\emph{definition} of model complexity.  After that, we will turn to
+methods for choosing among models of different complexity.
+
+linear case
+
+then consider linear components with no support at the position of the
+data; do they contribute?
+
+model selection might illuminate this.
+
+\section{Infinite complexity}
+
+One model that serves as an example to illustrate that model
+complexity is not directly related to the \emph{number} of parameters
+is the following.\note{We owe this model to Yann LeCun (NYU), via Sam
+  Roweis.}  Imagine having $N$ data points $(x_i,y_i)$ in some finite
+domain in $x$ and $y$, with observational uncertainties of some kind
+we need not specify precisely for the moment.  Now fit to these data
+the model
+\begin{equation}\label{eq:lecun}
+y_i = A\,\sin (k\,x + \phi)
+  \quad ,
+\end{equation}
+where $A$ is an amplitude, $k$ is a wave number (or frequency), and
+$\phi$ is a phase.  With suitable---and suitably
+\emph{precise}---specification of these parameters, it is possible to
+\emph{exactly fit all $N$ data points, no matter what they are}.  The
+only assumption is that $x_i \ne x_j$ for $i \ne j$.  Furthermore,
+there is not just one location in the $(A,k,\phi)$ space that fits all
+the data points, there is an enormous infinity of solutions, no matter
+how large $N$.
+
+In the standard situation of linear fitting, if there are $K$
+components---and thus $K$ free parameters---it is possible to match
+\emph{exactly} at most $K$ data points, and even this is only
+guaranteed if all of the components have support on the $x$ range of
+the data and they are appropriately independent under the $x$-sampling
+of the data.  If we equate model complexity with the power to flexibly
+fit arbitrary data, then the three-parameter sinusoidal model of
+\equationname~(\ref{eq:lecun}) has as much complexity as a linear
+model with an \emph{infinite number of parameters}.
+
+Of course the implied paradox has a simple resolution: In order to fit
+the data precisely, the parameters of the model---especially the wave
+number $k$---must be specified to enormous \emph{precision}.  That is,
+the $K$-component linear model gets its power to fit by having a large
+number of parameters.  The sinusoidal model gets its power to fit by
+having a large number of digits of accuracy devoted to the $k$
+parameter (or, in some limits, the $A$ parameter).
+
+Hogg:  Perhaps give a specific illustration of this here.---Hogg
+
+When a linear model with $K=N$ is used to exactly fit all $N$ data
+points, the $N$ parameters can be seen as a simple invertible linear
+transformation of the data; that is, the parameters are (in some
+sense) a lossless encoding of the data.  When the sinusoidal model is
+used to exactly fit all $N$ points, the model again is being used to
+losslessly encode the data, but now the encoding is nonlinear, and
+requires of the parameters enormous precision in their representation.
+This enormous precision is required because all of the information in
+all $N$ data points---all the bits, if you like---must be encoded into
+only three parameters.
+
+\section{Continuously variable complexity}
+
+Another model that serves to illustrate that model complexity is not
+directly related to the number of parameters is the following, in
+which there are \emph{far more parameters} than data points, but
+nonetheless the model has limited freedom.  The freedom of the model
+is controlled by a continuous smoothness parameter, which effectively
+makes this a model with continuously variable complexity.
+
+Imagine a set of $N$ data points $(x_i,y_i)$ which deviate from a
+$K$-dimensional (or $K$-parameter) linear model by the addition (to
+the $y$ values) of noise samples $e_i$ drawn from Gaussian
+distributions of (presumed known) variances $\sigma_{yi}^2$.  The
+model can be written as
+\begin{equation}
+y_i = \sum_{j=1}^K
+  a_{ij}\,x_j + e_i
+  \quad ,
+\end{equation}
+or, in matrix notation,
+\begin{equation}
+\mY = \mA\,\mX + \mE
+  \quad ,
+\end{equation}
+where $\mY$ is an $N$-dimensional vector of the $y_i$, $\mA$ is an
+$N\times K$ matrix of (presumed known) coefficients $a_{ij}$, $\mX$ is
+a $K$-dimensional vector of the parameters $x_j$, and $\mE$ is an
+$N$-dimensional vector of the noise draws or errors $e_i$.  The
+standard thing to do is to minimize a $\chi^2$ scalar
+\begin{equation}
+\chi^2 = \sum_{i=1}^N
+  \frac{\left[y_i - a_{ij}\,x_j\right]^2}{\sigma_{yi}^2}
+  \quad ,
+\end{equation}
+where this is scientifically justified when all the aforementioned
+assumptions (linear model space includes the truth, noise is Gaussian
+with known variances, and so on) are true.  This objective ($\chi^2$)
+is truly a scalar in the sense that it has a compact matrix
+representation
+\begin{equation}
+\chi^2 = \transpose{\left[\mY-\mA\,\mX\right]}
+  \,\mCinv\,\left[\mY-\mA\,\mX\right]
+  \quad .
+\end{equation}
+In this situation, when $N<K$, the best-fit value for the parameters
+(the elements of $\mX$) is given by
+\begin{equation}
+\mX_\best = \inverse{\left[\mAT\,\mCinv\,\mA\right]}
+  \,\left[\mAT\,\mCinv\,\mY\right]
+  \quad ,
+\end{equation}
+which was found by forcing the full derivative of the $\chi^2$ scalar
+to vanish.  In this formulation, if the (errors of the) $y_i$ are
+independent, the covariance matrix $\mC$ is the diagonal $N\times N$
+matrix with the noise variances $\sigma_{yi}^2$ on the diagonal.
+
+Frequently (for engineers, if not astronomers) the condition $N<K$
+does not hold, but there are smoothness expectations that provide
+enough support to set the parameters nonetheless.  The simplest
+implementation of a smoothness prior or regularization is the addition
+to $\chi^2$ of a quadratic penalty for derivatives in the parameters
+$x_j$.  In this picture, we imagine the parameters $x_j$ are ordered
+such that nearby $j$ are nearby in the appropriate sense.  The scalar
+objective gets modified in this case to
+\begin{equation}
+\chi_r^2 = \sum_{i=1}^N
+  \frac{\left[y_i - a_{ij}\,x_j\right]^2}{\sigma_{yi}^2}
+  + \epsilon\,\sum_{j=1}^{K-1}\left[x_{j+1}-x_j\right]^2
+  \quad ,
+\end{equation}
+where $\epsilon$ is a control parameter that controls the smoothness
+of the model, or the stiffness of it, or else the model complexity in
+some sense.  Under this objective, the best fit parameter vector is
+given by
+\begin{equation}
+\mX_\best = \inverse{\left[\mAT\,\mCinv\,\mA + \epsilon\,\mQ\right]}
+  \,\left[\mAT\,\mCinv\,\mY\right]
+  \quad ,
+\end{equation}
+where the $K\times K$ matrix $\mQ$ is a tri-diagonal matrix that looks
+like this
+\begin{equation}
+\mQ = \left[\begin{array}{cccccc}
+    1 &-1 & 0 & 0 & 0 & 0 \\
+   -1 & 2 &-1 & 0 & 0 & 0 \\
+    0 &-1 & 2 &-1 & 0 & 0 \\
+    0 & 0 &-1 & 2 &-1 & 0 \\
+    0 & 0 & 0 &-1 & 2 &-1 \\
+    0 & 0 & 0 & 0 &-1 & 1 \\
+  \end{array}\right]
+  \quad ,
+\end{equation}
+in the case of $K=6$ parameters and generalizes in the obvious way for
+different $K$.
+
+\section{Standard decision criteria}
+
+\section{Cross-validation}
+
+\section{No need to decide?}
+
+\clearpage
+\markright{Notes}\theendnotes
+
+\clearpage
+\begin{thebibliography}{}\markright{References}
+\bibitem[Bovy, Hogg, \& Roweis(2009)]{bovy}
+  Bovy,~J., Hogg,~D.~W., \& Roweis, S.~T., 2009,
+  Extreme deconvolution: inferring complete distribution functions from noisy, heterogeneous, and incomplete observations, 
+  arXiv:0905.2979 [stat.ME]
+\end{thebibliography}
+
+\end{document}
