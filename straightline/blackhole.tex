@@ -1,0 +1,108 @@
+% This file is part of the Data Analysis Recipes project.
+% Copyright 2010 2011 2012 David W. Hogg, Jo Bovy, Dustin Lang, Hans-Walter Rix.
+
+\documentclass[12pt,preprint]{aastex}
+\newcounter{address}
+\setcounter{address}{1}
+\newcommand{\mbulge}{m_{\mathrm{b}}}
+\newcommand{\mbh}{m_{\mathrm{BH}}}
+\newcommand{\slope}{n}
+\begin{document}
+\title{The functional form of the black-hole--bulge-mass relation}
+\author{David~W.~Hogg\altaffilmark{\ref{CCPP},\ref{MPIA},\ref{email}},
+        Dustin~Lang\altaffilmark{\ref{UofT},\ref{Princeton}},
+        Jo~Bovy\altaffilmark{\ref{CCPP}},
+        Hans-Walter~Rix\altaffilmark{\ref{MPIA}}}
+\altaffiltext{\theaddress}{\label{CCPP}\refstepcounter{address}
+  Center for Cosmology and Particle Physics, Department of Physics, New York University, 4 Washington Place, New York, NY 10003, USA}
+\altaffiltext{\theaddress}{\label{MPIA}\refstepcounter{address}
+  Max-Planck-Institut f\"ur Astronomie, K\"onigstuhl 17, D-69117 Heidelberg, Germany}
+\altaffiltext{\theaddress}{\label{email}\refstepcounter{address}
+  Correspondence should be addressed to david.hogg@nyu.edu~.}
+\altaffiltext{\theaddress}{\stepcounter{address}\label{UofT}
+  Department of Computer Science, University of Toronto, 6 King's College Road, Toronto, Ontario, M5S~3G4 Canada}
+\altaffiltext{\theaddress}{\label{Princeton}\refstepcounter{address}
+  Princeton University Observatory, Princeton NJ 08544}
+
+\begin{abstract}
+We use justifiable likelihood and bayesian methods to measure the
+power-law relationship $\mbh\propto\mbulge^\slope$ between bulge mass
+$\mbulge$ and black-hole mass $\mbh$ in nearby galaxies.  We consider
+cases in which the slope $\slope$ of the relation is fixed at unity
+($\slope=1$; that is, bulge mass linearly proportional to black-hole
+mass) and cases in which the slope is free to vary.  We consider a
+model in which the relationship has finite gaussian intrinsic scatter
+and a model in which the relationship has no scatter but some galaxies
+are permitted to be ``outliers''.  When fixed at unit slope
+($\slope=1$), we find that the ratio of bulge mass to black-hole mass
+is between 400 and 960 (95-percent confidence).  When the slope is
+permitted to vary, we find $0.98<\slope<1.74$ (95-percent confidence).
+In the intrinsic-scatter model, marginalizing over all other
+parameters, we find that the intrinsic scatter in the power-law
+relation is small---between $0.04$ and $0.18$~dex (95-percent
+confidence)---where the scatter is measured perpendicular to the
+relation in log--log space.  In the outlier model, marginalizing over
+all other parameters, we find that among the galaxies in our sample,
+the highest-probability outliers from the black-hole--bulge
+relationship are NGC~4342, M~32, and NGC~3377.
+\end{abstract}
+
+This paper may require some text.
+
+\acknowledgments JB and DWH were partially supported by NASA (grant
+NNX08AJ48G) and NSF (AST-0908357).  JB was partially supported by New
+York University's Horizon fellowship.  DWH is a research fellow of the
+Alexander von Humboldt Foundation of Germany.
+
+\clearpage
+\begin{figure}
+\plotone{haeringrix-varperp-data.png}
+\caption{The data.}
+\end{figure}
+
+\clearpage
+\begin{figure}
+\plotone{haeringrix-varperp-lines.png}
+\caption{A sampling of best-fit lines from the chain of perpendicular
+  variance models.}
+\end{figure}
+
+\clearpage
+\begin{figure}
+\plotone{haeringrix-varperp-slope.png}
+\caption{A sampling of slope values from the chain of perpendicular
+  variance models.  A 95-percent confidence interval is shown.}
+\end{figure}
+
+\clearpage
+\begin{figure}
+\plotone{haeringrix-varperp-slopevar.png}
+\caption{A sampling of slope and perpendicular variance values from
+  the chain of perpendicular variance models.}
+\end{figure}
+
+\clearpage
+\begin{figure}
+\plotone{haeringrix-slopeone-int.png}
+\caption{A sampling of $y$ intercepts from the chain of fixed-slope
+  models.  The $y$ intercept is the base-10 logarithm of the black
+  hole to bulge mass ratio.  A 95-percent confidence interval is
+  shown.}
+\end{figure}
+
+\clearpage
+\begin{figure}
+\plotone{haeringrix-outlier-slopepbad.png}
+\caption{A sampling of slope and outlier fraction values from the
+  chain of outlier models.}
+\end{figure}
+
+\clearpage
+\begin{figure}
+\plotone{haeringrix-outlier-lines.png}
+\caption{A sampling of best-fit lines from the chain of outlier
+  models.  The names and fully marginalized outlier odds (see text) of
+  the highest-probability outliers are shown.}
+\end{figure}
+
+\end{document}
