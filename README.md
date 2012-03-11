@@ -34,8 +34,8 @@ following:
         cd foo
         mkdir straightline
         git mv *.pdf straightline
-        \# etc
-        \# . . .
+        # etc
+        # . . .
         git commit -a -m "fixed up directory structure"
         git push
 
@@ -44,7 +44,7 @@ following:
 
         cd
         cd DataAnalysisRecipes
-        git pull \# to get up-to-date
+        git pull # to get up-to-date
         git remote add foo git@github.com:davidwhogg/foo.git
         git fetch foo
         git merge foo/master
