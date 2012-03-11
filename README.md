@@ -33,21 +33,21 @@ following:
         git clone git@github.com:davidwhogg/foo.git
         cd foo
         mkdir straightline
-	git mv *.pdf straightline
-	\# etc
-	\# . . .
-	git commit -a -m "fixed up directory structure"
-	git push
+        git mv *.pdf straightline
+        \# etc
+        \# . . .
+        git commit -a -m "fixed up directory structure"
+        git push
 
 3. I make a subtree merge or something like that (I am new to all this)
    like so:
 
-	cd
-	cd DataAnalysisRecipes
-	git pull \# to get up-to-date
-	git remote add foo git@github.com:davidwhogg/foo.git
-	git fetch foo
-	git merge foo/master
-	git push
+        cd
+        cd DataAnalysisRecipes
+        git pull \# to get up-to-date
+        git remote add foo git@github.com:davidwhogg/foo.git
+        git fetch foo
+        git merge foo/master
+        git push
 
 4. Then I delete the foo repo from github so as not to confuse me.
