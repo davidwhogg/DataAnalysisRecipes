@@ -108,7 +108,7 @@ expectation of utility whereas the frequentist is forced to do
 something more heuristic.  In short, there are no conflicts between
 frequentists and Bayesians; frequentists make fewer assumptions and
 Bayesians have greater capabilities.  I illustrate these points with
-specific examples.
+specific examples; I also review probability calculus for the rusty.
 \end{abstract}
 
 \noindent
@@ -273,9 +273,9 @@ p(a \given b, c) &=& \frac{p(b \given a, c)\,p(a \given c)}{p(b \given c)}
 \end{eqnarray}
 where the condition $c$ must be carried through all the terms; the
 whole right-hand side must be conditioned on $c$ if the left-hand side
-is.  Of course, if $p(a \given c)$ doesn't \emph{in fact} depend on
-$c$, you can sometimes drop it, but that is an in-practice question.
-For technical reasons, I usually write Bayes's theorem like this:
+is.  Again, there was Bayes's theorem, and you can see its role in
+conversions of one kind of conditional probability into another.  For
+technical reasons, I usually write Bayes's theorem like this:
 \begin{eqnarray}\displaystyle
 p(a \given b, c) &=& \frac{1}{Z}\,p(b \given a, c)\,p(a \given c)
 \\
@@ -290,8 +290,9 @@ Here are things you \emph{can't} do:
 \mbox{\textbf{wrong:}} & & p(a \given b, c)\,p(a \given c)
 \quad;
 \end{eqnarray}
-the first over-conditions and the second has units of $a^{-2}$, which
-is absurd (for our purposes).  Know these and \emph{don't do them}.
+the first over-conditions (it is not a factorization of anything
+possible) and the second has units of $a^{-2}$, which is absurd (for
+our purposes).  Know these and \emph{don't do them}.
 
 ``Measure theory'' (for me, anyway\note{Have you noticed that I am
   \emph{not} a mathematician?}) is the theory of things in which you
@@ -305,7 +306,47 @@ p(a \given c) &=& \int p(a \given b, c)\,p(b \given c)\,\dd b
 \quad .
 \end{eqnarray}
 Both of these equations are natural consequences of the things written
-above and dimensional analysis.
+above and dimensional analysis.  Recall that because $b$ is some kind
+of arbitrary, possibly very high-dimensional mathematical object,
+these integrals can be extremely daunting in practice (see below).
+
+In rare cases, you can get factorizations that look like this:
+\begin{eqnarray}\displaystyle
+p(a, b \given c) &=& p(a \given c)\,p(b \given c)
+\quad ;
+\end{eqnarray}
+this factorization doesn't have the PDF for $a$ depend on $b$ or vice
+versa.  When this happens---and it is rare---it says that $a$ and $b$
+are ``independent'' (at least conditional on $c$).\note{The word
+  ``independent'' has many meanings in different contexts of
+  mathematics and probability; I will avoid it in what follows, except
+  in the ``iid'' or ``independent and identically distributed''
+  context.  I prefer the word ``separable'' for this situation.}  In
+many cases of data analysis, in models of data sets, we often have a
+large number of data $a_n$, indexed by $n$, each of which is not only
+independent in this sense, but also drawn from the same distribution
+function.  Data of this form are called ``independent and identically
+distributed'' or ``iid'' in the literature.  If you have a set of $N$
+iid data $a_n$, each drawn from a probability distribution $p(a_n
+\given c)$, then the probability of the full data set is simply the
+product of the individual data-point probabilities:
+\begin{eqnarray}\displaystyle
+p(\setofall{a_n}{n=1}{N} \given c) &=& \prod_{n=1}^N p(a_n \given c)
+\quad ;
+\end{eqnarray}
+this is really the definition, in some sense, of ``iid''.
+
+One last point: The terminology used above \emph{enormously overloads}
+the symbol $p(\cdot)$.  That is, we are using, in each line of this
+discussion, the function $p(\cdot)$ to mean something different; it's
+meaning is set by the letters used in its arguments.  That is a
+nomenclatural abomination.\note{Serious, non-ambiguous mathematicians
+  often distinguish between the name of the variable and the name of a
+  draw from the probability distribution for the variable, and then
+  they can write things like $p_{A|BC}(a \given b, c)$ to distinguish
+  the functions.  That seems like much better practice and we should
+  probably all adopt something like it.}  I apologize, but it is so
+standard in our business I won't change.
 
 \section{Posterior probabilities are personal.}
 
@@ -352,7 +393,10 @@ Sometimes you really do have to \emph{decide}.\note{In my experience,
   machinists who cut metal do not appreciate being given probabilistic
   plans; it is not even clear what that would mean.  Here's a shot:
   ``Please deliver to me a sampling of devices, drawn from this
-  probability distribution over plans.''}
+  probability distribution over plans.''  Of course even that wouldn't
+  help us, because we still need to decide which of the samples to
+  install at the telescope on the night we in fact observe; it would
+  only delay our decision-making.}
 
 \section{Above all, publish likelihood function evaluations!}
 
