@@ -33,7 +33,7 @@ following:
         git clone git@github.com:davidwhogg/foo.git
         cd foo
         mkdir straightline
-	git add straightline # I think this is maybe needed?
+        git add straightline # I think this is maybe needed?
         git mv *.pdf straightline
         # etc
         # . . .
