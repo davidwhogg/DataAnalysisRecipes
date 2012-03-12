@@ -218,7 +218,9 @@ PDF, from my (pragmatic, informal) point of view.  This normalization
 condition shows that $p(a)$ has units of $a^{-1}$.  Nothing else would
 integrate properly to a dimensionless result.  Even if $a$ is a
 multi-dimensional vector or list or tensor or field or even point in
-function space, the PDF must have units of $a^{-1}$.
+function space, the PDF must have units of $a^{-1}$.  In the
+multi-dimensional case, the units of $a^{-1}$ are found by taking the
+product of all the units of all the dimensions.
 
 Most problems we will encounter will have multiple parameters; even if
 we \emph{condition} $p(a)$ on some particular value of another
@@ -234,7 +236,8 @@ but you can \emph{absolutely never do} the integral
 \mbox{\textbf{wrong:}} & & \int p(a \given b)\,\dd b
 \end{eqnarray}
 because that integral would have units of $a^{-1}\,b$, which is (for
-our purposes) absurd.
+our purposes) absurd.  Despite its absurdity, this integral has been
+performed many times in error in the literature of data analyses.
 
 If you have a probability distribution for two things (``the PDF for
 $a$ and $b$''), you can always factorize it into two distributions,
