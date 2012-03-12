@@ -1,3 +1,8 @@
+'''
+This file is part of the Data Analysis Recipes project.
+Copyright 2011 David W. Hogg (NYU)
+'''
+
 if __name__ == '__main__':
     import matplotlib
     matplotlib.use('Agg')

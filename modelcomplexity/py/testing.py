@@ -1,3 +1,8 @@
+'''
+This file is part of the Data Analysis Recipes project.
+Copyright 2011 David W. Hogg (NYU)
+'''
+
 #!/usr/bin/env python
 import numpy as np
 import unittest

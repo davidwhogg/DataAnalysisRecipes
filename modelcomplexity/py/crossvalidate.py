@@ -1,6 +1,6 @@
-# code by Hogg (NYU) and Lang (Princeton)
-# Copyright 2009, 2010 Hogg & Lang
-# for now, all rights reserved
+'''
+This file is part of the Data Analysis Recipes project.
+Copyright 2009 2010 David W. Hogg (NYU) & Dustin Lang (Princeton).
 
 # notes
 # -----
@@ -10,6 +10,7 @@
 # -----------
 # - switch non-parametric model over to linear interpolation
 #   - this requires synchronized changes to the chi2 *and* wls functions
+'''
 
 from numpy import *
 # this rc block must be before the matplotlib import?
