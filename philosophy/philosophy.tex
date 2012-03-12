@@ -210,14 +210,15 @@ ignore them.  For example, if you have a continuous parameter $a$, and
 a PDF $p(a)$ for $a$, it must obey the normalization condition
 \begin{eqnarray}\displaystyle
 1 &=& \int p(a)\,\dd a
-\quad .
+\quad ,
 \end{eqnarray}
-This is almost the \emph{definition} of a PDF, from my (pragmatic,
-informal) point of view.  This normalization condition shows that
-$p(a)$ has units of $a^{-1}$.  Nothing else would integrate properly
-to a dimensionless result.  Even if $a$ is a multi-dimensional vector
-or list or tensor or field or even point in function space, the PDF
-must have units of $a^{-1}$.
+where the limits of the integral should be thought of as going over
+the entire domain of $a$.  This is almost the \emph{definition} of a
+PDF, from my (pragmatic, informal) point of view.  This normalization
+condition shows that $p(a)$ has units of $a^{-1}$.  Nothing else would
+integrate properly to a dimensionless result.  Even if $a$ is a
+multi-dimensional vector or list or tensor or field or even point in
+function space, the PDF must have units of $a^{-1}$.
 
 Most problems we will encounter will have multiple parameters; even if
 we \emph{condition} $p(a)$ on some particular value of another
@@ -303,12 +304,14 @@ like
 p(a \given c) &=& \int p(a \given b)\,p(b \given c)\,\dd b
 \\
 p(a \given c) &=& \int p(a \given b, c)\,p(b \given c)\,\dd b
-\quad .
+\quad ,
 \end{eqnarray}
-Both of these equations are natural consequences of the things written
-above and dimensional analysis.  Recall that because $b$ is some kind
-of arbitrary, possibly very high-dimensional mathematical object,
-these integrals can be extremely daunting in practice (see below).
+where again the integrals go over the entire domain of $b$ in each
+case.  Both of these equations are natural consequences of the things
+written above and dimensional analysis.  Recall that because $b$ is
+some kind of arbitrary, possibly very high-dimensional mathematical
+object, these integrals can be extremely daunting in practice (see
+below).
 
 In rare cases, you can get factorizations that look like this:
 \begin{eqnarray}\displaystyle
