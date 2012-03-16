@@ -61,12 +61,12 @@
 \renewcommand{\MakeUppercase}[1]{#1}
 \pagestyle{myheadings}
 \renewcommand{\sectionmark}[1]{\markright{\thesection.~#1}}
-\markboth{Probability theory}{}
+\markboth{Probability calculus}{Introduction}
 
 \begin{document}
 \thispagestyle{plain}\raggedbottom
-\section*{DRAFT 2012-03-10:\ Data analysis recipes:\ \\
-  Probability theory\footnotemark}
+\section*{DRAFT 2012-03-16:\ Data analysis recipes:\ \\
+  Probability calculus\footnotemark}
 
 \footnotetext{%
   The \notename s begin on page~\pageref{note:first}, including the
@@ -89,15 +89,26 @@ David~W.~Hogg\\
 %% \affil{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New York University}
 
 \begin{abstract}
-I review probability calculus for the rusty.  I connect the rules of
-probability theory (really just the rules of measure theory) to the
-operations performed in probabilistic data analysis.
+I review the rules by which probability distribution functions can
+(and cannot) be combined. I connect these rules to the operations
+performed in probabilistic data analysis.  Dimensional analysis is
+emphasized as a valuable tool for helping to construct non-wrong
+probabilistic statements.
 \end{abstract}
 
 \noindent
-What is my goal in writing this \documentname?
+When constructing the plan or basis for a probabilistic inference---a
+data analysis making use of likelihoods and also prior PDFs and
+posterior PDFs and also marginalization of nuisance parameters---the
+options are \emph{incredibly strongly constrained} by the simple rules
+of probability calculus.  That is, there are only certain ways that
+probability distribution functions (``PDFs'' in what follows)
+\emph{can} be combined to make new PDFs, compute expectation values,
+or make other kinds of non-wrong statements.  For this reason, it
+behooves the data analyst to have good familiarity and facility with
+these rules.
 
-Formally, probability theory is extremely simple.  However, it is not
+Formally, probability calculus is extremely simple.  However, it is not
 always part of a physicist's (or biologist's or chemist's or
 economist's) education; so I am going to give a very fast review right
 here.  The key idea I want to convey is that if you think about the
@@ -105,14 +116,17 @@ units or dimensions of the things you are using, you almost never go
 wrong.
 
 For space and specificity---and because it is most useful for most
-problems I encounter---I will focus on continuous parameters rather
-than binary, integer, or discrete parameters.  I also won't be
+problems I encounter---I will focus on continuous variables
+(think ``model parameters'' for the purposes of inference) rather than
+binary, integer, or discrete parameters.  I also won't always be
 specific about the domain of variables (for example whether a variable
 $a$ is defined on $0<a<1$ or $0<a<\infty$ or $-\infty<a<\infty$); the
-limits of integrals will be implicit.\note{In my world, \emph{all
-    integrals are definite integrals}.  The integral is never just the
-  anti-derivative, it is always a definite, finite, area or volume or
-  measure.}
+limits of integrals---all of which are definite---will usually be
+implicit.\note{In my world, \emph{all integrals are definite
+    integrals}.  The integral is never just the anti-derivative, it is
+  always a definite, finite, area or volume or measure.  That has to
+  do with the fact, somehow, that the rules of probability calculus
+  are an application of the rules of measure theory.}
 
 \section{Generalities}
 
@@ -227,6 +241,25 @@ some kind of arbitrary, possibly very high-dimensional mathematical
 object, these integrals can be extremely daunting in practice (see
 below).
 
+One important and confusing point about all this: The terminology used
+throughout this \documentname\ \emph{enormously overloads} the symbol
+$p(\cdot)$.  That is, we are using, in each line of this discussion,
+the function $p(\cdot)$ to mean something different; it's meaning is
+set by the letters used in its arguments.  That is a nomenclatural
+abomination.\note{Serious, non-ambiguous mathematicians often
+  distinguish between the name of the variable and the name of a draw
+  from the probability distribution for the variable, and then they
+  can write things like $p_{A|BC}(a \given b, c)$ to distinguish the
+  functions.  This permits, for example, another thing $q$ to be drawn
+  from the same distribution as $a$ by a notation like $p_{A|BC}(q
+  \given b, c)$.  In our (very bad) notation $p(q \given b, c)$ would
+  in general be different from $p(a \given b, c)$ because we take the
+  meaning of the function from the names of the argument variables.
+  See why that is very bad?.  Some explicit subscripting policy seems
+  like much better practice and we should probably all adopt something
+  like it, though I won't here.}  I apologize, but it is so standard
+in our business I won't change.
+
 In rare cases, you can get factorizations that look like this:
 \begin{eqnarray}\displaystyle
 p(a, b \given c) &=& p(a \given c)\,p(b \given c)
@@ -253,21 +286,17 @@ p(\setofall{a_n}{n=1}{N} \given c) &=& \prod_{n=1}^N p(a_n \given c)
 \end{eqnarray}
 this is really the definition, in some sense, of ``iid''.
 
-One last point: The terminology used above \emph{enormously overloads}
-the symbol $p(\cdot)$.  That is, we are using, in each line of this
-discussion, the function $p(\cdot)$ to mean something different; it's
-meaning is set by the letters used in its arguments.  That is a
-nomenclatural abomination.\note{Serious, non-ambiguous mathematicians
-  often distinguish between the name of the variable and the name of a
-  draw from the probability distribution for the variable, and then
-  they can write things like $p_{A|BC}(a \given b, c)$ to distinguish
-  the functions.  That seems like much better practice and we should
-  probably all adopt something like it.}  I apologize, but it is so
-standard in our business I won't change.
+Expectation values \ldots
 
 \section{Inference}
 
+Repeat everything with a likelihood, a prior, and something
+hierarchical \ldots
+
 \section{Example}
+
+Give a simple data analysis problem and show that you have no real
+choice---except in what models to consider! \ldots
 
 \begin{problem}\label{prob:intrinsic}
 Will there be any \problemname s in this \documentname?
