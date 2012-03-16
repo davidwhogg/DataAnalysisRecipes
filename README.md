@@ -6,13 +6,13 @@ Chapters from Hogg's non-existent book.
 
 (Contributions have come from all of the following.)
 
-* David W. Hogg, New York University
-* Jo Bovy, Institute for Advanced Study
-* Dustin Lang, Princeton University
+* ** David W. Hogg **, New York University
+* ** Jo Bovy **, Institute for Advanced Study
+* ** Dustin Lang **, Princeton University
 
 ### License: ###
 
-**Copyright 2010 2011 2012 the authors.  All rights reserved.**
+** Copyright 2010 2011 2012 the authors.  All rights reserved. **
 
 If you have interest in using or re-using any of this content, get in
 touch with Hogg.
@@ -51,4 +51,4 @@ following:
         git merge foo/master
         git push
 
-4. Then I delete the `foo` repo from github so as not to confuse me.
+4. Then I delete the `foo` repo from github so as not to confuse myself.
