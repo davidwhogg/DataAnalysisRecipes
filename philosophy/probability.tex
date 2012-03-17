@@ -143,9 +143,15 @@ PDF, from my (pragmatic, informal) point of view.  This normalization
 condition shows that $p(a)$ has units of $a^{-1}$.  Nothing else would
 integrate properly to a dimensionless result.  Even if $a$ is a
 multi-dimensional vector or list or tensor or field or even point in
-function space, the PDF must have units of $a^{-1}$.  In the
-multi-dimensional case, the units of $a^{-1}$ are found by taking the
-product of all the units of all the dimensions.
+function space, the PDF must have units of $a^{-1}$.
+
+In the multi-dimensional case, the units of $a^{-1}$ are found by
+taking the product of all the units of all the dimensions.  So, for
+example, if $a$ is a six-dimensional phase-space position in
+three-dimensional space (three cartesian position components measured
+in m and three cartesian momentum components measured in
+kg\,m\,s$^{-1}$), the units of $p(a)$ would be
+kg$^{-3}$\,m$^{-6}$\,s$^3$.
 
 Most problems we will encounter will have multiple parameters; even if
 we \emph{condition} $p(a)$ on some particular value of another
@@ -166,7 +172,7 @@ performed many times in error in the literature of data analyses.
 
 If you have a probability distribution for two things (``the PDF for
 $a$ and $b$''), you can always factorize it into two distributions,
-one for $a$, and one for $a$ given $b$ or the other way around:
+one for $a$, and one for $b$ given $a$ or the other way around:
 \begin{eqnarray}\displaystyle
 p(a, b) &=& p(a)\,p(b \given a)
 \\
@@ -223,24 +229,6 @@ the first over-conditions (it is not a factorization of anything
 possible) and the second has units of $a^{-2}$, which is absurd (for
 our purposes).  Know these and \emph{don't do them}.
 
-``Measure theory'' (for me, anyway\note{Have you noticed that I am
-  \emph{not} a mathematician?}) is the theory of things in which you
-can do integrals.  You can ``integrate out'' variables you want to get
-rid of (or, in what follows, \emph{not} infer) by integrals that look
-like
-\begin{eqnarray}\displaystyle
-p(a \given c) &=& \int p(a \given b)\,p(b \given c)\,\dd b
-\\
-p(a \given c) &=& \int p(a \given b, c)\,p(b \given c)\,\dd b
-\quad ,
-\end{eqnarray}
-where again the integrals go over the entire domain of $b$ in each
-case.  Both of these equations are natural consequences of the things
-written above and dimensional analysis.  Recall that because $b$ is
-some kind of arbitrary, possibly very high-dimensional mathematical
-object, these integrals can be extremely daunting in practice (see
-below).
-
 One important and confusing point about all this: The terminology used
 throughout this \documentname\ \emph{enormously overloads} the symbol
 $p(\cdot)$.  That is, we are using, in each line of this discussion,
@@ -259,6 +247,32 @@ abomination.\note{Serious, non-ambiguous mathematicians often
   like much better practice and we should probably all adopt something
   like it, though I won't here.}  I apologize, but it is so standard
 in our business I won't change.
+
+``Measure theory'' (for me, anyway\note{Have you noticed that I am
+  \emph{not} a mathematician?}) is the theory of things in which you
+can do integrals.  You can ``integrate out'' variables you want to get
+rid of (or, in what follows, \emph{not} infer) by integrals that look
+like
+\begin{eqnarray}\displaystyle\label{eq:marginalize}
+p(a \given c) &=& \int p(a \given b, c)\,p(b \given c)\,\dd b
+\quad ,
+\end{eqnarray}
+where again the integrals go over the entire domain of $b$ in each
+case, and again if the left-hand side is conditioned on $c$, then
+everything on the right-hand side must be also.  This equation is a
+natural consequence of the things written above and dimensional
+analysis.  Recall that because $b$ is some kind of arbitrary, possibly
+very high-dimensional mathematical object, these integrals can be
+extremely daunting in practice (see below).  Sometimes equations like
+(\ref{eq:marginalize}) can be written
+\begin{eqnarray}\displaystyle
+p(a \given c) &=& \int p(a \given b)\,p(b \given c)\,\dd b
+\quad ,
+\end{eqnarray}
+where the dependence of $p(a \given b)$ on $c$ has been dropped.  This
+is only permitted if it \emph{happens to be the case} that $p(a \given
+b, c)$ doesn't, in practice, depend on $c$.  The dependence on $c$ is
+really there (in some sense), it just might be trivial or null.
 
 In rare cases, you can get factorizations that look like this:
 \begin{eqnarray}\displaystyle
@@ -286,7 +300,23 @@ p(\setofall{a_n}{n=1}{N} \given c) &=& \prod_{n=1}^N p(a_n \given c)
 \end{eqnarray}
 this is really the definition, in some sense, of ``iid''.
 
-Expectation values \ldots
+If you have a PDF for $a$ like $p(a \given c)$ and you want to know
+the expectation value $E(a)$ of $a$ under this PDF (which would be, for
+example, something like the mean value of $a$ you would get if you
+drew many draws from the PDF), you just integrate
+\begin{eqnarray}\displaystyle
+E(a) = \int a\,p(a \given c)\,\dd a
+\quad .
+\end{eqnarray}
+This generalizes to any function $f(a)$ of $a$:
+\begin{eqnarray}\displaystyle
+E(f) = \int f(a)\,p(a \given c)\,\dd a
+\quad .
+\end{eqnarray}
+You can see the marginalization integral (\ref{eq:marginalize}) that
+converts $p(a \given b, c)$ into $p(a \given c)$ as providing the
+\emph{expectation value} of $p(a \given b, c)$ under the PDF $p(b
+\given c)$.  That's deep and relevant for what follows.
 
 \section{Inference}
 
