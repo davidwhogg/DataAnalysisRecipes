@@ -250,8 +250,13 @@ abomination.\note{Serious, non-ambiguous mathematicians often
   meaning of the function from the names of the argument variables.
   See why that is very bad?.  Some explicit subscripting policy seems
   like much better practice and we should probably all adopt something
-  like it, though I won't here.}  I apologize, but it is so standard
-in our business I won't change.
+  like it, though I won't here.\par Another good idea is to make the
+  probability equations be about statements, so instead of writing
+  $p(a \given b, c)$ you write $p(A=a \given B=b, C=c)$.  This is
+  unambiguous---you can write useful terms like $p(A=q \given B=b,
+  C=c)$ to deal with the $a$, $q$ problem---but it makes the equations
+  big and long.}  I apologize, but it is so standard in our business I
+won't change.
 
 ``Measure theory'' (for me, anyway\note{Have you noticed that I am
   \emph{not} a mathematician?}) is the theory of things in which you
@@ -324,23 +329,44 @@ and the normalization of $p(b \given c)$ becomes
 in both sums, the sum is implicitly over the (small number of)
 possible states of $b$.
 
-If you have a PDF for $a$ like $p(a \given c)$ and you want to know
-the expectation value $E(a)$ of $a$ under this PDF (which would be, for
-example, something like the mean value of $a$ you would get if you
-drew many draws from the PDF), you just integrate
+If you have a conditional PDF for $a$ like $p(a \given c)$ and you
+want to know the expectation value $E(a \given c)$ of $a$ under this
+PDF (which would be, for example, something like the mean value of $a$
+you would get if you drew many draws from the conditional PDF), you
+just integrate
 \begin{eqnarray}\displaystyle
-E(a) = \int a\,p(a \given c)\,\dd a
+E(a \given c) = \int a\,p(a \given c)\,\dd a
 \quad .
 \end{eqnarray}
 This generalizes to any function $f(a)$ of $a$:
 \begin{eqnarray}\displaystyle
-E(f) = \int f(a)\,p(a \given c)\,\dd a
+E(f \given c) = \int f(a)\,p(a \given c)\,\dd a
 \quad .
 \end{eqnarray}
 You can see the marginalization integral (\ref{eq:marginalize}) that
 converts $p(a \given b, c)$ into $p(a \given c)$ as providing the
-\emph{expectation value} of $p(a \given b, c)$ under the PDF $p(b
-\given c)$.  That's deep and relevant for what follows.
+\emph{expectation value} of $p(a \given b, c)$ under the conditional
+PDF $p(b \given c)$.  That's deep and relevant for what follows.
+
+\begin{problem}
+You have conditional PDFs $p(a \given d)$, $p(b \given a, d)$, and
+$p(c \given a, b, d)$.  Write expressions for $p(a, b \given d)$, $p(b
+\given d)$, and $p(a \given c, d)$.
+\end{problem}
+
+\begin{problem}
+You have conditional PDFs $p(a \given b, c)$ and $p(a \given c)$
+expressed or computable for any values of $b$ and $c$.  You are not
+permitted to multiply these together, of course.  But can you use them
+to infer the conditional PDF $p(b \given a, c)$ or $p(b \given c)$?
+\end{problem}
+
+\begin{problem}
+You have a function $g(b)$ that is a function only of $b$.  You have
+conditional PDFs $p(a \given c)$ and $p(b \given a, c)$.  What is the
+expectation value $E(g \given c)$ for $g$ conditional on $c$ but
+\emph{not} conditional on $a$?
+\end{problem}
 
 \section{Inference}
 
@@ -351,10 +377,6 @@ hierarchical \ldots
 
 Give a simple data analysis problem and show that you have no real
 choice---except in what models to consider! \ldots
-
-\begin{problem}\label{prob:intrinsic}
-Will there be any \problemname s in this \documentname?
-\end{problem}
 
 \clearpage
 \markright{Notes}\theendnotes
