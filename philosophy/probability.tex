@@ -301,14 +301,14 @@ large number of data $a_n$, indexed by $n$, each of which is not only
 independent in this sense, but also drawn from the same distribution
 function.  Data of this form are called ``independent and identically
 distributed'' or ``iid'' in the literature.  If you have a set of $N$
-iid data $a_n$, each drawn from a probability distribution $p(a_n
-\given c)$, then the probability of the full data set is simply the
-product of the individual data-point probabilities:
+independently drawn data $a_n$, each drawn from a probability
+distribution $p(a_n \given c)$, then the probability of the full data
+set is simply the product of the individual data-point probabilities:
 \begin{eqnarray}\displaystyle
 p(\setofall{a_n}{n=1}{N} \given c) &=& \prod_{n=1}^N p(a_n \given c)
 \quad ;
 \end{eqnarray}
-this is really the definition, in some sense, of ``iid''.
+this is the definition of ``independent data points''.
 
 I am writing here mainly about continuous variables, but one thing
 that comes up frequently in data analysis are ``mixture models'' in
@@ -356,9 +356,15 @@ $p(c \given a, b, d)$.  Write expressions for $p(a, b \given d)$, $p(b
 
 \begin{problem}
 You have conditional PDFs $p(a \given b, c)$ and $p(a \given c)$
-expressed or computable for any values of $b$ and $c$.  You are not
+expressed or computable for any values of $a$, $b$, and $c$.  You are not
 permitted to multiply these together, of course.  But can you use them
-to infer the conditional PDF $p(b \given a, c)$ or $p(b \given c)$?
+to construct the conditional PDF $p(b \given a, c)$ or $p(b \given c)$?
+\end{problem}
+
+\begin{problem}
+You have conditional PDFs $p(a \given c)$ and $p(b \given c)$
+expressed or computable for any values of $a$, $b$, and $c$.  Can you
+use them to construct the conditional PDF $p(a \given b, c)$?
 \end{problem}
 
 \begin{problem}
@@ -368,10 +374,44 @@ expectation value $E(g \given c)$ for $g$ conditional on $c$ but
 \emph{not} conditional on $a$?
 \end{problem}
 
+\begin{problem}
+Take the integral on the right-hand side of
+\equationname~(\ref{eq:marginalize}) and replace the ``$\dd b$'' with
+a ``$\dd a$''.  Is it permissible to do this integral?  Why or why
+not?  If it \emph{is} permissible, what do you get?
+\end{problem}
+
 \section{Inference}
 
-Repeat everything with a likelihood, a prior, and something
-hierarchical \ldots
+Imagine you have $N$ data points or measurements of some kind $D_n$,
+possbly times or temperatures or brightnesses.  I will say that you
+have a ``generative model'' of data point $n$ if you can write down or
+calculate a PDF $p(D_n \given \theta, I)$ for the measurement $D_n$,
+conditional on a vector or list $\theta$ of parameters and a (possibly
+large) number of other things $I$ (``prior information'') on which the
+$D_n$ PDF depends, such as assumptions, or approximations, or
+knowledge about the noise process, or so on.  If all the data points
+are independently drawn (that would be one of the assumptions in $I$),
+then the PDF for the full data set $\setofall{D_n}{n=1}{N}$ is just
+the product
+\begin{eqnarray}\displaystyle\label{eq:likelihood}
+p(\setofall{D_n}{n=1}{N} \given \theta, I) = \prod_{n=1}^N p(D_n \given \theta, I)
+\quad .
+\end{eqnarray}
+This conditional PDF for the data is called the ``likelihood'' for
+historical reasons I don't care about.  Worse, it is called the
+likelihood ``for the parameters'' even though it is a PDF ``for the
+data''.\note{I hate the terminology ``likelihood'' and ``likelihood
+  for parameters'' but again, it is so entrenched, it would be a
+  disservice to the reader not to use it.}
+
+Now imagine there are important parameters and nuisance parameters \ldots priors on nuisance parameters
+
+Now imagine that you want the probability for the important parameters \ldots more priors.
+
+Now imagine that you want to take expectation values of functions of parameters \ldots
+
+Now imagine that you \emph{really} care about the \emph{prior} on the parameters \ldots hierarchical.
 
 \section{Example}
 
