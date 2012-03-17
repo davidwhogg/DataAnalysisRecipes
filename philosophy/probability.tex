@@ -120,12 +120,13 @@ units or dimensions of the things you are using, you almost never go
 wrong.
 
 For space and specificity---and because it is most useful for most
-problems I encounter---I will focus on continuous variables
-(think ``model parameters'' for the purposes of inference) rather than
-binary, integer, or discrete parameters.  I also won't always be
-specific about the domain of variables (for example whether a variable
-$a$ is defined on $0<a<1$ or $0<a<\infty$ or $-\infty<a<\infty$); the
-limits of integrals---all of which are definite---will usually be
+problems I encounter---I will focus on continuous variables (think
+``model parameters'' for the purposes of inference) rather than
+binary, integer, or discrete parameters, although I might say one or
+two things here or there.  I also won't always be specific about the
+domain of variables (for example whether a variable $a$ is defined on
+$0<a<1$ or $0<a<\infty$ or $-\infty<a<\infty$); the limits of
+integrals---all of which are definite---will usually be
 implicit.\note{In my world, \emph{all integrals are definite
     integrals}.  The integral is never just the anti-derivative, it is
   always a definite, finite, area or volume or measure.  That has to
@@ -303,6 +304,25 @@ p(\setofall{a_n}{n=1}{N} \given c) &=& \prod_{n=1}^N p(a_n \given c)
 \quad ;
 \end{eqnarray}
 this is really the definition, in some sense, of ``iid''.
+
+I am writing here mainly about continuous variables, but one thing
+that comes up frequently in data analysis are ``mixture models'' in
+which data are produced by two (or more) qualitatively different
+processes (some data are good, and some are bad, for example) that
+have different relative probabilities.  When a variable ($b$, say) is
+discrete, the marginalization integral corresponding to
+\equationname~(\ref{eq:marginalize}) becomes a sum
+\begin{eqnarray}\displaystyle
+p(a \given c) &=& \sum_b p(a \given b, c)\,p(b \given c)
+\quad ,
+\end{eqnarray}
+and the normalization of $p(b \given c)$ becomes
+\begin{eqnarray}\displaystyle
+1 &=& \sum_b p(b \given c)
+\quad ;
+\end{eqnarray}
+in both sums, the sum is implicitly over the (small number of)
+possible states of $b$.
 
 If you have a PDF for $a$ like $p(a \given c)$ and you want to know
 the expectation value $E(a)$ of $a$ under this PDF (which would be, for
