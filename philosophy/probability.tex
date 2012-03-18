@@ -33,6 +33,7 @@
 \newcommand{\documentname}{document}
 \newcommand{\documentnames}{\documentname s}
 \newcommand{\sectionname}{Section}
+\newcommand{\Equationname}{Equation}
 \newcommand{\equationname}{equation}
 \newcommand{\figurenames}{\figurename s}
 \newcommand{\problemname}{Exercise}
@@ -249,7 +250,7 @@ abomination.\note{Serious, non-ambiguous mathematicians often
   $a$ by a notation like $p_{A,B=b,C=c}(q)$.  In our (very bad)
   notation $p(q \given b, c)$ would in general be different from $p(a
   \given b, c)$ because we take the meaning of the function from the
-  names of the argument variables.  See why that is very bad?.  Some
+  names of the argument variables.  See why that is very bad?  Some
   explicit subscripting policy seems like much better practice and we
   should probably all adopt something like it, though I won't
   here.\par Another good idea is to make the probability equations be
@@ -299,13 +300,11 @@ are ``independent'' (at least conditional on $c$).\note{The word
   of data.  I prefer the word ``separable'' for this situation,
   because I think it is less ambiguous.}  In many cases of data
 analysis, in models of data sets, we often have a large number of data
-$a_n$, indexed by $n$, each of which is not only independent in this
-sense, but also drawn from the same distribution function.  Data of
-this form are called ``independent and identically distributed'' or
-``iid'' in the literature.  If you have a set of $N$ independently
-drawn data $a_n$, each drawn from a probability distribution $p(a_n
-\given c)$, then the probability of the full data set is simply the
-product of the individual data-point probabilities:
+$a_n$, indexed by $n$, each of which is independent in this sense.  If
+you have a set of $N$ independently drawn data $a_n$, each drawn from
+a probability distribution $p(a_n \given c)$, then the probability of
+the full data set is simply the product of the individual data-point
+probabilities:
 \begin{eqnarray}\displaystyle
 p(\setofall{a_n}{n=1}{N} \given c) &=& \prod_{n=1}^N p(a_n \given c)
 \quad ;
@@ -385,7 +384,7 @@ not?  If it \emph{is} permissible, what do you get?
 
 \section{Likelihoods}
 
-Imagine you have $N$ data points or measurements of some kind $D_n$,
+Imagine you have $N$ data points or measurements $D_n$ of some kind,
 possbly times or temperatures or brightnesses.  I will say that you
 have a ``generative model'' of data point $n$ if you can write down or
 calculate a PDF $p(D_n \given \theta, I)$ for the measurement $D_n$,
@@ -445,7 +444,7 @@ PDF over parameters that, by assumption, you don't care about!\note{I
   of care and attention into the parts of the problem that you
   \emph{don't} care about; it is a consequence of the need to make
   precise measurements in the parts of the problem that you \emph{do}
-  care about.}  \equationname~(\ref{eq:mlikelihood}) could be called a
+  care about.}  \Equationname~(\ref{eq:mlikelihood}) could be called a
 ``partially marginalized likelihood'' because it is a likelihood (a
 PDF for the data) but it is conditional on fewer parameters than the
 original, rawest, likelihood.
@@ -478,15 +477,15 @@ parameters---to a PDF for the parameters, conditional on the data.
 To illustrate, imagine that you want to make a probabilistic
 prediction, given your data analysis. For one example, you might want
 to predict what $\theta$ values you will find in a subsequent
-experiment.  Or, for another, say some parameter (like, say, the age
-of the Universe) is a function $t(\theta)$ of the parameters and you
-want to predict that parameter (the age) outcome you expect in some
-independent measurement of that same parameter (some other experiment
-that measures---differently---the age of the Universe).  The
-distributions or expectation values for these predictions, conditioned
-on your data, will require a PDF for the parameters or functions of
-the parameters; that is, if you want the expectation $E(t \given D)$,
-where for notational convenience I have defined
+experiment.  Or, for another, say some quantity $t$ of great interest
+(like, say, the age of the Universe) is a function $t(\theta)$ of the
+parameters and you want to predict the outcome you expect in some
+future independent measurement of that same parameter (some other
+experiment that measures---differently---the age of the Universe).
+The distributions or expectation values for these predictions,
+conditioned on your data, will require a PDF for the parameters or
+functions of the parameters; that is, if you want the expectation $E(t
+\given D)$, where for notational convenience I have defined
 \begin{eqnarray}\displaystyle
 D &\equiv& \setofall{D_n}{n=1}{N}
 \quad ,
@@ -514,10 +513,12 @@ assumptions but also new capabilities, because posterior expectation
 values as in (\ref{eq:posteriorexpectation}) and other kinds of
 probabilistic predictions become possible with its use.
 
-Some notes about all this: \textsl{(a)}~You don't have to use
-posterior PDFs exclusively to take expectation values; you can make
+Some notes about all this: \textsl{(a)}~Computation of expectation
+values is not the only---or even the primary---use of posterior PDFs;
+I was just using the expectation value as an example of \emph{why} you
+might want the posterior.  You can use posterior PDFs to make
 predictions that are themselves PDFs; this is in general the only way
-to propagate the full uncertainty remaining after your
+to propagate the full posterior uncertainty remaining after your
 experiment. \textsl{(b)}~The normalization $Z$ in
 \equationname~(\ref{eq:posterior}) is a marginalization of a
 likelihood; in fact it is a fully marginalized likelihood, and could
