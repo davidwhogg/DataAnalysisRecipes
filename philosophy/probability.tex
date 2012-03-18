@@ -31,6 +31,7 @@
 \newcommand{\etal}{\notenglish{et al.}}
 
 \newcommand{\documentname}{document}
+\newcommand{\documentnames}{\documentname s}
 \newcommand{\sectionname}{Section}
 \newcommand{\equationname}{equation}
 \newcommand{\figurenames}{\figurename s}
@@ -65,12 +66,12 @@
 \renewcommand{\MakeUppercase}[1]{#1}
 \pagestyle{myheadings}
 \renewcommand{\sectionmark}[1]{\markright{\thesection.~#1}}
-\markboth{Probability calculus}{Introduction}
+\markboth{Probability calculus for inference}{Introduction}
 
 \begin{document}
 \thispagestyle{plain}\raggedbottom
-\section*{DRAFT 2012-03-17:\ Data analysis recipes:\ \\
-  Probability calculus\footnotemark}
+\section*{DRAFT 2012-03-18:\ Data analysis recipes:\ \\
+  Probability calculus for inference\footnotemark}
 
 \footnotetext{%
   The \notename s begin on page~\pageref{note:first}, including the
@@ -216,7 +217,7 @@ whole right-hand side must be conditioned on $c$ if the left-hand side
 is.  Again, there was Bayes's theorem, and you can see its role in
 conversions of one kind of conditional probability into another.  For
 technical reasons, I usually write Bayes's theorem like this:
-\begin{eqnarray}\displaystyle
+\begin{eqnarray}\displaystyle\label{eq:bayes}
 p(a \given b, c) &=& \frac{1}{Z}\,p(b \given a, c)\,p(a \given c)
 \\
 Z &\equiv& \int p(b \given a, c)\,p(a \given c)\,\dd a
@@ -294,16 +295,17 @@ versa.  When this happens---and it is rare---it says that $a$ and $b$
 are ``independent'' (at least conditional on $c$).\note{The word
   ``independent'' has many meanings in different contexts of
   mathematics and probability; I will avoid it in what follows, except
-  in the ``iid'' or ``independent and identically distributed''
-  context.  I prefer the word ``separable'' for this situation.}  In
-many cases of data analysis, in models of data sets, we often have a
-large number of data $a_n$, indexed by $n$, each of which is not only
-independent in this sense, but also drawn from the same distribution
-function.  Data of this form are called ``independent and identically
-distributed'' or ``iid'' in the literature.  If you have a set of $N$
-independently drawn data $a_n$, each drawn from a probability
-distribution $p(a_n \given c)$, then the probability of the full data
-set is simply the product of the individual data-point probabilities:
+  in context of independently drawn data points in a generative model
+  of data.  I prefer the word ``separable'' for this situation,
+  because I think it is less ambiguous.}  In many cases of data
+analysis, in models of data sets, we often have a large number of data
+$a_n$, indexed by $n$, each of which is not only independent in this
+sense, but also drawn from the same distribution function.  Data of
+this form are called ``independent and identically distributed'' or
+``iid'' in the literature.  If you have a set of $N$ independently
+drawn data $a_n$, each drawn from a probability distribution $p(a_n
+\given c)$, then the probability of the full data set is simply the
+product of the individual data-point probabilities:
 \begin{eqnarray}\displaystyle
 p(\setofall{a_n}{n=1}{N} \given c) &=& \prod_{n=1}^N p(a_n \given c)
 \quad ;
@@ -335,12 +337,12 @@ PDF (which would be, for example, something like the mean value of $a$
 you would get if you drew many draws from the conditional PDF), you
 just integrate
 \begin{eqnarray}\displaystyle
-E(a \given c) = \int a\,p(a \given c)\,\dd a
+E(a \given c) &=& \int a\,p(a \given c)\,\dd a
 \quad .
 \end{eqnarray}
 This generalizes to any function $f(a)$ of $a$:
 \begin{eqnarray}\displaystyle
-E(f \given c) = \int f(a)\,p(a \given c)\,\dd a
+E(f \given c) &=& \int f(a)\,p(a \given c)\,\dd a
 \quad .
 \end{eqnarray}
 You can see the marginalization integral (\ref{eq:marginalize}) that
@@ -381,7 +383,7 @@ a ``$\dd a$''.  Is it permissible to do this integral?  Why or why
 not?  If it \emph{is} permissible, what do you get?
 \end{problem}
 
-\section{Inference}
+\section{Likelihoods}
 
 Imagine you have $N$ data points or measurements of some kind $D_n$,
 possbly times or temperatures or brightnesses.  I will say that you
@@ -395,21 +397,126 @@ are independently drawn (that would be one of the assumptions in $I$),
 then the PDF for the full data set $\setofall{D_n}{n=1}{N}$ is just
 the product
 \begin{eqnarray}\displaystyle\label{eq:likelihood}
-p(\setofall{D_n}{n=1}{N} \given \theta, I) = \prod_{n=1}^N p(D_n \given \theta, I)
+p(\setofall{D_n}{n=1}{N} \given \theta, I) &=& \prod_{n=1}^N p(D_n \given \theta, I)
 \quad .
 \end{eqnarray}
-This conditional PDF for the data is called the ``likelihood'' for
-historical reasons I don't care about.  Worse, it is called the
-likelihood ``for the parameters'' even though it is a PDF ``for the
-data''.\note{I hate the terminology ``likelihood'' and ``likelihood
-  for parameters'' but again, it is so entrenched, it would be a
-  disservice to the reader not to use it.}
+Any kind of PDF for the data is called a ``likelihood'' for historical
+reasons I don't care about.  Worse, any kind of conditional PDF for
+the data---conditional on parameters---is called a likelihood ``for
+the parameters'' even though it is a PDF ``for the data''.\note{I hate
+  the terminology ``likelihood'' and ``likelihood for parameters'' but
+  again, it is so entrenched, it would be a disservice to the reader
+  not to use it.}
 
-Now imagine there are important parameters and nuisance parameters \ldots priors on nuisance parameters
+Now imagine that the parameters divide into two groups.  One group
+$\theta$ are parameters of great interest, and another group $\alpha$
+are of no interest.  The $\alpha$ parameters are nuisance parameters.
+In this situation, the likelihood can be written
+\begin{eqnarray}\displaystyle
+p(\setofall{D_n}{n=1}{N} \given \theta, \alpha, I) &=& \prod_{n=1}^N p(D_n \given \theta, \alpha, I)
+\quad .
+\end{eqnarray}
+If you want to make likelihood statements about the important
+parameters $\theta$ without committing to anything regarding the
+nuisance parameters $\alpha$, you can marginalize rather than infer
+them.  You might be tempted to do
+\begin{eqnarray}\displaystyle
+\mbox{\textbf{wrong:}} & & \int p(D_n \given \theta, \alpha, I)\,\dd\alpha
+\quad ,
+\end{eqnarray}
+but that's not allowed for dimensional arguments given in the previous
+\sectionname.  In order to integrate over the nuisances $\alpha$,
+something with units of $\alpha^{-1}$ needs to be multiplied in---a
+PDF for the $\alpha$ of course:
+\begin{eqnarray}\displaystyle\label{eq:mlikelihood}
+p(D_n \given \theta, I) &=& \int p(D_n \given \theta, \alpha, I)\,p(\alpha \given \theta, I)\,\dd\alpha
+\\
+p(\setofall{D_n}{n=1}{N} \given \theta, I) &=& \prod_{n=1}^N p(D_n \given \theta, I)
+\quad ,
+\end{eqnarray}
+where $p(\alpha \given \theta, I)$ is called the ``prior PDF'' for the
+$\alpha$ and it \emph{can} depend (but doesn't \emph{need to} depend)
+on the other parameters $\theta$ and the more general prior
+information $I$.  This marginalization is incredibly useful but note
+that it comes at a substantial cost: It required specifying a prior
+PDF over parameters that, by assumption, you don't care about!\note{I
+  will say a lot more about this in some subsequent \documentname\ in
+  this series.}  \equationname~(\ref{eq:mlikelihood}) could be called
+a ``partially marginalized likelihood'' because it is a likelihood (a
+PDF for the data) but it is conditional on fewer parameters than the
+original, rawest, likelihood.
 
-Now imagine that you want the probability for the important parameters \ldots more priors.
+\section{Posterior probabilities}
 
-Now imagine that you want to take expectation values of functions of parameters \ldots
+A large fraction of the inference that is done in the quantitative
+sciences can be left in the form of likelihoods and marginalized
+likelihoods, and probably should be.\note{I will say more about what
+  you both gain and lose by going beyond the likelihood in a
+  subsequent \documentname\ in this series.  It relates to the battles
+  between frequentists and Bayesians, which are boring and
+  unproductive, in the main.}  However, there are many scientific
+questions the answers to which require going beyond the
+likelihood---which is a PDF for the data, conditional on the
+parameters---to a PDF for the parameters, conditional on the data.
+
+To illustrate, imagine that you want to make a probabilistic
+prediction, given your data analysis. For one example, you might want
+to predict what $\theta$ values you will find in a subsequent
+experiment.  Or, for another, say some parameter (like, say, the age
+of the Universe) is a function $t(\theta)$ of the parameters and you
+want to predict that parameter (the age) outcome you expect in some
+independent measurement of that same parameter (some other experiment
+that measures---differently---the age of the Universe).  The
+distributions or expectation values for these predictions, conditioned
+on your data, will require a PDF for the parameters or functions of
+the parameters; that is, if you want the expectation $E(t \given D)$,
+where for notational convenience I have defined
+\begin{eqnarray}\displaystyle
+D &\equiv& \setofall{D_n}{n=1}{N}
+\quad ,
+\end{eqnarray}
+you need to do the integral
+\begin{eqnarray}\displaystyle\label{eq:posteriorexpectation}
+E(t \given D) &=& \int t(\omega)\,p(\omega \given D, I)\,\dd\omega
+\quad ,
+\end{eqnarray}
+this in turn requires the PDF $p(\omega \given D, I)$ for the
+parameters $\omega$ given the data.  This is called the ``posterior
+PDF'' because it is the PDF you get \emph{after} digesting the data.
+
+The posterior PDF is obtained by Bayes rule (\ref{eq:bayes})
+\begin{eqnarray}\displaystyle\label{eq:posterior}
+p(\theta \given D, I) &=& \frac{1}{Z}\,p(D \given \theta, I)\,p(\theta \given I)
+\\
+Z &\equiv& \int p(D \given \theta, I)\,p(\theta \given I)\,\dd\theta
+\quad ,
+\end{eqnarray}
+where we had to introduce the prior PDF $p(\theta \given I)$ for the
+parameters.  The prior can be thought of as the PDF for the parameters
+\emph{before} you took the data $D$.  The prior PDF brings in new
+assumptions but also new capabilities, because posterior expectation
+values as in (\ref{eq:posteriorexpectation}) and other kinds of
+probabilistic predictions become possible with its use.
+
+Some notes about all this: \textsl{(1)}~You don't have to use
+posterior PDFs exclusively to take expectation values; you can make
+predictions that are themselves PDFs; this is in general the only way
+to propagate the full uncertainty remaining after your
+experiment. \textsl{(2)}~The normalization $Z$ in
+\equationname~(\ref{eq:posterior}) is a marginalization of a
+likelihood; in fact it is a fully marginalized likelihood, and could
+be written $p(D \given I)$.  It has many uses in model evaluation and
+model averaging, to be discussed in subsequent \documentnames.
+\textsl{(3)}~You can think of the posterior expression
+(\ref{eq:posterior}) as being a ``belief updating'' operation, in
+which you start with the prior PDF, multiply in the likelihood (which
+probably makes it narrower, at least if your data are useful) and
+re-normalize to make a posterior PDF.  There is a ``subjective''
+attitude to take towards all this that makes the prior and the
+posterior PDFs specific to the individual inferrer, while the
+likelihood is (at least slightly) more objective.
+
+\section{Advanced topics in inference}
 
 Now imagine that you \emph{really} care about the \emph{prior} on the parameters \ldots hierarchical.
 
@@ -431,9 +538,6 @@ choice---except in what models to consider! \ldots
 \bibitem[Mackay(2003)]{mackay}
   Mackay,~D.~J.~C., 2003,
   \textit{Information theory, inference, and learning algorithms} (Cambridge University Press)
-\bibitem[Press \etal(2007)]{press}
-  Press,~W.~H., Teukolsky,~S.~A., Vetterling,~W.~T., \& Flannery,~B.~P., 2007,
-  \textit{Numerical recipes:\ The art of scientific computing} (Cambridge University Press)
 \bibitem[Sivia \& Skilling(2006)]{sivia}
   Sivia,~D.~S. \& Skilling,~J., 2006,
   \textit{Data analysis:\ A Bayesian tutorial} (Oxford University Press)
