@@ -441,10 +441,26 @@ information $I$.  This marginalization is incredibly useful but note
 that it comes at a substantial cost: It required specifying a prior
 PDF over parameters that, by assumption, you don't care about!\note{I
   will say a lot more about this in some subsequent \documentname\ in
-  this series.}  \equationname~(\ref{eq:mlikelihood}) could be called
-a ``partially marginalized likelihood'' because it is a likelihood (a
+  this series; in general in real-world problems you need to put a lot
+  of care and attention into the parts of the problem that you
+  \emph{don't} care about; it is a consequence of the need to make
+  precise measurements in the parts of the problem that you \emph{do}
+  care about.}  \equationname~(\ref{eq:mlikelihood}) could be called a
+``partially marginalized likelihood'' because it is a likelihood (a
 PDF for the data) but it is conditional on fewer parameters than the
 original, rawest, likelihood.
+
+Sometimes I have heard concern that when you perform the
+marginalization (\ref{eq:mlikelihood}), you are allowing the nuisance
+parameters to ``have any values they like, whatsoever'' as if you are
+somehow not constraining them.  It is true that you are not
+\emph{inferring} the nuisance parameters, but you certainly are using
+the data to limit their range, in the sense that the integral in
+(\ref{eq:mlikelihood}) only gets significant weight where the
+likelihood is large.  That is, if the data strongly constrain the
+$\alpha$ to a narrow range of good values, then only those good values
+are making any (significant) contribution to the marginalization
+integral.  That's important!
 
 \section{Posterior probabilities}
 
