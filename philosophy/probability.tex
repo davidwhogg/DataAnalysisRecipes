@@ -3,20 +3,9 @@
 
 % to-do items
 % -----------
-% - explain the over-conditioning problem with p(a|b,c) p(b|a,c).
-
-% style notes
-% -----------
-% - when at the end of the sentence, put the \endnote AFTER the period
-% - when at the end of a phrase, put the \endnote BEFORE the comma or parens
-% - make sure the endnotes can be read on their own, outside of context
-% - careful with the words ``error'', ``uncertainty''
-% - careful with the words ``probability'', ``frequency'', ``likelihood''
-% - use () for function arguments, and [] for grouping/precedence
-% - define macros; remember 1, 2, infinity
-%   - (check out my awesome \given macro)
-% - put new terms in \emph{}, put only referred-to words in quotation marks.
-% - do in-text itemized lists with \textsl{(a)}~ and so on.
+% - Explain the over-conditioning problem with p(a|b,c) p(b|a,c).
+% - Do we need a very specific example problem to illustrate everything?
+% - Needs exercises for sections 2 and 3.
 
 \documentclass[12pt,twoside]{article}
 \usepackage{amssymb,amsmath,mathrsfs,../hogg_endnotes,natbib}
@@ -71,7 +60,7 @@
 
 \begin{document}
 \thispagestyle{plain}\raggedbottom
-\section*{DRAFT 2012-03-18:\ Data analysis recipes:\ \\
+\section*{Data analysis recipes:\\
   Probability calculus for inference\footnotemark}
 
 \footnotetext{%
@@ -134,6 +123,13 @@ implicit.\note{In my world, \emph{all integrals are definite
   always a definite, finite, area or volume or measure.  That has to
   do with the fact, somehow, that the rules of probability calculus
   are an application of the rules of measure theory.}
+
+I learned the material here by using it; probability calculus is so
+simple and constraining, you can truly learn it as you go.  However if
+you want more information or discussion about any of the subjects
+below, \cite{sivia} is a great, practical introduction and the first
+few chapters of \cite{jaynes} make a great and exceedingly
+idiosyncratic read.
 
 \section{Generalities}
 
@@ -531,33 +527,57 @@ probably makes it narrower, at least if your data are useful) and
 re-normalize to make a posterior PDF.  There is a ``subjective''
 attitude to take towards all this that makes the prior and the
 posterior PDFs specific to the individual inferrer, while the
-likelihood is (at least slightly) more objective.
+likelihood is (at least slightly) more objective.\note{Nothing in
+  inference is ever truly \emph{objective} since every generative
+  model involves making choices and assumptions and approximations.
+  In particular, it involves choosing a (necessarily very limited)
+  model space for inference and testing.  This informs my view that it
+  is inconsistent---as a probabilistic data analyzer---to be a
+  \emph{realist} \citep{hogg}.  All that said, the likelihood function
+  is necessarily \emph{more} objective than the posterior PDF.}
 
-\section{Advanced topics in inference}
-
-Now imagine that you \emph{really} care about the \emph{prior} on the parameters \ldots hierarchical.
-
-Now come back and imagine you have as many (or more) nuisance parameters than data points!  Is that a problem? \ldots
-
-\section{Example}
-
-Give a simple data analysis problem and show that you have no real
-choice---except in what models to consider! \ldots
+In other \documentnames\ in this series (for example
+\citealt{straightline}), more advanced topics will be discussed.  One
+example is the (surprisingly common) situation in which you have far
+more parameters than data.  This sounds impossible, but the rules of
+probability calculus don't prohibit it, and once you marginalize out
+most of them you can be left with extremely strong constraints on the
+parameters you care about.  Another example is that in many cases you
+care about the \emph{prior} on your parameters, not the parameters
+themselves.  Imagine, for example, that you don't know what prior PDF
+to put on your parameters $\theta$ but you want to take it from a
+family that itself has parameters $\beta$.  Then you can marginalize
+out the $\theta$ using the prior $p(\theta \given \beta, I)$ and be
+left with a likelihood for the parameters $\beta$ of the prior, like so:
+\begin{eqnarray}\displaystyle
+p(D \given \beta, I) &=& \int p(D \given \theta, I)\,p(\theta \given \beta, I)\,\dd\theta
+\quad .
+\end{eqnarray}
+The parameters $\beta$ of the prior PDF are usually called
+``hyperparameters''; this kind of inference is called
+``hierarchical''.\note{An example of simple hierarchical inference
+  from my own work is \cite{eccentricity}.}
 
 \clearpage
 \markright{Notes}\theendnotes
 
 \clearpage
-\begin{thebibliography}{}\markright{References}
+\begin{thebibliography}{}\markright{References}\raggedright
+\bibitem[Hogg(2009)]{hogg}
+  Hogg,~D.~W., 2009,
+  ``Is cosmology just a plausibility argument?'', arXiv:0910.3374
+\bibitem[Hogg \etal(2010a)]{straightline}
+  Hogg,~D.~W., Bovy,~J., \& Lang,~D., 2010a,
+  ``Data analysis recipes:\ Fitting a model to data'', arXiv:1008.4686
+\bibitem[Hogg \etal(2010b)]{eccentricity}
+  Hogg,~D.~W., Myers,~A.~D., \& Bovy,~J., 2010b,
+  ``Inferring the eccentricity distribution'', arXiv:1008.4146
 \bibitem[Jaynes(2003)]{jaynes}
   Jaynes,~E.~T., 2003,
   \textit{Probability theory:\ The logic of science} (Cambridge University Press)
-\bibitem[Mackay(2003)]{mackay}
-  Mackay,~D.~J.~C., 2003,
-  \textit{Information theory, inference, and learning algorithms} (Cambridge University Press)
 \bibitem[Sivia \& Skilling(2006)]{sivia}
   Sivia,~D.~S. \& Skilling,~J., 2006,
-  \textit{Data analysis:\ A Bayesian tutorial} (Oxford University Press)
+  \textit{Data analysis:\ A Bayesian tutorial}, 2ed (Oxford University Press)
 \end{thebibliography}
 
 \end{document}
