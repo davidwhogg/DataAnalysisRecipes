@@ -29,7 +29,7 @@ touch with Hogg.
 - Put new terms in `\emph{}`, put only referred-to words in quotation marks.
 - Do in-text itemized lists with `\textsl{(a)}~` and so on.
 
-### Notes to self: ###
+### Git migration notes: ###
 
 When I want to import stuff from the old SVN repository, I do the
 following:
