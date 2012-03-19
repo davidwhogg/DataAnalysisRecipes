@@ -17,6 +17,18 @@ Chapters from Hogg's non-existent book.
 If you have interest in using or re-using any of this content, get in
 touch with Hogg.
 
+### Style notes: ###
+
+- When at the end of the sentence, put the `\note` after the period.
+- When at the end of a phrase, put the `\note` before the comma or parenthesis.
+- Make sure the endnotes can be read on their own, outside of context.
+- Be careful with the words "error", "uncertainty".
+- Be careful with the words "probability", "frequency", "likelihood".
+- Use `()` for function arguments, and `[]` for grouping/precedence.
+- Define macros; remember "1, 2, infinity".
+- Put new terms in `\emph{}`, put only referred-to words in quotation marks.
+- Do in-text itemized lists with `\textsl{(a)}~` and so on.
+
 ### Notes to self: ###
 
 When I want to import stuff from the old SVN repository, I do the
