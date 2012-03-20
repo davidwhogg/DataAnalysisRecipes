@@ -459,6 +459,26 @@ $\alpha$ to a narrow range of good values, then only those good values
 are making any (significant) contribution to the marginalization
 integral.  That's important!
 
+One thing that is often done with likelihoods (and one thing that many
+audience members think, instinctively, when you mention the word
+``likelihood'') is ``maximum likelihood''.  If all you want to write
+down is your likelihood, and you want the ``best'' parameters $\theta$
+given your data, you can find the parameters that maximize the
+full-data likelihood.  The only really probabilistically responsible
+use of the maximum-likelihood parameter value is---when coupled with a
+likelihood width estimate---to make an approximate description of a
+likelihood function.\note{A probabilistic reasoner returns
+  probabilistic information, not just some ``best'' value.  That
+  applies to frequentists and Bayesians alike.}  Of course a
+maximum-likelihood value could in principle be useful on its own when
+the data are \emph{so decisive} that there is (for the investigator's
+purposes) no significant remaining uncertainty in the parameters.  I
+have never seen that happen.  The key idea is that it is the
+\emph{likelihood function} that is useful for inference, not some
+parameter value suggested by that function.
+
+To make all of the above concrete, we can consider a simple example, \ldots
+
 \section{Posterior probabilities}
 
 A large fraction of the inference that is done in the quantitative
@@ -537,6 +557,25 @@ likelihood is (at least slightly) more objective.\note{Nothing in
   is inconsistent---as a probabilistic data analyzer---to be a
   \emph{realist} \citep{hogg}.  All that said, the likelihood function
   is necessarily \emph{more} objective than the posterior PDF.}
+
+Although you might use the posterior PDF to report some kind of mean
+prediction as discussed above, it almost never makes sense to just
+\emph{optimize} the posterior PDF.  The posterior-optimal parameters
+are called the ``maximum \notenglish{a posteriori}'' (MAP) parameters.
+Like the maximum likelihood parameters, these only make sense to
+compute if they are being used to provide an approximation to the
+posterior PDF (in the form, say, of a mode and a width).\note{I have
+  seen many cases in which investigators report the MAP parameters
+  instead of the maximum-likelihood (ML) parameters and describe the
+  inference as ``Bayesian''.  That is pretty misleading, because
+  neither the MAP nor the ML is a probabilistic output, and the MAP
+  has additional assumptions in the form of a prior PDF.  That said,
+  the MAP value is like a ``regularized'' version of the ML, and can
+  therefore be valuable in engineering and decision systems; more
+  about this elsewhere.}
+
+Continuing our example from the previous \sectionname \ldots if we put
+down a prior PDF of the form \ldots the posterior PDF is \ldots
 
 In other \documentnames\ in this series (for example
 \citealt{straightline}), more advanced topics will be discussed.  One
