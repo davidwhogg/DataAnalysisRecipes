@@ -24,6 +24,7 @@
 \newcommand{\sectionname}{Section}
 \newcommand{\Equationname}{Equation}
 \newcommand{\equationname}{equation}
+\newcommand{\equationnames}{\equationname s}
 \newcommand{\figurenames}{\figurename s}
 \newcommand{\problemname}{Exercise}
 \newcommand{\problemnames}{\problemname s}
@@ -477,7 +478,53 @@ have never seen that happen.  The key idea is that it is the
 \emph{likelihood function} that is useful for inference, not some
 parameter value suggested by that function.
 
-To make all of the above concrete, we can consider a simple example, \ldots
+To make all of the above concrete, we can consider a simple example,
+where measurements $D_n$ are made at a set of ``horizontal'' postions
+$x_n$.  Each measurement is of a ``vertical'' position $y_n$ but the
+measurement is noisy, so the generative model looks like:
+\begin{eqnarray}\displaystyle\label{eq:example0}
+y_n &=& a\,x_n + b
+\\
+D_n &=& y_n + e_n
+\\
+p(e_n) &=& N(e_n \given 0, \sigma_n^2)
+\\
+p(D_n \given \theta, I) &=& N(D_n \given a\,x_n + b, \sigma_n^2)
+\\
+p(D \given \theta, I) &=& \prod_{n=1}^N p(D_n \given \theta, I)
+\\\displaystyle\label{eq:examplelike}
+\theta &\equiv& [a, b]
+\\
+I &\equiv& [\setofall{x_n, \sigma_n^2}{n=1}{N}, \mbox{and so on\ldots} ]
+\quad,\label{eq:example1}
+\end{eqnarray}
+where the $y_n$ are the ``true values'' for the heights, which lie on
+a straight line of slope $a$ and intercept $b$, the $e_n$ are noise
+contributions, which are drawn independently from Gaussians $N()$ with
+zero means and variances $\sigma_n$, the likelihood is just a Gaussian
+for each data point, there are two parameters, and the $x_n$ and
+$\sigma_n^2$ values are considered prior information.\note{In general,
+  the investigator has a lot of freedom in deciding what to treat as
+  given, prior information, and what to treat as free parameters of
+  the model.  If you don't trust your uncertainty variances
+  $\sigma^2_n$, make them model parameters!  Same with the horizontal
+  positions $x_n$.}
+
+\begin{problem}
+Show that the likelihood for the model given in
+\equationnames~(\ref{eq:example0}) through (\ref{eq:example1}) can be
+written in the form $Q\,\exp(-\chi^2/2)$, where $\chi^2$ is the
+standard statistic for weighted least-squares problems.  On what does
+$Q$ depend, and what are its dimensions?
+\end{problem}
+
+\begin{problem}
+The likelihood in \equationname~(\ref{eq:examplelike}) is a product of
+Gaussians in $D_n$.  Fix the data and fix $b$.  What shape will it
+have in the $a$ direction?  That is, what functional form will it have
+when thought of as being a function of $a$?  You will have to use the
+properties of Gaussians and properties of Gaussians.
+\end{problem}
 
 \section{Posterior probabilities}
 
