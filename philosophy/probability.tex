@@ -4,8 +4,6 @@
 % to-do items
 % -----------
 % - Maybe explain the over-conditioning problem with p(a|b,c) p(b|a,c)?
-% - Do we need a very specific example problem to illustrate everything?  It should thread through secs 2, 3.
-% - Needs exercises for sections 2 and 3.
 
 \documentclass[12pt,twoside]{article}
 \usepackage{amssymb,amsmath,mathrsfs,../hogg_endnotes,natbib}
@@ -108,10 +106,10 @@ values, or make other kinds of non-wrong statements.  For this reason,
 it behooves the data analyst to have good familiarity and facility
 with these rules.
 
-Formally, probability calculus is extremely simple.  However, it is not
-always part of a physicist's (or biologist's or chemist's or
+Formally, probability calculus is extremely simple.  However, it is
+not always part of a physicist's (or biologist's or chemist's or
 economist's) education; so I am going to give a very fast review right
-here.  The key idea I want to convey is that if you think about the
+here.  A key idea I want to convey is that if you think about the
 units or dimensions of the things you are using, you almost never go
 wrong.
 
@@ -132,8 +130,8 @@ implicit.\note{In my world, \emph{all integrals are definite
 I learned the material here by using it; probability calculus is so
 simple and constraining, you can truly learn it as you go.  However if
 you want more information or discussion about any of the subjects
-below, \cite{sivia} is a great, practical introduction and the first
-few chapters of \cite{jaynes} make a great and exceedingly
+below, \cite{sivia} provide a book-length, practical introduction and
+the first few chapters of \cite{jaynes} make a great and exceedingly
 idiosyncratic read.
 
 \section{Generalities}
@@ -146,10 +144,11 @@ a pdf $p(a)$ for $a$, it must obey the normalization condition
 \quad ,
 \end{eqnarray}
 where the limits of the integral should be thought of as going over
-the entire domain of $a$.  This is almost the \emph{definition} of a
-pdf, from my (pragmatic, informal) point of view.  This normalization
-condition shows that $p(a)$ has units of $a^{-1}$.  Nothing else would
-integrate properly to a dimensionless result.  Even if $a$ is a
+the entire domain of $a$.  This (along with, perhaps, $p(a)\geq 0$
+everywhere) is almost the \emph{definition} of a pdf, from my
+(pragmatic, informal) point of view.  This normalization condition
+shows that $p(a)$ has units of $a^{-1}$.  Nothing else would integrate
+properly to a dimensionless result.  Even if $a$ is a
 multi-dimensional vector or list or tensor or field or even point in
 function space, the pdf must have units of $a^{-1}$.
 
@@ -175,8 +174,7 @@ but you can \emph{absolutely never do} the integral
 \mbox{\textbf{wrong:}} & & \int p(a \given b)\,\dd b
 \end{eqnarray}
 because that integral would have units of $a^{-1}\,b$, which is (for
-our purposes) absurd.  Despite its absurdity, this integral has been
-performed many times in error in the literature of data analyses.
+our purposes) absurd.
 
 If you have a probability distribution for two things (``the pdf for
 $a$ and $b$''), you can always factorize it into two distributions,
@@ -187,9 +185,8 @@ p(a, b) &=& p(a)\,p(b \given a)
 p(a, b) &=& p(a \given b)\,p(b)
 \quad ,
 \end{eqnarray}
-these two factorizations, taken together lead to what is sometimes
-called ``Bayes's theorem'' but is just a simple consequence of the
-factorization:
+these two factorizations taken together lead to what is sometimes
+called ``Bayes's theorem'', or
 \begin{eqnarray}\displaystyle
 p(a \given b) &=& \frac{p(b \given a)\,p(a)}{p(b)}
 \quad ,
