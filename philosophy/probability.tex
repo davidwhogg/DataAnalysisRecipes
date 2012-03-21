@@ -85,26 +85,28 @@ David~W.~Hogg\\
 %% \affil{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New York University}
 
 \begin{abstract}
-I review the rules by which probability distribution functions can
-(and cannot) be combined. I connect these rules to the operations
-performed in probabilistic data analysis.  Dimensional analysis is
-emphasized as a valuable tool for helping to construct non-wrong
-probabilistic statements.  The applications of probability calculus in
-constructing likelihoods, marginalized likelihoods, and posterior
-probabilities are all discussed, briefly.
+In this pedagogical text aimed at those wanting to start thinking
+about or brush up on probabilistic inference, I review the rules by
+which probability distribution functions can (and cannot) be
+combined. I connect these rules to the operations performed in
+probabilistic data analysis.  Dimensional analysis is emphasized as a
+valuable tool for helping to construct non-wrong probabilistic
+statements.  The applications of probability calculus in constructing
+likelihoods, marginalized likelihoods, and posterior probabilities are
+all discussed, briefly.
 \end{abstract}
 
 \noindent
 When constructing the plan or basis for a probabilistic inference---a
-data analysis making use of likelihoods and also prior PDFs and
-posterior PDFs and also marginalization of nuisance parameters---the
-options are \emph{incredibly strongly constrained} by the simple rules
-of probability calculus.  That is, there are only certain ways that
-probability distribution functions (``PDFs'' in what follows)
-\emph{can} be combined to make new PDFs, compute expectation values,
-or make other kinds of non-wrong statements.  For this reason, it
-behooves the data analyst to have good familiarity and facility with
-these rules.
+data analysis making use of likelihoods and also prior probabilities
+and posterior probabilities and marginalization of nuisance
+parameters---the options are \emph{incredibly strongly constrained} by
+the simple rules of probability calculus.  That is, there are only
+certain ways that probability distribution functions (``pdfs'' in what
+follows) \emph{can} be combined to make new pdfs, compute expectation
+values, or make other kinds of non-wrong statements.  For this reason,
+it behooves the data analyst to have good familiarity and facility
+with these rules.
 
 Formally, probability calculus is extremely simple.  However, it is not
 always part of a physicist's (or biologist's or chemist's or
@@ -138,18 +140,18 @@ idiosyncratic read.
 
 Probability distribution functions have units or dimensions.  Don't
 ignore them.  For example, if you have a continuous parameter $a$, and
-a PDF $p(a)$ for $a$, it must obey the normalization condition
+a pdf $p(a)$ for $a$, it must obey the normalization condition
 \begin{eqnarray}\displaystyle
 1 &=& \int p(a)\,\dd a
 \quad ,
 \end{eqnarray}
 where the limits of the integral should be thought of as going over
 the entire domain of $a$.  This is almost the \emph{definition} of a
-PDF, from my (pragmatic, informal) point of view.  This normalization
+pdf, from my (pragmatic, informal) point of view.  This normalization
 condition shows that $p(a)$ has units of $a^{-1}$.  Nothing else would
 integrate properly to a dimensionless result.  Even if $a$ is a
 multi-dimensional vector or list or tensor or field or even point in
-function space, the PDF must have units of $a^{-1}$.
+function space, the pdf must have units of $a^{-1}$.
 
 In the multi-dimensional case, the units of $a^{-1}$ are found by
 taking the product of all the units of all the dimensions.  So, for
@@ -161,8 +163,8 @@ kg$^{-3}$\,m$^{-6}$\,s$^3$.
 
 Most problems we will encounter will have multiple parameters; even if
 we \emph{condition} $p(a)$ on some particular value of another
-parameter $b$, that is, ask for the PDF for $a$ \emph{given} that $b$
-has a particular, known value to make $p(a \given b)$ (read ``the PDF
+parameter $b$, that is, ask for the pdf for $a$ \emph{given} that $b$
+has a particular, known value to make $p(a \given b)$ (read ``the pdf
 for $a$ given $b$''), it must obey the same marginalization
 \begin{eqnarray}\displaystyle
 1 &=& \int p(a \given b)\,\dd a
@@ -176,7 +178,7 @@ because that integral would have units of $a^{-1}\,b$, which is (for
 our purposes) absurd.  Despite its absurdity, this integral has been
 performed many times in error in the literature of data analyses.
 
-If you have a probability distribution for two things (``the PDF for
+If you have a probability distribution for two things (``the pdf for
 $a$ and $b$''), you can always factorize it into two distributions,
 one for $a$, and one for $b$ given $a$ or the other way around:
 \begin{eqnarray}\displaystyle
@@ -201,7 +203,7 @@ and mathematicians the chills (though certainly not me).\note{Division
 unconditional ones (and many will tell you that there is no such thing
 as an unconditional probability\note{There are no unconditional
   probabilities!  This is because whenever \emph{in practice} you
-  calculate a probability or a PDF, you are always making strong
+  calculate a probability or a pdf, you are always making strong
   assumptions.  Your probabilities are all conditioned on these
   assumptions.}); they factor like this:
 \begin{eqnarray}\displaystyle
@@ -290,7 +292,7 @@ In rare cases, you can get factorizations that look like this:
 p(a, b \given c) &=& p(a \given c)\,p(b \given c)
 \quad ;
 \end{eqnarray}
-this factorization doesn't have the PDF for $a$ depend on $b$ or vice
+this factorization doesn't have the pdf for $a$ depend on $b$ or vice
 versa.  When this happens---and it is rare---it says that $a$ and $b$
 are ``independent'' (at least conditional on $c$).\note{The word
   ``independent'' has many meanings in different contexts of
@@ -329,10 +331,10 @@ and the normalization of $p(b \given c)$ becomes
 in both sums, the sum is implicitly over the (small number of)
 possible states of $b$.
 
-If you have a conditional PDF for $a$ like $p(a \given c)$ and you
+If you have a conditional pdf for $a$ like $p(a \given c)$ and you
 want to know the expectation value $E(a \given c)$ of $a$ under this
-PDF (which would be, for example, something like the mean value of $a$
-you would get if you drew many draws from the conditional PDF), you
+pdf (which would be, for example, something like the mean value of $a$
+you would get if you drew many draws from the conditional pdf), you
 just integrate
 \begin{eqnarray}\displaystyle
 E(a \given c) &=& \int a\,p(a \given c)\,\dd a
@@ -346,30 +348,30 @@ E(f \given c) &=& \int f(a)\,p(a \given c)\,\dd a
 You can see the marginalization integral (\ref{eq:marginalize}) that
 converts $p(a \given b, c)$ into $p(a \given c)$ as providing the
 \emph{expectation value} of $p(a \given b, c)$ under the conditional
-PDF $p(b \given c)$.  That's deep and relevant for what follows.
+pdf $p(b \given c)$.  That's deep and relevant for what follows.
 
 \begin{problem}
-You have conditional PDFs $p(a \given d)$, $p(b \given a, d)$, and
+You have conditional pdfs $p(a \given d)$, $p(b \given a, d)$, and
 $p(c \given a, b, d)$.  Write expressions for $p(a, b \given d)$, $p(b
 \given d)$, and $p(a \given c, d)$.
 \end{problem}
 
 \begin{problem}
-You have conditional PDFs $p(a \given b, c)$ and $p(a \given c)$
+You have conditional pdfs $p(a \given b, c)$ and $p(a \given c)$
 expressed or computable for any values of $a$, $b$, and $c$.  You are not
 permitted to multiply these together, of course.  But can you use them
-to construct the conditional PDF $p(b \given a, c)$ or $p(b \given c)$?
+to construct the conditional pdf $p(b \given a, c)$ or $p(b \given c)$?
 \end{problem}
 
 \begin{problem}
-You have conditional PDFs $p(a \given c)$ and $p(b \given c)$
+You have conditional pdfs $p(a \given c)$ and $p(b \given c)$
 expressed or computable for any values of $a$, $b$, and $c$.  Can you
-use them to construct the conditional PDF $p(a \given b, c)$?
+use them to construct the conditional pdf $p(a \given b, c)$?
 \end{problem}
 
 \begin{problem}
 You have a function $g(b)$ that is a function only of $b$.  You have
-conditional PDFs $p(a \given c)$ and $p(b \given a, c)$.  What is the
+conditional pdfs $p(a \given c)$ and $p(b \given a, c)$.  What is the
 expectation value $E(g \given c)$ for $g$ conditional on $c$ but
 \emph{not} conditional on $a$?
 \end{problem}
@@ -386,22 +388,22 @@ not?  If it \emph{is} permissible, what do you get?
 Imagine you have $N$ data points or measurements $D_n$ of some kind,
 possbly times or temperatures or brightnesses.  I will say that you
 have a ``generative model'' of data point $n$ if you can write down or
-calculate a PDF $p(D_n \given \theta, I)$ for the measurement $D_n$,
+calculate a pdf $p(D_n \given \theta, I)$ for the measurement $D_n$,
 conditional on a vector or list $\theta$ of parameters and a (possibly
 large) number of other things $I$ (``prior information'') on which the
-$D_n$ PDF depends, such as assumptions, or approximations, or
+$D_n$ pdf depends, such as assumptions, or approximations, or
 knowledge about the noise process, or so on.  If all the data points
 are independently drawn (that would be one of the assumptions in $I$),
-then the PDF for the full data set $\setofall{D_n}{n=1}{N}$ is just
+then the pdf for the full data set $\setofall{D_n}{n=1}{N}$ is just
 the product
 \begin{eqnarray}\displaystyle\label{eq:likelihood}
 p(\setofall{D_n}{n=1}{N} \given \theta, I) &=& \prod_{n=1}^N p(D_n \given \theta, I)
 \quad .
 \end{eqnarray}
-Any kind of PDF for the data is called a ``likelihood'' for historical
-reasons I don't care about.  Worse, any kind of conditional PDF for
+Any kind of pdf for the data is called a ``likelihood'' for historical
+reasons I don't care about.  Worse, any kind of conditional pdf for
 the data---conditional on parameters---is called a likelihood ``for
-the parameters'' even though it is a PDF ``for the data''.\note{I hate
+the parameters'' even though it is a pdf ``for the data''.\note{I hate
   the terminology ``likelihood'' and ``likelihood for parameters'' but
   again, it is so entrenched, it would be a disservice to the reader
   not to use it.}
@@ -425,19 +427,19 @@ them.  You might be tempted to do
 but that's not allowed for dimensional arguments given in the previous
 \sectionname.  In order to integrate over the nuisances $\alpha$,
 something with units of $\alpha^{-1}$ needs to be multiplied in---a
-PDF for the $\alpha$ of course:
+pdf for the $\alpha$ of course:
 \begin{eqnarray}\displaystyle\label{eq:mlikelihood}
 p(D_n \given \theta, I) &=& \int p(D_n \given \theta, \alpha, I)\,p(\alpha \given \theta, I)\,\dd\alpha
 \\
 p(\setofall{D_n}{n=1}{N} \given \theta, I) &=& \prod_{n=1}^N p(D_n \given \theta, I)
 \quad ,
 \end{eqnarray}
-where $p(\alpha \given \theta, I)$ is called the ``prior PDF'' for the
+where $p(\alpha \given \theta, I)$ is called the ``prior pdf'' for the
 $\alpha$ and it \emph{can} depend (but doesn't \emph{need to} depend)
 on the other parameters $\theta$ and the more general prior
 information $I$.  This marginalization is incredibly useful but note
 that it comes at a substantial cost: It required specifying a prior
-PDF over parameters that, by assumption, you don't care about!\note{I
+pdf over parameters that, by assumption, you don't care about!\note{I
   will say a lot more about this in some subsequent \documentname\ in
   this series; in general in real-world problems you need to put a lot
   of care and attention into the parts of the problem that you
@@ -445,7 +447,7 @@ PDF over parameters that, by assumption, you don't care about!\note{I
   precise measurements in the parts of the problem that you \emph{do}
   care about.}  \Equationname~(\ref{eq:mlikelihood}) could be called a
 ``partially marginalized likelihood'' because it is a likelihood (a
-PDF for the data) but it is conditional on fewer parameters than the
+pdf for the data) but it is conditional on fewer parameters than the
 original, rawest, likelihood.
 
 Sometimes I have heard concern that when you perform the
@@ -491,7 +493,7 @@ p(e_n) &=& N(e_n \given 0, \sigma_n^2)
 \\
 p(D_n \given \theta, I) &=& N(D_n \given a\,x_n + b, \sigma_n^2)
 \\\label{eq:examplelike}
-p(D \given \theta, I) &=& \prod_{n=1}^N p(D_n \given \theta, I)
+p(\setofall{D_n}{n=1}{N} \given \theta, I) &=& \prod_{n=1}^N p(D_n \given \theta, I)
 \\
 \theta &\equiv& [a, b]
 \\\label{eq:example1}
@@ -536,8 +538,8 @@ likelihoods, and probably should be.\note{I will say more about what
   between frequentists and Bayesians, which are boring and
   unproductive, in the main.}  However, there are many scientific
 questions the answers to which require going beyond the
-likelihood---which is a PDF for the data, conditional on the
-parameters---to a PDF for the parameters, conditional on the data.
+likelihood---which is a pdf for the data, conditional on the
+parameters---to a pdf for the parameters, conditional on the data.
 
 To illustrate, imagine that you want to make a probabilistic
 prediction, given your data analysis. For one example, you might want
@@ -548,7 +550,7 @@ parameters and you want to predict the outcome you expect in some
 future independent measurement of that same parameter (some other
 experiment that measures---differently---the age of the Universe).
 The distributions or expectation values for these predictions,
-conditioned on your data, will require a PDF for the parameters or
+conditioned on your data, will require a pdf for the parameters or
 functions of the parameters; that is, if you want the expectation $E(t
 \given D)$, where for notational convenience I have defined
 \begin{eqnarray}\displaystyle
@@ -560,29 +562,29 @@ you need to do the integral
 E(t \given D) &=& \int t(\theta)\,p(\theta \given D, I)\,\dd\theta
 \quad ,
 \end{eqnarray}
-this in turn requires the PDF $p(\theta \given D, I)$ for the
+this in turn requires the pdf $p(\theta \given D, I)$ for the
 parameters $\theta$ given the data.  This is called the ``posterior
-PDF'' because it is the PDF you get \emph{after} digesting the data.
+pdf'' because it is the pdf you get \emph{after} digesting the data.
 
-The posterior PDF is obtained by Bayes rule (\ref{eq:bayes})
+The posterior pdf is obtained by Bayes rule (\ref{eq:bayes})
 \begin{eqnarray}\displaystyle\label{eq:posterior}
 p(\theta \given D, I) &=& \frac{1}{Z}\,p(D \given \theta, I)\,p(\theta \given I)
 \\
 Z &\equiv& \int p(D \given \theta, I)\,p(\theta \given I)\,\dd\theta
 \quad ,
 \end{eqnarray}
-where we had to introduce the prior PDF $p(\theta \given I)$ for the
-parameters.  The prior can be thought of as the PDF for the parameters
-\emph{before} you took the data $D$.  The prior PDF brings in new
+where we had to introduce the prior pdf $p(\theta \given I)$ for the
+parameters.  The prior can be thought of as the pdf for the parameters
+\emph{before} you took the data $D$.  The prior pdf brings in new
 assumptions but also new capabilities, because posterior expectation
 values as in (\ref{eq:posteriorexpectation}) and other kinds of
 probabilistic predictions become possible with its use.
 
 Some notes about all this: \textsl{(a)}~Computation of expectation
-values is not the only---or even the primary---use of posterior PDFs;
+values is not the only---or even the primary---use of posterior pdfs;
 I was just using the expectation value as an example of \emph{why} you
-might want the posterior.  You can use posterior PDFs to make
-predictions that are themselves PDFs; this is in general the only way
+might want the posterior.  You can use posterior pdfs to make
+predictions that are themselves pdfs; this is in general the only way
 to propagate the full posterior uncertainty remaining after your
 experiment. \textsl{(b)}~The normalization $Z$ in
 \equationname~(\ref{eq:posterior}) is a marginalization of a
@@ -591,11 +593,11 @@ be written $p(D \given I)$.  It has many uses in model evaluation and
 model averaging, to be discussed in subsequent \documentnames.
 \textsl{(c)}~You can think of the posterior expression
 (\ref{eq:posterior}) as being a ``belief updating'' operation, in
-which you start with the prior PDF, multiply in the likelihood (which
+which you start with the prior pdf, multiply in the likelihood (which
 probably makes it narrower, at least if your data are useful) and
-re-normalize to make a posterior PDF.  There is a ``subjective''
+re-normalize to make a posterior pdf.  There is a ``subjective''
 attitude to take towards all this that makes the prior and the
-posterior PDFs specific to the individual inferrer, while the
+posterior pdfs specific to the individual inferrer, while the
 likelihood is (at least slightly) more objective.\note{Nothing in
   inference is ever truly \emph{objective} since every generative
   model involves making choices and assumptions and approximations.
@@ -603,26 +605,76 @@ likelihood is (at least slightly) more objective.\note{Nothing in
   model space for inference and testing.  This informs my view that it
   is inconsistent---as a probabilistic data analyzer---to be a
   \emph{realist} \citep{hogg}.  All that said, the likelihood function
-  is necessarily \emph{more} objective than the posterior PDF.}
+  is necessarily \emph{more} objective than the posterior pdf.}
 
-Although you might use the posterior PDF to report some kind of mean
+Although you might use the posterior pdf to report some kind of mean
 prediction as discussed above, it almost never makes sense to just
-\emph{optimize} the posterior PDF.  The posterior-optimal parameters
+\emph{optimize} the posterior pdf.  The posterior-optimal parameters
 are called the ``maximum \notenglish{a posteriori}'' (MAP) parameters.
 Like the maximum likelihood parameters, these only make sense to
 compute if they are being used to provide an approximation to the
-posterior PDF (in the form, say, of a mode and a width).\note{I have
+posterior pdf (in the form, say, of a mode and a width).\note{I have
   seen many cases in which investigators report the MAP parameters
   instead of the maximum-likelihood (ML) parameters and describe the
   inference as ``Bayesian''.  That is pretty misleading, because
   neither the MAP nor the ML is a probabilistic output, and the MAP
-  has additional assumptions in the form of a prior PDF.  That said,
+  has additional assumptions in the form of a prior pdf.  That said,
   the MAP value is like a ``regularized'' version of the ML, and can
   therefore be valuable in engineering and decision systems; more
   about this elsewhere.}
 
-Continuing our example from the previous \sectionname \ldots if we put
-down a prior PDF of the form \ldots the posterior PDF is \ldots
+Continuing our example of the model given in
+\equationnames~(\ref{eq:example0}) through (\ref{eq:example1}) from
+the previous \sectionname, if we want to learn the posterior pdf over
+the parameters $\theta \equiv [a, b]$, we need to choose a prior pdf
+$p(\theta \given I)$.  In principle this should represent our actual
+prior or exterior knowledge.  In practice, investigators often want to
+``assume nothing'' and put a very or infinitely broad prior on the
+parameters; of course putting a broad prior is not equivalent to
+assuming nothing, it is just as severe an assumption as any other
+prior.  For example, even if you go with a very broad prior on the
+parameter $a$, that is a \emph{different} assumption than the same
+form of very broad prior on $a^2$ or on $\arctan(a)$.  The prior
+doesn't just set the ranges of parameters, it places a \emph{measure
+  on parameter space.}  That's why it is so dangerous (and unloved by
+frequntists).\note{The insertion of the prior pdf absolutely and
+  necessarily increases the number of assumptions; there is no
+  avoiding that.  Bayesians sometimes like to say that frequentists
+  make just as many assumptions as Bayesians do.  It isn't true: A
+  principled frequentist---an investigator who only uses the
+  likelihood function and nothing else---genuinely makes fewer
+  assumptions than any Bayesian.  The Bayesian gets new capabilities
+  in exchange for these new assumptions, but they \emph{are} new.}
+
+If you choose an infinitely broad prior pdf, it can become
+\emph{improper}, in the sense that it can become impossible to satisfy
+the normalization condition
+\begin{eqnarray}\displaystyle
+1 &=& \int p(\theta \given I)\,\dd\theta
+\quad .
+\end{eqnarray}
+The crazy thing is that---although it is not advised---even with
+improper priors you can still often do inference, because an
+infinitely broad Gaussian (for example) is a well defined limit of a
+wide but finite Gaussian, and the posterior pdf can be well behaved in
+the limit.
+
+Sometimes your prior knowledge can be very odd.  For example, you
+might be willing to take any slope $a$ over a wide range, but require
+that the line $y=a\,x+b$ pass through a specific point
+$(x,y)=(X_0,Y_0)$.  Then your prior might look like
+\begin{eqnarray}\displaystyle
+p(\theta \given I) &=& p(a \given I)\,p(b \given a, I)
+\\\label{eq:dirac}
+p(b \given a, I) &=& \delta(b + a\,X_0 - Y_0)
+\quad ,
+\end{eqnarray}
+where $p(a \given I)$ is some broad function but $\delta(\cdot)$ is
+the Dirac delta function, and, implicitly, $X_0$ and $Y_0$ are part of
+the prior information $I$.  These examples all go to show that you
+have an enormous range of options when you start to write prior pdfs.
+In general, you should include all the things you know to be true when
+you write your priors.  With great power comes great responsibility.
 
 In other \documentnames\ in this series (for example
 \citealt{straightline}), more advanced topics will be discussed.  One
@@ -632,19 +684,49 @@ probability calculus don't prohibit it, and once you marginalize out
 most of them you can be left with extremely strong constraints on the
 parameters you care about.  Another example is that in many cases you
 care about the \emph{prior} on your parameters, not the parameters
-themselves.  Imagine, for example, that you don't know what prior PDF
+themselves.  Imagine, for example, that you don't know what prior pdf
 to put on your parameters $\theta$ but you want to take it from a
 family that itself has parameters $\beta$.  Then you can marginalize
-out the $\theta$ using the prior $p(\theta \given \beta, I)$ and be
-left with a likelihood for the parameters $\beta$ of the prior, like so:
+out the $\theta$---yes, marginalize out all the parameters we once
+thought we cared about---using the prior $p(\theta \given \beta, I)$
+and be left with a likelihood for the parameters $\beta$ of the prior,
+like so:
 \begin{eqnarray}\displaystyle
 p(D \given \beta, I) &=& \int p(D \given \theta, I)\,p(\theta \given \beta, I)\,\dd\theta
 \quad .
 \end{eqnarray}
-The parameters $\beta$ of the prior PDF are usually called
+The parameters $\beta$ of the prior pdf are usually called
 ``hyperparameters''; this kind of inference is called
 ``hierarchical''.\note{An example of simple hierarchical inference
   from my own work is \cite{eccentricity}.}
+
+\begin{problem}\label{prob:gaussianprior}
+Show that if you take the model in \equationnames~(\ref{eq:example0})
+through (\ref{eq:example1}) and put a Gaussian prior pdf on $a$ and an
+independent Gaussian prior pdf on $b$ that your posterior pdf for $a$
+and $b$ will be a two-dimensional Gaussian.  Feel free to use informal
+or even hand-waving arguments; there are no mathematicians present.
+\end{problem}
+
+\begin{problem}\label{prob:improper}
+Take the limit of your answer to \problemname~\ref{prob:gaussianprior}
+as the width of the $a$ and $b$ prior pdfs go to infinity and show
+that you still get a well-defined Gaussian posterior pdf.  Feel free
+to use informal or even hand-waving arguments.
+\end{problem}
+
+\begin{problem}
+Show that the posterior pdf you get in \problemname~\ref{prob:improper}
+is just a rescaling of the likelihood function by a scalar.  Two
+questions: Why \emph{must} there be a re-scaling, from a dimensional
+point of view?  What is the scaling, specifically?  You might have to
+do some linear algebra, for which I won't apologize; it's awesome.
+\end{problem}
+
+\begin{problem}
+\Equationname~(\ref{eq:dirac}) implies that the delta function
+$\delta(q)$ has what dimensions?
+\end{problem}
 
 \clearpage
 \markright{Notes}\theendnotes
