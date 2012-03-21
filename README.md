@@ -19,11 +19,13 @@ touch with Hogg.
 
 ### Style notes: ###
 
-- When at the end of the sentence, put the `\note` after the period.
-- When at the end of a phrase, put the `\note` before the comma or parenthesis.
+- *tentative:* use "pdf" not "PDF".
+- When at the end of the sentence, put the `\note` after the period,
+  but when at the end of a phrase, put the `\note` before the comma or
+  parenthesis.
 - Make sure the endnotes can be read on their own, outside of context.
-- Be careful with the words "error", "uncertainty".
-- Be careful with the words "probability", "frequency", "likelihood".
+- Be careful with the words "error", "uncertainty", "probability",
+  "frequency", "likelihood".
 - Use `()` for function arguments, and `[]` for grouping/precedence.
 - Define macros; remember "1, 2, infinity".
 - Put new terms in `\emph{}`, put only referred-to words in quotation marks.
