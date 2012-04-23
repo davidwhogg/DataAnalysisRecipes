@@ -307,7 +307,15 @@ probabilities:
 p(\setofall{a_n}{n=1}{N} \given c) &=& \prod_{n=1}^N p(a_n \given c)
 \quad ;
 \end{eqnarray}
-this is the definition of ``independent data points''.
+this is the definition of ``independent data points''.  If all the
+functions $p(a_n \given c)$ are identical---that is, if the functions
+don't depend on $n$---we say the data are ``iid'' or ``independent and
+identically distributed''.  However, this will not be true in general
+in data analysis.  Real data are heteroscedastic at the very
+least.\note{I love the word ``heteroscedastic''.  It means ``having
+  heterogeneous noise properties'', or that you can't treat every data
+  point as being drawn from the same noise model.  Heteroscedasticity
+  is a property of every data set I have ever used.}
 
 I am writing here mainly about continuous variables, but one thing
 that comes up frequently in data analysis are ``mixture models'' in
@@ -325,7 +333,7 @@ and the normalization of $p(b \given c)$ becomes
 1 &=& \sum_b p(b \given c)
 \quad ;
 \end{eqnarray}
-in both sums, the sum is implicitly over the (small number of)
+in both sums, the sum is implicitly over the (countable number of)
 possible states of $b$.
 
 If you have a conditional pdf for $a$ like $p(a \given c)$ and you
@@ -397,6 +405,7 @@ the product
 p(\setofall{D_n}{n=1}{N} \given \theta, I) &=& \prod_{n=1}^N p(D_n \given \theta, I)
 \quad .
 \end{eqnarray}
+(This requires the data to be independent, but not necessarily iid.)
 Any kind of pdf for the data is called a ``likelihood'' for historical
 reasons I don't care about.  Worse, any kind of conditional pdf for
 the data---conditional on parameters---is called a likelihood ``for
