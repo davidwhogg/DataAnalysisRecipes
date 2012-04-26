@@ -475,21 +475,6 @@ pdf over parameters that, by assumption, you don't care about!\note{I
 pdf for the data) but it is conditional on fewer parameters than the
 original, rawest, likelihood.
 
-Because the data are independent (the full-data likelihood is a
-product of individual-datum likelihoods), you might be tempted to do
-things like
-\begin{eqnarray}\displaystyle\label{eq:wrong2}
-\mbox{\textbf{wrong:}} & & \prod_{n=1}^N \left[\int p(D_n \given \theta, \alpha, I)\,p(\alpha \given \theta, I)\,\dd\alpha\right]
-\quad .
-\end{eqnarray}
-This is wrong because if you do the integral \emph{inside} the
-product, you end up doing the integral $N$ times over.  Or another way
-to put it, even if the data are independent, they are not independent
-\emph{conditional on $\alpha$}.  Or another way to put it, although
-you don't want to infer the $\alpha$ parameters, you want the support
-in the marginalization integral to be set by \emph{all} the data taken
-together, not each individual datum separately.
-
 Sometimes I have heard concern that when you perform the
 marginalization (\ref{eq:mlikelihood}), you are allowing the nuisance
 parameters to ``have any values they like, whatsoever'' as if you are
@@ -501,6 +486,21 @@ likelihood is large.  That is, if the data strongly constrain the
 $\alpha$ to a narrow range of good values, then only those good values
 are making any (significant) contribution to the marginalization
 integral.  That's important!
+
+Because the data were independent by assumption (the full-data
+likelihood is a product of individual-datum likelihoods), you might be
+tempted to do things like
+\begin{eqnarray}\displaystyle\label{eq:wrong2}
+\mbox{\textbf{wrong:}} & & \prod_{n=1}^N \left[\int p(D_n \given \theta, \alpha, I)\,p(\alpha \given \theta, I)\,\dd\alpha\right]
+\quad .
+\end{eqnarray}
+This is wrong because if you do the integral \emph{inside} the
+product, you end up doing the integral $N$ times over.  Or another way
+to put it, even if the data are independent, they are not independent
+\emph{conditional on $\alpha$}.  Or another way to put it, although
+you don't want to infer the $\alpha$ parameters, you want the support
+in the marginalization integral to be set by \emph{all} the data taken
+together, not each individual datum separately.
 
 One thing that is often done with likelihoods (and one thing that many
 audience members think, instinctively, when you mention the word
