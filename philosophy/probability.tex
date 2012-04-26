@@ -496,11 +496,10 @@ tempted to do things like
 \end{eqnarray}
 This is wrong because if you do the integral \emph{inside} the
 product, you end up doing the integral $N$ times over.  Or another way
-to put it, even if the data are independent, they are not independent
-\emph{conditional on $\alpha$}.  Or another way to put it, although
-you don't want to infer the $\alpha$ parameters, you want the support
-in the marginalization integral to be set by \emph{all} the data taken
-together, not each individual datum separately.
+to put it, although you don't want to infer the $\alpha$ parameters,
+you want the support in the marginalization integral to be
+consistently set by \emph{all} the data taken together, not
+inconsistently set by each individual datum separately.
 
 One thing that is often done with likelihoods (and one thing that many
 audience members think, instinctively, when you mention the word
@@ -667,9 +666,10 @@ posterior pdf (in the form, say, of a mode and a width).\note{I have
 The key idea is that the results of responsible data analysis is not
 \emph{an answer} but a \emph{distribution over answers}.  Data are
 inherently noisy and incomplete; they never answer your question
-precisely.  So no single number will adequately represent the result
-of a data analysis.  Results are always pdfs (or likelihood
-functions); we should embrace that.
+precisely.  So no single number---no maximum-likelihood or MAP
+value---will adequately represent the result of a data analysis.
+Results are always pdfs (or full likelihood functions); we must
+embrace that.
 
 Continuing our example of the model given in
 \equationnames~(\ref{eq:example0}) through (\ref{eq:example1}), if we
