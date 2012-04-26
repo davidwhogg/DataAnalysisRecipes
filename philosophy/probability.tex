@@ -69,8 +69,9 @@
     document provided that you make no changes to it whatsoever.}
   and the acknowledgements\note{%
     It is a pleasure to thank
-      [insert names here]
-    for discussions and comments that shaped these ideas.  This
+      [insert names here],
+      and Dan Weisz (University of Washington)
+    for discussions and comments.  This
     research was partially supported by the US National Aeronautics
     and Space Administration and National Science Foundation.}}
 
@@ -91,7 +92,7 @@ probabilistic data analysis.  Dimensional analysis is emphasized as a
 valuable tool for helping to construct non-wrong probabilistic
 statements.  The applications of probability calculus in constructing
 likelihoods, marginalized likelihoods, and posterior probabilities are
-all discussed, briefly.
+all briefly discussed.
 \end{abstract}
 
 \noindent
@@ -108,12 +109,9 @@ with these rules.
 
 Formally, probability calculus is extremely simple.  However, it is
 not always part of a physicist's (or biologist's or chemist's or
-economist's) education; so I am going to give a very fast review right
-here.  A key idea I want to convey is that if you think about the
-units or dimensions of the things you are using, you almost never go
-wrong.
+economist's) education.  That motivates this \documentname.
 
-For space and specificity---and because it is most useful for most
+For space and specificity---and because it is useful for most
 problems I encounter---I will focus on continuous variables (think
 ``model parameters'' for the purposes of inference) rather than
 binary, integer, or discrete parameters, although I might say one or
@@ -124,8 +122,11 @@ integrals---all of which are definite---will usually be
 implicit.\note{In my world, \emph{all integrals are definite
     integrals}.  The integral is never just the anti-derivative, it is
   always a definite, finite, area or volume or measure.  That has to
-  do with the fact, somehow, that the rules of probability calculus
-  are an application of the rules of measure theory.}
+  do, somehow, with the fact that the rules of probability calculus
+  are an application of the rules of measure theory.}  Along the way,
+a key idea I want to convey is---and this shows that I come from
+physics---that it is very helpful to think about the units or
+dimensions of probability quantities.
 
 I learned the material here by using it; probability calculus is so
 simple and constraining, you can truly learn it as you go.  However if
@@ -136,7 +137,7 @@ idiosyncratic read.
 
 \section{Generalities}
 
-Probability distribution functions have units or dimensions.  Don't
+A probability distribution function has units or dimensions.  Don't
 ignore them.  For example, if you have a continuous parameter $a$, and
 a pdf $p(a)$ for $a$, it must obey the normalization condition
 \begin{eqnarray}\displaystyle
@@ -164,17 +165,23 @@ Most problems we will encounter will have multiple parameters; even if
 we \emph{condition} $p(a)$ on some particular value of another
 parameter $b$, that is, ask for the pdf for $a$ \emph{given} that $b$
 has a particular, known value to make $p(a \given b)$ (read ``the pdf
-for $a$ given $b$''), it must obey the same marginalization
+for $a$ given $b$''), it must obey the same normalization
 \begin{eqnarray}\displaystyle
 1 &=& \int p(a \given b)\,\dd a
 \quad ,
 \end{eqnarray}
 but you can \emph{absolutely never do} the integral
-\begin{eqnarray}\displaystyle
+\begin{eqnarray}\displaystyle\label{eq:wrong1}
 \mbox{\textbf{wrong:}} & & \int p(a \given b)\,\dd b
 \end{eqnarray}
 because that integral would have units of $a^{-1}\,b$, which is (for
-our purposes) absurd.
+our purposes) absurd.\note{To see that the units in
+  \equationname~(\ref{eq:wrong1}) are $a^{-1}\,b$, you have to see
+  that the \emph{integration operator} $\int\dd b$ itself has units of
+  $b$ (just as the derivative operator $\dd/\dd b$ has units of
+  $b^{-1}$).  Why are the units $a^{-1}\,b$ absurd?  Well, they might
+  not be absurd units in general, but they aren't what we want when
+  we integrate a probability distribution.}
 
 If you have a probability distribution for two things (``the pdf for
 $a$ and $b$''), you can always factorize it into two distributions,
@@ -185,18 +192,24 @@ p(a, b) &=& p(a)\,p(b \given a)
 p(a, b) &=& p(a \given b)\,p(b)
 \quad ,
 \end{eqnarray}
-these two factorizations taken together lead to what is sometimes
+where the units of both sides of both equations are $a^{-1}\,b^{-1}$.
+These two factorizations taken together lead to what is sometimes
 called ``Bayes's theorem'', or
 \begin{eqnarray}\displaystyle
 p(a \given b) &=& \frac{p(b \given a)\,p(a)}{p(b)}
 \quad ,
 \end{eqnarray}
-where the ``divide by $p(b)$'' aspect of that gives many philosophers
-and mathematicians the chills (though certainly not me).\note{Division
-  by zero is a huge danger---in principle---when applying Bayes's
-  theorem.  In practice, if there is support for the model in your
-  data, or support for the data in your model, you don't hit any
-  zeros.}  Conditional probabilities factor just the same as
+where the units are just $a^{-1}$ (the $b^{-1}$ units cancel out top
+and bottom), and the ``divide by $p(b)$'' aspect of that gives many
+philosophers and mathematicians the chills (though certainly not
+me).\note{Division by zero is a huge danger---in principle---when
+  applying Bayes's theorem.  In practice, if there is support for the
+  model in your data, or support for the data in your model, you don't
+  hit any zeros.  This sounds a little crazy, but if you have data
+  with unmodeled outliers---for example if your noise model can't
+  handle enormous data excursions caused by rare events---you can
+  easily get real data sets that have vanishing probability in a
+  na\"ive model.}  Conditional probabilities factor just the same as
 unconditional ones (and many will tell you that there is no such thing
 as an unconditional probability\note{There are no unconditional
   probabilities!  This is because whenever \emph{in practice} you
@@ -215,7 +228,12 @@ where the condition $c$ must be carried through all the terms; the
 whole right-hand side must be conditioned on $c$ if the left-hand side
 is.  Again, there was Bayes's theorem, and you can see its role in
 conversions of one kind of conditional probability into another.  For
-technical reasons, I usually write Bayes's theorem like this:
+technical reasons,\note{The ``technical reason'' here that I treat the
+  denominator in \equationname~(\ref{eq:bayes}) as a renormalization constant $Z$ is that when we
+  perform Markov-Chain Monte Carlo sampling methods to obtain samples
+  from $p(a \given b, c)$, we will not need to know $Z$ at all; it is
+  usually (in practice) hard to compute and often unnecessary.} I
+usually write Bayes's theorem like this:
 \begin{eqnarray}\displaystyle\label{eq:bayes}
 p(a \given b, c) &=& \frac{1}{Z}\,p(b \given a, c)\,p(a \given c)
 \\
@@ -256,13 +274,15 @@ abomination.\note{Serious, non-ambiguous mathematicians often
   $p(A=a \given B=b, C=c)$.  This is unambiguous---you can write
   useful terms like $p(A=q \given B=b, C=c)$ to deal with the $a$, $q$
   problem---but it makes the equations big and long.}  I apologize,
-but it is so standard in our business I won't change.
+and encourage my readers to do things that aren't so ambiguous (like
+maybe add informative subscripts), but it is so standard in our
+business that I won't change (for now).
 
 ``Measure theory'' (for me, anyway\note{Have you noticed that I am
   \emph{not} a mathematician?}) is the theory of things in which you
-can do integrals.  You can ``integrate out'' variables you want to get
-rid of (or, in what follows, \emph{not} infer) by integrals that look
-like
+can do integrals.  You can \emph{integrate out} or \emph{marginalize
+  away} variables you want to get rid of (or, in what follows,
+\emph{not} infer) by integrals that look like
 \begin{eqnarray}\displaystyle\label{eq:marginalize}
 p(a \given c) &=& \int p(a \given b, c)\,p(b \given c)\,\dd b
 \quad ,
@@ -297,19 +317,19 @@ are ``independent'' (at least conditional on $c$).\note{The word
   in context of independently drawn data points in a generative model
   of data.  I prefer the word ``separable'' for this situation,
   because I think it is less ambiguous.}  In many cases of data
-analysis, in models of data sets, we often have a large number of data
-$a_n$, indexed by $n$, each of which is independent in this sense.  If
-you have a set of $N$ independently drawn data $a_n$, each drawn from
+analysis, in which we want probabilistic models of data sets, we often
+have some number $N$ of data $a_n$ (indexed by $n$) each of which is
+independent in this sense.  If for each datum $a_n$ you can write down
 a probability distribution $p(a_n \given c)$, then the probability of
-the full data set is simply the product of the individual data-point
-probabilities:
+the full data set---when the data are independent---is simply the
+product of the individual data-point probabilities:
 \begin{eqnarray}\displaystyle
 p(\setofall{a_n}{n=1}{N} \given c) &=& \prod_{n=1}^N p(a_n \given c)
-\quad ;
+\quad .
 \end{eqnarray}
-this is the definition of ``independent data points''.  If all the
-functions $p(a_n \given c)$ are identical---that is, if the functions
-don't depend on $n$---we say the data are ``iid'' or ``independent and
+This is the definition of ``independent data''.  If all the functions
+$p(a_n \given c)$ are identical---that is, if the functions don't
+depend on $n$---we say the data are ``iid'' or ``independent and
 identically distributed''.  However, this will not be true in general
 in data analysis.  Real data are heteroscedastic at the very
 least.\note{I love the word ``heteroscedastic''.  It means ``having
@@ -336,11 +356,11 @@ and the normalization of $p(b \given c)$ becomes
 in both sums, the sum is implicitly over the (countable number of)
 possible states of $b$.
 
-If you have a conditional pdf for $a$ like $p(a \given c)$ and you
-want to know the expectation value $E(a \given c)$ of $a$ under this
-pdf (which would be, for example, something like the mean value of $a$
-you would get if you drew many draws from the conditional pdf), you
-just integrate
+If you have a conditional pdf for $a$, for example $p(a \given c)$,
+and you want to know the expectation value $E(a \given c)$ of $a$
+under this pdf (which would be, for example, something like the mean
+value of $a$ you would get if you drew many draws from the conditional
+pdf), you just integrate
 \begin{eqnarray}\displaystyle
 E(a \given c) &=& \int a\,p(a \given c)\,\dd a
 \quad .
@@ -363,9 +383,10 @@ $p(c \given a, b, d)$.  Write expressions for $p(a, b \given d)$, $p(b
 
 \begin{problem}
 You have conditional pdfs $p(a \given b, c)$ and $p(a \given c)$
-expressed or computable for any values of $a$, $b$, and $c$.  You are not
-permitted to multiply these together, of course.  But can you use them
-to construct the conditional pdf $p(b \given a, c)$ or $p(b \given c)$?
+expressed or computable for any values of $a$, $b$, and $c$.  You are
+not permitted to multiply these together, of course.  But can you use
+them to construct the conditional pdf $p(b \given a, c)$ or $p(b
+\given c)$?  Did you have to make any assumptions?
 \end{problem}
 
 \begin{problem}
@@ -391,7 +412,7 @@ not?  If it \emph{is} permissible, what do you get?
 \section{Likelihoods}
 
 Imagine you have $N$ data points or measurements $D_n$ of some kind,
-possbly times or temperatures or brightnesses.  I will say that you
+possibly times or temperatures or brightnesses.  I will say that you
 have a ``generative model'' of data point $n$ if you can write down or
 calculate a pdf $p(D_n \given \theta, I)$ for the measurement $D_n$,
 conditional on a vector or list $\theta$ of parameters and a (possibly
@@ -427,7 +448,7 @@ parameters $\theta$ without committing to anything regarding the
 nuisance parameters $\alpha$, you can marginalize rather than infer
 them.  You might be tempted to do
 \begin{eqnarray}\displaystyle
-\mbox{\textbf{wrong:}} & & \int p(D_n \given \theta, \alpha, I)\,\dd\alpha
+\mbox{\textbf{wrong:}} & & \int p(\setofall{D_n}{n=1}{N} \given \theta, \alpha, I)\,\dd\alpha
 \quad ,
 \end{eqnarray}
 but that's not allowed for dimensional arguments given in the previous
@@ -435,9 +456,7 @@ but that's not allowed for dimensional arguments given in the previous
 something with units of $\alpha^{-1}$ needs to be multiplied in---a
 pdf for the $\alpha$ of course:
 \begin{eqnarray}\displaystyle\label{eq:mlikelihood}
-p(D_n \given \theta, I) &=& \int p(D_n \given \theta, \alpha, I)\,p(\alpha \given \theta, I)\,\dd\alpha
-\\
-p(\setofall{D_n}{n=1}{N} \given \theta, I) &=& \prod_{n=1}^N p(D_n \given \theta, I)
+p(\setofall{D_n}{n=1}{N} \given \theta, I) &=& \int p(\setofall{D_n}{n=1}{N} \given \theta, \alpha, I)\,p(\alpha \given \theta, I)\,\dd\alpha
 \quad ,
 \end{eqnarray}
 where $p(\alpha \given \theta, I)$ is called the ``prior pdf'' for the
@@ -455,6 +474,21 @@ pdf over parameters that, by assumption, you don't care about!\note{I
 ``partially marginalized likelihood'' because it is a likelihood (a
 pdf for the data) but it is conditional on fewer parameters than the
 original, rawest, likelihood.
+
+Because the data are independent (the full-data likelihood is a
+product of individual-datum likelihoods), you might be tempted to do
+things like
+\begin{eqnarray}\displaystyle\label{eq:wrong2}
+\mbox{\textbf{wrong:}} & & \prod_{n=1}^N \left[\int p(D_n \given \theta, \alpha, I)\,p(\alpha \given \theta, I)\,\dd\alpha\right]
+\quad .
+\end{eqnarray}
+This is wrong because if you do the integral \emph{inside} the
+product, you end up doing the integral $N$ times over.  Or another way
+to put it, even if the data are independent, they are not independent
+\emph{conditional on $\alpha$}.  Or another way to put it, although
+you don't want to infer the $\alpha$ parameters, you want the support
+in the marginalization integral to be set by \emph{all} the data taken
+together, not each individual datum separately.
 
 Sometimes I have heard concern that when you perform the
 marginalization (\ref{eq:mlikelihood}), you are allowing the nuisance
@@ -596,14 +630,15 @@ experiment. \textsl{(b)}~The normalization $Z$ in
 \equationname~(\ref{eq:posterior}) is a marginalization of a
 likelihood; in fact it is a fully marginalized likelihood, and could
 be written $p(D \given I)$.  It has many uses in model evaluation and
-model averaging, to be discussed in subsequent \documentnames.
-\textsl{(c)}~You can think of the posterior expression
-(\ref{eq:posterior}) as being a ``belief updating'' operation, in
-which you start with the prior pdf, multiply in the likelihood (which
-probably makes it narrower, at least if your data are useful) and
-re-normalize to make a posterior pdf.  There is a ``subjective''
-attitude to take towards all this that makes the prior and the
-posterior pdfs specific to the individual inferrer, while the
+model averaging, to be discussed in subsequent \documentnames; it is
+sometimes called ``the evidence'' though that is a very unspecific
+term I don't like so much.  \textsl{(c)}~You can think of the
+posterior expression (\ref{eq:posterior}) as being a ``belief
+updating'' operation, in which you start with the prior pdf, multiply
+in the likelihood (which probably makes it narrower, at least if your
+data are useful) and re-normalize to make a posterior pdf.  There is a
+``subjective'' attitude to take towards all this that makes the prior
+and the posterior pdfs specific to the individual inferrer, while the
 likelihood is (at least slightly) more objective.\note{Nothing in
   inference is ever truly \emph{objective} since every generative
   model involves making choices and assumptions and approximations.
@@ -629,28 +664,35 @@ posterior pdf (in the form, say, of a mode and a width).\note{I have
   therefore be valuable in engineering and decision systems; more
   about this elsewhere.}
 
+The key idea is that the results of responsible data analysis is not
+\emph{an answer} but a \emph{distribution over answers}.  Data are
+inherently noisy and incomplete; they never answer your question
+precisely.  So no single number will adequately represent the result
+of a data analysis.  Results are always pdfs (or likelihood
+functions); we should embrace that.
+
 Continuing our example of the model given in
-\equationnames~(\ref{eq:example0}) through (\ref{eq:example1}) from
-the previous \sectionname, if we want to learn the posterior pdf over
-the parameters $\theta \equiv [a, b]$, we need to choose a prior pdf
-$p(\theta \given I)$.  In principle this should represent our actual
-prior or exterior knowledge.  In practice, investigators often want to
-``assume nothing'' and put a very or infinitely broad prior on the
-parameters; of course putting a broad prior is not equivalent to
-assuming nothing, it is just as severe an assumption as any other
-prior.  For example, even if you go with a very broad prior on the
-parameter $a$, that is a \emph{different} assumption than the same
-form of very broad prior on $a^2$ or on $\arctan(a)$.  The prior
-doesn't just set the ranges of parameters, it places a \emph{measure
-  on parameter space.}  That's why it is so dangerous (and unloved by
-frequntists).\note{The insertion of the prior pdf absolutely and
-  necessarily increases the number of assumptions; there is no
-  avoiding that.  Bayesians sometimes like to say that frequentists
-  make just as many assumptions as Bayesians do.  It isn't true: A
-  principled frequentist---an investigator who only uses the
-  likelihood function and nothing else---genuinely makes fewer
-  assumptions than any Bayesian.  The Bayesian gets new capabilities
-  in exchange for these new assumptions, but they \emph{are} new.}
+\equationnames~(\ref{eq:example0}) through (\ref{eq:example1}), if we
+want to learn the posterior pdf over the parameters $\theta \equiv [a,
+  b]$, we need to choose a prior pdf $p(\theta \given I)$.  In
+principle this should represent our actual prior or exterior
+knowledge.  In practice, investigators often want to ``assume
+nothing'' and put a very or infinitely broad prior on the parameters;
+of course putting a broad prior is not equivalent to assuming nothing,
+it is just as severe an assumption as any other prior.  For example,
+even if you go with a very broad prior on the parameter $a$, that is a
+\emph{different} assumption than the same form of very broad prior on
+$a^2$ or on $\arctan(a)$.  The prior doesn't just set the ranges of
+parameters, it places a \emph{measure on parameter space.}  That's why
+it is so dangerous (and unloved by frequentists).\note{The insertion of
+  the prior pdf absolutely and necessarily increases the number of
+  assumptions; there is no avoiding that.  Bayesians sometimes like to
+  say that frequentists make just as many assumptions as Bayesians do.
+  It isn't true: A principled frequentist---an investigator who only
+  uses the likelihood function and nothing else---genuinely makes
+  fewer assumptions than any Bayesian.  The Bayesian gets new
+  capabilities in exchange for these new assumptions, but they
+  \emph{are} new.}
 
 If you choose an infinitely broad prior pdf, it can become
 \emph{improper}, in the sense that it can become impossible to satisfy
