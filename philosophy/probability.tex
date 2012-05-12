@@ -284,11 +284,12 @@ and encourage my readers to do things that aren't so ambiguous (like
 maybe add informative subscripts), but it is so standard in our
 business that I won't change (for now).
 
-``Measure theory'' (for me, anyway\note{Have you noticed that I am
-  \emph{not} a mathematician?}) is the theory of things in which you
-can do integrals.  You can \emph{integrate out} or \emph{marginalize
-  away} variables you want to get rid of (or, in what follows,
-\emph{not} infer) by integrals that look like
+The theory of continuous pdfs is measure theory; measure theory (for
+me, anyway\note{Have you noticed that I am \emph{not} a
+  mathematician?}) is the theory of things in which you can do
+integrals.  You can \emph{integrate out} or \emph{marginalize away}
+variables you want to get rid of (or, in what follows, \emph{not}
+infer) by integrals that look like
 \begin{eqnarray}\displaystyle\label{eq:marginalize}
 p(a \given c) &=& \int p(a \given b, c)\,p(b \given c)\,\dd b
 \quad ,
@@ -344,11 +345,11 @@ least.\note{I love the word ``heteroscedastic''.  It means ``having
   is a property of every data set I have ever used.}
 
 I am writing here mainly about continuous variables, but one thing
-that comes up frequently in data analysis are ``mixture models'' in
-which data are produced by two (or more) qualitatively different
-processes (some data are good, and some are bad, for example) that
-have different relative probabilities.  When a variable ($b$, say) is
-discrete, the marginalization integral corresponding to
+that comes up frequently in data analysis is the idea of a ``mixture
+model'' in which data are produced by two (or more) qualitatively
+different processes (some data are good, and some are bad, for
+example) that have different relative probabilities.  When a variable
+($b$, say) is discrete, the marginalization integral corresponding to
 \equationname~(\ref{eq:marginalize}) becomes a sum
 \begin{eqnarray}\displaystyle
 p(a \given c) &=& \sum_b p(a \given b, c)\,p(b \given c)
@@ -684,21 +685,21 @@ want to learn the posterior pdf over the parameters $\theta \equiv [a,
 principle this should represent our actual prior or exterior
 knowledge.  In practice, investigators often want to ``assume
 nothing'' and put a very or infinitely broad prior on the parameters;
-of course putting a broad prior is not equivalent to assuming nothing,
-it is just as severe an assumption as any other prior.  For example,
-even if you go with a very broad prior on the parameter $a$, that is a
-\emph{different} assumption than the same form of very broad prior on
-$a^2$ or on $\arctan(a)$.  The prior doesn't just set the ranges of
-parameters, it places a \emph{measure on parameter space.}  That's why
-it is so dangerous (and unloved by frequentists).\note{The insertion of
-  the prior pdf absolutely and necessarily increases the number of
-  assumptions; there is no avoiding that.  Bayesians sometimes like to
-  say that frequentists make just as many assumptions as Bayesians do.
-  It isn't true: A principled frequentist---an investigator who only
-  uses the likelihood function and nothing else---genuinely makes
-  fewer assumptions than any Bayesian.  The Bayesian gets new
-  capabilities in exchange for these new assumptions, but they
-  \emph{are} new.}
+of course putting a broad prior is \emph{not} equivalent to assuming
+nothing, it is just as severe an assumption as any other prior.  For
+example, even if you go with a very broad prior on the parameter $a$,
+that is a \emph{different} assumption than the same form of very broad
+prior on $a^2$ or on $\arctan(a)$.  The prior doesn't just set the
+ranges of parameters, it places a \emph{measure on parameter space.}
+That's why it is so dangerous (and unloved by frequentists).\note{The
+  insertion of the prior pdf absolutely and necessarily increases the
+  number of assumptions; there is no avoiding that.  Bayesians
+  sometimes like to say that frequentists make just as many
+  assumptions as Bayesians do.  It isn't true: A principled
+  frequentist---an investigator who only uses the likelihood function
+  and nothing else---genuinely makes fewer assumptions than any
+  Bayesian.  The Bayesian gets new capabilities in exchange for these
+  new assumptions, but they \emph{are} new.}
 
 If you choose an infinitely broad prior pdf, it can become
 \emph{improper}, in the sense that it can become impossible to satisfy
