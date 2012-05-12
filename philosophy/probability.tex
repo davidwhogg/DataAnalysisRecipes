@@ -7,7 +7,11 @@
 % - Incorporate Rix comments (email 2012-04-28):
 %   - bring in an example earlier
 %   - be more polemical about the *need* to confront and set priors
-% - Incorporate Bovy comments (email 2012-05-04)
+% - Along those same lines:
+%   - make a plot with, say, three data points
+%   - show how the likelihood and posterior are related
+%   - show the marginalized likelihood
+%   - etc
 
 \documentclass[12pt,twoside]{article}
 \usepackage{amssymb,amsmath,mathrsfs,../hogg_endnotes,natbib}
@@ -97,8 +101,8 @@ combined. I connect these rules to the operations performed in
 probabilistic data analysis.  Dimensional analysis is emphasized as a
 valuable tool for helping to construct non-wrong probabilistic
 statements.  The applications of probability calculus in constructing
-likelihoods, marginalized likelihoods, and posterior probabilities are
-all briefly discussed.
+likelihoods, marginalized likelihoods, posterior probabilities, and
+posterior predictions are all discussed.
 \end{abstract}
 
 \noindent
@@ -361,7 +365,11 @@ and the normalization of $p(b \given c)$ becomes
 \quad ;
 \end{eqnarray}
 in both sums, the sum is implicitly over the (countable number of)
-possible states of $b$.
+possible states of $b$.\note{In many sources, when a variable $b$ is
+  made discrete, because the pdf $p(b\given a)$ becomes just a set of
+  probabilities, the symbol ``$p$'' is often changed to ``$P$''.
+  That's not crazy; anything that makes this ambiguous nomenclature
+  less ambiguous is good.}
 
 If you have a conditional pdf for $a$, for example $p(a \given c)$,
 and you want to know the expectation value $E(a \given c)$ of $a$
@@ -454,14 +462,23 @@ If you want to make likelihood statements about the important
 parameters $\theta$ without committing to anything regarding the
 nuisance parameters $\alpha$, you can marginalize rather than infer
 them.  You might be tempted to do
-\begin{eqnarray}\displaystyle
+\begin{eqnarray}\displaystyle\label{eq:wrongmlikelihood}
 \mbox{\textbf{wrong:}} & & \int p(\setofall{D_n}{n=1}{N} \given \theta, \alpha, I)\,\dd\alpha
 \quad ,
 \end{eqnarray}
 but that's not allowed for dimensional arguments given in the previous
-\sectionname.  In order to integrate over the nuisances $\alpha$,
-something with units of $\alpha^{-1}$ needs to be multiplied in---a
-pdf for the $\alpha$ of course:
+\sectionname.\note{The pseudo-marginalization operation in wrong
+  \equationname~(\ref{eq:wrongmlikelihood}) has occasionally been done
+  in the literature, and not led to disastrous results.  Why not?  It
+  is because that operation, though not permitted, is very very
+  similar to the operation you \emph{in fact} perform when you do the
+  correct marginalization integration given in
+  \equationname~(\ref{eq:mlikelihood}) but with a prior pdf $p(\alpha
+  \given \theta, I)$ that is flat in $\alpha$.  Implicitly, \emph{any}
+  marginalization or marginalization-like integral necessarily
+  involves the choice of a prior pdf.}  In order to integrate over the
+nuisances $\alpha$, something with units of $\alpha^{-1}$ needs to be
+multiplied in---a pdf for the $\alpha$ of course:
 \begin{eqnarray}\displaystyle\label{eq:mlikelihood}
 p(\setofall{D_n}{n=1}{N} \given \theta, I) &=& \int p(\setofall{D_n}{n=1}{N} \given \theta, \alpha, I)\,p(\alpha \given \theta, I)\,\dd\alpha
 \quad ,
@@ -657,18 +674,23 @@ likelihood is (at least slightly) more objective.\note{Nothing in
 Although you might use the posterior pdf to report some kind of mean
 prediction as discussed above, it almost never makes sense to just
 \emph{optimize} the posterior pdf.  The posterior-optimal parameters
-are called the ``maximum \notenglish{a posteriori}'' (MAP) parameters.
-Like the maximum likelihood parameters, these only make sense to
-compute if they are being used to provide an approximation to the
-posterior pdf (in the form, say, of a mode and a width).\note{I have
-  seen many cases in which investigators report the MAP parameters
-  instead of the maximum-likelihood (ML) parameters and describe the
-  inference as ``Bayesian''.  That is pretty misleading, because
-  neither the MAP nor the ML is a probabilistic output, and the MAP
-  has additional assumptions in the form of a prior pdf.  That said,
-  the MAP value is like a ``regularized'' version of the ML, and can
-  therefore be valuable in engineering and decision systems; more
-  about this elsewhere.}
+are called the ``maximum \notenglish{a posteriori}'' (MAP)
+parameters.\note{The MAP parameters include prior information, which
+  provide a measure on the parameters, so the MAP parameters change as
+  the parameter space is transformed (as coordinate transformations
+  are applied to the parameters).  This is not true of the maximum
+  likelihood parameters, because the likelihood framework never makes
+  use of any measure information.}  Like the maximum likelihood
+parameters, these only make sense to compute if they are being used to
+provide an approximation to the posterior pdf (in the form, say, of a
+mode and a width).\note{I have seen many cases in which investigators
+  report the MAP parameters instead of the maximum-likelihood (ML)
+  parameters and describe the inference as ``Bayesian''.  That is
+  pretty misleading, because neither the MAP nor the ML is a
+  probabilistic output, and the MAP has additional assumptions in the
+  form of a prior pdf.  That said, the MAP value is like a
+  ``regularized'' version of the ML, and can therefore be valuable in
+  engineering and decision systems; more about this elsewhere.}
 
 The key idea is that the results of responsible data analysis is not
 \emph{an answer} but a \emph{distribution over answers}.  Data are
@@ -712,7 +734,8 @@ The crazy thing is that---although it is not advised---even with
 improper priors you can still often do inference, because an
 infinitely broad Gaussian (for example) is a well defined limit of a
 wide but finite Gaussian, and the posterior pdf can be well behaved in
-the limit.
+the limit.  That is, posterior pdfs can be proper even when prior pdfs
+are not.
 
 Sometimes your prior knowledge can be very odd.  For example, you
 might be willing to take any slope $a$ over a wide range, but require
