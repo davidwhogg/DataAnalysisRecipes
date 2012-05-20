@@ -90,10 +90,10 @@
 \noindent
 David~W.~Hogg\\
 \affil{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New York University}\\
-\affil{Max-Planck-Institut f\"ur Astronomie, Heidelberg}
+and \affil{Max-Planck-Institut f\"ur Astronomie, Heidelberg}
 %% \\[1ex]
 %% A. Nother Author
-%% \affil{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New York University}
+%% \affil{Oxford University}
 
 \begin{abstract}
 In this pedagogical text aimed at those wanting to start thinking
@@ -296,18 +296,21 @@ me, anyway\note{Have you noticed that I am \emph{not} a
 integrals.  You can \emph{integrate out} or \emph{marginalize away}
 variables you want to get rid of (or, in what follows, \emph{not}
 infer) by integrals that look like
-\begin{eqnarray}\displaystyle\label{eq:marginalize}
+\begin{eqnarray}\displaystyle
+p(a \given c) &=& \int p(a, b \given c)\,\dd b
+\\\label{eq:marginalize}
 p(a \given c) &=& \int p(a \given b, c)\,p(b \given c)\,\dd b
 \quad ,
 \end{eqnarray}
-where again the integrals go over the entire domain of $b$ in each
-case, and again if the left-hand side is conditioned on $c$, then
-everything on the right-hand side must be also.  This equation is a
-natural consequence of the things written above and dimensional
-analysis.  Recall that because $b$ is some kind of arbitrary, possibly
-very high-dimensional mathematical object, these integrals can be
-extremely daunting in practice (see below).  Sometimes equations like
-(\ref{eq:marginalize}) can be written
+where the second is a factorized version of the first.  Once again the
+integrals go over the entire domain of $b$ in each case, and again if
+the left-hand side is conditioned on $c$, then everything on the
+right-hand side must be also.  This equation is a natural consequence
+of the things written above and dimensional analysis.  Recall that
+because $b$ is some kind of arbitrary, possibly very high-dimensional
+mathematical object, these integrals can be extremely daunting in
+practice (see below).  Sometimes equations like (\ref{eq:marginalize})
+can be written
 \begin{eqnarray}\displaystyle
 p(a \given c) &=& \int p(a \given b)\,p(b \given c)\,\dd b
 \quad ,
@@ -444,13 +447,21 @@ p(\setofall{D_n}{n=1}{N} \given \theta, I) &=& \prod_{n=1}^N p(D_n \given \theta
 \quad .
 \end{eqnarray}
 (This requires the data to be independent, but not necessarily iid.)
-Any kind of pdf for the data is called a ``likelihood'' for historical
-reasons I don't care about.  Worse, any kind of conditional pdf for
-the data---conditional on parameters---is called a likelihood ``for
-the parameters'' even though it is a pdf ``for the data''.\note{I hate
-  the terminology ``likelihood'' and ``likelihood for parameters'' but
-  again, it is so entrenched, it would be a disservice to the reader
-  not to use it.}
+When the pdf of the data is thought of as being a \emph{function} of
+the parameters at \emph{fixed} data, the pdf of the data given the
+parameters is called the ``likelihood'' (for historical reasons I
+don't care about).  In general, in contexts in which the data are
+thought of as being fixed and the parameters are thought of as
+variable, any kind of conditional pdf for the data---conditional on
+parameters---is called a likelihood ``for the parameters'' even though
+it is a pdf ``for the data''.\note{I hate the terminology
+  ``likelihood'' and ``likelihood for parameters'' but again, it is so
+  entrenched, it would be a disservice to the reader not to use it.
+  If you really want to go down the rabbit hole, \citet{jaynes} calls
+  the pdf for the data a ``frequency distribution'' not a
+  ``probability distribution'' because he \emph{always} sees the data
+  as being \emph{fixed} and reserves the word ``probability'' for the
+  things that are unknown (that is, being inferred).}
 
 Now imagine that the parameters divide into two groups.  One group
 $\theta$ are parameters of great interest, and another group $\alpha$
@@ -490,7 +501,7 @@ $\alpha$ and it \emph{can} depend (but doesn't \emph{need to} depend)
 on the other parameters $\theta$ and the more general prior
 information $I$.  This marginalization is incredibly useful but note
 that it comes at a substantial cost: It required specifying a prior
-pdf over parameters that, by assumption, you don't care about!\note{I
+pdf over parameters that, by assertion, you don't care about!\note{I
   will say a lot more about this in some subsequent \documentname\ in
   this series; in general in real-world problems you need to put a lot
   of care and attention into the parts of the problem that you
@@ -587,9 +598,9 @@ $Q$ depend, and what are its dimensions?
 
 \begin{problem}
 The likelihood in \equationname~(\ref{eq:examplelike}) is a product of
-Gaussians in $D_n$.  Fix the data and fix $b$.  What shape will it
-have in the $a$ direction?  That is, what functional form will it have
-when thought of as being a function of $a$?  You will have to use the
+Gaussians in $D_n$.  At fixed data and $b$, what shape will it have in
+the $a$ direction?  That is, what functional form will it have when
+thought of as being a function of $a$?  You will have to use the
 properties of Gaussians (and products of Gaussians).
 \end{problem}
 
@@ -600,11 +611,11 @@ sciences can be left in the form of likelihoods and marginalized
 likelihoods, and probably should be.\note{I will say more about what
   you both gain and lose by going beyond the likelihood in a
   subsequent \documentname\ in this series.  It relates to the battles
-  between frequentists and Bayesians, which are boring and
-  unproductive, in the main.}  However, there are many scientific
-questions the answers to which require going beyond the
-likelihood---which is a pdf for the data, conditional on the
-parameters---to a pdf for the parameters, conditional on the data.
+  between frequentists and Bayesians, which tend towards the boring
+  and unproductive.}  However, there are many scientific questions the
+answers to which require going beyond the likelihood---which is a pdf
+for the data, conditional on the parameters---to a pdf for the
+parameters, conditional on the data.
 
 To illustrate, imagine that you want to make a probabilistic
 prediction, given your data analysis. For one example, you might want
@@ -715,7 +726,7 @@ example, even if you go with a very broad prior on the parameter $a$,
 that is a \emph{different} assumption than the same form of very broad
 prior on $a^2$ or on $\arctan(a)$.  The prior doesn't just set the
 ranges of parameters, it places a \emph{measure on parameter space.}
-That's why it is so dangerous (and unloved by frequentists).\note{The
+That's why it is so important (and unloved by frequentists).\note{The
   insertion of the prior pdf absolutely and necessarily increases the
   number of assumptions; there is no avoiding that.  Bayesians
   sometimes like to say that frequentists make just as many
