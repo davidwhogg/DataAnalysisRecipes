@@ -3,16 +3,13 @@
 
 % to-do items
 % -----------
-% - Maybe explain the over-conditioning problem with p(a|b,c) p(b|a,c)?
 % - Incorporate Rix comments (email 2012-04-28):
 %   - bring in an example earlier
-%   - be more polemical about the *need* to confront and set priors
 % - Along those same lines:
 %   - make a plot with, say, three data points
 %   - show how the likelihood and posterior are related
 %   - show the marginalized likelihood
 %   - etc
-% - Incorporate Phil comments (in shoulder bag)
 
 \documentclass[12pt,twoside]{article}
 \usepackage{amssymb,amsmath,mathrsfs,../hogg_endnotes,natbib}
@@ -683,6 +680,23 @@ likelihood is (at least slightly) more objective.\note{Nothing in
   is inconsistent---as a probabilistic data analyzer---to be a
   \emph{realist} \citep{hogg}.  All that said, the likelihood function
   is necessarily \emph{more} objective than the posterior pdf.}
+\textsl{(d)}~Many committed Bayesians take the view that you
+\emph{always} want a posterior pdf---that is, you are never satisfied
+with a likelihood---and that you therefore \emph{must} always have a
+prior, even if you don't think you do.  That view is false, but it
+contains an element of truth: If you eschew prior pdfs, then you are
+relegated to only ever asking and answering questions about the
+probability of the data.  You can answer questions like ``what regions
+of parameter space are consistent with the data?''\ but within the set
+of consistent models, you can't answer questions like ``are these
+parameters more plausible than these?''\note{It is hard to live as a
+  frequentist but it is possible.  Some of the aforementioned battles
+  between frequentists and Bayesians are set off by
+  over-interpretation of a likelihood as a posterior pdf; in these
+  cases the investigator is indeed unconsciously multiplying in a
+  prior.  Other battles are set off by loose language in which a
+  proper frequentist analysis is spoiled by over-statement of the
+  results as making some parameters ``more probable'' than others.}
 
 Although you might use the posterior pdf to report some kind of mean
 prediction as discussed above, it almost never makes sense to just
@@ -726,15 +740,14 @@ example, even if you go with a very broad prior on the parameter $a$,
 that is a \emph{different} assumption than the same form of very broad
 prior on $a^2$ or on $\arctan(a)$.  The prior doesn't just set the
 ranges of parameters, it places a \emph{measure on parameter space.}
-That's why it is so important (and unloved by frequentists).\note{The
+That's why it is so important.\note{The
   insertion of the prior pdf absolutely and necessarily increases the
   number of assumptions; there is no avoiding that.  Bayesians
   sometimes like to say that frequentists make just as many
   assumptions as Bayesians do.  It isn't true: A principled
   frequentist---an investigator who only uses the likelihood function
   and nothing else---genuinely makes fewer assumptions than any
-  Bayesian.  The Bayesian gets new capabilities in exchange for these
-  new assumptions, but they \emph{are} new.}
+  Bayesian.}
 
 If you choose an infinitely broad prior pdf, it can become
 \emph{improper}, in the sense that it can become impossible to satisfy
