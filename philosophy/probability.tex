@@ -12,7 +12,7 @@
 %   - etc
 
 \documentclass[12pt,twoside]{article}
-\usepackage{amssymb,amsmath,mathrsfs,../hogg_endnotes,natbib}
+\usepackage{amssymb,amsmath,mathrsfs,hogg_endnotes,natbib}
 \usepackage{float,graphicx}
 
 \setlength{\emergencystretch}{2em}%No overflow
@@ -42,6 +42,7 @@
 \newcounter{problem}
 \newenvironment{problem}{\paragraph{\problemname~\theproblem:}\refstepcounter{problem}}{}
 \newcommand{\affil}[1]{{\footnotesize\textsl{#1}}}
+\renewcommand{\and}{{\footnotesize{and}}}
 
 % matrix stuff
 \newcommand{\mmatrix}[1]{\boldsymbol{#1}}
@@ -87,7 +88,7 @@
 \noindent
 David~W.~Hogg\\
 \affil{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New York University}\\
-and \affil{Max-Planck-Institut f\"ur Astronomie, Heidelberg}
+\and~\affil{Max-Planck-Institut f\"ur Astronomie, Heidelberg}
 %% \\[1ex]
 %% A. Nother Author
 %% \affil{Oxford University}
