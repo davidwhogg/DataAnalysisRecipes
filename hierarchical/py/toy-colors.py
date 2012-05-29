@@ -1,7 +1,9 @@
-# Copyright 2011 David W. Hogg (NYU).
-# All rights reserved.
+"""
+This file is part of Data Analysis Recipes.
+Copyright 2012 David W. Hogg (NYU).
 
-# Code to make a toy model that demonstrates power of hierarchical modeling.
+Code to make a toy model that demonstrates power of hierarchical modeling.
+"""
 
 import numpy as np
 # this rc block must be before the matplotlib import?
