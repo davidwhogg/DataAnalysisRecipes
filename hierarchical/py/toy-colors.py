@@ -1,6 +1,6 @@
 """
 This file is part of Data Analysis Recipes.
-Copyright 2012 David W. Hogg (NYU).
+Copyright 2011, 2012 David W. Hogg (NYU).
 
 Code to make a toy model that demonstrates power of hierarchical modeling.
 """
