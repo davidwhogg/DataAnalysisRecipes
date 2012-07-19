@@ -1,0 +1,82 @@
+\usepackage{amssymb,amsmath,mathrsfs,../deluxetable,../hogg_endnotes,natbib}
+\usepackage{float,graphicx}
+
+%%Figure caption
+\makeatletter
+\newsavebox{\tempbox}
+\newcommand{\@makefigcaption}[2]{%
+\vspace{10pt}{#1.--- #2\par}}%
+\renewcommand{\figure}{\let\@makecaption\@makefigcaption\@float{figure}}
+\makeatother
+
+\newcommand{\exampleplot}[1]{%
+\begin{center}%
+\includegraphics[width=0.5\textwidth]{#1}%
+\end{center}%
+}
+\newcommand{\exampleplottwo}[2]{%
+\begin{center}%
+\includegraphics[width=0.5\textwidth]{#1}%
+\includegraphics[width=0.5\textwidth]{#2}%
+\end{center}%
+}
+
+\setlength{\emergencystretch}{2em}%No overflow
+
+\newcommand{\notenglish}[1]{\textsl{#1}}
+\newcommand{\aposteriori}{\notenglish{a~posteriori}}
+\newcommand{\apriori}{\notenglish{a~priori}}
+\newcommand{\adhoc}{\notenglish{ad~hoc}}
+\newcommand{\etal}{\notenglish{et al.}}
+\newcommand{\eg}{\notenglish{e.g.}}
+
+\newcommand{\documentname}{document}
+\newcommand{\sectionname}{Section}
+\newcommand{\equationname}{equation}
+\newcommand{\figurenames}{\figurename s}
+\newcommand{\problemname}{Exercise}
+\newcommand{\problemnames}{\problemname s}
+\newcommand{\solutionname}{Solution}
+\newcommand{\notename}{note}
+
+\newcommand{\note}[1]{\endnote{#1}}
+\def\enotesize{\normalsize}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}} % the ONE footnote needs this
+
+\newcounter{problem}
+\newenvironment{problem}{\paragraph{\problemname~\theproblem:}\refstepcounter{problem}}{}
+\newcommand{\affil}[1]{{\footnotesize\textsl{#1}}}
+
+% matrix stuff
+\newcommand{\mmatrix}[1]{\boldsymbol{#1}}
+\newcommand{\inverse}[1]{{#1}^{-1}}
+\newcommand{\transpose}[1]{{#1}^{\scriptscriptstyle \top}}
+\newcommand{\mA}{\mmatrix{A}}
+\newcommand{\mAT}{\transpose{\mA}}
+\newcommand{\mC}{\mmatrix{C}}
+\newcommand{\mCinv}{\inverse{\mC}}
+\newcommand{\mQ}{\mmatrix{Q}}
+\newcommand{\mS}{\mmatrix{S}}
+\newcommand{\mX}{\mmatrix{X}}
+\newcommand{\mY}{\mmatrix{Y}}
+\newcommand{\mYT}{\transpose{\mY}}
+\newcommand{\mZ}{\mmatrix{Z}}
+\newcommand{\vhat}{\mmatrix{\hat{v}}}
+
+% parameter vectors
+\newcommand{\parametervector}[1]{\mmatrix{#1}}
+\newcommand{\pvtheta}{\parametervector{\theta}}
+
+% set stuff
+\newcommand{\setofall}[3]{\{{#1}\}_{{#2}}^{{#3}}}
+\newcommand{\allq}{\setofall{q_i}{i=1}{N}}
+\newcommand{\allx}{\setofall{x_i}{i=1}{N}}
+\newcommand{\ally}{\setofall{y_i}{i=1}{N}}
+\newcommand{\allxy}{\setofall{x_i,y_i}{i=1}{N}}
+\newcommand{\allsigmay}{\setofall{\sigma_{yi}^2}{i=1}{N}}
+\newcommand{\allS}{\setofall{\mS_i}{i=1}{N}}
+
+% other random multiply used math symbols
+\renewcommand{\d}{\mathrm{d}}
+\newcommand{\mean}[1]{\left<{#1}\right>}
+\newcommand{\like}{\mathscr{L}}
