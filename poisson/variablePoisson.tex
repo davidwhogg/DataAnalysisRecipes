@@ -2,14 +2,19 @@
 % Copyright 2012 David W. Hogg
 
 \documentclass[12pt,twoside,pdftex]{article}
+\usepackage{amssymb,amsmath,mathrsfs,../hogg_endnotes,natbib}
 \input{../hogg_style}
 
-\begin{document}
+% header stuff
+\renewcommand{\MakeUppercase}[1]{#1}
+\pagestyle{myheadings}
+\renewcommand{\sectionmark}[1]{\markright{\thesection.~#1}}
+\markboth{Probability calculus for inference}{Introduction}
 
 \begin{document}
 \thispagestyle{plain}\raggedbottom
 \section*{Data analysis recipes:\\
-  Variable-rate Poisson processes, with censoring}
+  Variable-rate Poisson processes, with censoring\footnotemark}
 
 \footnotetext{%
   The \notename s begin on page~\pageref{note:first}, including the
@@ -29,7 +34,7 @@
 \noindent
 David~W.~Hogg\\
 \affil{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New York University}\\
-\and~\affil{Max-Planck-Institut f\"ur Astronomie, Heidelberg}
+and~\affil{Max-Planck-Institut f\"ur Astronomie, Heidelberg}
 %% \\[1ex]
 %% A. Nother Author
 %% \affil{Oxford University}
