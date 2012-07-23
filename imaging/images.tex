@@ -43,11 +43,25 @@ and~\affil{Max-Planck-Institut f\"ur Astronomie, Heidelberg}
 Like, so whatever.
 \end{abstract}
 
-... Images are intensity maps, not grids of flux buckets
+... Images are intensity maps, not grids of flux buckets.  The ``flux
+bucket'' image leads to abominations like \textsl{Drizzle}, where
+photons in an image are ``poured'' into ``pixel buckets'' in a
+different coordinate grid.  Band-limited methods for interpolation
+perform the same task without loss of resolution but they are only
+easy to see in the intensity map formalism.
 
-... Calibration of images, photometric, astrometric, PSF, noise properties.  self-calibration.
+... Calibration of images, photometric, astrometric, PSF, noise
+properties.  self-calibration.  What is meant by a world coordinate
+system, a camera model, a photometric calibration, a flat-field, bias,
+dark, and so-on.  A typical CCD noise model.
 
-... Likelihood functions are noise models
+... Likelihood functions are noise models.
+
+... Deconvolution is what \emph{everyone does always}.  People claim
+to be ``against'' deconvolution, but every positional measurement of
+every star ever made has been a deconvolution.
+
+... What is blind and non-blind deconvolution and how are they done?  Examples?
  
 ... ``Coadding'' is only justified in extremely limited circumstances
 
