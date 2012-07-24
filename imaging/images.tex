@@ -46,6 +46,8 @@ and~\affil{Max-Planck-Institut f\"ur Astronomie, Heidelberg}
 Like, so whatever.
 \end{abstract}
 
+\section{What is an image?}
+
 ... Images are intensity maps, not grids of flux buckets.  The
 intensity field is a quantum wave function, which is collapsed at the
 detector surface, resulting in photon--electron conversions and
@@ -73,21 +75,27 @@ properties.  self-calibration.  What is meant by a world coordinate
 system, a camera model, a photometric calibration, a flat-field, bias,
 dark, and so-on.  A typical CCD noise model.
 
-... Likelihood functions are noise models.
+\section{Measurements in images}
 
-... Deconvolution is what \emph{everyone does always}.  People claim
-to be ``against'' deconvolution, but every positional measurement of
-every star ever made has been a deconvolution.
+... Why all measurements are optimizations.  Why not optimize the
+likelihood?  Or even better produce a full likelihood function or
+sample a posterior?
+
+... A measurement of something in an image is inference under a model,
+or an approximation thereto
+
+... Likelihood functions are noise models.
 
 ... What is blind and non-blind deconvolution and how are they done?
 Examples?
  
-... ``Coadding'' is only justified in extremely limited circumstances
+... Deconvolution is what \emph{everyone does always}.  People claim
+to be ``against'' deconvolution, but every positional measurement of
+every star ever made has been a deconvolution.
 
-... Coadding prohibits certain kinds of investigations
+... How to make catalogs and astrometric and photometric measurements.
 
-... A measurement of something in an image is inference under a model,
-or an approximation thereto
+... What is a catalog and what is its relationship to an image?
 
 ... Consider photometry -- using matched radial profiles or
 ``apertures''.
@@ -97,13 +105,27 @@ or an approximation thereto
 also doesn't account for varying PSF or anything else.  That said, it
 is very insensitive to small-scale PSF and WCS issues.
 
-... A model of a set of images is no harder, in principle or in practice, than a model of a single image
+... A model of a set of images is no harder, in principle or in
+practice, than a model of a single image
+
+... How to measure time-dependent phenomena on sources too faint to
+see in any one image?
+
+\section{Coadding and non-parametric scene inference}
+
+... ``Coadding'' is only justified in extremely limited circumstances
+
+... Coadding prohibits certain kinds of investigations.
+
+... Coadding leads to a non-stationary PSF.
 
 ... Many images of the same scene give you more information about the scene than any one image
 
 ... How do we capitalize on these sets of images?  When they are taken in different bands and under different PSFs?
 
-... What is a catalog and what is its relationship to an image?
+... Need to face interpolation; how this works in band-limited data.
+
+\section{Advanced topics}
 
 ... What about interferometry?  Michelson vs 
 
