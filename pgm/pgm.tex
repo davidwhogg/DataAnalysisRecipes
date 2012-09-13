@@ -1,0 +1,87 @@
+% This file is part of the Data Analysis Recipes project.
+% Copyright 2012 David W. Hogg (NYU)
+
+% to-do items
+% -----------
+% - outline
+% - write
+% - distribute for comments
+% - post to arXiv
+
+\documentclass[12pt,twoside]{article}
+\usepackage{amssymb,amsmath,mathrsfs,../hogg_endnotes,natbib}
+\usepackage{float,graphicx}
+\input{../hogg_style}
+
+% header stuff
+\renewcommand{\MakeUppercase}[1]{#1}
+\pagestyle{myheadings}
+\renewcommand{\sectionmark}[1]{\markright{\thesection.~#1}}
+\markboth{Probabilistic graphical models}{Introduction}
+
+\begin{document}
+\thispagestyle{plain}\raggedbottom
+\section*{Data analysis recipes:\\
+  Probabilistic graphical models}
+
+\footnotetext{%
+  The \notename s begin on page~\pageref{note:first}, including the
+  license\note{\label{note:first}%
+    Copyright 2012 the authors.  You may copy and distribute this
+    document provided that you make no changes to it whatsoever.}
+  and the acknowledgements\note{%
+    It is a pleasure to thank
+      Stefan Harmeling (MPI-IS),
+      Phil Marshall (Oxford),
+      Iain Murray (Edinburgh), and
+      Hans-Walter Rix (MPIA)
+    for discussions and comments.  This
+    research was partially supported by the US National Aeronautics
+    and Space Administration and National Science Foundation.}}
+
+\noindent
+David~W.~Hogg\\
+\affil{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New York University}\\
+\and~\affil{Max-Planck-Institut f\"ur Astronomie, Heidelberg}
+\\[1ex]
+Dan Foreman-Mackey\\
+\affil{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New York University}
+
+\begin{abstract}
+We present an introduction to probabilistic graphical models (PGMs;
+also sometimes called ``directed acyclic graphs'') in the context of
+building models of scientific data sets.  We focus on their use as a
+conceptual tool, helping to clarify and express complicated
+probabilistic expressions or really assumptions about complex,
+hierarchical probability distributons.  PGMs are most useful for
+describing generative models, in that they can be used to both
+describe the probability expressions for those models, but also the
+causal relationships that are being assumed (or inferred).  PGMs, in
+themselves, do not perform or speed calculations; they also aren't, in
+themselves, methods; they act to express unambiguously probabilistic
+and causal relationships.
+\end{abstract}
+
+\noindent
+Yo.
+
+uh huh.
+
+\begin{problem}
+what is up?
+\end{problem}
+
+\clearpage
+\markright{Notes}\theendnotes
+
+\clearpage
+\begin{thebibliography}{}\markright{References}\raggedright
+\bibitem[Hogg \etal(2010a)]{straightline}
+  Hogg,~D.~W., Bovy,~J., \& Lang,~D., 2010a,
+  ``Data analysis recipes:\ Fitting a model to data'', arXiv:1008.4686
+\bibitem[Hogg \etal(2010b)]{eccentricity}
+  Hogg,~D.~W., Myers,~A.~D., \& Bovy,~J., 2010b,
+  ``Inferring the eccentricity distribution'', arXiv:1008.4146
+\end{thebibliography}
+
+\end{document}
