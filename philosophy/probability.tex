@@ -17,49 +17,7 @@
 \documentclass[12pt,twoside]{article}
 \usepackage{amssymb,amsmath,mathrsfs,hogg_endnotes,natbib}
 \usepackage{float,graphicx}
-
-\setlength{\emergencystretch}{2em}%No overflow
-
-\newcommand{\notenglish}[1]{\textsl{#1}}
-\newcommand{\aposteriori}{\notenglish{a~posteriori}}
-\newcommand{\apriori}{\notenglish{a~priori}}
-\newcommand{\adhoc}{\notenglish{ad~hoc}}
-\newcommand{\etal}{\notenglish{et al.}}
-
-\newcommand{\documentname}{document}
-\newcommand{\documentnames}{\documentname s}
-\newcommand{\sectionname}{Section}
-\newcommand{\Equationname}{Equation}
-\newcommand{\equationname}{equation}
-\newcommand{\equationnames}{\equationname s}
-\newcommand{\figurenames}{\figurename s}
-\newcommand{\problemname}{Exercise}
-\newcommand{\problemnames}{\problemname s}
-\newcommand{\solutionname}{Solution}
-\newcommand{\notename}{note}
-
-\newcommand{\note}[1]{\endnote{#1}}
-\def\enotesize{\normalsize}
-\renewcommand{\thefootnote}{\fnsymbol{footnote}} % the ONE footnote needs this
-
-\newcounter{problem}
-\newenvironment{problem}{\paragraph{\problemname~\theproblem:}\refstepcounter{problem}}{}
-\newcommand{\affil}[1]{{\footnotesize\textsl{#1}}}
-\renewcommand{\and}{{\footnotesize{and}}}
-
-% matrix stuff
-\newcommand{\mmatrix}[1]{\boldsymbol{#1}}
-\newcommand{\inverse}[1]{{#1}^{-1}}
-\newcommand{\transpose}[1]{{#1}^{\scriptscriptstyle \top}}
-% parameter vectors
-\newcommand{\parametervector}[1]{\mmatrix{#1}}
-\newcommand{\pvtheta}{\parametervector{\theta}}
-% set stuff
-\newcommand{\setofall}[3]{\{{#1}\}_{{#2}}^{{#3}}}
-\newcommand{\allq}{\setofall{q_i}{i=1}{N}}
-% other random multiply used math symbols
-\newcommand{\dd}{\mathrm{d}}
-\newcommand{\given}{\,|\,}
+\input{hogg_style}
 
 % header stuff
 \renewcommand{\MakeUppercase}[1]{#1}
