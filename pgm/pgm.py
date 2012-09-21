@@ -1,12 +1,13 @@
 import matplotlib
 matplotlib.use('Agg')
 from matplotlib import rc
-rc('font',**{'size':12})
+rc('font',**{'family':'serif','size':12})
 rc('text', usetex=True)
 rc('text.latex', preamble=open("hogg_style.tex").read())
 import matplotlib.pyplot as plt
 from matplotlib.patches import Ellipse
 from matplotlib.patches import FancyArrow as Arrow
+from matplotlib.patches import Rectangle as Rectangle
 import numpy as np
 
 class PGM(object):
@@ -89,6 +90,25 @@ class Edge(object):
         ax.add_artist(ar)
         return None
 
+class Plate(object):
+
+    def __init__(self, label, rect, **rect_params):
+        self.label = label
+        self.rect = rect
+        self.rect_params = rect_params
+        return None
+
+    def render(self, ax):
+        p = self.rect_params
+        p["ec"] = p.get("ec", "k")
+        p["fc"] = p.get("fc", "none")
+        re = Rectangle([self.rect[0], self.rect[1]], self.rect[2], self.rect[3], **self.rect_params)
+        ax.add_artist(re)
+        # ax.text(self.rect[0], self.rect[1], self.label)
+        ax.annotate(self.label, self.rect[:2], xycoords="data",
+                    xytext=[5, 5], textcoords="offset points")
+        return None
+
 if __name__ == "__main__":
     thispgm = PGM()
     thispgm.add_node(Node("bar", r"$\alpha$", 2., 3.5))
@@ -96,4 +116,5 @@ if __name__ == "__main__":
     thispgm.add_node(Node("baz", r"$\beta$", 0., 2., diameter=1.3))
     thispgm.add_edge("bar", "foo")
     thispgm.add_edge("baz", "foo")
+    thispgm.add_plate(Plate(r"stars $k$", (-3., -3., 6., 4.)))
     thispgm.render().figure.savefig("test_pgm.pdf")
