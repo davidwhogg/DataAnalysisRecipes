@@ -34,8 +34,9 @@ class PGM(object):
         fx, fy = 6.5, 6.5
         fig = plt.figure(figsize=(fx, fy))
         ax = fig.add_axes((0, 0, 1, 1), frameon=False, xticks=[], yticks=[])
-        ax.set_xlim(-0.5 * fx * 2.54, 0.5 * fx * 2.54)
-        ax.set_ylim(-0.5 * fy * 2.54, 0.5 * fy * 2.54)
+        scale = 2.54
+        ax.set_xlim(-0.5 * fx * scale, 0.5 * fx * scale)
+        ax.set_ylim(-0.5 * fy * scale, 0.5 * fy * scale)
         for plate in self._plates:
             plate.render(ax)
         for edge in self._edges:
