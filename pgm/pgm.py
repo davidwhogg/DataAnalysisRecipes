@@ -5,9 +5,95 @@ rc('font',**{'size':12})
 rc('text', usetex=True)
 rc('text.latex', preamble=open("hogg_style.tex").read())
 import matplotlib.pyplot as plt
+from matplotlib.patches import Ellipse
+from matplotlib.patches import FancyArrow as Arrow
+import numpy as np
+
+class PGM(object):
+
+    def __init__(self):
+        self._nodes = {}
+        self._edges = []
+        self._plates = []
+        return None
+
+    def add_node(self, node):
+        self._nodes[node.name] = node
+        return None
+
+    def add_edge(self, name1, name2, **kwargs):
+        self._edges.append(Edge(self._nodes[name1], self._nodes[name2], **kwargs))
+        return None
+
+    def add_plate(self, plate):
+        self._plates.append(plate)
+        return None
+
+    def render(self):
+        fx, fy = 6.5, 6.5
+        fig = plt.figure(figsize=(fx, fy))
+        ax = fig.add_axes((0, 0, 1, 1), frameon=False, xticks=[], yticks=[])
+        ax.set_xlim(-0.5 * fx * 2.54, 0.5 * fx * 2.54)
+        ax.set_ylim(-0.5 * fy * 2.54, 0.5 * fy * 2.54)
+        for plate in self._plates:
+            plate.render(ax)
+        for edge in self._edges:
+            edge.render(ax)
+        for name, node in self._nodes.iteritems():
+            node.render(ax)
+        return ax
+
+class Node(object):
+
+    def __init__(self, name, content, x, y, diameter=1):
+        self.name = name
+        self.content = content
+        self.x = x
+        self.y = y
+        self.diameter = diameter
+        return None
+
+    def render(self, ax):
+        el = Ellipse(xy = [self.x, self.y],
+                     width=self.diameter, height=self.diameter,
+                     fc="none", ec="k")
+        ax.add_artist(el)
+        ax.text(self.x, self.y, self.content, ha="center", va="center")
+
+class Edge(object):
+
+    def __init__(self, node1, node2, **arrow_params):
+        self.node1 = node1
+        self.node2 = node2
+        self.arrow_params = arrow_params
+        return None
+
+    def render(self, ax):
+        x1, y1 = self.node1.x, self.node1.y
+        x2, y2 = self.node2.x, self.node2.y
+        dx, dy = x2 - x1, y2 - y1
+        dist = np.sqrt(dx * dx + dy * dy)
+        alpha1 = 0.5 * self.node1.diameter / dist
+        alpha2 = 0.5 * self.node2.diameter / dist
+        adx = dx * (1. - alpha1 - alpha2)
+        ady = dy * (1. - alpha1 - alpha2)
+        alen = np.sqrt(adx * adx + ady * ady)
+        p = self.arrow_params
+        p["ec"] = p.get("ec", "k")
+        p["fc"] = p.get("fc", "k")
+        p["head_length"] = p.get("head_length", 0.25)
+        p["head_width"] = p.get("head_width", 0.1)
+        ar = Arrow(x1 + alpha1 * dx, y1 + alpha1 * dy, adx, ady,
+                   length_includes_head=True, width=0.,
+                   **self.arrow_params)
+        ax.add_artist(ar)
+        return None
 
 if __name__ == "__main__":
-    plt.clf()
-    plt.text(0, 0, r"$\allS$")
-    plt.savefig("test_pgm.pdf")
-    plt.savefig("test_pgm.png")
+    thispgm = PGM()
+    thispgm.add_node(Node("bar", r"$\alpha$", 2., 3.5))
+    thispgm.add_node(Node("foo", r"$\allS$", 0., 0., diameter=1.5))
+    thispgm.add_node(Node("baz", r"$\beta$", 0., 2., diameter=1.3))
+    thispgm.add_edge("bar", "foo")
+    thispgm.add_edge("baz", "foo")
+    thispgm.render().figure.savefig("test_pgm.pdf")
