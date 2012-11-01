@@ -47,18 +47,23 @@ class PGM(object):
 
 class Node(object):
 
-    def __init__(self, name, content, x, y, diameter=1):
+    def __init__(self, name, content, x, y, diameter=1, observed=False):
         self.name = name
         self.content = content
         self.x = x
         self.y = y
         self.diameter = diameter
+        self.observed = observed
         return None
 
     def render(self, ax):
+        if self.observed:
+            fc = "0.75"
+        else:
+            fc = "none"
         el = Ellipse(xy = [self.x, self.y],
                      width=self.diameter, height=self.diameter,
-                     fc="none", ec="k")
+                     fc=fc, ec="k")
         ax.add_artist(el)
         ax.text(self.x, self.y, self.content, ha="center", va="center")
 
@@ -112,10 +117,24 @@ class Plate(object):
 
 if __name__ == "__main__":
     thispgm = PGM()
-    thispgm.add_node(Node("bar", r"$\alpha$", 2., 3.5))
-    thispgm.add_node(Node("foo", r"$\allS$", 0., 0., diameter=1.5))
-    thispgm.add_node(Node("baz", r"$\beta$", 0., 2., diameter=1.3))
-    thispgm.add_edge("bar", "foo")
-    thispgm.add_edge("baz", "foo")
-    thispgm.add_plate(Plate(r"stars $k$", (-3., -3., 6., 4.)))
+    thispgm.add_node(Node("omega", r"$\omega$", 0., 2.))
+    thispgm.add_node(Node("alpha", r"$\alpha$", 2., 2.))
+    thispgm.add_node(Node("x", r"$x_n$", 0., 0., observed=True))
+    thispgm.add_node(Node("sigma", r"$\sigma_n$", 2., 0.))
+    thispgm.add_node(Node("Sigma", r"$\Sigma$", 4., 0.))
+    thispgm.add_edge("omega", "x")
+    thispgm.add_edge("alpha", "x")
+    thispgm.add_edge("sigma", "x")
+    thispgm.add_edge("Sigma", "sigma")
+    thispgm.add_plate(Plate(r"galaxies $n$", (-1., -1.5, 4., 2.5)))
     thispgm.render().figure.savefig("test_pgm.pdf")
+
+    logopgm = PGM()
+    logopgm.add_node(Node("d", r"$d$", -2., 2.))
+    logopgm.add_node(Node("a", r"$a$", 0., 2., observed=True))
+    logopgm.add_node(Node("f", r"$f$", 2., 2.))
+    logopgm.add_node(Node("t", r"$t$", 4., 2.))
+    logopgm.add_edge("d", "a")
+    logopgm.add_edge("a", "f")
+    logopgm.add_edge("f", "t")
+    logopgm.render().figure.savefig("test_logo.pdf")
