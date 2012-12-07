@@ -1,0 +1,73 @@
+% this file is part of the Data Analysis Recipes project
+% Copyright 2012 David W. Hogg
+
+\documentclass[12pt,twoside,pdftex]{article}
+\input{./hogg_style}
+
+% header stuff
+\renewcommand{\MakeUppercase}[1]{#1}
+\pagestyle{myheadings}
+\renewcommand{\sectionmark}[1]{\markright{\thesection.~#1}}
+\markboth{Extracting information from images}{Introduction}
+
+\begin{document}
+\thispagestyle{plain}\raggedbottom
+\section*{Data analysis recipes:\\
+  Making decisions}
+
+\footnotetext{%
+  The \notename s begin on page~\pageref{note:first}, including the
+  license\note{\label{note:first}%
+    Copyright 2012 David W. Hogg (NYU).  Right now this document
+    (though publicly available) is NOT FOR DISTRIBUTION.  Eventually,
+    and once it is ready, I will release it with the license ``You may
+    copy and distribute this document provided that you make no
+    changes to it whatsoever''.}
+  and the acknowledgements\note{%
+    It is a pleasure to thank
+      Jo Bovy (IAS),
+      Dan Foreman-Mackey (NYU), and
+      Dustin Lang (CMU)
+    for discussions and comments.  This
+    research was partially supported by the US National Aeronautics
+    and Space Administration and National Science Foundation.}}
+
+\noindent
+David~W.~Hogg\\
+\affil{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New York University}\\
+and~\affil{Max-Planck-Institut f\"ur Astronomie, Heidelberg}
+%% \\[1ex]
+%% A. Nother Author
+%% \affil{Oxford University}
+
+\begin{abstract}
+Like, so whatever.
+\end{abstract}
+
+DETF introduction
+
+\section{What is a decision?}
+
+\section{Utility}
+
+minimax and utility maximization
+
+\section{Long-term future discounted free cash flow}
+
+Long-term future.
+
+Discounted.
+
+Free cash flow.
+
+\clearpage
+\markright{Notes}\theendnotes
+
+\clearpage
+\begin{thebibliography}{}\markright{References}\raggedright
+\bibitem[Hogg \etal(2010a)]{straightline}
+  Hogg,~D.~W., Bovy,~J., \& Lang,~D., 2010a,
+  ``Data analysis recipes:\ Fitting a model to data'', arXiv:1008.4686
+\end{thebibliography}
+
+\end{document}
