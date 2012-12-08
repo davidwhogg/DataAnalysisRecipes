@@ -53,11 +53,44 @@ and work to optimize expected utility, or minimize expected loss, or
 minimize maximal loss.  In real-world situations of building
 experiments or operating an organization, to be generally useful the
 utility must be specified in (the equivalent of) currency (dollar)
-units.  The utility should be an approximation to the decider's
-\emph{long-term future discounted free cash flow}.
+units.  Whether the decision is about which observation to make next,
+which of several hypotheses to reject, or which of very different
+research programs to pursue, the employed utility function should be
+an approximation to the decider's \emph{long-term future discounted
+  free cash flow}.
 \end{abstract}
 
-DETF introduction
+Back in 2005-ish, the cosmology community underwent a soul-searching
+exercise about projects that are intended to investigate the nature of
+\emph{dark energy}, or the mechanical cause of the late-time
+acceleration of the Universe's acceleration.  The Dark-Energy Task
+Force (DETF) ended up recommending that projects be ranked on the
+basis of their ability to constrain two dark-energy parameters, $w_0$
+and $w_a$.  In particular, they argued that the relevant scalar or
+utility or figure of merit (FoM) to consider is the inverse of the
+area inside the 95-percent confidence interval (implicitly a
+likelihood contour) in the $w_0$--$w_a$ plane.\note{\cite{detf}.}
+
+In many ways this was a breakthrough: A committee recommends a
+quantitative method for comparing (necessarily expensive, complex, and
+lengthy) projects, and describes that quantitative method in terms of
+merit or utility.  Furthermore, the proposed FoM scalar relates to the
+informaton content in the data delivered by the experiments, so it is
+eminently sensible.
+
+However, there is an equally valid point of view in which this
+recommendation was \emph{useless}.  The reason is that although the
+FoM permits the community to compare projects in terms of information
+delivered about dark energy, no two projects deliver the same FoM, no
+two projects have the same total cost, and no two projects deliver
+results at the same point in the future.  If one project delivers an
+FoM of 1200, costs $8\times 10^6$~USD, and takes three years, and
+another delivers an FoM of 1950 and costs $17\times 10^6$~USD, and
+takes 2.5 years, how are we to compare them?  We need to be able to
+understand the trade-offs between money, FoM, and time.  And sure
+enough, although the DETF was able to classify projects into
+categories (FoM bins), it was not able to rank the relative value of
+very qualitatively different projects.
 
 \section{What is a decision?}
 
@@ -80,6 +113,9 @@ Assumptions under which this is possible.
 
 \clearpage
 \begin{thebibliography}{}\markright{References}\raggedright
+\bibitem[Dark Energy Task Force(2006)]{detf}
+  Dark Energy Task Force, 2006,
+  ``Report of the Dark Energy Task Force'', arXiv:astro-ph/0609591
 \bibitem[Hogg \etal(2010a)]{straightline}
   Hogg,~D.~W., Bovy,~J., \& Lang,~D., 2010a,
   ``Data analysis recipes:\ Fitting a model to data'', arXiv:1008.4686
