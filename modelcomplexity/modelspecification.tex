@@ -1,94 +1,19 @@
 % This file is part of the Data Analysis Recipes project.
-% Copyright 2011 2012 David W. Hogg (NYU).
+% Copyright 2011, 2012, 2013 David W. Hogg (NYU).
 
 % to-do
 % -----
 % - Write!
-% - Make consistent style file that deals with all the definitions, etc, for this and the other notes.
 
 \documentclass[12pt,twoside]{article}
 \usepackage{amssymb,amsmath,mathrsfs,../hogg_endnotes,natbib}
-
-%%Figure caption
-\makeatletter
-\newsavebox{\tempbox}
-\newcommand{\@makefigcaption}[2]{%
-\vspace{10pt}{#1.--- #2\par}}%
-\renewcommand{\figure}{\let\@makecaption\@makefigcaption\@float{figure}}
-\makeatother
-
-\setlength{\emergencystretch}{2em}%No overflow
-
-\newcommand{\notenglish}[1]{\textsl{#1}}
-\newcommand{\aposteriori}{\notenglish{a~posteriori}}
-\newcommand{\apriori}{\notenglish{a~priori}}
-\newcommand{\adhoc}{\notenglish{ad~hoc}}
-\newcommand{\etal}{\notenglish{et al.}}
-\newcommand{\eg}{\notenglish{e.g.}}
-
-\newcommand{\documentname}{document}
-\newcommand{\sectionname}{Section}
-\newcommand{\equationname}{equation}
-\newcommand{\problemname}{Exercise}
-\newcommand{\solutionname}{Solution}
-\newcommand{\notename}{note}
-
-\newcounter{problem}
-\newenvironment{problem}{\paragraph{\problemname~\theproblem:}\refstepcounter{problem}}{}
-\newenvironment{comments}{\paragraph{\commentsname:}}{}
-\newcommand{\affil}[1]{{\footnotesize\textsl{#1}}}
-
-% matrix stuff
-\newcommand{\mmatrix}[1]{\boldsymbol{#1}}
-\newcommand{\inverse}[1]{{#1}^{-1}}
-\newcommand{\transpose}[1]{{#1}^{\scriptscriptstyle \top}}
-\newcommand{\mA}{\mmatrix{A}}
-\newcommand{\mAT}{\transpose{\mA}}
-\newcommand{\mC}{\mmatrix{C}}
-\newcommand{\mCinv}{\inverse{\mC}}
-\newcommand{\mE}{\mmatrix{E}}
-\newcommand{\mQ}{\mmatrix{Q}}
-\newcommand{\mS}{\mmatrix{S}}
-\newcommand{\mX}{\mmatrix{X}}
-\newcommand{\mY}{\mmatrix{Y}}
-\newcommand{\mYT}{\transpose{\mY}}
-\newcommand{\mZ}{\mmatrix{Z}}
-\newcommand{\vhat}{\mmatrix{\hat{v}}}
-
-% parameter vectors
-\newcommand{\parametervector}[1]{\mmatrix{\vec{#1}}}
-\newcommand{\pvtheta}{\parametervector{\theta}}
-
-% set stuff
-\newcommand{\setofall}[3]{\{{#1}\}_{{#2}}^{{#3}}}
-\newcommand{\allq}{\setofall{q_i}{i=1}{N}}
-\newcommand{\allx}{\setofall{x_i}{i=1}{N}}
-\newcommand{\ally}{\setofall{y_i}{i=1}{N}}
-\newcommand{\allxy}{\setofall{x_i,y_i}{i=1}{N}}
-\newcommand{\allsigmay}{\setofall{\sigma_{yi}^2}{i=1}{N}}
-\newcommand{\allC}{\setofall{\mC_i}{i=1}{N}}
-
-% other random multiply used math symbols
-\renewcommand{\d}{\mathrm{d}}
-\newcommand{\like}{\mathscr{L}}
-\newcommand{\Pbad}{P_{\mathrm{b}}}
-\newcommand{\Ybad}{Y_{\mathrm{b}}}
-\newcommand{\Vbad}{V_{\mathrm{b}}}
-\newcommand{\bperp}{b_{\perp}}
-\newcommand{\mean}[1]{\left<{#1}\right>}
-\newcommand{\meanZ}{\mean{\mZ}}
-\newcommand{\best}{\mathrm{best}}
+\input{../hogg_style}
 
 % header stuff
 \renewcommand{\MakeUppercase}[1]{#1}
 \pagestyle{myheadings}
 \renewcommand{\sectionmark}[1]{\markright{\thesection.~#1}}
 \markboth{Model complexity}{}
-
-% note stuff
-\newcommand{\note}[1]{\endnote{#1}}
-\def\enotesize{\normalsize}
-\renewcommand{\thefootnote}{\fnsymbol{footnote}} % the ONE footnote needs this
 
 \begin{document}
 \thispagestyle{plain}\raggedbottom
