@@ -12,7 +12,7 @@ Chapters from Hogg's non-existent book.
 
 ### License: ###
 
-**Copyright 2010 2011 2012 the authors.  All rights reserved.**
+**Copyright 2010, 2011, 2012, 2013 the authors.  All rights reserved.**
 
 If you have interest in using or re-using any of this content, get in
 touch with Hogg.
