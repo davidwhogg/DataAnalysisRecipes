@@ -1,5 +1,13 @@
 % this file is part of the Data Analysis Recipes project
-% Copyright 2012 David W. Hogg
+% Copyright 2012, 2013 David W. Hogg
+
+% to-do
+% -----
+% - write zeroth draft
+
+% style notes
+% -----------
+% - ``pdf'' not ``PDF''
 
 \documentclass[12pt,twoside,pdftex]{article}
 \input{./hogg_style}
@@ -18,7 +26,7 @@
 \footnotetext{%
   The \notename s begin on page~\pageref{note:first}, including the
   license\note{\label{note:first}%
-    Copyright 2012 David W. Hogg (NYU).  Right now this document
+    Copyright 2012, 2013 David W. Hogg (NYU).  Right now this document
     (though publicly available) is NOT FOR DISTRIBUTION.  Eventually,
     and once it is ready, I will release it with the license ``You may
     copy and distribute this document provided that you make no
@@ -44,10 +52,10 @@ and~\affil{Max-Planck-Institut f\"ur Astronomie, Heidelberg}
 
 \begin{abstract}
 Probabilistic inference at its best gives probabilistic information
-about parameters and models.  In many cases of importance---as with
+about parameters and models.  In many cases of importance---as with making a discovery or
 experimental design or purchasing or delivery of results---it is
 necessary to make a hard decision or choice.  It is almost never the
-right move to choose the most probable model or option; it is rare
+right move to choose the \emph{most probable} model or option; it is rare
 that the most probable is the option that delivers the most benefit to
 the decider.  Instead the decider ought to specify a utility function
 and work to optimize expected utility, or minimize expected loss, or
@@ -63,11 +71,50 @@ an approximation to the decider's \emph{long-term future discounted
 
 \section{You never decide on probability alone}
 
-Likelihood ratios
+Imagine you have taken imaging of a patch of the sky and you want to
+know the brightness of a particular star, or you have performed a
+survey of consumers and you want to know what fraction of them prefer
+a particular product.  In each case you have noisy data, which
+contains noisy information about the quantity you care about.  The
+scientifically responsible thing to report is the full likelihood
+function or the posterior probability distribution
+function\endnote{Because the computation of a posterior pdf involves
+  additional assumptions over and above the assumptions made in
+  computing a likelihood, if you release only posterior pdfs, you must
+  always \emph{also} report the prior pdf you employed.  I discuss
+  this more in other contributions in this series.} (pdf) for the the
+quantity of interest---the star brightness or the consumer fraction.
+Only these full functions properly transmit the full information
+content of the measurement.
 
-False-positive and false-negative rates
+Nonetheless, in various situations, it is necessary to deliver \emph{a
+  particular value} for the quantity of interest.  For example, you
+might be calculating a telescope exposure time (for your next
+measurement) or deciding how many units of a product to ship to a
+store.  In each case, you have to use \emph{some value} to perform the
+calculation.  Well, strictly speaking, you don't \emph{have} to use a
+single value to do this calculation, but in practice it is often the
+only practicable way.  For example, sometimes you have a superior
+officer who demands a number, or an editor who wants you to put a
+number in the abstract of your paper.  When you are in this situation,
+what number should you report or use?  The rules of probabilistic
+inference \emph{do not answer this question}.  The rules of
+probabilistic inference only tell you how to manipulate probabilities
+and frequencies for data and parameters.
 
-plausibility and discovery
+It is typical in situations like this---for the star brightness or the
+fraction of consumers---to report the \emph{maximum likelihood} value
+of the quantity of interest.  This is not a bad choice!  However, it
+is definitely a choice, and it comes with significant costs and
+benefits.
+
+...For example...imagine the star brightness makes it the most absurd
+star that has ever existed...imagine that the consumer fraction means
+that you ship no units...etc...
+
+...classification...False-positive and false-negative rates...
+
+...plausibility and discovery...
 
 \section{Money must be involved}
 
@@ -102,6 +149,8 @@ understand the trade-offs between money, FoM, and time.  And sure
 enough, although the DETF was able to classify projects into
 categories (FoM bins), it was not able to rank the relative value of
 very qualitatively different projects.
+
+...similarly spectroscopic fibers in \project{SDSS}...
 
 ...Automated decision making for follow-up...
 
