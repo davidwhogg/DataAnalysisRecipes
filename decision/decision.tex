@@ -52,21 +52,21 @@ and~\affil{Max-Planck-Institut f\"ur Astronomie, Heidelberg}
 
 \begin{abstract}
 Probabilistic inference at its best gives probabilistic information
-about parameters and models.  In many cases of importance---as with making a discovery or
-experimental design or purchasing or delivery of results---it is
-necessary to make a hard decision or choice.  It is almost never the
-right move to choose the \emph{most probable} model or option; it is rare
-that the most probable is the option that delivers the most benefit to
-the decider.  Instead the decider ought to specify a utility function
-and work to optimize expected utility, or minimize expected loss, or
-minimize maximal loss.  In real-world situations of building
-experiments or operating an organization, to be generally useful the
-utility must be specified in (the equivalent of) currency (dollar)
-units.  Whether the decision is about which observation to make next,
-which of several hypotheses to reject, or which of very different
-research programs to pursue, the employed utility function should be
-an approximation to the decider's \emph{long-term future discounted
-  free cash flow}.
+about parameters and models.  In many cases of importance---as with
+making a discovery or experimental design or purchasing or delivery of
+results---it is necessary to make a hard decision or choice.  It is
+almost never the right move to choose the \emph{most probable} model
+or option; it is rare that the most probable is the option that
+delivers the most benefit to the decider.  Instead the decider ought
+to specify a utility function and work to optimize expected utility,
+or minimize expected loss, or minimize maximal loss.  In real-world
+situations of building experiments or operating an organization, to be
+generally useful the utility must be specified in (the equivalent of)
+currency (dollar) units.  Whether the decision is about which
+observation to make next, which of several hypotheses to reject, or
+which of very different research programs to pursue, the employed
+utility function should be an approximation to the decider's
+\emph{long-term future discounted free cash flow}.
 \end{abstract}
 
 \section{You never decide on probability alone}
@@ -95,26 +95,49 @@ store.  In each case, you have to use \emph{some value} to perform the
 calculation.  Well, strictly speaking, you don't \emph{have} to use a
 single value to do this calculation, but in practice it is often the
 only practicable way.  For example, sometimes you have a superior
-officer who demands a number, or an editor who wants you to put a
+officer who demands a number, or a referee who insists that you put a
 number in the abstract of your paper.  When you are in this situation,
 what number should you report or use?  The rules of probabilistic
 inference \emph{do not answer this question}.  The rules of
 probabilistic inference only tell you how to manipulate probabilities
-and frequencies for data and parameters.
+and frequencies for data and parameters.  For example, they don't tell
+you whether to report the mode, mean, or median of the posterior pdf
+or the maximum of the likelihood or some percentile upper or lower
+limit.  (And they don't tell you how to adjust if the likelihood or
+posterior is peaked somewhere that seems unlikely or embarassing or
+likely to get you fired, demoted, ridiculed, or bankrupt.)
 
-It is typical in situations like this---for the star brightness or the
-fraction of consumers---to report the \emph{maximum likelihood} value
-of the quantity of interest.  This is not a bad choice!  However, it
-is definitely a choice, and it comes with significant costs and
-benefits.
+Similarly, in discovery or detection: Do you take ``three sigma'' or
+``five sigma'' or ``ten'' to be the threshold?  Probabilistic
+inference does not answer this question either.  If it is bad for you
+to report the existence of something that isn't there, you will set
+your threshold high.  If it is important that you \emph{not miss}
+something that \emph{is} there, you will set it low.  As these
+examples illustrate, it is your \emph{utility}---what is useful to you
+or important to you---that informs your decision, not just the results
+of the probabilistic inference.
 
-...For example...imagine the star brightness makes it the most absurd
-star that has ever existed...imagine that the consumer fraction means
-that you ship no units...etc...
+Most importantly, if you are trying to decide \emph{between models} or
+\emph{between hypotheses}, and these models have different posterior
+probabilities (possibly marginalized over all parameters) how do you decide?  Once again,
+the rules of probabilistic inference do not tell you which model to
+choose.  You can choose the more probable model, but that is rarely
+\emph{required}.  It is often not even sensible: What if model $A$ is
+slightly more probable, but requires thousands of CPU-years to
+compute, whereas model $B$ is slightly less probable but you can
+compute it on your mobile phone?  For many purposes, model $B$ would
+be the model to choose.  Economic factors (and we will get very
+specific about what those factors are) must play a role.
 
-...classification...False-positive and false-negative rates...
-
-...plausibility and discovery...
+Finally, and as we have argued elsewhere\note{where?}, if you can
+\emph{possibly avoid} making a decision you should.  The laws of
+probabilistic inference tell you how to \emph{mix} the models or
+marginalize over unknowns; if you can live with a mixture you should.
+Only decide when you have no choice, as when you have to put a number
+in an abstract, type a line in a published table or chart, or cut
+metal in an experiment or instrument.  It is only then---when
+irreversible action is imminent---that choice is \emph{really}
+required.
 
 \section{Money must be involved}
 
@@ -132,9 +155,9 @@ likelihood contour) in the $w_0$--$w_a$ plane.\note{\cite{detf}.}
 In many ways this was a breakthrough: A committee recommends a
 quantitative method for comparing (necessarily expensive, complex, and
 lengthy) projects, and describes that quantitative method in terms of
-merit or utility.  Furthermore, the proposed FoM scalar relates to the
-informaton content in the data delivered by the experiments, so it is
-eminently sensible.
+merit or utility.  For this the DETF deserves to be commended.
+Furthermore, the proposed FoM scalar relates to the informaton content
+in the data delivered by the experiments, so it is eminently sensible.
 
 However, there is an equally valid point of view in which this
 recommendation was \emph{useless}.  The reason is that although the
@@ -142,9 +165,9 @@ FoM permits the community to compare projects in terms of information
 delivered about dark energy, no two projects deliver the same FoM, no
 two projects have the same total cost, and no two projects deliver
 results at the same point in the future.  If one project delivers an
-FoM of 1200, costs $8\times 10^6$~USD, and takes three years, and
+FoM of 1200, costs $8\times 10^6$~USD, and takes four years, and
 another delivers an FoM of 1950 and costs $17\times 10^6$~USD, and
-takes 2.5 years, how are we to compare them?  We need to be able to
+takes 3.5 years, how are we to compare them?  We need to be able to
 understand the trade-offs between money, FoM, and time.  And sure
 enough, although the DETF was able to classify projects into
 categories (FoM bins), it was not able to rank the relative value of
