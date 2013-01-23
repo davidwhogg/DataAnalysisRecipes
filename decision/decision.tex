@@ -130,15 +130,22 @@ of the probabilistic inference.
 
 Most importantly, if you are trying to decide \emph{between models} or
 \emph{between hypotheses}, and these models have different posterior
-probabilities (possibly marginalized over all parameters) how do you decide?  Once again,
-the rules of probabilistic inference do not tell you which model to
-choose.  You can choose the more probable model, but that is rarely
-\emph{required}.  It is often not even sensible: What if model $A$ is
-slightly more probable, but requires thousands of CPU-years to
-compute, whereas model $B$ is slightly less probable but you can
-compute it on your mobile phone?  For many purposes, model $B$ would
-be the model to choose.  Economic factors (and we will get very
-specific about what those factors are) must play a role.
+probabilities (possibly marginalized over all parameters) how do you
+decide?  Once again, the rules of probabilistic inference do not tell
+you which model to choose.\note{There is a huge literature and many
+  methods devoted to computing ``Bayes factors'' or fully marginalized
+  likelihoods or posterior probabilities for parameterized models.
+  This is all very valuable work, but if you take that massive
+  computational effort and then just choose the \emph{more probable
+    model}, you are probably making a mistake.}  You can choose the
+more probable model, but that is rarely \emph{required}.  It is often
+not even sensible: What if model $A$ is slightly more probable, but
+requires thousands of CPU-years to compute, whereas model $B$ is
+slightly less probable but you can compute it on your mobile phone?
+For many purposes, model $B$ would be the model to choose; it depends
+on the \emph{use} to which the model is being put.  Economic factors
+(and we will get very specific about what those factors are) must play
+a role.
 
 Finally, and as we have argued elsewhere\note{where?}, if you can
 \emph{possibly avoid} making a decision you should.  The laws of
