@@ -3,7 +3,9 @@
 
 % to-do
 % -----
-% - write zeroth draft
+% - put in a real example (A.n?)
+% - fix intro to get to the point faster
+% - finish zeroth draft
 
 % style notes
 % -----------
@@ -217,7 +219,68 @@ Discounted.
 
 Free cash flow.
 
-...why this is upsetting to normals...Assumptions under which this is possible...
+\section{Discussion and objections}
+
+This \documentname\ makes only one point: That probabilistic inference
+does not tell you what to \emph{do}, it only puts probabilities on
+parameters, hypotheses, models, and future possible data.  If you want
+to know what to \emph{do}, you have to marginalize over outcomes times
+some kind of utility, and that utility ought to be a long-term future
+discounted free cash flow (LTFDFCF), specified in units convertible to
+currency.  Apparently this is shocking to many!  Indeed I get many
+objections, most of which fall into one of a few camps:
+
+\paragraph{Objection 1: This is so subjective!}
+Yes, it is subjective.  But so is all of probabilistic reasoning.  You
+are making subjective judgements when you decide what data to use,
+what models to consider, how to model the noise, what approximations
+to make, and (as the frequentists remind us\note{Hard-core
+  frequentists---with whom I have no serious disagreements (it is a
+  hard way to live, but a noble way to live, as I discuss [IN WHAT
+    DOCUMENT])---complain that all Bayesian methods must be wrong
+  because they involve the subjective step of multiplying by a prior.
+  The frequentists are not wrong: The prior is \emph{absolutely}
+  subjective.  But so are the up-front model choices and
+  approximations made in every inference by everyone, so in my view
+  the prior pdf is, if not the least subjective part, certainly not
+  the only.} when you set your prior pdfs.  All of these steps in an
+inference require personal judgement.  They can be analyzed and
+debated but ultimately these decisions \emph{already involve utility},
+even before we get to the decision-making part of the problem.
+
+\paragraph{Objection 2: \emph{Money?} What about happiness or love?}
+Why are you so crass as to express your utility in terms of money (or
+time or oil any other commodity) rather than something on a higher
+plane, such as happiness or love?  The short answer is that the
+fundamental assumption necessary for the LTFDFCF to be the correct
+objective, is \emph{not} that money can buy happiness or that
+happiness or love is convertible to money or other exchangeable
+commodities.  The fundamental assumption is the much more limited
+assumption that there is \emph{marginal fungibility}.
+
+Say you are working late and you need to get home.  You are just about
+to leave when a colleague says ``Can you stay 15 minutes longer?''
+You say ``No, I want to get home to see my family.''  Your colleague
+says ``If you stay for 15 minutes longer, I will pay you $X$.''  If
+you can identify---even approximately---the money value $X$ for which
+you would stay the extra 15~minutes, then you can measure a
+translation between happiness (or duty or love) and LTFDFCF.  Aside
+from the scenario being a bit creepy, that is the only assumption we
+need to make to work in currency units, or to make marginal
+translations between happiness, love, and LTFDFCF.
+
+The required fungibility is \emph{marginal} simply because in any
+individual decision or inference, the expected utilities at stake are
+all small (relative to, say, the expected LTFDFCF you will generate in
+your entire lifetime).  If you get into situations of massive expected
+utilities (life-changing changes like marriage and having kids and
+things like that), marginal transfer of LTFDFCF can start to break
+down as a useful or useable model.
+
+\paragraph{Objection 3: No-one knows their utility!}
+This is absolutely true and fair!  Indeed, the word ``long-term'' in
+the LTFDFCF is itself an expression (as I mention above) that the
+utility is impossible to compute precisely (or accurately).
 
 \clearpage
 \markright{Notes}\theendnotes
