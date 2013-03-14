@@ -12,7 +12,7 @@
 \renewcommand{\MakeUppercase}[1]{#1}
 \pagestyle{myheadings}
 \renewcommand{\sectionmark}[1]{\markright{\thesection.~#1}}
-\markboth{Model complexity}{}
+\markboth{What is a model?}{}
 
 \begin{document}
 \thispagestyle{plain}\raggedbottom
@@ -20,39 +20,37 @@
   What is a model?\footnotemark}
 
 \footnotetext{The \notename s begin on page~\pageref{note:first},
-  including the license\note{\label{note:first} Copyright 2011 by the
-    author.  You may copy and distribute this document provided that
-    you make no changes to it whatsoever.}  and the
+  including the license\note{\label{note:first} Copyright 2011, 2012,
+    2013 by the author.  You may copy and distribute this document
+    provided that you make no changes to it whatsoever.}  and the
   acknowledgements\note{It is a pleasure to thank Coryn Bailer-Jones
-    (MPIA), Jo Bovy (IAS), Dustin Lang (Princeton) and Sam Roweis
-    (deceased) for valuable discussions.  This research was partially
-    supported by NASA, the NSF, and the Alexander von Humboldt
-    Foundation.  This research made use of the Python programming
-    language and the open-source Python packages scipy, numpy, and
-    matplotlib.}.}
+    (MPIA), Brendon Brewer (Auckland), Jo Bovy (IAS), Dustin Lang
+    (CMU) and Sam Roweis (deceased) for valuable discussions.  This
+    research was partially supported by NASA, the NSF, and the
+    Alexander von Humboldt Foundation.  This research made use of the
+    Python programming language and the open-source Python packages
+    scipy, numpy, and matplotlib.}.}
 
 \noindent
 David~W.~Hogg\\
 \affil{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New~York~University}\\
 \affil{Max-Planck-Institut f\"ur Astronomie, Heidelberg}
-%% \\[1ex]
-%% Jo~Bovy\\
-%% \affil{Institute~for~Advanced~Study, Princeton}
-%% \\[1ex]
-%% Dustin~Lang\\
-%% \affil{Princeton University Observatory}
 
 \begin{abstract}
-  All the inference in this (nonexistent, never to be completed) book
-  involves the comparison of models and data.  Here we lay out our
+  All the inference in this series of \documentname s involves
+  probabilistic comparison of models and data.  Here we lay out our
   specific meaning of the word ``model''; the short summary is that a
-  model is an approximate but justified expression for (something
-  proportional to) the probability of the data, usually as a function
-  of model parameters.  This is also called a ``likelihood function''
-  in many contexts.  Importantly, model specification requires
-  specification of the noise properties of the data.  Many things
-  conventionally described as ``models'' do not meet the criteria
-  outlined here.
+  model is an approximate (\emph{always} approximate) but justified
+  expression for (something proportional to) the probability of the
+  data, usually as a function of model parameters.  This is also
+  called a ``likelihood function'' in many contexts.  Importantly in
+  the physical sciences, likelihood function specification requires a
+  quantitative description of the noise contributing to the data.
+  Additional power comes to models in which it is possible to specify
+  a prior probability density function over the parameters, and
+  especially the \emph{nuisance} parameters; this power comes at the
+  cost of the additional assumptions.  Many things conventionally
+  described as ``models'' do not meet the criteria outlined here.
 \end{abstract}
 
 Hello world!
