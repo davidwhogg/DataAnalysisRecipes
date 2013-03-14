@@ -8,7 +8,7 @@
 \renewcommand{\MakeUppercase}[1]{#1}
 \pagestyle{myheadings}
 \renewcommand{\sectionmark}[1]{\markright{\thesection.~#1}}
-\markboth{Model complexity}{}
+\markboth{Comparing models of different complexity}{}
 
 \begin{document}
 \thispagestyle{plain}\raggedbottom
@@ -35,22 +35,25 @@ David~W.~Hogg\\
 \affil{Max-Planck-Institut f\"ur Astronomie, Heidelberg}
 \\[1ex]
 Jo~Bovy\\
-\affil{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New~York~University}
+\affil{Institute for Advanced Study, Princeton}
 \\[1ex]
 Dustin~Lang\\
-\affil{Princeton University Observatory}
+\affil{Princeton University Observatory}\\
+\affil{Department of Physics, Carnegie Mellon University}
 
 \begin{abstract}
   Frequently the data analyst is faced with the comparison of models
-  of very different levels of complexity or freedom to fit or explain
-  the data.  We begin by discussing the measure of model complexity,
-  in part to criticize the idea that it is directly related to the
-  number of parameters in the model: It is not, except in rare
-  circumstances.  Model selection---choosing among models of differing
-  complexity---can often be avoided; we advocate avoiding it.  If it
-  cannot be avoided, we discuss options.  We recommend the data-driven
-  technique of leave-one-out cross-validation, which locates the model
-  that best predicts left-out data.
+  of very different levels of complexity or very different amounts of
+  freedom to fit or explain the data.  We begin by discussing the
+  assessment of model complexity, in part to criticize the idea that
+  it is directly related to the number of parameters in the model: It
+  is not, except in rare circumstances.  Model selection---choosing
+  among models of differing complexity---can often be avoided; we
+  advocate avoiding it.  If it cannot be avoided, we discuss options.
+  We end up recommending the data-driven technique of leave-one-out
+  cross-validation, which locates the model that best predicts
+  left-out ``validation'' data after being fit to (or learning from)
+  left-in ``training'' data.
 \end{abstract}
 
 \section{Model complexity every day}
@@ -267,9 +270,13 @@ different $K$.
 
 AIC, BIC, and why they are all inapplicable in general.
 
-\section{Bayesian decision theory}
+\section{Bayesian evidence or marginalized likelihood}
 
 Why it is \emph{so sensitive} to the priors.
+
+\section{Bayesian decision theory}
+
+It is all about utility.  And priors.
 
 \section{Cross-validation}
 
