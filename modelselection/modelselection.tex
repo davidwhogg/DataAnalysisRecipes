@@ -271,7 +271,45 @@ different $K$.
 
 AIC, BIC, and why they are all inapplicable in general.
 
-Why it is NEVER right to select on the basis of $\chi^2 / \nu$.  Precision \notenglish{vs} accuracy.
+One common method for deciding between models is to look at $\chi^2$
+\emph{per degree of freedom} $\nu$, where the number of degrees of
+freedom is defined to be the number of data points minus the number of
+parameters.  If the model is a good fit to the data, and it is linear,
+and the noise in the data points is Gaussian with known variances,
+then $\chi^2/\nu$ ought to be near unity (within a few $1/\sqrt{\nu}$
+of unity).  Often this issue is raised when model selection is raised.
+Unfortunately, this idea is \emph{not relevant} to model selection.
+The comparison of $\chi^2$ to $\nu$ is appropriate in the context of
+model \emph{checking}.  In model checking, the question is: ``Which
+models do a good job of generating the data?''.  In model selection,
+the question is ``Of this set of models, which should I choose?''.
+
+It is confusing that two models might both be good at generating the
+data---both generate a $\chi^2/\nu$ near enough unity to be
+reasonable---but at the same time, one of them is enormously
+preferred.  An example would be model A, with $\chi^2=45.3$, $\nu=44$,
+and model B, with $\chi^2=51.1$, $\nu=43$, acting on the same data.
+Both models have $\chi^2/\nu$ reasonable, but in fact by the standard
+AIC or BIC criteria (which we have just disdained, but could
+conceivably be applicable) model A would be greatly preferred, because
+it has better $\chi^2$ \emph{and} fewer parameters (it had higher
+$\nu$ so lower number of parameters).  The resolution of this
+paradox---that both models can be ``fine'' but one is
+``preferred''---is that the $\chi^2/\nu$ question is about
+\emph{accuracy} and the model selection question is about
+\emph{precision}.  The data might not \emph{rule out} a model but
+still vastly prefer its competitor.
+
+The much more common case is not this case.  The more common case is
+that \emph{no} model is a good fit to the data---all models have bad
+$\chi^2/\nu$---but we still need to make a call among them.  Once
+again, the accuracy and precision questions are separate: Even if no
+model does a good job of generating the data, you might still vastly
+prefer one over the other.  And of course the sensible researcher
+would not ignore the $\chi^2/\nu$ test: It indicates that the models
+\emph{all} need improving.\note{...Stuff about all models being wrong,
+  being approximate.  All models will fail the $\chi^2/\nu$ test if
+  the data sets get large enough.  And so on...}
 
 \section{Bayesian evidence or marginalized likelihood}
 
