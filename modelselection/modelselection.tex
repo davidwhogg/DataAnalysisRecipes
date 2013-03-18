@@ -153,11 +153,11 @@ model with an \emph{infinite number of parameters}.
 
 Of course the implied paradox has a simple resolution: In order to fit
 the data precisely, the parameters of the model---especially the wave
-number $k$---must be specified to enormous \emph{precision}.  That is,
+number $k$---must be specified to enormous \emph{precision} or \emph{bit depth}.  That is,
 the $K$-component linear model gets its power to fit by having a large
 number of parameters.  The sinusoidal model gets its power to fit by
 having a large number of digits of accuracy devoted to the $k$
-parameter (or, in some limits, the $A$ parameter).
+parameter (and, in some limits, the $A$ parameter).
 
 Hogg:  Perhaps give a specific illustration of this here.---Hogg
 
@@ -269,12 +269,25 @@ different $K$.
 
 \section{Standard decision criteria}
 
-AIC, BIC, and why they are all inapplicable in general.
+As in the above, and in our other contributions on the
+subject\note{Hogg: reference}, when noise is treated as Gaussian, the
+statistic for testing goodness of fit is $\chi^2$.  If two
+models\note{Hogg: define a model and refer to the model spec document}
+have similar freedom (suitably defined; though the perceptive reader
+will notice that have avoided defining it\note{Hogg: What is the
+  definition of model complexity?}), then the model with the smaller
+value of $\chi^2$ is to be preferred.  If the two models have
+different complexity or freedom, then the model with the greater
+freedom will (in general) fit better; in deciding between the models,
+$\chi^2$ should be adjusted with by something related to model
+complexity in order to penalize the more free model for its freedom.
+
+...AIC, BIC, and why they are all inapplicable in general.
 
 One common method for deciding between models is to look at $\chi^2$
 \emph{per degree of freedom} $\nu$, where the number of degrees of
-freedom is defined to be the number of data points minus the number of
-parameters.  If the model is a good fit to the data, and it is linear,
+freedom is defined to be the number of data points $N$ minus the number of
+parameters $K$.  If the model is a good fit to the data, and it is linear,
 and the noise in the data points is Gaussian with known variances,
 then $\chi^2/\nu$ ought to be near unity (within a few $1/\sqrt{\nu}$
 of unity).  Often this issue is raised when model selection is raised.
