@@ -282,12 +282,53 @@ freedom will (in general) fit better; in deciding between the models,
 $\chi^2$ should be adjusted with by something related to model
 complexity in order to penalize the more free model for its freedom.
 
-...AIC, BIC, and why they are all inapplicable in general.
+Despite all the warnings above about the ``number of parameters'', in
+the case of linear models (predictions are linear combinations of the
+parameters), and Gaussian noise of known variances, and no significant
+prior information, the model complexity is just the number of
+parameters $K$.  In this restrictive case---restrictive because it is
+rare that models are perfectly linear, and when they are, it is rare
+that the noise is Gaussian and well understood, and even when that is
+the case, it is rare that the implicit assumptions about prior
+information will be met---the penalty for model complexity can be simply a
+constant times $K$ added to $\chi^2$.  The two standard methods are
+AIC\note{Hogg cite AIC and spell it out and its assumptions}, where
+the comparison is made on the basis of $\chi^2 + 2\,K$, and
+BIC\note{Hogg cite BIC and spell it out and its asssumptions}, where
+it is $\chi^2 + K\,\ln N$, where $N$ is the number of data points.
+There is a lot to say about the justifications for these methods---the
+AIC is based on predictive power and the BIC is based on an
+approximation to the Bayesian evidence (about which more below)---but
+we will spare the reader because we \emph{do not recommend them}.
 
-One common method for deciding between models is to look at $\chi^2$
+We don't recommend using the AIC, because in the linear case it
+approximates cross-validation (HOGG DOES IT REALLY?), which---for a
+linear problem---is fast to compute directly, with no approximation.
+We don't recommend using the BIC, because in the linear case it
+approximates the Bayesian evidence or marginalized likelihood (see
+below).  Again, in the case of a linear problem, this is trivial and
+fast to compute.  That is, both of these methods make approximations
+that are only valid in cases in which the non-approximate calculation
+is straightforward and inexpensive!  And when the models get
+non-linear (so the number of parameters does \emph{not} precisely
+describe the model freedom), and when the other assumptions (about
+Gaussian errors and known variance and priors) become false, these
+methods must behave unpredictably.\note{Well, these methods will
+  always act ``predictably'' but only predictably in the sense that an
+  expensive computational analysis will tell you important things
+  about how they in fact behave, with a new analysis required for
+  every new problem.}
+
+...There is a deeper reason to dislike AIC and BIC and that is that
+they make deep assumptions about your \emph{utility}... must be wrong,
+because you don't even know what they are...
+
+...In what circumstances \emph{does} it make sense to use them?  Fastness.
+
+One common---but seriously wrong---method for deciding between models is to look at $\chi^2$
 \emph{per degree of freedom} $\nu$, where the number of degrees of
 freedom is defined to be the number of data points $N$ minus the number of
-parameters $K$.  If the model is a good fit to the data, and it is linear,
+parameters $K$.  As with AIC and BIC, if the model is a good fit to the data, and it is linear,
 and the noise in the data points is Gaussian with known variances,
 then $\chi^2/\nu$ ought to be near unity (within a few $1/\sqrt{\nu}$
 of unity).  Often this issue is raised when model selection is raised.
