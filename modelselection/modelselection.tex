@@ -279,7 +279,7 @@ will notice that have avoided defining it\note{Hogg: What is the
 value of $\chi^2$ is to be preferred.  If the two models have
 different complexity or freedom, then the model with the greater
 freedom will (in general) fit better; in deciding between the models,
-$\chi^2$ should be adjusted with by something related to model
+$\chi^2$ should be adjusted by something related to model
 complexity in order to penalize the more free model for its freedom.
 
 Despite all the warnings above about the ``number of parameters'', in
@@ -325,13 +325,18 @@ because you don't even know what they are...
 
 ...In what circumstances \emph{does} it make sense to use them?  Fastness.
 
-One common---but seriously wrong---method for deciding between models is to look at $\chi^2$
-\emph{per degree of freedom} $\nu$, where the number of degrees of
-freedom is defined to be the number of data points $N$ minus the number of
-parameters $K$.  As with AIC and BIC, if the model is a good fit to the data, and it is linear,
-and the noise in the data points is Gaussian with known variances,
-then $\chi^2/\nu$ ought to be near unity (within a few $1/\sqrt{\nu}$
-of unity).  Often this issue is raised when model selection is raised.
+\section{Degrees of freedom}
+
+One common---but seriously wrong---method for deciding between models
+is to look at $\chi^2$ \emph{per degree of freedom} $\nu$, where the
+very badly named\note{It should be called the ``number of degrees of
+  constraint'' because it increases as the model becomes \emph{less}
+  free.} ``number of degrees of freedom'' is defined to be the number
+of data points $N$ minus the number of parameters $K$.  As with AIC
+and BIC, if the model is a good fit to the data, and it is linear, and
+the noise in the data points is Gaussian with known variances, then
+$\chi^2/\nu$ ought to be near unity (within a few $1/\sqrt{\nu}$ of
+unity).  Often this issue is raised when model selection is raised.
 Unfortunately, this idea is \emph{not relevant} to model selection.
 The comparison of $\chi^2$ to $\nu$ is appropriate in the context of
 model \emph{checking}.  In model checking, the question is: ``Which
