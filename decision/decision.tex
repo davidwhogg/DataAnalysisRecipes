@@ -227,22 +227,27 @@ inference or prediction...
 \section{Long-term future discounted free cash flow}
 
 The question remains: How do you go about writing down, in a
-quantitative way---or calculating---your utility?  What \emph{is} your
-utility?  It turns out this question has been answered.  Oddly it has
-been answered in the realm of \emph{business}\note{I first learned
-about the LTFDFCF during a short stint as a consultant at the US
-internet company \project{Google}, where it was explicitly stated as
-the utility.  Maximization of the LTFDFCF was stated as the prime
-objective of the company.  (Now that I write these words, their
-specificity makes me wonder if I am somehow misremembering this.)},
-not science (and definitely not statistics): The objective of any
-entity---person or organization---is to maximize its \emph{Long-Term
-Future Discounted Free Cash Flow} (LTFDFCF).  Surprised?  The thing
-you should \emph{really} be surprised about is that its
-generality---the applicability of the LTFDFCF to science and
+quantitative way---or calculating---your utility?  Interestingly, the
+\emph{calculating} of your utility is going to turn out to be
+impossible, for very deep reasons, so we will always have to live with
+brutal approximations.  Let's start with an easier question: What
+\emph{is} your utility?
+
+It turns out this question \emph{has} been
+answered in the realm of \emph{business}\note{I first learned about
+  the LTFDFCF during a short stint as a consultant at the US internet
+  company \project{Google}, where it was explicitly stated as the
+  utility.  Maximization of the LTFDFCF was stated as the prime
+  objective of the company.  (Now that I write these words, their
+  specificity makes me wonder if I am somehow misremembering this.)},
+not science (and definitely not statistics):
+The objective of any entity---person or organization---is to maximize
+its \emph{Long-Term Future Discounted Free Cash Flow} (LTFDFCF).
+Surprised?  The thing you should \emph{really} be surprised about is
+that its generality---the applicability of the LTFDFCF to science and
 hypothesis testing in intellectual areas---has not been widely
-recognized.  Here we break apart this concept and explain it in parts,
-arguing for it simultaneously.
+recognized.  Here we break apart this concept, explain it, and argue
+for it.
 
 \paragraph{Long-term future:}
 If we are rational, we care not just about what happens \emph{right
@@ -256,6 +261,42 @@ years?  It turns out that the answer to this question depends on the
 \paragraph{Discounted:}
 
 \paragraph{Free cash flow:}
+Heuristically, \emph{free cash flow} is revenue less the expenses
+incurred \emph{in order to generate that revenue}.  The expenses here
+include short-term expenditures and amortization of \emph{past}
+long-term capital expenses on equipment or facilities that were used
+to generate the revenue.  This might sound a lot like \emph{profit}
+but it differs in an important way: Profit is revenue less all
+expenses, including \emph{present} long-term capital expenses that are
+being used to create new opportunities for the future.  Profit is
+always less than free cash flow, because more expenses are being
+counted against profit than against free cash flow; indeed there are
+companies with no profit but plenty of free cash flow; these are
+generally companies that are building large new facilities or
+capabilities.  You don't want to count these present-day long-term
+capital expenditures against your utility, because the capapbility of
+making these long-term investments is precisely \emph{why} we are
+doing what we do.
+
+In human terms, you might run a lemonade stand on a street corner to
+raise money so you can start a juice bar downtown.  If you are
+successful, you will use the cash flow from the lemonade stand to
+build the juice bar.  In assessing the success of your lemonade stand,
+you want to compare the lemonade revenue with the lemonade expenses;
+the fact that you are spending every penny of that cash flow building
+a new business shouldn't ``count against'' the success of the lemonade
+stand.  Hence the goal of the lemonade stand was to produce free cash
+flow, not profit \emph{per se}.\note{I think somehow profit is for
+  \emph{investors} whereas cash flow is for \emph{owners}.  Not that
+  there is obviously a clear distinction between these.}
+
+In scientific terms, the idea is that you want to get the most benefit
+from your project or your inference, given the cost \emph{of that
+  project}.  That's the scientific equivalent of free cash flow.
+
+\section{One simple example}
+
+...Concrete example: \project{Astrometry.net}
 
 \section{Discussion and objections}
 
