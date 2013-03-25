@@ -3,8 +3,11 @@
 
 % to-do
 % -----
+% - is the second-person stuff annoying?  I think it is.
 % - decide about ``I'' vs ``we'' and any co-author?
 % - fix intro to get to the point faster
+% - swap out the DETF example, which isn't a good one
+% - LTFDFCF argument is too strident
 % - finish zeroth draft
 
 % style notes
@@ -84,7 +87,7 @@ function\endnote{Because the computation of a posterior pdf involves
   additional assumptions over and above the assumptions made in
   computing a likelihood, if you release only posterior pdfs, you must
   always \emph{also} report the prior pdf you employed.  I discuss
-  this more in other contributions in this series.} (pdf) for the the
+  this more in other contributions in this series.} (pdf) for the
 quantity of interest---the star brightness or the consumer fraction.
 Only these full functions properly transmit the full information
 content of the measurement.
@@ -122,13 +125,14 @@ you fired, demoted, ridiculed, or bankrupt.\note{Some would argue that
 
 Similarly, in discovery or detection: Do you take ``three sigma'' or
 ``five sigma'' or ``ten'' to be the threshold?  Probabilistic
-inference does not answer this question either.  If it is bad for you
-to report the existence of something that isn't there, you will set
-your threshold high.  If it is important that you \emph{not miss}
-something that \emph{is} there, you will set it low.  As these
-examples illustrate, it is your \emph{utility}---what is useful to you
-or important to you---that informs your decision, not just the results
-of the probabilistic inference.
+inference does not answer this question either.\note{cite MODEL
+  SELECTION \documentname} If it is bad for you to report the
+existence of something that isn't there, you will set your threshold
+high.  If it is important that you \emph{not miss} something that
+\emph{is} there, you will set it low.  As these examples illustrate,
+it is your \emph{utility}---what is useful to you or important to
+you---that informs your decision, not just the results of the
+probabilistic inference.
 
 Most importantly, if you are trying to decide \emph{between models} or
 \emph{between hypotheses}, and these models have different posterior
@@ -159,7 +163,47 @@ metal in an experiment or instrument.  It is only then---when
 irreversible action is imminent---that choice is \emph{really}
 required.
 
+\section{You have a scalar objective}
+
+Given that the world only provides probabilistic or noisy information,
+the fact that any rational actor (think ``brilliant robot''\note{The
+  rational-inference robot is a very useful piece of
+  thought-experiment equipment introduced by \citet{jaynes}, ch.~1 and
+  thereafter.})  can make any hard choice---decide anything---results
+from the fact that he or she (or henceforth ``it'') has some kind of
+objective function that it is optimizing.  Even a Bayesian actor that
+chooses to report from a posterior pdf the most probable parameter
+values is effectively adopting ``probability'' as it's objective.  A
+frequentist actor that chooses to report the maximum-likelihood values
+is effectively adopting ``likelihood'' as its objective.  For general
+situations, both of these choices of objective is absurd; I will
+return to that below.\note{More soon, but briefly it is easy to see
+  that the likelihood is a bad objective: The likelihood can be
+  maximal in a location in parameter space you know to be ruled out by
+  theoretical considerations or else previous experiments.}
+
+...You must have an objective... probabilists can only optimize the
+\emph{expected value} (or other posterior statistic of) that
+objective... frequentists are even \emph{more} restricted: They can
+only optimize for the best-case or worst-case scenario in the ``bag of
+models''.
+
+...Might want to maximize completeness \emph{and} minimize
+false-positive rate... All objectives conflict at some point...
+
+...Concept of the convex sum... What is that?..
+
+...Note that for many investigators there is an ambiguity between
+prior and utility; they are used similarly in
+decision-making... Indeed there is a product ambiguity between them...
+
 \section{Money must be involved}
+
+% The DETF example doesn't bring to light the most important issue;
+% after all, the existence of any single mission creates an exchange
+% rate for marginal exchanges between money and DETF.  As for the
+% different missions taking different times, that is about the
+% discount rate, not about money \notenglish{per se}.
 
 Back in 2005-ish, the cosmology community underwent a soul-searching
 exercise about future projects intended to investigate the nature of
@@ -214,6 +258,8 @@ fundamentally economic.
 
 \section{Utility calculations}
 
+% coordinate this with the above ``scalar objective'' section
+
 ...there are two issues: How to compute your utility for some outcome,
 and then what to do with those computations given a probabilistic
 inference or prediction...
@@ -223,6 +269,20 @@ inference or prediction...
 ...posterior utility maximization\note{There is an excellent---if
   idiosyncratic---discussion of decision-making in a probabilistic
   context in \cite{jaynes}, chs.~13 and 14.}...
+
+\section{Why is posterior probability a bad objective?}
+
+...first a reminder of why likelihood is a bad objective...
+
+...the idea of a narrow high peak and a very wide lower peak...  This
+is the problem solved by marginalization (Bayes evidence) but then you
+have to decide on the \emph{domain} over which you do that integral...
+
+...the idea of model \emph{cost}...
+
+...posterior probability might be a good objective in the (very rare)
+situation that the \emph{only} audience or use is scientific, and the
+priors are extremely informative...
 
 \section{Long-term future discounted free cash flow}
 
