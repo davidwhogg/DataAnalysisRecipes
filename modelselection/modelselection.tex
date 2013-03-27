@@ -10,6 +10,9 @@
 \renewcommand{\sectionmark}[1]{\markright{\thesection.~#1}}
 \markboth{Comparing models of different complexity}{}
 
+\newcommand{\data}{D}
+\newcommand{\pars}{\theta}
+
 \begin{document}
 \thispagestyle{plain}\raggedbottom
 \section*{Data analysis recipes:\ \\
@@ -267,39 +270,80 @@ like this
 in the case of $K=6$ parameters and generalizes in the obvious way for
 different $K$.
 
+\section{What is a model?}
+
+Enough about model complexity or model freedom; it is time to
+\emph{select} the best model from a set.  That said, before we can
+talk about deciding \emph{among} models, we have to say what a model
+\emph{is}.  We have covered this ground in previous
+\documentnames\note{cite SOME OTHER DOCUMENT.}, but we will briefly
+recap here.  For our purposes, a model is a \emph{prediction about
+  data}.  That prediction needs to include, at the very least, a
+probability density function (pdf) $p(\data\given\pars, H)$ that
+assigns a probability density to any possible data set $\data$ given a
+setting of parameters $\pars$ and some fundamental model assumptions
+and approximations and prior information $H$.  This picture of a model
+is aggressively probabilistic: It produces probabilities over data,
+not data.  In addition, a model often (Bayesians would say
+\emph{always}) also has a prior pdf over model parameters
+$p(\pars\given H)$.
+
+A few notes: The pdf for the data $p(\data\given\pars, H)$ is often
+called (dumbly\note{explain dumbness}) the ``likelihood'' for the
+parameters, especially when it is evaluated at the value of the
+actual, observed data and treated as a function of the parameters
+$\pars$.  The data object $\data$ should be thought of as a
+high-dimensional vector or list or blob of data, with one element for
+every scalar measurement or observation.  The parameters object
+$\pars$ is similarly a high-dimensional vector or list or blob of all
+the parameters that are permitted to vary.  The unspecified
+model-specification object $H$ includes all the model assumptions, but
+also all the prior information like the noise properties of the data
+and so on.  This huge bundle of information is all part of the model
+in the sense that different assumptions will lead to different
+likelihood functions and therefore different calculations of
+probabilities.  As we emphasize elsewhere\note{cite PROBABILITY
+  CALCULUS DOCUMENT}, the likelihood has units of inverse-data, the
+prior pdf has units of inverse-parameters; these dimensional facts
+will be relevant when we do integrals (below).
+
+For what follows, it is useful to remember that, when the noise
+contributions are treated as being drawn from Gaussians with known
+variances, the logarithm of the likelihood is proportional to a
+quadratic $\chi^2$ objective.\note{Hogg: CITE MODEL FITTING DOCUMENT},  
+
 \section{Standard decision criteria}
 
-As in the above, and in our other contributions on the
-subject\note{Hogg: reference}, when noise is treated as Gaussian, the
-statistic for testing goodness of fit is $\chi^2$.  If two
-models\note{Hogg: define a model and refer to the model spec document}
-have similar freedom (suitably defined; though the perceptive reader
-will notice that have avoided defining it\note{Hogg: What is the
-  definition of model complexity?}), then the model with the smaller
-value of $\chi^2$ is to be preferred.  If the two models have
-different complexity or freedom, then the model with the greater
-freedom will (in general) fit better; in deciding between the models,
-$\chi^2$ should be adjusted by something related to model
-complexity in order to penalize the more free model for its freedom.
+If two models have similar freedom (suitably defined; though the
+perceptive reader will notice that have avoided defining it\note{Hogg:
+  What is the definition of model complexity?}), then the model with
+the higher likelihood---or smaller value of $\chi^2$----is to be
+preferred.  If the two models have different complexity or freedom,
+then the model with the greater freedom will (in general) fit better;
+in deciding between the models, the likelihood or $\chi^2$ should be
+adjusted by something related to model complexity in order to penalize
+the more free model for its freedom.
 
 Despite all the warnings above about the ``number of parameters'', in
 the case of linear models (predictions are linear combinations of the
 parameters), and Gaussian noise of known variances, and no significant
 prior information, the model complexity is just the number of
-parameters $K$.  In this restrictive case---restrictive because it is
-rare that models are perfectly linear, and when they are, it is rare
-that the noise is Gaussian and well understood, and even when that is
-the case, it is rare that the implicit assumptions about prior
-information will be met---the penalty for model complexity can be simply a
-constant times $K$ added to $\chi^2$.  The two standard methods are
-AIC\note{Hogg cite AIC and spell it out and its assumptions}, where
-the comparison is made on the basis of $\chi^2 + 2\,K$, and
-BIC\note{Hogg cite BIC and spell it out and its asssumptions}, where
-it is $\chi^2 + K\,\ln N$, where $N$ is the number of data points.
-There is a lot to say about the justifications for these methods---the
-AIC is based on predictive power and the BIC is based on an
-approximation to the Bayesian evidence (about which more below)---but
-we will spare the reader because we \emph{do not recommend them}.
+parameters $K$ (and in this same case, the logarithm of the likelihood
+is just $-\chi^2/2$).  In this restrictive case---restrictive because
+it is rare that models are perfectly linear, and when they are, it is
+rare that the noise is Gaussian and well understood, and even when
+that is the case, it is rare that the other implicit assumptions in
+$H$ will be reasonable or justified---the penalty for model complexity
+can be simply a constant times $K$ added to $\chi^2$.  The two
+standard methods are AIC\note{Hogg cite AIC and spell it out and its
+  assumptions}, where the comparison is made on the basis of $\chi^2 +
+2\,K$, and BIC\note{Hogg cite BIC and spell it out and its
+  asssumptions}, where it is $\chi^2 + K\,\ln N$ [CHECK], where $N$ is
+the number of data points.  There is a lot to say about the
+justifications for these methods---the AIC is based on predictive
+power and the BIC is based on an approximation to the Bayesian
+evidence (about which more below)---but we will spare the reader
+because we \emph{do not recommend them}.
 
 We don't recommend using the AIC, because in the linear case it
 approximates cross-validation (HOGG DOES IT REALLY?), which---for a
@@ -372,7 +416,30 @@ would not ignore the $\chi^2/\nu$ test: It indicates that the models
 
 \section{Bayesian evidence or marginalized likelihood}
 
-Why it is \emph{so sensitive} to the priors.
+The only trivial---``trivial'' in the sense of introducing no new
+ideas, not in the sense of ``easy''\note{Indeed, calculation of the
+  Bayesian evidence or marginalized likelihood is usually extremely
+  difficult and computationally expensive.}---Bayesian computation
+relevant to model comparison is computation of the marginalized
+likelihood or (badly named\note{The word ``evidence'' is uselessly
+  overloaded.}) ``Bayesian evidence''.  This is the likelihood
+integrated over all the parameter space, using the prior as the
+integration measure (which is the real meaning of the prior
+pdf\note{cite SOME OTHER DOCUMENT.}):
+\begin{eqnarray}
+p(\data\given H) &=& \int p(\data\given\pars, H)\,p(\pars\given H)\,\dd\pars
+\quad,
+\end{eqnarray}
+where $p(\data\given H)$ is the marginalized likelihood, the
+probability of the full data set $\data$ given the hypothesis or model
+$H$, integrating over all the parameters $\pars$.
+
+...Why it is \emph{so sensitive} to the priors?
+
+...Why is it so expensive?  How do we compute it in practice?
+
+...What is the real purpose of this calculation?  It is about
+\emph{mixing} models, not \emph{choosing among} models.
 
 \section{Bayesian decision theory}
 
