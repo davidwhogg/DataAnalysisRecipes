@@ -60,9 +60,9 @@ David~W.~Hogg\\
   it is directly related to the number of parameters in the model: It
   is not, except in rare circumstances.  Model selection---choosing
   among models of differing complexity---can often be avoided; we
-  advocate avoiding it.  If it cannot be avoided, we discuss options,
-  including frequentist information criteria, Bayesian ``evidence'',
-  and probabilistic decision theory.  We end up recommending the
+  advocate avoiding it.  If the decision cannot be avoided, we discuss
+  options, including frequentist information criteria, Bayesian
+  ``evidence'', and probabilistic decision theory.  I recommend the
   data-driven technique of leave-one-out cross-validation, which
   locates the model that best predicts left-out ``validation'' data
   after being fit to (or learning from) left-in ``training'' data.
@@ -82,16 +82,15 @@ freedom to give to some free function.
 At a grander scale, many important scientific discoveries are model
 complexity decisions.  For example, the decision that data on a star's
 radial velocity as a function of time is better described by a model
-that includes perturbations from an orbiting exoplanet is
-simultaneously a model selection decision (a model that includes the
-freedom of an exoplanet perturbation is a better description than a
-model that doesn't have that freedom) and an exoplanet discovery.
-That discovery is a decision to increase model complexity, but also
-many scientific discoveries are decisions to decrease model
-complexity; consider for example the heliocentric model of the Solar
-System.  It was adopted in part because it led to an enormous decrease
-in the complexity of the quantitative Solar System model, reducing
-greatly the number of free parameters.
+that includes perturbations from an orbiting exoplanet---better than a
+model that \emph{doesn't} include any exoplanet---is simultaneously a
+model selection decision and an exoplanet \emph{discovery}.  That
+discovery is a decision to increase model complexity, but also many
+scientific discoveries are decisions to decrease model complexity;
+consider for example the heliocentric model of the Solar System.  It
+was adopted in part because it led to an enormous decrease in the
+complexity of the quantitative Solar System model, reducing greatly
+the number of free parameters.
 
 Of course a model with more freedom will, in general, lead to a better
 description of the data in the trivial sense that it can reproduce the
@@ -114,12 +113,33 @@ existing data well and also predict new or left-out data well.\note{In
   careful interpretation of Ockham that doesn't necessarily do justice
   to the original.}
 
-...Something about how utility enters.  Desire to avoid type-I and
-type-II errors.  Refer to decision document.
+One key idea in what follows is that probability alone---the rules
+underlying the frequentist and Bayesian reasoning we have been
+tracking in these \documentnames ---cannot tell you how to strike the
+balance between model freedom and goodness-of-fit.  How you decide
+between models involves probability, to be sure, but it also involves
+your \emph{utility}.  For example, in the exoplanet example mentioned
+above, whether or not you decide that there is an exoplanet in the
+data depends in part on how much the exoplanet improves the fit.  But
+it also depends in part on how much it hurts you if you claim a
+discovery and later turn out to be wrong.  Or how much it hurts you to
+\emph{miss} making a discovery that you might have made.  I won't say,
+in this document, all that much about how you compute your utility;
+that's for another \documentname\note{cite decision \documentname},
+but we will see where utility comes in to the calculation, and the
+different things that a Bayesian or frequentist should do with it.
 
-...Something about how even trivial decisions (is there a star here in
-this image?) are fundamentally model-complexity decisions; they are
-made heuristicially, according to approximations to utility.
+Even the most trivial decisions in a data analysis pipeline (for
+example, decisions about what data to include or not in a catalog or
+table, what data to mark as ``outliers'' or corrupted, and so on) are
+themselves usually model-complexity decisions.  They tend to be made
+casually and heuristically, on the basis of things like the ``number
+of sigma'' some parameter is out of spec, or likelihood ratios (or,
+equivalently, $\chi^2$ differences).  These choices are all
+legitimate; they will all come up again below.  These heuristics have
+been discovered because they give good approximations to utility
+optimizations, or because they give good protection from utility
+disasters.
 
 \section{Model complexity: The standard lore}
 
@@ -471,18 +491,28 @@ $H$, integrating over all the parameters $\pars$.
 
 ...Why it rocks; Sam quotation.
 
-\section{Informal methods}
+\section{Informal methods} % WRONG NAME FOR THIS SECTION
 
 ...Informally, we often choose among models (effectively) by
 permitting a freedom, fitting for a parameter that controls the
 freedom, and finding that the parameter is very far from the null or
 zero value.  This is not crazy!  It is related to AIC and BIC and etc.
 
+...numbers of ``sigma''!  LHC results as an example.  Detecting a
+faint star as an example.
+
+...note the philosophical point (Gelman etc) that this might always be
+the best thing to do: Find a parameter that joins the two models and
+see where that parameter gets inferred.  Exoplanet example can return
+here; parameter is the exoplanet mass.
+
 \section{No need to decide?}
 
 ...Mix your models whenever you can; or carry them all forward.  Reminder
 that the Bayesian evidence tells you how to \emph{mix} models, not
 choose.
+
+...Gelman point can return here too.
 
 \clearpage
 \markright{Notes}\theendnotes
