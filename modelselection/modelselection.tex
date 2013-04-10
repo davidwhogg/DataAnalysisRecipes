@@ -16,6 +16,8 @@
 
 \newcommand{\data}{D}
 \newcommand{\pars}{\theta}
+\newcommand{\cv}{\mathrm{CV}}
+\newcommand{\pcv}{p_{\cv}}
 
 \begin{document}
 \thispagestyle{plain}\raggedbottom
@@ -489,7 +491,59 @@ $H$, integrating over all the parameters $\pars$.
 
 \section{Cross-validation}
 
-...Why it rocks; Sam quotation.
+The idea of cross-validation is that we will ask whether each model is
+a good predictor of left-out data.  That is, whether the model---when
+trained on all but a held-out portion of the data---does a good job of
+predicting the held-out portion.  If the model doesn't have enough
+freedom, it can't fit any data well, so it does badly by this measure.
+When the model has too much freedom, it doesn't make very specific
+predictions for new data (or it over-fits the data).  There is a
+``sweet spot'' that balances quality of fit and model freedom, and
+cross-validation finds it.
+
+Let's imagine that the full data set $\data$ is made up of $N$ data
+points or subsets of the data $D_n$.  Each of these $N$ subsets $D_n$
+could comprise, say, ten data points or one data point.  All we need
+is that there be $N$ of them, and that the $N$ be similar in ``size''
+where that word will be defined below.  In symbols,
+\begin{eqnarray}
+\data &\equiv& \setofall{\data_n}{n=1}{N}
+\quad.
+\end{eqnarray}
+From now on we will think of the data $\data_n$ as small
+\emph{subsets} of the whole data set, not \emph{necessarily}
+individual data points.  For each data subset $\data_n$ there is a
+\emph{complementary} or \emph{leave-one-out} data subset
+$\data_{[n]}$, which consists of all the data \emph{except} those in
+$\data_n$.  In symbols,
+\begin{eqnarray}
+\data &=& \data_n \union \data_{[n]}
+\\
+\varnothing &=& \data_n \intersect \data_{[n]}
+\quad,
+\end{eqnarray}
+where $\union$ is the set union operator, $\intersect$ is the set
+intersection operator, and $\varnothing$ is the null set.
+
+...continuing
+\begin{eqnarray}
+\pars_n &\leftarrow& \argmax_\pars p(\data_{[n]}\given\pars)
+\\
+\pcv(\data) &\leftarrow& \prod_{n=1}^N p(\data_n\given\pars_n)
+\quad,
+\end{eqnarray}
+
+...or ``Bayesian'' version
+\begin{eqnarray}
+\pcv(\data) &\leftarrow& \prod_{n=1}^N \int p(\data_n\given\pars)\,p(\pars\given\data_{[n]})\,\dd\pars
+\quad,
+\end{eqnarray}
+where inference proceeded as usual.  The sampling approximation works well here.
+
+...definition of ``size'' for the $\data_n$.
+
+...return to the utility point.  This method works well but makes
+unspecified (and therefore wrong) assumptions about your utility.
 
 \section{Informal methods} % WRONG NAME FOR THIS SECTION
 
