@@ -482,12 +482,42 @@ $H$, integrating over all the parameters $\pars$.
 
 ...Why is it so expensive?  How do we compute it in practice?
 
-...What is the real purpose of this calculation?  It is about
-\emph{mixing} models, not \emph{choosing among} models.
+Fundamentally, however---even if the prior sensitivity can be
+swallowed and the computational expenses paid---the reason this long
+and brutish calculation of marginalized likelihoods is not the right
+way to \emph{decide among} models is that all it delivers is
+marginalized likelihoods.  These are crucial ingredients in making
+probabilistic statements about models, to be sure, but they fail to do
+the important thing of \emph{deciding among} models.  The fundamental
+reason is that raised at the beginning of this \documentname:
+\emph{Decsions involve utility}.  Another way to put it is this:
+
+It is true that marginalized likelihoods are the only things that a
+true Bayesian can justifiably calculate, given multiple qualitatively
+different models.  At the same time, a true Bayesian is a
+probabilistic reasoner: He or she obtains \emph{probabilities} for
+models, not \emph{choices} among models.  That is, these marginalized
+likelihood values tell the true Bayesian not \emph{how to decide}
+among the models but \emph{how to mix} the models!  That is, the best
+model, at the end of a set of long, hard, prior-dependent marginalized
+likelihood calculations is not the model with the largest marginalized
+likelihood.  It is the model that is the mixture of all the models,
+weighted by their overall model priors times their marginalized
+likelihoods.  What does this mixture look like?  It treats the data as
+being generated not by any one model, but rather from model $A$ with
+some probability $P_A$, from model $B$ with some probability $P_B$,
+and so on.
+
+...get specific about calculation of these posterior mixing weights
+and give an example with polynomials.
 
 \section{Bayesian decision theory}
 
 ...It is all about utility.  And priors.
+
+...What can frequentists do with utility?  They can only minimize
+worst-case loss within some bag of models.  Or maximize best-case
+gain (that isn't usually chosen, not sure why).
 
 \section{Cross-validation}
 
@@ -544,6 +574,8 @@ where inference proceeded as usual.  The sampling approximation works well here.
 
 ...return to the utility point.  This method works well but makes
 unspecified (and therefore wrong) assumptions about your utility.
+That said, if you don't want to care about your utility, predictive
+properties of the models sure are sensible surrogates.
 
 \section{Informal methods} % WRONG NAME FOR THIS SECTION
 
