@@ -1,0 +1,68 @@
+% This file is part of the Data Analysis Recipes project.
+% Copyright 2013 the author(s).
+
+% to-do
+% -----
+% - outline
+% - write
+% - put on arXiv
+
+\documentclass[12pt,twoside]{article}
+\input{../hogg_style}
+
+% header stuff
+\renewcommand{\MakeUppercase}[1]{#1}
+\pagestyle{myheadings}
+\renewcommand{\sectionmark}[1]{\markright{\thesection.~#1}}
+\markboth{Data-driven models and dimensionality reduction}{}
+
+\newcommand{\data}{D}
+\newcommand{\pars}{\theta}
+\newcommand{\cv}{\mathrm{CV}}
+\newcommand{\pcv}{p_{\cv}}
+
+\begin{document}
+\thispagestyle{plain}\raggedbottom
+\section*{Data analysis recipes:\ \\
+  Data-driven Models and dimensionality reduction}
+
+\footnotetext{The \notename s begin on page~\pageref{note:first},
+  including the license\note{\label{note:first} Copyright 2013 by the
+    authors.  You may copy and distribute this document provided that
+    you make no changes to it whatsoever.}  and the
+  acknowledgements\note{It is a pleasure to thank
+      Sam Roweis (deceased), and
+      Vivi Tsalmantza (Heidelberg)
+    for valuable comments and discussions.  This research was
+    partially supported by NASA (ADP grant NNX08AJ48G), NSF (grant
+    AST-0908357), and a Research Fellowship of the Alexander von
+    Humboldt Foundation.}
+
+\noindent
+David~W.~Hogg\\
+\affil{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New~York~University}\\
+\affil{Max-Planck-Institut f\"ur Astronomie, Heidelberg}
+%% \\[1ex]
+%% Jo~Bovy\\
+%% \affil{Institute for Advanced Study, Princeton}
+%% \\[1ex]
+%% Dustin~Lang\\
+%% \affil{Princeton University Observatory}\\
+%% \affil{Department of Physics, Carnegie Mellon University}
+
+\begin{abstract}
+  whatevs
+\end{abstract}
+
+\clearpage
+\markright{Notes}\theendnotes
+
+\clearpage
+\begin{thebibliography}{}\markright{References}
+\bibitem[Bovy, Hogg, \& Roweis(2009)]{bovy}
+  Bovy,~J., Hogg,~D.~W., \& Roweis, S.~T., 2009,
+  Extreme deconvolution: inferring complete distribution functions from noisy, heterogeneous, and incomplete observations, 
+  arXiv:0905.2979 [stat.ME]
+\end{thebibliography}
+
+\end{document}
