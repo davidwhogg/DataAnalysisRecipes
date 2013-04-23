@@ -4,6 +4,9 @@
 % to-do
 % -----
 % - make figures demonstrating techniques
+% - the figures should demonstrate all three of AIC/BIC, cross-validation, and marginalized likelihood
+% - the continuously variable complexity example takes up too much space
+% - the continuously variable complexity example needs to switch to a cubic spline model
 
 \documentclass[12pt,twoside]{article}
 \input{../hogg_style}
@@ -143,7 +146,7 @@ been discovered because they give good approximations to utility
 optimizations, or because they give good protection from utility
 disasters.
 
-\section{Model complexity: The standard lore}
+\section{Model complexity}
 
 The concept of model complexity is somewhat slippery.  In the case of
 a purely linear model, the model complexity is directly related to the
@@ -153,18 +156,28 @@ differing or variable complexity to get at some of the issues in the
 \emph{definition} of model complexity.  After that, we will turn to
 methods for choosing among models of different complexity.
 
-...linear case
+The most simple case is that of a linear model---a model in which the
+predicted mean of the data is a linear function of the
+parameters---and Gaussian noise of known variances.  In this case,
+logarithmic likelihood ratios are just $\chi^2$ differences and model
+complexity is directly associated with the \emph{number of parameters}
+$K$.  The more parameters, the more freedom the model has; it is that
+simple.  The only assumptions behind this (beyond linearity and
+Gaussianity and known variances) is that the linear functions are
+linearly independent in the vector sense\note{Here the over-used word
+  ``independent'' means can not be coadded with non-zero coefficients
+  to produce zero mean prediction; this is independence in the vector
+  sense of spanning a full-rank space, not the probability sense of
+  separability.} and that they are non-trivial in the sense that they
+have support or act at the location of the data\note{Strictly this
+  support requirement is implied by independence already.}.
 
-...then consider linear components with no support at the position of the
-data; do they contribute?
-
-...model selection might illuminate this.
-
-\section{Infinite complexity}
-
-One model that serves as an example to illustrate that model
-complexity is not directly related to the \emph{number} of parameters
-is the following.\note{We owe this model to Yann LeCun (NYU), via Sam
+Most interesting models are \emph{not} linear however, so this simple
+relationship between the number of parameters $K$ and the model
+complexity should always be treated with suspicion and is not true in
+general.  One model that serves as an example to illustrate this
+divergence between the complexity and the number of parameters is the
+following.\note{We owe this model to Yann LeCun (NYU), via Sam
   Roweis.}  Imagine having $N$ data points $(x_i,y_i)$ in some finite
 domain in $x$ and $y$, with observational uncertainties of some kind
 we need not specify precisely for the moment.  Now fit to these data
@@ -212,8 +225,6 @@ requires of the parameters enormous precision in their representation.
 This enormous precision is required because all of the information in
 all $N$ data points---all the bits, if you like---must be encoded into
 only three parameters.
-
-\section{Continuously variable complexity}
 
 Another model that serves to illustrate that model complexity is not
 directly related to the number of parameters is the following, in
@@ -406,6 +417,8 @@ methods must behave unpredictably.\note{Well, these methods will
   expensive computational analysis will tell you important things
   about how they in fact behave, with a new analysis required for
   every new problem.}
+
+
 
 ...There is a deeper reason to dislike AIC and BIC and that is that
 they make deep assumptions about your \emph{utility}... must be wrong,
