@@ -60,9 +60,8 @@ Frequently we have some repeated measurement of a quantity $Q$, one
 measurement of $Q$ per object in some sample of objects; we often want
 to know the distribution of this quantity in the population from which
 the objects are drawn.  The simplest idea is to make a histogram of
-the measurements, or estimates, of the quantity.  The problem with
-this histogram approach is that, because the measurements are
-necessarily noisy, the empirical histogram of estimates is always
+the measurements, or estimates, of the quantity.  The measurements are
+necessarily noisy, so this empirical histogram of estimates is always
 broader or less informative than the true distribution for $Q$.  If
 each measurement of $Q$ is based on a likelihood function that
 includes an accurate noise model---even in the case that the noise is
@@ -72,12 +71,83 @@ marginalized likelihood (or posterior probability) for the true
 distribution of $Q$ that \emph{would have been observed} in a sample
 with much less noise per measurement.  The hierarchical inference is a
 kind of deconvolution, because it infers a more informative
-distribution from less-informative samples, but it proceeds by
-forward-modeling the data generation process.  We provide some
+distribution from less-informative samples---capitalizing on the
+distribution information in the set of all samples---but it proceeds
+by forward-modeling the data generation process.  We provide some
 examples and more strong advice: Investigators sometimes create even
 \emph{less} informative (broader) proxies for the distribution than
 the empirical histogram of estimates; all such methods are bad.
 \end{abstract}
+
+In astronomy, there is a traditional idea that ``bad data are worse
+than no data''.  I grew up (academically) hearing this phrase over and
+over.  Now, if there is a theme to the \documentnames\ that make up
+this series, it \emph{could} be that ``a lot of bad data is as good as
+a small amount of good data''.  This theme will justified by the
+contents of this \documentname; of course the theme is only factually
+correct when the bad data meet certain requirements, especially about
+our knowledge---or ability to obtain knowledge---about the noise
+contributions that make the bad data bad.
+
+\section{population statistics}
+
+Imagine you have measured the eccentricities of the orbits of a bunch
+of exoplanets, or measured the lengths of a large number of fish, or
+even tested a group of patients for whether they are carying a
+specific disease.  If you are studying the population as a whole, you
+want to know as best as possible the \emph{true distribution} of the
+quantity you are measuring or testing for.  If your measurements are
+perfect (or extremely low in noise) then you don't need to do anything
+sophisticated: Make a histogram of the measured eccentricities or
+lengths, or compute the fraction that test positive for the disease,
+and you are done.  The problem is, in many important situations, your
+data just aren't this good.\note{Hogg: Rutherford quotation about
+  statistics and getting better data, reference, comment.  Ack BS.}
+
+...keep going with the disease example with some real numbers.
+
+...talk about the ``sophisticated'' idea of co-adding likelihoods.
+Note that it makes things \emph{more wrong}.
+
+...do the right thing, and show that it is much better.
+
+...note the extremely strong sensitivity of the conclusions to the
+noise model.
+
+\section{estimators built from estimators}
+
+...not terrible idea: histogram of maximum-likelihood estimators.
+
+...when can this give the right distribution?
+
+...why will the empirical variance always be larger than the true variance?
+
+...very bad idea: co-add likelihood functions or histogram posterior
+samples.  This is like convolving your noisy data with your errors
+once again!  Mistake made surprisingly often.
+
+...concrete example
+
+\section{hierarchical inference}
+
+...the true disribution is your prior
+
+...use the force (probability calculus), Luke
+
+...how in practice to operate
+
+...concrete example, continued from previous section
+
+...relies strongly on good noise information.
+
+\section{using bad data to predict good data}
+
+...use XDQSO data as an example here.
+
+...relies strongly on good noise information for both data sets.
+
+...notes about the fact that accurate information about causality was
+necessary to make this work.
 
 \clearpage
 \markright{Notes}\theendnotes
