@@ -1,0 +1,93 @@
+% This file is part of the Data Analysis Recipes project.
+% Copyright 2013 the author(s).
+
+% to-do
+% -----
+% - outline
+% - write
+
+\documentclass[12pt,twoside]{article}
+\input{../hogg_style}
+
+% header stuff
+\renewcommand{\MakeUppercase}[1]{#1}
+\pagestyle{myheadings}
+\renewcommand{\sectionmark}[1]{\markright{\thesection.~#1}}
+\markboth{Density estimation from noisy samples}{}
+
+\newcommand{\data}{D}
+\newcommand{\pars}{\theta}
+\newcommand{\cv}{\mathrm{CV}}
+\newcommand{\pcv}{p_{\cv}}
+
+\begin{document}
+\thispagestyle{plain}\raggedbottom
+\section*{Data analysis recipes:\ \\
+  Density estimation from noisy samples\footnotemark}
+
+\footnotetext{The \notename s begin on page~\pageref{note:first},
+  including the license\note{\label{note:first} Copyright 2013 by the
+    author.  You may copy and distribute this document provided that
+    you make no changes to it whatsoever.}  and the
+  acknowledgements\note{It is a pleasure to thank
+      Jo Bovy (IAS),
+      Dustin Lang (CMU),
+      Dan Foreman-Mackey (NYU),
+      Hans-Walter Rix (MPIA),
+      Sam Roweis (deceased), and
+      Bernhard Sch\"olkopf (MPI-IS)
+    for valuable comments and discussions.  This research was
+    partially supported by NASA (ADP grant NNX08AJ48G), NSF (grant
+    AST-0908357), and a Research Fellowship of the Alexander von
+    Humboldt Foundation.  This research made use of the Python
+    programming language and the open-source Python packages scipy,
+    numpy, and matplotlib.}.}
+
+\noindent
+David~W.~Hogg\\
+\affil{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New~York~University}\\
+\affil{Max-Planck-Institut f\"ur Astronomie, Heidelberg}
+%% \\[1ex]
+%% Jo~Bovy\\
+%% \affil{Institute for Advanced Study, Princeton}
+%% \\[1ex]
+%% Dustin~Lang\\
+%% \affil{Princeton University Observatory}\\
+%% \affil{Department of Physics, Carnegie Mellon University}
+
+\begin{abstract}
+Frequently we have some repeated measurement of a quantity $Q$, one
+measurement of $Q$ per object in some sample of objects; we often want
+to know the distribution of this quantity in the population from which
+the objects are drawn.  The simplest idea is to make a histogram of
+the measurements, or estimates, of the quantity.  The problem with
+this histogram approach is that, because the measurements are
+necessarily noisy, the empirical histogram of estimates is always
+broader or less informative than the true distribution for $Q$.  If
+each measurement of $Q$ is based on a likelihood function that
+includes an accurate noise model---even in the case that the noise is
+different for every measurement---it is possible to replace the simple
+histogramming with a hierarchical inference that obtains a
+marginalized likelihood (or posterior probability) for the true
+distribution of $Q$ that \emph{would have been observed} in a sample
+with much less noise per measurement.  The hierarchical inference is a
+kind of deconvolution, because it infers a more informative
+distribution from less-informative samples, but it proceeds by
+forward-modeling the data generation process.  We provide some
+examples and more strong advice: Investigators sometimes create even
+\emph{less} informative (broader) proxies for the distribution than
+the empirical histogram of estimates; all such methods are bad.
+\end{abstract}
+
+\clearpage
+\markright{Notes}\theendnotes
+
+\clearpage
+\begin{thebibliography}{}\markright{References}
+\bibitem[Bovy, Hogg, \& Roweis(2009)]{bovy}
+  Bovy,~J., Hogg,~D.~W., \& Roweis, S.~T., 2009,
+  Extreme deconvolution: inferring complete distribution functions from noisy, heterogeneous, and incomplete observations, 
+  arXiv:0905.2979 [stat.ME]
+\end{thebibliography}
+
+\end{document}
