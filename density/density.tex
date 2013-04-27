@@ -1,10 +1,10 @@
 % This file is part of the Data Analysis Recipes project.
-% Copyright 2013 the author(s).
+% Copyright 2013 the author.
 
 % to-do
 % -----
-% - outline
 % - write
+% - make examples
 
 \documentclass[12pt,twoside]{article}
 \input{../hogg_style}
@@ -13,7 +13,7 @@
 \renewcommand{\MakeUppercase}[1]{#1}
 \pagestyle{myheadings}
 \renewcommand{\sectionmark}[1]{\markright{\thesection.~#1}}
-\markboth{Density estimation from noisy samples}{}
+\markboth{Inferring distributions from noisy measurements}{}
 
 \newcommand{\data}{D}
 \newcommand{\pars}{\theta}
@@ -22,8 +22,7 @@
 
 \begin{document}
 \thispagestyle{plain}\raggedbottom
-\section*{Data analysis recipes:\ \\
-  Density estimation from noisy samples\footnotemark}
+\section*{Data analysis recipes:\ Inferring distributions \\from noisy measurements\footnotemark}
 
 \footnotetext{The \notename s begin on page~\pageref{note:first},
   including the license\note{\label{note:first} Copyright 2013 by the
