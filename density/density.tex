@@ -115,8 +115,8 @@ either actually having the disease (``sick''), symbolized by the
 binary indicator $Q=1$, or not having the disease (``well''),
 symbolized by $Q=1$.  The likelihood ``function'' is here just a
 $2\times 2$ matrix of probabilities $p(\hat{Q}\given Q)$ in our
-standard probability notation.\note{Hogg: cite probability calculus
-  document here and in references.}  The likelihood function will be:
+standard probability notation:\note{Hogg: cite probability calculus
+  document here and in references.}
 \begin{equation}\label{eq:testlike}
 \mbox{\begin{tabular}{rc|cc}
 \multicolumn{2}{l|}{$p(\hat{Q}\given Q)$}
@@ -174,7 +174,8 @@ whole.  The first assumption establishes a likelihood, and the second
 establishes a prior, albeit a strange prior that itself has a
 parameter, $P_+$. This rate $P_+$ is a parameter in the sense that it
 is an unknown in the model.  We have hard-set the likelihood, but we
-don't yet know this probability $P_+$.
+don't yet know this probability $P_+$... In Figure~?? we show the
+probabilistic graphical model corresponding to these assumptions.
 
 Now, in this generative model, what is the probability of getting a
 ``yes'' in the test?
@@ -225,6 +226,12 @@ $P_+$ to get uncertainties, or multiply by a prior PDF for $P_+$ and
 compute or sample a posterior PDF... In Figure~?? the dependence of
 this likelihood on $P_+$ is shown.
 
+The maximum-likelihood rate in the population is less than 0.007!  It
+is \emph{far} lower than the naive estimate of 0.056.  Why?  Because
+when rates are low, healthy patients are much more likely to get
+scattered into the ``yes'' category than sick patients are to be
+scattered into the ``no'' category.
+
 A few notes: If you play around with this example (and I encourage
 that) you will find that what you conclude is and can be a very strong
 function of what you assume about the likelihood function, which, in
@@ -248,7 +255,9 @@ likelihood can be transformed from a set of single-object likelihoods
 that depend on latent variables into a full-data likelihood that
 depends only on population-level variables.  These appear in the
 calculation as parameters of the prior PDF, or
-\emph{hyper-parameters}.
+\emph{hyper-parameters}.  It is this meta-upping from likelihood to
+marginalized likelihood, and from object parameters to population
+hyper-parameters, that makes this analysis \emph{hierarchical}.
 
 ...Hogg: put here problems requiring playing around with this model,
 as implied by the ``observations'' paragraph...optimize, get
