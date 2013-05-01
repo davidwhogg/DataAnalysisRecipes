@@ -187,13 +187,72 @@ p(\hat{Q}=1\given P_+)
 \\
 p(\hat{Q}=1\given P_+)
  &=& 0.97\,P_+ + 0.05\,[1 - P_+]
+\\
+p(\hat{Q}=1\given P_+)
+ &=& 0.05 + 0.92\,P_+
+\quad,
 \end{eqnarray}
-where we have substituted in the appropriate likelihood values.
+where appropriate likelihood values have been substituted in.  This is
+a new likelihood, but with the prior---the parameterized prior---used
+to marginalized out the health state of the individual patient.  It is
+a marginalized likelihood, and can be used in inference like any other
+likelihood.  This is a point we will beat to death in this
+\documentname.
 
-...now optimize, get uncertainty, talk about zero values, adjust 56 to 44, etc.
+In fact the full data set is not one such test result but $N=1000$
+such results $\hat{Q}_n$.  If we assume independence, the total
+likelihood is a product, or the logarithm is a sum:
+\begin{eqnarray}
+D &\equiv& \setofall{\hat{Q}_n}{n=1}{N}\given P_+) 
+\\
+\ln p(D\given P_+) 
+ &=& \sum_{n=1}^N p(\hat{Q}_n\given P_+)
+\\
+\ln p(D\given P_+) 
+ &=& 56\,\ln p(\hat{Q}=1\given P_+) + 944\,\ln p(\hat{Q}=0\given P_+)
+\\
+\ln p(D\given P_+) 
+ &=& 56\,\ln (0.05 + 0.92\,P_+) + 944\,\ln (0.95 - 0.92\,P_+)
+\quad,
+\end{eqnarray}
+where a new ``full-data'' object (set, blob) $D$ is defined, the
+numbers have been substituted in, and the fact that the probabilities
+of $\hat{Q}$ being zero and one must sum to unity (this is a
+combination of likelihoods) has been exploited.  Because this is a
+full-data likelihood, we can optimize it (to get a maximum likelihood
+value fo $P_+$, look at changes in the likelihood with respect to
+$P_+$ to get uncertainties, or multiply by a prior PDF for $P_+$ and
+compute or sample a posterior PDF... In Figure~?? the dependence of
+this likelihood on $P_+$ is shown.
 
-...note the extremely strong sensitivity of the conclusions to the
-noise model.
+A few notes: If you play around with this example (and I encourage
+that) you will find that what you conclude is and can be a very strong
+function of what you assume about the likelihood function, which, in
+real situations, you never know precisely.\note{The likelihood
+  function is a quantitative description of your noise model and you
+  almost never have an extremely precise model of your noise.}  The
+maximum-likelihood value for $P_+$ is very close to zero, so the
+``standard error'' doesn't make much sense.  This argues for switching
+to a posterior sampling or a more flexible description of the
+likelihood function to express your uncertainty.  The
+maximum-likelihood rate $P_+$ goes to precisely zero as the number of
+observed ``yes'' values goes below 50.  All these observations are
+relevant and important to what follows, below.
+
+The key idea of this introductory example is that even if your
+likelihood for each object depends on latent variables or model
+parameters for that object that you can't measure precisely, you can
+nonetheless infer properties of the \emph{distribution} of those
+latent variables.  The key idea is that through marginalization, the
+likelihood can be transformed from a set of single-object likelihoods
+that depend on latent variables into a full-data likelihood that
+depends only on population-level variables.  These appear in the
+calculation as parameters of the prior PDF, or
+\emph{hyper-parameters}.
+
+...Hogg: put here problems requiring playing around with this model,
+as implied by the ``observations'' paragraph...optimize, get
+uncertainty, talk about zero values, adjust 56 to 44, etc.
 
 \section{estimators built from estimators}
 
