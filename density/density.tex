@@ -103,12 +103,94 @@ and you are done.  The problem is, in many important situations, your
 data just aren't this good.\note{Hogg: Rutherford quotation about
   statistics and getting better data, reference, comment.  Ack BS.}
 
-...keep going with the disease example with some real numbers.
+As an introduction to our problem, let's continue with the medical
+example: Imagine that we have a pretty good test for a particular
+disease, such that it's false-positive and false negative rates are
+percent-level.  To get very specific, let's discuss these rates in
+terms of a \emph{likelihood}\note{Hogg: likelihood name rant.}, or a
+probability that the test reports a positive (a ``yes''), symbolized
+by the binary indicator $\hat{Q}=1$ or a negative (a ``no''),
+symbolized by $\hat{Q}=0$, conditional on the patient's true state, of
+either actually having the disease (``sick''), symbolized by the
+binary indicator $Q=1$, or not having the disease (``well''),
+symbolized by $Q=1$.  The likelihood ``function'' is here just a
+$2\times 2$ matrix of probabilities $p(\hat{Q}\given Q)$ in our
+standard probability notation.\note{Hogg: cite probability calculus
+  document here and in references.}  The likelihood function will be:
+\begin{equation}\label{eq:testlike}
+\mbox{\begin{tabular}{rc|cc}
+\multicolumn{2}{l|}{$p(\hat{Q}\given Q)$}
+               & ``yes'' & ``no'' \\
+             & & $\hat{Q}=1$ & $\hat{Q}=0$ \\
+\hline
+``sick'' & $Q=1$ & $0.97$ & $0.03$ \\
+``well'' & $Q=0$ & $0.05$ & $0.95$
+\end{tabular}}
+\end{equation}
+This test is a good one, but (of course) not perfect.  It is not clear
+how any doctor or researcher could accurately know the four numbers in
+the likelihood matrix~(\ref{eq:testlike}), but that is a subject
+beyond the scope of this \documentname.\note{Hogg!}
 
-...talk about the ``sophisticated'' idea of co-adding likelihoods.
-Note that it makes things \emph{more wrong}.
+Now imagine that an epidemiologist has a fair sample of 1000 people
+from some population and wants to know the rate of this disease in the
+population.  He or she administers the test to the subjects and finds
+that 56 of the 1000 people test positive (get ``yes'' or $\hat{Q}=1$).
+What can be inferred from this measurement about the \emph{true
+  rate}\note{Hogg: not responsible for any implied meaning of the word
+  ``true''.}  $p(Q=1)$ of the disease (sickness) in the
+population?\note{I am expressing the ``rate'' as a probability here,
+  which is not too confusing, I hope.}
 
-...do the right thing, and show that it is much better.
+Since the test is pretty good, it is not crazy to consider the
+absolutely simplest estimate: Perhaps the disease rate is about the
+``yes'' rate, or about 54/1000 or 0.054.  (With perhaps an uncertainty
+of plus or minus some error based on the binomial theorem, which would
+be on the order of fifteen percent fractionally, or in absolute terms
+0.007-ish.)  That estimate---0.054---is a bad estimate!  Why?  Because
+the test is really expected to be wrong about five percent of the time.
+
+An even \emph{wronger} estimate (so wrong you might imagine no-one
+would ever make this mistake, but I can cite real-live
+papers\note{Hogg!}) would be to say ``well, the test is wrong about
+five percent of the time, so even some of those 944 `no' ($\hat{Q}=0$)
+answers must be wrong, so the rate must be even \emph{higher} than
+0.054.''  That's \emph{really} wrong; we will come back to its insane
+wrongness below.
+
+A much better estimate is to do what I and my coauthors consistently
+advise in this series of \documentnames: Make a generative
+probabilistic model---a model that gives you a probability
+distribution over possible data\note{Bernhard Sch\"olkopf would tell
+  us that for the model to be good for our purposes we need it to be
+  not just generative but \emph{causal}.  The model should embody our
+  beliefs about the causal processes that created the data.}---and do
+probabilistic inference.  In this case, the simplest model has the
+following two simple assumptions: \textsl{(a)}~We adopt the likelihood
+given in the matrix~(\ref{eq:testlike}) above as being true, or at
+least good enough.  \textsl{(b)}~We imagine that there is a true rate
+or probability of sickness, call it $P_+$, in the population as a
+whole.  The first assumption establishes a likelihood, and the second
+establishes a prior, albeit a strange prior that itself has a
+parameter, $P_+$. This rate $P_+$ is a parameter in the sense that it
+is an unknown in the model.  We have hard-set the likelihood, but we
+don't yet know this probability $P_+$.
+
+Now, in this generative model, what is the probability of getting a
+``yes'' in the test?
+\begin{eqnarray}
+p(\hat{Q}=1\given P_+)
+ &=& \sum_{Q=0}^1 p(\hat{Q}=1\given Q)\,p(Q\given P_+)
+\\
+p(\hat{Q}=1\given P_+)
+ &=& p(\hat{Q}=1\given Q=1)\,P_+ + p(\hat{Q}=1\given Q=0)\,[1 - P_+]
+\\
+p(\hat{Q}=1\given P_+)
+ &=& 0.97\,P_+ + 0.05\,[1 - P_+]
+\end{eqnarray}
+where we have substituted in the appropriate likelihood values.
+
+...now optimize, get uncertainty, talk about zero values, adjust 56 to 44, etc.
 
 ...note the extremely strong sensitivity of the conclusions to the
 noise model.
