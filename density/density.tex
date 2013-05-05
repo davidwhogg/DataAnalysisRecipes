@@ -246,7 +246,7 @@ maximum-likelihood rate $P_+$ goes to precisely zero as the number of
 observed ``yes'' values goes below 50.  All these observations are
 relevant and important to what follows, below.
 
-The key idea of this introductory example is that even if your
+One key idea of this introductory example is that even if your
 likelihood for each object depends on latent variables or model
 parameters for that object that you can't measure precisely, you can
 nonetheless infer properties of the \emph{distribution} of those
@@ -258,6 +258,19 @@ calculation as parameters of the prior PDF, or
 \emph{hyper-parameters}.  It is this meta-upping from likelihood to
 marginalized likelihood, and from object parameters to population
 hyper-parameters, that makes this analysis \emph{hierarchical}.
+Another key idea of this introductory example is that what you learn
+about the population can be much more precise than what you learn
+about any individual member of the population: The test is only good
+at the few-percent level, but it can measure a very small rate in the
+large population.
+
+\begin{problem}
+How does the uncertainty improve as the number of patients goes up?
+What would the likelihood curve (plotted in Figure~??) look like for a
+population of 10,000 patients, with 530 testing positive?  What would
+be the maximum-likelihood estimate for the rate $P_+$ in this case and
+what would be the standard uncertainty on that?
+\end{problem}
 
 \begin{problem}
 What would have been the maximum-likelihood estimate of the rate $P_+$
@@ -282,6 +295,8 @@ For concreteness, consider a case in which the top-left value in the
 matrix (currently 0.97) could be distributed anywhere between 0.99 and
 0.95.  How do you re-do the analysis and what would you report for the
 population rate $P_+$ in this case of uncertain likelihood matrix?
+Don't forget that as you change the likelihood matrix entry, you must
+change the corresponding one to keep the normalizations right.
 \end{problem}
 
 \begin{problem}
@@ -293,6 +308,11 @@ bar''?
 \end{problem}
 
 \section{estimators built from estimators}
+
+Now let's move to the more general case, in which measurements are not
+binary but continuous, and we want to infer the distribution of some
+continuous parameter in a population.  Again, to be concrete, we will
+make a particlar example, in this case from astronomy....
 
 ...not terrible idea: histogram of maximum-likelihood estimators.
 
