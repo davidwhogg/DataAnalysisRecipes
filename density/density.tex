@@ -259,9 +259,38 @@ calculation as parameters of the prior PDF, or
 marginalized likelihood, and from object parameters to population
 hyper-parameters, that makes this analysis \emph{hierarchical}.
 
-...Hogg: put here problems requiring playing around with this model,
-as implied by the ``observations'' paragraph...optimize, get
-uncertainty, talk about zero values, adjust 56 to 44, etc.
+\begin{problem}
+What would have been the maximum-likelihood estimate of the rate $P_+$
+in the problem in this \sectionname\ if, of the 1000 patients, only 44
+tested positive?  What uncertainty would you put on that rate
+estimate?
+\end{problem}
+
+\begin{problem}
+How much would the maximum-likelihood estimate of the rate $P+$ in the
+problem in this \sectionname\ change if the likeihood values changed
+by one percent?  Consider various one-percent changes.  When you make
+your changes, be sure to keep the normalization correct; what
+combinations of likelihood values in the likelihood matrix must sum to
+unity?
+\end{problem}
+
+\begin{problem}
+In many cases, even the likelihood values in the likelihood matrix
+themselves are badly determined.  What should you do in this case?
+For concreteness, consider a case in which the top-left value in the
+matrix (currently 0.97) could be distributed anywhere between 0.99 and
+0.95.  How do you re-do the analysis and what would you report for the
+population rate $P_+$?
+\end{problem}
+
+\begin{problem}
+In the problem in this \sectionname, the standard error on the
+maximum-likelihood estimate for the population rate $P+$ included
+values below zero.  What does that mean or how would you report
+results in a better way than ``best-fit value plus or minus some error
+bar''?
+\end{problem}
 
 \section{estimators built from estimators}
 
