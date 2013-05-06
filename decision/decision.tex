@@ -176,17 +176,41 @@ chooses to report from a posterior pdf the most probable parameter
 values is effectively adopting ``probability'' as it's objective.  A
 frequentist actor that chooses to report the maximum-likelihood values
 is effectively adopting ``likelihood'' as its objective.  For general
-situations, both of these choices of objective is absurd; I will
-return to that below.\note{More soon, but briefly it is easy to see
-  that the likelihood is a bad objective: The likelihood can be
-  maximal in a location in parameter space you know to be ruled out by
-  theoretical considerations or else previous experiments.}
+situations, both of these choices of objective is absurd; I argued
+this above and will return to it below.\note{More soon, but
+  briefly it is easy to see that the likelihood is a bad objective:
+  The likelihood can be maximal in a location in parameter space you
+  know to be ruled out by theoretical considerations or else previous
+  experiments.}
 
 ...You must have an objective... probabilists can only optimize the
 \emph{expected value} (or other posterior statistic of) that
-objective... frequentists are even \emph{more} restricted: They can
-only optimize for the best-case or worst-case scenario in the ``bag of
-models''.
+objective...
+
+The frequentist actor is much more constrained than the Bayesian
+actor, in decision making and in almost all areas of inference---as we
+have argued elsewhere---frequentism is a hard way to live.\note{Hogg
+  cite various.}  In frequentism, because there is no prior, there is
+no \emph{measure} in the parameter space; it is not possible to do
+integrals over the parameter space.  This follows from the problem
+that there is no \emph{prior PDF}, and it is the prior PDF that serves
+the role of a measure on the parameter space; it is always in the
+integral over parameters.  The strict frequentist actor can only look
+at the extrema of the utility function within the group or bag of
+models deemed ``good'' by the likelihood function.  The frequentist
+actor can only try to either \emph{maximize} utility or upside within
+the ``allowed'' models (allowed according to some kind of threshold on
+the likelihood function\note{Frequentism is a hard way to live, but it
+  sure isn't fully objective; the frequentist actor must, like the
+  Bayesian, write down a (necessarily) non-objective likelihood
+  function, and then \emph{also} decide what constitutes, within that
+  likelihood model, a ``good'' or ``acceptable'' model.  This decision
+  is not as complex and rich and problematic as the decision about the
+  prior PDF, but it isn't trivial and it definitely isn't objective.})
+or \emph{minimize} loss or downside within that bag of allowed models.
+There is no sense, in frequentism, of the ``expected value'' of the
+utility given the model space; that expectation can only be computed
+by integrating over the model space.
 
 ...Might want to maximize completeness \emph{and} minimize
 false-positive rate... All objectives conflict at some point...
