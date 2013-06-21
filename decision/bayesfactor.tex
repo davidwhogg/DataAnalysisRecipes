@@ -1,8 +1,12 @@
 \documentclass[12pt]{article}
 
+\newcommand{\documentname}{\textsl{Note}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\given}{\,|\,}
+
 \begin{document}
 
-\section*{Don't ever calculate the fully marginalized likelihood!}
+\section*{When should I calculate the fully marginalized likelihood?}
 
 \noindent
 David W. Hogg (NYU) and friends
@@ -39,7 +43,23 @@ weights will not be correct, despite the spirit-crushing calculation.
 
 \section{Computational and algorithmic cost}
 
+This \documentname\ is not about \emph{how} to compute the marginalized likelihood;
+  it is about \emph{when}.
+However, no discussion of ``when'' can be useful or complete without some comments
+  about the challenges brought by ``how''.
+In problems with many parameters, it is (relatively) easy to sample the posterior PDF.
+It is very, very hard to compute the marginalized likelihood.
+
+Heuristic arguments for hardness.
+Nested sampling.
+Adaptive importance sampling.
+
 \section{Prior mis-specification}
+
+In many ``Bayesian'' contexts, priors are pulled from the air,
+  with little thought towards their representing true \emph{prior} beliefs.
+Priors are chosen for convenience, conjugacy, simplicity, and community acceptance.
+None of these criteria lead to a correctly specified prior in real contexts.
 
 Hierarchical inference and pooling has to be harmed for priors to be well specified.
 
@@ -49,8 +69,25 @@ The utility is not (just) a model-level object.
 It is also a parameter-level object.
 Thus, for \emph{decision-making},
   the integrand of the marginalization has to change to include the parameter-dependent utility.
+\begin{eqnarray}
+E[u]_H &=& \frac{1}{Z_H} \int u(\theta\given H)\,L(\theta)\,\pi(\theta\given H)\,\dd\theta
+\\
+Z_H &\equiv& \int L(\theta)\,\pi(\theta\given H)\,\dd\theta
+\\
+E[u]_H &\approx& \frac{1}{K} \sum_{k=1}^K u(\theta_k\given H)
+\quad ,
+\end{eqnarray}
+where the $\theta_k$ are elements of a $K$-element sampling of the
+posterior PDF for $\theta$ given the data and the model $H$.
 
 \section{Utility mis-specification}
+
+Your utility ought to be your long-term future discounted free cash flow (LTFDFCF).
+The word ``long-term'' means that you can't write it down precisely or compute it.
+So, \emph{by definition} you can't specify your utility correctly.
+
+This is partially balanced by the fact that you can compute your expected utility with
+  nothing more than an easy-to-obtain posterior sampling.
 
 \section{Heurisic methods}
 
