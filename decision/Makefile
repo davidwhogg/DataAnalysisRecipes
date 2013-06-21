@@ -1,4 +1,4 @@
-all: decision.pdf
+all: decision.pdf bayesfactor.pdf
 
 %.pdf: %.tex
 	pdflatex $<

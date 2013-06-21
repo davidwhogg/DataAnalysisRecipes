@@ -1,0 +1,30 @@
+\documentclass[12pt]{article}
+
+\begin{document}
+
+\section*{Don't ever calculate the fully marginalized likelihood!}
+
+\paragraph{abstract:}
+In probabilistic inference, the relative probabilities of two mutually
+exclusive parameterized models can be obtained by an operation that
+involves marginalizing the likelihood for each model over the entire
+parameter space, using the prior as a measure for the integration.
+This marginalization produces the fully marginalized likelihood,
+sometimes called the ``Bayes Factor'' or ``evidence''.  Here we argue
+that performing this integral is almost never a good idea.  The
+argument involves the ideas that (a)~the integral is extremely
+challenging to perform numerically in most instances, (b)~the integral
+is extremely prior-dependent, and in many cases priors are not
+understood at a precision that justifies the calculation, (c)~the
+integral is usually performed in order to aid in decision-making
+(model selection), where a utility ought to be integrated along with
+the likelihood, (d) utilities are also rarely known precisely, and
+(e)~there are approximate or heuristic methods for decision making
+that are just as (im)precise but require no expensive integration.
+The one place where calculation of the marginalized likelihood is
+necessary is in creating posterior mixtures of distinct models; this
+is rarely the context in which the integral is being calculated but
+even there, when priors are not precisely understood, the mixture
+weights will not be correct, despite the spirit-crushing calculation.
+
+\end{document}
