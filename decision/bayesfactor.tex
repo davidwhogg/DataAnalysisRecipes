@@ -68,11 +68,13 @@ Hierarchical inference and pooling has to be harmed for priors to be well specif
 The utility is not (just) a model-level object.
 It is also a parameter-level object.
 Thus, for \emph{decision-making},
-  the integrand of the marginalization has to change to include the parameter-dependent utility.
+  the integrand of the marginalization has to change to include
+  the parameter-dependent utility $u(\theta\given H)$.
+THESE EQUATIONS ARE NOT YET RIGHT OR RELEVANT:
 \begin{eqnarray}
-E[u]_H &=& \frac{1}{Z_H} \int u(\theta\given H)\,L(\theta)\,\pi(\theta\given H)\,\dd\theta
+E[u\given H] &=& \frac{1}{L(H)} \int u(\theta\given H)\,L(\theta)\,\pi(\theta\given H)\,\dd\theta
 \\
-Z_H &\equiv& \int L(\theta)\,\pi(\theta\given H)\,\dd\theta
+L(H) &\equiv& \int L(\theta)\,\pi(\theta\given H)\,\dd\theta
 \\
 E[u]_H &\approx& \frac{1}{K} \sum_{k=1}^K u(\theta_k\given H)
 \quad ,
