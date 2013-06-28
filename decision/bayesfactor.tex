@@ -34,7 +34,98 @@ is rarely the context in which the integral is being calculated but
 even there, when priors are not precisely understood, the mixture
 weights will not be correct, despite the spirit-crushing calculation.
 
+\section{Generalities}
+
+Imagine you have data $y$ (a vector or list or blob of observations).
+In what follows, a ``model'' $H$ will be a specification of a probabilistic model for these data.
+This model must have three components:
+It must have a (possibly null) set or vector or list or blob of parameters $\theta_H$.
+It must have a \emph{likelihood function} $p(y\given\theta_H,H)$, which is
+  a probability density function (PDF) in the space of the data, parameterized by the parameters.
+And it must have (for our purposes here) a prior PDF $p(\theta_H\given H)$.
+These PDFs (of course) must obey the rules of measure theory;
+  they must be non-negative everywhere and obey
+\begin{eqnarray}
+1 &=& \int p(y\given\theta_H,H)\,\dd y
+\\
+1 &=& \int p(\theta_H\given H)\,\dd \theta_H
+\quad ,
+\end{eqnarray}
+where, implicitly,
+the integrals are over the full space of possible data $y$ or parameters $\theta_H$.
+
+If you have multiple models $H$,
+  you must also have a set of prior probabilities $P_H$, one per model,
+  set such that
+\begin{eqnarray}
+1 &=& \sum_H P_H
+\end{eqnarray}
+where, implicitly,
+the sum is over all models.
+Here we are assuming a complete Bayesianism,
+  in which everything a probabilistic modeler could ever ask for is specified!
+Note also that there is no sense in which these models will be ``similar'' at all;
+  they might have very different parameters $\theta_H$,
+  different numbers of parameters (different sizes of the blob $\theta_H$),
+  and different ranges of applicability for those parameters.
+
+Bayes's rule tells us how to update the probabilities given the data;
+  that is, how to compute posterior PDFs $p(\theta_H\given y,H)$
+  and posterior model probabilities $P_{H|y}$:
+\begin{eqnarray}
+p(\theta_H\given y,H) &=& \frac{1}{Z_H(y)}\,p(y\given\theta_H,H)\,p(\theta_H\given H)
+\\
+Z_H(y) &\equiv& p(y\given H)
+\\
+Z_H(y) &=& \int p(y\given\theta_H,H)\,p(\theta_H\given H)\,\dd\theta_H
+\\
+P_{H|y} &=& \frac{1}{Z(y)}\,Z_H(y)\,P_H
+\\
+Z(y) &\equiv& \sum_H Z_H(y)\,P_H
+\end{eqnarray}
+where
+$Z_H(y)$ is a normalization constant
+  but also the ``fully marginalized likelihood'' for model $H$, and
+$Z(y)$ is a normalization constant but
+  now marginalizing over models too.
+
+The magic of Markov Chain Monte Carlo and related methods is that
+  it is possible to sample from $p(\theta_H\given y,H)$ without ever explicitly computing
+  the marginalized likelihood $Z_H(y)$.
+The challenge of computing the updated model probabilities $P_H|y$
+  is that you \emph{do} need to compute these marginalized likelihoods $Z_H(y)$.
+There is a huge literature on their calculation, beyond the scope of this \documentname.
+It is exceedingly non-trivial,
+  because it requires (in some sense) search of the entire parameter space
+  for regions of substantial likelihood.
+But you can see that the calculation of marginalized likelihoods is necessary
+  for the updating of model probabilities.
+Is it possible to proceed with multiple models or model selection
+  \emph{without} calculating these quantities?
+
 \section{Why marginalize the likelihood?}
+
+Imagine you have a proposed medical treatment,
+  and you are trying to decide whether or not it is effective.
+One model (``ineffective'') is that the treatment does nothing.
+Another model (``effective'') is that the treatment decreases (say) mortality by a factor of $f$.
+The ineffective model is similar to the effective model but with parameter $f$ set to zero.
+That is, the two models have different amounts of freedom.
+This is a clear case where the marginalized likelihood seems like it might be useful.
+Of course I am about to argue that it isn't.
+
+Another example, taken from my own area of research might be the following:
+You are using a telescope to take as many spectra of quasars as you can.
+The problem is, for each source in your database,
+  you don't know with certainty in advance whether it is a star or a quasar;
+  you just have noisy observations relevant to the matter.
+The star model has parameters like temperature, mass, and chemical abundances.
+The quasar model has parameters like redshift, spectral shape, and emission-line strengths.
+The details of these models don't matter that much, but the key ideas are the following:
+There are two models with different numbers and types of parameters.
+You care deeply about which model is more likely to be true, given the data.
+Again, it looks like a clear case in which the marginalized likelihood seems like a good thing to compute.
+Again, I am about to argue that it isn't, or that it isn't nearly enough.
 
 % Set up a straw-man example where it seems like a very, very good idea.
 % Example should lead to decision-making.
