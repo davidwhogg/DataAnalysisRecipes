@@ -25,21 +25,26 @@ involves marginalizing the likelihood for each model over the entire
 parameter space, using the prior as a measure for the integration.
 This marginalization produces the fully marginalized likelihood,
 sometimes called the ``Bayes Factor'' or ``evidence''.  Here we argue
-that performing this integral in is almost never a good idea.  The
-argument involves the ideas that (a)~the integral is extremely
-challenging to perform numerically in many instances, (b)~the integral
-is prior-dependent, and in many cases priors are not
-understood at a precision that justifies the calculation, (c)~the
-integral is usually performed in order to aid in decision-making
-(model selection), where a utility ought to be integrated along with
-the likelihood, (d) utilities are---for very deep reasons---not knowable precisely, and
-(e)~there are approximate or heuristic methods for decision making
-that are just as (im)precise but require no expensive integration.
-The one place where calculation of the marginalized likelihood is
-necessary is in creating posterior mixtures of distinct models; this
-is rarely the context in which the integral is being calculated but
-even there, when priors are not precisely understood, the mixture
-weights will not be correct, despite the spirit-crushing calculation.
+that performing this integral \emph{for model selection} is almost
+never a good idea.  The argument involves the following ideas: (a)~The
+integral is extremely challenging to perform numerically in many
+instances; (b)~the integral is prior-dependent, and for many models
+priors are just ``made up''; (c)~any kind of decision-making
+(including model selection) requires a \emph{utility function} that
+must be integrated along with the likelihood; (d) utilities are---for
+very deep reasons---not knowable precisely; and (e)~there are
+approximate or heuristic methods for model selection (such as
+cross-validation) that are just as (im)precise and just as wrong but
+require no expensive integration.  The one place where calculation of
+the marginalized likelihood is necessary is in creating posterior
+mixtures of distinct models; this is rarely (in astronomy, anyway) the
+context in which the integral is being calculated but \emph{even
+  there} it is often a bad idea: (f)~When priors are being pulled from
+hats, the mixture weights will end up being just as arbitrary as the
+arbitrarily set prior hyper-parameters; and (g)~if the weights so
+overwhelmingly favor one model over the other such that the priors
+don't matter very much, once again there are heuristics that could
+have told you that reliably with much less computation.
 
 \section{Generalities}
 
