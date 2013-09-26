@@ -1,4 +1,4 @@
-all: modelspecification.pdf modelselection.pdf
+all: bayesfactor.pdf modelspecification.pdf modelselection.pdf
 
 %.pdf: %.tex
 	pdflatex $<
