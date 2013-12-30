@@ -10,6 +10,7 @@
 \newcommand{\documentname}{\textsl{Note}}
 \newcommand{\dd}{\mathrm{d}}
 \newcommand{\given}{\,|\,}
+\newcommand{\atfixed}{\,;}
 
 \begin{document}
 
@@ -196,20 +197,24 @@ Think of $q$ as taking on a set of integer values.
 In the simple case of model selection,
   the choice $q$ maps onto model $H$,
   such that choice $q=1$ means ``choose model $H=1$''.
-Now there is a utility $u(q\given H)$ or really $u(q\given \theta,H)$.
+Now there is a utility $u(q\atfixed H)$ or really $u(q\atfixed\theta,H)$.
 This is the amount you get paid if you choose $q$ when model $H$ is in fact the ``correct'' model,
   and the parameters in model $H$ are set to value $\theta$.
 In the simplest scenarios of model selection,
-  $u(q\given \theta, H)$ is positive when $q=H$ and negative when $q\neq H$.
+  $u(q\atfixed\theta,H)$ is positive when $q=H$ and negative when $q\neq H$.
 
-THESE EQUATIONS ARE NOT YET RIGHT OR RELEVANT:
+Some random equations...
 \begin{eqnarray}
-E[u(q \given H)] &=& \frac{1}{Z(H)}\int u(q\given \theta, H)\,p(D\given\theta,H)\,p(\theta\given H)\,\dd\theta
+E[u(q\atfixed H)] &=& \frac{1}{Z(H)}\int u(q\atfixed\theta, H)\,p(D\given\theta,H)\,p(\theta\given H)\,\dd\theta
 \\
 Z(H) &\equiv& \int p(D\given\theta)\,p(\theta\given H)\,\dd\theta
 \quad ,
 \end{eqnarray}
 whatever
+
+...totally general; $q$ could be about whether or not to develop a drug or drill a hole in an aluminum plate.
+
+...even when $q$ is a pure model selection, usually there are parameter-dependent issues involved.  Use the drug and quasar examples to elucidate.
 
 \section{Utility mis-specification}
 
