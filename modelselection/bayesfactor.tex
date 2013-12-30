@@ -13,10 +13,10 @@
 
 \begin{document}
 
-\section*{When should I calculate the fully marginalized likelihood for model selection?}
+\section*{When should I calculate the fully marginalized likelihood?}
 
 \noindent
-David W. Hogg (NYU) and friends
+David W. Hogg (NYU)
 
 \paragraph{abstract:}
 In probabilistic inference,
@@ -29,21 +29,21 @@ This marginalization produces the fully marginalized likelihood,
 Here we argue that performing this integral \emph{for model selection}
   is almost never a good idea.
 The argument involves the following ideas:
-  (a)~The integral is extremely challenging to perform numerically in many instances;
-  (b)~the integral is prior-dependent, and for many models priors are just ``made up'';
-  (c)~any kind of decision-making (including model selection) requires a \emph{utility function}
+  \textsl{(a)}~The integral is extremely challenging to perform numerically in many instances;
+  \textsl{(b)}~the integral is prior-dependent, and for many models priors are just ``made up'';
+  \textsl{(c)}~any kind of decision-making (including model selection) requires a \emph{utility function}
   that must be integrated along with the likelihood;
-  (d)~utilities are---for very deep reasons---not knowable precisely; and
-  (e)~there are approximate or heuristic methods for model selection
-  (such as cross-validation) that are just as (im)precise and just as wrong
-  but require no expensive integration.
+  \textsl{(d)}~that utility will depend in a non-trivial way upon model parameters \emph{within} each model;
+  \textsl{(e)}~utilities are---for very deep reasons---not knowable precisely; and
+  \textsl{(f)}~there are approximate or heuristic methods for model selection
+  that are just as wrong but require no expensive integration.
 The one place where calculation of the marginalized likelihood is necessary
   is in creating posterior mixtures of distinct models;
   this is rarely (in astronomy, anyway) the context in which the integral is being calculated
   but \emph{even there} it is often a bad idea:
-  (f)~When priors are being pulled from hats,
+  \textsl{(g)}~When priors are being pulled from hats,
   the mixture weights will end up being just as arbitrary as the arbitrarily set prior hyper-parameters; and
-  (g)~if the weights so overwhelmingly favor one model over the other
+  \textsl{(h)}~if the weights so overwhelmingly favor one model over the other
   such that the priors don't matter very much,
   once again there are heuristics that could have told you that reliably with much less computation.
 
@@ -190,20 +190,26 @@ Hierarchical inference and pooling has to be harmed for priors to be well specif
 
 The utility is not (just) a model-level object.
 It is also a parameter-level object.
-Thus, for \emph{decision-making},
-  the integrand of the marginalization has to change to include
-  the parameter-dependent utility $u(\theta\given H)$.
+
+Notation: You have a choice to make, symbolized $q$.
+Think of $q$ as taking on a set of integer values.
+In the simple case of model selection,
+  the choice $q$ maps onto model $H$,
+  such that choice $q=1$ means ``choose model $H=1$''.
+Now there is a utility $u(q\given H)$ or really $u(q\given \theta,H)$.
+This is the amount you get paid if you choose $q$ when model $H$ is in fact the ``correct'' model,
+  and the parameters in model $H$ are set to value $\theta$.
+In the simplest scenarios of model selection,
+  $u(q\given \theta, H)$ is positive when $q=H$ and negative when $q\neq H$.
+
 THESE EQUATIONS ARE NOT YET RIGHT OR RELEVANT:
 \begin{eqnarray}
-E[u\given H] &=& \frac{1}{L(H)} \int u(\theta\given H)\,L(\theta)\,\pi(\theta\given H)\,\dd\theta
+E[u(q \given H)] &=& \frac{1}{Z(H)}\int u(q\given \theta, H)\,p(D\given\theta,H)\,p(\theta\given H)\,\dd\theta
 \\
-L(H) &\equiv& \int L(\theta)\,\pi(\theta\given H)\,\dd\theta
-\\
-E[u]_H &\approx& \frac{1}{K} \sum_{k=1}^K u(\theta_k\given H)
+Z(H) &\equiv& \int p(D\given\theta)\,p(\theta\given H)\,\dd\theta
 \quad ,
 \end{eqnarray}
-where the $\theta_k$ are elements of a $K$-element sampling of the
-posterior PDF for $\theta$ given the data and the model $H$.
+whatever
 
 \section{Utility mis-specification}
 
