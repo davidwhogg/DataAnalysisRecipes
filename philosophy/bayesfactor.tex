@@ -5,6 +5,11 @@
 % -----
 % - Figure out notation and stick to one notation; right now it is a mess.
 
+% style notes
+% -----------
+% - abbreviate FML?
+% - pdf not PDF?
+
 \documentclass[12pt]{article}
 
 \newcommand{\documentname}{\textsl{Note}}
@@ -31,7 +36,8 @@ Here we argue that performing this integral \emph{for model selection}
   is almost never a good idea.
 The argument involves the following ideas:
   \textsl{(a)}~The integral is extremely challenging to perform numerically in many instances;
-  \textsl{(b)}~the integral is prior-dependent, and for many models priors are just ``made up'';
+  \textsl{(b)}~the integral is linearly prior-dependent (even when the data are highly infomative),
+  and for many models priors are just ``made up'';
   \textsl{(c)}~any kind of decision-making (including model selection) requires a \emph{utility function}
   that must be integrated along with the likelihood;
   \textsl{(d)}~that utility will depend in a non-trivial way upon model parameters \emph{within} each model;
@@ -186,6 +192,10 @@ Priors are chosen for convenience, conjugacy, simplicity, and community acceptan
 None of these criteria lead to a correctly specified prior in real contexts.
 
 Hierarchical inference and pooling has to be harmed for priors to be well specified.
+
+Be sure to note that this problem exists even if the data are extremely \emph{informative}.
+The posterior pdf is famously insensitive to the prior pdf if the data are informative.
+The FML is not.
 
 \section{Utility matters}
 
