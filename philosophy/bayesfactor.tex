@@ -3,6 +3,7 @@
 
 % to-do
 % -----
+% - Add a proper thank-you to SAMSI.
 % - Figure out notation and stick to one notation; right now it is a mess.
 
 % style notes
@@ -10,19 +11,44 @@
 % - abbreviate FML?
 % - pdf not PDF?
 
-\documentclass[12pt]{article}
+\documentclass[12pt,twoside]{article}
+\input{hogg_style}
+\input{vc}
 
-\newcommand{\documentname}{\textsl{Note}}
-\newcommand{\dd}{\mathrm{d}}
-\newcommand{\given}{\,|\,}
-\newcommand{\atfixed}{\,;}
+% header stuff
+\renewcommand{\MakeUppercase}[1]{#1}
+\pagestyle{myheadings}
+\renewcommand{\sectionmark}[1]{\markright{\thesection.~#1}}
+\markboth{Probability calculus for inference}{Introduction}
 
 \begin{document}
+\thispagestyle{plain}\raggedbottom
+\section*{{\small \texttt{DRAFT \githash~(\gitdate):}}
+  When should I calculate the fully marginalized likelihood?}
 
-\section*{When should I calculate the fully marginalized likelihood?}
+\footnotetext{%
+  The \notename s begin on page~\pageref{note:first}, including the
+  license\note{\label{note:first}%
+    Copyright 2014 David W. Hogg (NYU).  You may copy and distribute this
+    document provided that you make no changes to it whatsoever.}
+  and the acknowledgements\note{%
+    It is a pleasure to thank
+      Jim Berger (Duke??),
+      Andrew Gelman (Columbia),
+      Sam Roweis (deceased)
+    for discussions and comments.  This
+    research was partially supported by the US National Aeronautics
+    and Space Administration, the US National Science Foundation,
+    and the Moore--Sloan Data Science Environment at NYU.}}
 
 \noindent
-David W. Hogg (NYU)
+David~W.~Hogg\\
+\affil{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New~York~University}\\
+\and~\affil{Center~for~Data~Science, New~York~University}\\
+\and~\affil{Max-Planck-Institut f\"ur Astronomie, Heidelberg}
+%% \\[1ex]
+%% A. Nother Author
+%% \affil{Oxford University}
 
 \paragraph{abstract:}
 In probabilistic inference,
@@ -239,12 +265,26 @@ This is partially balanced by the fact that you can compute your expected utilit
 
 \section{Sufficient conditions}
 
+\clearpage
+\markright{Notes}\theendnotes
 
-\paragraph{Acknowledgements:}
-Jim Berger,
-Andrew Gelman,
-Sam Roweis
-
-\section*{Bibliography}
+\clearpage
+\begin{thebibliography}{}\markright{References}\raggedright
+\bibitem[Hogg(2009)]{hogg}
+  Hogg,~D.~W., 2009,
+  ``Is cosmology just a plausibility argument?'', arXiv:0910.3374
+\bibitem[Hogg \etal(2010a)]{straightline}
+  Hogg,~D.~W., Bovy,~J., \& Lang,~D., 2010a,
+  ``Data analysis recipes:\ Fitting a model to data'', arXiv:1008.4686
+\bibitem[Hogg \etal(2010b)]{eccentricity}
+  Hogg,~D.~W., Myers,~A.~D., \& Bovy,~J., 2010b,
+  ``Inferring the eccentricity distribution'', arXiv:1008.4146
+\bibitem[Jaynes(2003)]{jaynes}
+  Jaynes,~E.~T., 2003,
+  \textit{Probability theory:\ The logic of science} (Cambridge University Press)
+\bibitem[Sivia \& Skilling(2006)]{sivia}
+  Sivia,~D.~S. \& Skilling,~J., 2006,
+  \textit{Data analysis:\ A Bayesian tutorial}, 2ed (Oxford University Press)
+\end{thebibliography}
 
 \end{document}
