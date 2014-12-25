@@ -1,4 +1,4 @@
-all: probability.pdf philosophy.pdf
+all: probability.pdf philosophy.pdf bayesfactor.pdf
 
 %.pdf: %.tex
 	pdflatex $<
