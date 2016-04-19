@@ -8,6 +8,7 @@ Chapters from Hogg's non-existent book.
 
 * **David W. Hogg**, New York University
 * **Jo Bovy**, Institute for Advanced Study
+* **Dan Foreman-Mackey**, University of Washington
 * **Dustin Lang**, Princeton University
 
 ### License: ###
