@@ -12,7 +12,7 @@ CHECK_RERUN = grep Rerun $*.log
 DOCS        = $(foreach f, ${TEX_FILES}, ${f}.${SUFF})
 
 # Enter the name(s) of the .tex file(s) that you want to compile.
-TEX_FILES = release
+TEX_FILES = sharing
 DIRS      =
 
 # You shouldn't need to edit below here.

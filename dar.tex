@@ -16,7 +16,12 @@
 % No overflow
 \setlength{\emergencystretch}{2em}
 
-% Typeography
+% Spacing -- Bring the Bringhurst
+\linespread{1.08} % nearly 10/13
+\setlength{\parindent}{1.08\baselineskip} % nearly square
+\frenchspacing
+
+% Typography
 \newcommand{\documentname}{\textsl{Chapter}}
 \newcommand{\sectionname}{Section}
 \newcommand{\equationname}{equation}
@@ -60,7 +65,7 @@
 \renewcommand{\MakeUppercase}[1]{#1}
 \pagestyle{myheadings}
 \renewcommand{\sectionmark}[1]{\markright{\thesection.~#1}}
-\markboth{\chaptertitle}{}
+\markboth{\shorttitle}{}
 
 % References.
 \usepackage{color,hyperref}
