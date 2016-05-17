@@ -2,6 +2,7 @@
 *.aux
 *.ent
 *.log
+*.out
 *.pdf
 *.png
 vc.tex

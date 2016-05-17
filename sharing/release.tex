@@ -1,0 +1,121 @@
+% This file is part of the Data Analysis Recipes project.
+% Copyright 2016 David W. Hogg (NYU).
+
+% to-do
+% -----
+% - Make table
+% - First draft
+
+% style notes
+% -----------
+% - These documents are ``Chapters'', no?  Use \documentname.
+% - [LaTeX] newline after every full stop for proper git diffing
+% - [LaTeX] eqnarray not equation
+% - \note{} right after word if you are endnoting a phrase,
+%   but after the full stop if endnoting the sentence or paragraph.
+
+\documentclass[12pt,twoside,pdftex]{article}
+\usepackage{styles/dar_endnotes}
+
+\newcommand{\chaptertitle}{The costs and benefits of releasing your data and open-sourcing your code}
+\include{styles/dar}
+
+\newcommand{\MCMC}{\acronym{MCMC}}
+\newcommand{\MH}{\acronym{M--H}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\data}{D}
+\newcommand{\pars}{\theta}
+\newcommand{\best}{{\mathrm{(best)}}}
+\newcommand{\better}{{\mathrm{(better)}}}
+
+\begin{document}\sloppy\sloppypar\raggedbottom\thispagestyle{plain}%
+%
+\section*{Data analysis recipes:\\ \chaptertitle\footnotemark}
+%
+\footnotetext{%
+    The notes begin on page~\pageref{note:first}, including the
+    license\note{\label{note:first}
+        Copyright 2016 the author.
+        This work is licensed under a
+        \href{http://creativecommons.org/licenses/by-nc-nd/3.0/deed.en\_US}{%
+            Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported
+            License}.}
+    and the acknowledgements\note{%
+        I would like to thank
+          Dustin Lang (Toronto),
+          Dan Foreman-Mackey (UW),
+          and the entire astrophysics community
+        for valuable advice and comments over the years.
+        This project benefitted from various research grants, especially
+          from NSF, NASA,
+          and the The Moore--Sloan Data Science Environment.}
+}
+
+\noindent
+David~W.~Hogg\\
+\affil{Simons~Center~for~Data~Analysis,
+       Simons~Foundation}\\
+\affil{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics,
+       New~York~University}\\
+\affil{Center~for~Data~Science,
+       New~York~University}\\
+\affil{Max-Planck-Institut~f\"ur~Astronomie, Heidelberg}\\[1ex]
+
+\begin{abstract}
+foo, bar
+\end{abstract}
+
+\section{Economic pragmatism}
+
+LTFDFCF.
+
+Going to treat data and code in parallel for most of what follows.
+
+\section{Overview}
+
+Insert table here.
+
+\section{Personal considerations}
+
+Search! Hosting! Preservation!
+
+Documentation burden (bad). Documentation pressure (good).
+
+Exposure of the horror (bad). Encouragement to be less horrible (good).
+
+\section{Team considerations}
+
+\section{Ethical considerations}
+
+You might expect me here to go all ``ethically, you must release your
+data!''; I won't, because there are many situations in which it is in
+fact \emph{unethical} to release data and code.
+
+Coming back to the personal point about exposing the horror and
+requirements to document: Both of these have ethical aspects: The more
+we expose the horror, the more we make people comfortable with
+sharing. The more we document, the more we help others with
+reproducibility and with new science.
+
+\section{Licensing}
+
+Open-sourcing your code means more than just publishing it.
+
+Licensing has not really been explored for data, at least not in most
+scientific domains.
+
+\clearpage
+\markright{Notes}\theendnotes
+
+\clearpage
+\raggedright
+\begin{thebibliography}{}\markright{References}
+\bibitem[Foreman-Mackey \etal(2012)]{emcee}
+  Foreman-Mackey,~D., Hogg,~D.~W., Lang,~D., \& Goodman,~J.\ 2012,
+  \project{emcee}: The \MCMC\ Hammer,
+  \textit{Pubs.\ Astron.\ Soc.\ Pac.}\ \textbf{125} 306--312
+  \doi{10.1086/670067}
+  (also \arxiv{1202.3665}).
+\end{thebibliography}
+
+\end{document}
