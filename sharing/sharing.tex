@@ -16,10 +16,14 @@
 
 \documentclass[12pt,twoside,pdftex]{article}
 \usepackage{dar_endnotes}
+\usepackage{enumitem}
 
 \newcommand{\chaptertitle}{The costs and benefits of releasing your data and open-sourcing your code}
 \newcommand{\shorttitle}{Releasing data and open-sourcing code}
 \include{dar}
+\newlength{\myl}
+\settowidth{\myl}{9.\rule{\itemsep}{0pt}}
+\setlist{nosep, leftmargin=\myl}
 
 \begin{document}\sloppy\sloppypar\raggedbottom\thispagestyle{plain}%
 %
@@ -67,15 +71,43 @@ Going to treat data and code in parallel for most of what follows.
 \section{Overview}
 
 \begin{table}
-\begin{tabular}{@{}p{0.48\textwidth}|p{0.48\textwidth}@{}} % note @{} entries to remove space on edges
-\multicolumn{1}{c}{costs} & \multicolumn{1}{c}{benefits} \\
-\hline \multicolumn{2}{c}{releasing data} \\ \hline
-this & that \\
-the other & whatever \\
-etc & ibid \\
-\hline \multicolumn{2}{c}{open-sourcing code} \\ \hline
-foo & bar \\ 
-what & who \\
+\begin{tabular}{@{}p{0.483\textwidth}|p{0.483\textwidth}@{}}% note @{} entries to remove space on edges
+\multicolumn{1}{c|}{costs} & \multicolumn{1}{c}{benefits} \\
+\hline \multicolumn{2}{c}{\textbf{releasing data}} \\ \hline
+\begin{enumerate}\raggedright
+\item you might get scooped
+\item you will have to document the data and its issues
+\item you will have to answer questions about the data, sometimes dumb ones
+\item you will have to beat down bad and incorrect papers written about your data
+\item your reputation could suffer if the data are used wrongly
+\item you will have to pay for archiving and web interface
+\item you will have to make plans for long-term stewardship
+\end{enumerate}&\begin{enumerate}\raggedright
+\item more science gets done, more papers get written; all measures of impact increase
+\item you and your team will feel pressure to document the data
+\item your team gets pressure to produce final data products in a timely manner
+\item your team gets pressure to write papers on their own analyses and discoveries
+\item your (and others') results become reproducible
+\item outsiders reanalyze and generate new ideas for calibration or analysis; these improve future work by your own team and others
+\item you get cred and visibility and build good will in your community
+\end{enumerate} \\
+\hline \multicolumn{2}{c}{\textbf{open-sourcing code}} \\ \hline
+\begin{enumerate}\raggedright
+\item you might get scooped
+\item you might be embarrassed by your ugly code, or by your failure to comment or document
+\item you might have to answer questions about the code
+\item you might have to beat down bad and incorrect results generated with your code
+\item your reputation could suffer if the code is used wrongly
+\end{enumerate}&\begin{enumerate}\raggedright
+\item more science gets done, more papers get written; all measures of impact increase
+\item you and your team will feel pressure to document the code
+\item pressure to write papers on the analyses and discoveries made with the code
+\item your (and others') results become reproducible
+\item outsiders find bugs or make improvements to your code and deliver pull requests
+\item get cred and visibility and build good will in your community
+\item there are good sites for long-term archiving, interface, and stewardship
+\end{enumerate} \\
+\hline\multicolumn{1}{c|}{costs} & \multicolumn{1}{c}{benefits} \\
 \end{tabular}
 \caption{Summary of costs and benefits. Each of these is discussed in
   the main text.\label{tab:summary}}
