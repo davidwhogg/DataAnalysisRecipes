@@ -1,0 +1,72 @@
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{mathrsfs}
+\usepackage{natbib}
+\usepackage{float}
+\usepackage{graphicx}
+
+% Figure captions
+\makeatletter
+\newsavebox{\tempbox}
+\newcommand{\@makefigcaption}[2]{%
+\vspace{10pt}{#1.--- #2\par}}%
+\renewcommand{\figure}{\let\@makecaption\@makefigcaption\@float{figure}}
+\makeatother
+
+% No overflow
+\setlength{\emergencystretch}{2em}
+
+% Typeography
+\newcommand{\documentname}{\textsl{Chapter}}
+\newcommand{\sectionname}{Section}
+\newcommand{\equationname}{equation}
+\newcommand{\project}[1]{\textsl{#1}}
+\newcommand{\foreign}[1]{\textsl{#1}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newenvironment{pseudocode}{\begin{ttfamily}\detokenize\obeylines}{}
+\newcommand{\aposteriori}{\foreign{a~posteriori}}
+\newcommand{\apriori}{\foreign{a~priori}}
+\newcommand{\adhoc}{\foreign{ad~hoc}}
+\newcommand{\etal}{\foreign{et al.}}
+\newcommand{\eg}{\foreign{e.g.}}
+\newcommand{\vs}{\foreign{vs.}}
+\newcommand{\affil}[1]{{\footnotesize\textsl{#1}}}
+\newcommand{\acronym}[1]{{\small{#1}}}
+
+% Notes
+\newcommand{\notename}{note}
+\newcommand{\note}[1]{\endnote{#1}}
+\def\enotesize{\normalsize}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}} % the ONE footnote needs this
+
+% Problems
+\newcommand{\problemname}{Problem}
+\newcounter{problem}
+\newenvironment{problem}{\paragraph{\problemname~\theproblem:}%
+\refstepcounter{problem}}{}
+
+% Math stuff
+\newcommand{\mmatrix}[1]{\boldsymbol{#1}}
+\newcommand{\inverse}[1]{{#1}^{-1}}
+\newcommand{\transpose}[1]{{#1}^{\scriptscriptstyle \top}}
+\newcommand{\parametervector}[1]{\mmatrix{#1}}
+\newcommand{\bvec}[1]{\mmatrix{#1}}
+\newcommand{\setof}[1]{\{{#1}\}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\given}{\,|\,}
+\newcommand{\mean}[1]{\left<{#1}\right>}
+
+% Headers
+\renewcommand{\MakeUppercase}[1]{#1}
+\pagestyle{myheadings}
+\renewcommand{\sectionmark}[1]{\markright{\thesection.~#1}}
+\markboth{\chaptertitle}{}
+
+% References.
+\usepackage{color,hyperref}
+\definecolor{linkcolor}{rgb}{0,0,0.5}
+\hypersetup{colorlinks=true,linkcolor=linkcolor,citecolor=linkcolor,
+            filecolor=linkcolor,urlcolor=linkcolor}
+\newcommand{\arxiv}[1]{\href{http://arxiv.org/abs/#1}{\textsl{arXiv}:#1}}
+\newcommand{\doi}[1]{\href{http://doi.org/#1}{\textsc{doi}:#1}}
+\newcommand{\isbn}[1]{\textsc{isbn:}#1}
