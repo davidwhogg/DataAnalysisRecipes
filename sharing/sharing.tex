@@ -3,8 +3,9 @@
 
 % to-do
 % -----
-% - Make table
 % - First draft
+% - Make sure the ``you'' in the tables is returned to as an issue; who is the audience?
+% - Career-stage considerations.
 
 % style notes
 % -----------
@@ -70,10 +71,11 @@ Going to treat data and code in parallel for most of what follows.
 
 \section{Overview}
 
-\begin{table}
-\begin{tabular}{@{}p{0.483\textwidth}|p{0.483\textwidth}@{}}% note @{} entries to remove space on edges
-\multicolumn{1}{c|}{costs} & \multicolumn{1}{c}{benefits} \\
-\hline \multicolumn{2}{c}{\textbf{releasing data}} \\ \hline
+\newlength{\cwidth}\setlength{\cwidth}{0.483\textwidth}%
+\begin{table}%
+\begin{tabular}{@{}p{\cwidth}|p{\cwidth}@{}}% note @{} entries to remove space on edges
+\multicolumn{2}{c}{\textbf{releasing data}} \\ \hline
+\multicolumn{1}{c|}{costs} & \multicolumn{1}{c}{benefits} \\ \hline
 \begin{enumerate}\raggedright
 \item you might get scooped
 \item you will have to document the data and its issues
@@ -82,16 +84,28 @@ Going to treat data and code in parallel for most of what follows.
 \item your reputation could suffer if the data are used wrongly
 \item you will have to pay for archiving and web interface
 \item you will have to make plans for long-term stewardship
+\item there might be legal and privacy issues
 \end{enumerate}&\begin{enumerate}\raggedright
 \item more science gets done, more papers get written; all measures of impact increase
-\item you and your team will feel pressure to document the data
-\item your team gets pressure to produce final data products in a timely manner
-\item your team gets pressure to write papers on their own analyses and discoveries
-\item your (and others') results become reproducible
-\item outsiders reanalyze and generate new ideas for calibration or analysis; these improve future work by your own team and others
+\item all results become reproducible and hackable
+\item you are motivated to write up analyses and discoveries in a timely manner
+\item you are motivated to document the data
+\item outsiders reanalyze and generate new ideas for calibration or analysis; these improve your own future work
 \item you get cred and visibility and build good will in your community
-\end{enumerate} \\
-\hline \multicolumn{2}{c}{\textbf{open-sourcing code}} \\ \hline
+\item you are motivated to produce data products on some schedule
+\item it's the right thing to do
+\end{enumerate}\end{tabular}
+\caption{Summary of costs and benefits for data release, vaguely
+  ordered by importance (from most important to least). All of these
+  telegraphic points are discussed in more depth in the main text. The
+  word ``you'' is used loosely here, but elaborated upon in the main
+  text.\label{tab:data}}
+\end{table}
+
+\begin{table}%
+\begin{tabular}{@{}p{\cwidth}|p{\cwidth}@{}}% note @{} entries to remove space on edges
+\multicolumn{2}{c}{\textbf{open-sourcing code}} \\ \hline
+\multicolumn{1}{c|}{costs} & \multicolumn{1}{c}{benefits} \\ \hline
 \begin{enumerate}\raggedright
 \item you might get scooped
 \item you might be embarrassed by your ugly code, or by your failure to comment or document
@@ -106,11 +120,10 @@ Going to treat data and code in parallel for most of what follows.
 \item outsiders find bugs or make improvements to your code and deliver pull requests
 \item get cred and visibility and build good will in your community
 \item there are good sites for long-term archiving, interface, and stewardship
-\end{enumerate} \\
-\hline\multicolumn{1}{c|}{costs} & \multicolumn{1}{c}{benefits} \\
-\end{tabular}
-\caption{Summary of costs and benefits. Each of these is discussed in
-  the main text.\label{tab:summary}}
+\end{enumerate}\end{tabular}
+\caption{Summary of costs and benefits for open-source code release,
+  vaguely ordered from most important to least. All of these are
+  discussed in more depth in the main text.\label{tab:code}}
 \end{table}
 
 \section{Personal considerations}
