@@ -6,6 +6,7 @@
 % - First draft
 % - Make sure the ``you'' in the tables is returned to as an issue; who is the audience?
 % - Career-stage considerations.
+% - deal with all HOGG DWH or all-caps.
 
 % style notes
 % -----------
@@ -40,6 +41,7 @@
             License}.}
     and the acknowledgements\note{%
         I would like to thank
+          Michael Blanton (NYU),
           Dustin Lang (Toronto),
           Dan Foreman-Mackey (UW),
           Adrian Price-Whelan (Princeton),
@@ -49,6 +51,7 @@
         for valuable advice, ideas, and vision over the years.
         I also thank
           Caroline Bot (Strasbourg),
+          Casey Greene (Penn)
           Paul McMillan (Lund),
           and
           Jason Wright (PSU)
@@ -80,7 +83,7 @@ This \documentname\ does not contain a manifesto that advocates sharing!
 It is a discussion of the considerations that must be weighed with one's
 beliefs and utility in order to make a sensible decision.
 A scientist's utility function is likely to be a strong function of career
-stage, and beliefs (about, say, colleagues and funding
+stage; a scientist's beliefs (about, say, colleagues and funding
 agencies) will be a strong function of field of study;
 there is no simple conclusion.
 However, benefits outnumber (not necessarily \emph{outweigh}, but \emph{outnumber})
@@ -97,9 +100,22 @@ sterile.
 
 \section{Subjectivity, utility, pragmatism}
 
-LTFDFCF.
+As we have discussed elsewhere in this series of
+\documentnames\note{We discuss this in \documentnames\ not yet
+  written!}, good decision-making requires both quantitative beliefs
+(in the form of posterior pdfs over outcomes) and a quantitative
+utility function.
+That's a high bar!
+But even reasonably sensible decisions require some thinking about
+what things are reasonably probable to happen, and what their costs or
+value to you might be.
+Nowhere is this more stark than in the decisions that every scientist
+faces about the sharing of their data and data-analysis code with
+their colleagues and the world at large.
 
-Going to treat data and code in parallel for most of what follows.
+HOGG: LTFDFCF
+
+HOGG: Going to treat data and code in parallel for most of what follows.
 
 \section{Overview}
 
@@ -119,7 +135,7 @@ Going to treat data and code in parallel for most of what follows.
 \item there might be legal and privacy issues
 \end{enumerate}&\begin{enumerate}\raggedright
 \item more science gets done, more papers get written; all measures of impact increase
-\item all results become reproducible and hackable
+\item results become (more) reproducible and hackable
 \item you are motivated to write up analyses and discoveries in a timely manner
 \item you are motivated to document the data
 \item outsiders reanalyze and generate new ideas for calibration or analysis; these improve your own future work
@@ -149,7 +165,7 @@ Going to treat data and code in parallel for most of what follows.
 \end{enumerate}&\begin{enumerate}\raggedright
 \item more science gets done, more papers get written; all measures of impact increase
 \item you will be motivated to clean and document the code
-\item all results become reproducible
+\item results become (more) reproducible
 \item outsiders find bugs or make improvements to your code and deliver pull requests
 \item you get cred and visibility and build good will in your community
 \item citation rates go up
