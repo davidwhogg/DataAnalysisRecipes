@@ -50,9 +50,12 @@
           and the entire astrophysics community
         for valuable advice, ideas, and vision over the years.
         I also thank
+          Eric Agol (UW),
+          Joss Bland-Hawthorn (Sydney),
           Caroline Bot (Strasbourg),
-          Casey Greene (Penn)
+          Casey Greene (Penn),
           Paul McMillan (Lund),
+          Philip Stark (Berkeley),
           and
           Jason Wright (PSU)
         for comments on the specific content in this document.
@@ -102,9 +105,11 @@ sterile.
 
 As we have discussed elsewhere in this series of
 \documentnames\note{We discuss this in \documentnames\ not yet
-  written!}, good decision-making requires both quantitative beliefs
-(in the form of posterior pdfs over outcomes) and a quantitative
-utility function.
+  written, about model selection, and the presentation of
+  results. These are places where we have to depart from probabilistic
+  reasoning and commit to a single, irreversible outcome.}, good
+decision-making requires both quantitative beliefs (in the form of
+posterior pdfs over outcomes) and a quantitative utility function.
 That's a high bar!
 But even reasonably sensible decisions require some thinking about
 what things are reasonably probable to happen, and what their costs or
@@ -119,6 +124,9 @@ HOGG: Going to treat data and code in parallel for most of what follows.
 
 \section{Overview}
 
+Most of the points of discussion that will appear in this
+\documentname\ appear in summary form in \tablename~\ref{tab:data} and
+\tablename~\ref{tab:code}.%
 \newlength{\cwidth}\setlength{\cwidth}{0.483\textwidth}%
 \begin{table}%
 \begin{tabular}{@{}p{\cwidth}|p{\cwidth}@{}}% note @{} entries to remove space on edges
@@ -139,7 +147,7 @@ HOGG: Going to treat data and code in parallel for most of what follows.
 \item you are motivated to write up analyses and discoveries in a timely manner
 \item you are motivated to document the data
 \item outsiders reanalyze and generate new ideas for calibration or analysis; these improve your own future work
-\item you get cred and visibility and build good will in your community
+\item you get cred and visibility and build good will in your community, or even build that community
 \item you are motivated to produce data products on some schedule
 \item it's the right thing to do
 \end{enumerate}\end{tabular}
@@ -164,13 +172,13 @@ HOGG: Going to treat data and code in parallel for most of what follows.
 \item there might be legal (including military) and license issues
 \end{enumerate}&\begin{enumerate}\raggedright
 \item more science gets done, more papers get written; all measures of impact increase
-\item you will be motivated to clean and document the code
-\item results become (more) reproducible
+\item you get motivation to clean and document the code
+\item results become (more) reproducible and (more) trustworthy
 \item outsiders find bugs or make improvements to your code and deliver pull requests
 \item you get cred and visibility and build good will in your community
 \item citation rates go up
 \item there are good sites for long-term archiving, interface, and stewardship
-\item code becomes searcheable and discoverable (including by you!)
+\item code becomes searcheable and discoverable (including by you!) and \emph{backed up}
 \item can establish priority on an idea or method
 \item can protect intellectual property against patenting?
 \end{enumerate}\end{tabular}
@@ -179,6 +187,17 @@ HOGG: Going to treat data and code in parallel for most of what follows.
   \tablename~\ref{tab:data}, all of these are discussed in more depth
   in the main text, including the subjective ``you''.\label{tab:code}}
 \end{table}
+
+These \tablename s make an attempt to boil down the (relatively nuanced, I
+hope) discussion in what follows into a set of quotable bullet points.
+Also, the points in the \tablename s are organized somehow by my
+perception of their ``importance'' or weight for a typical scientist,
+where ``typical'' is defined (I guess) to be ``just like me''.
+This is \emph{not} the order in which I discuss them in what follows.
+In what follows, I attempt to discuss them in an order that is (in
+some sense) political or sociological or anthropological.
+That is, I try to situate them somewhat in terms of power, status,
+career stage, and so on.
 
 \section{Personal considerations}
 
