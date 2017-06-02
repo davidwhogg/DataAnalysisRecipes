@@ -90,7 +90,7 @@ def ex16(exclude=sc.array([3]),plotfilename='ex16.png',
     bestfitvar= linalg.inv(bestfitvar)
     bestfit= sc.dot(bestfitvar,bestfit)
     #Now optimize
-    initial= sc.array([bestfit[0],bestfit[1],sc.log(100)])
+    initial= sc.array([bestfit[0],bestfit[1],sc.log(1000)])
     bestfit2d1= optimize.fmin(objective,initial,(Z,ycovar),disp=False)
     #Restart the optimization once using a different method
     bestfit2d= optimize.fmin_powell(objective,initial,
@@ -113,6 +113,7 @@ def ex16(exclude=sc.array([3]),plotfilename='ex16.png',
     b= bestfit2d[0]
     mf= bestfit2d[1]
     V=sc.exp(bestfit2d[2]/2.)
+    print(b,mf,V)
     cost= 1./sc.sqrt(1+mf**2.)
     bcost= b*cost
 
@@ -182,4 +183,4 @@ def objective(mbV,Z,ycovar):
     cost= v[1]
     delta= sc.dot(v,Z.T)-mbV[0]*cost
     sigma2= sc.dot(v,sc.dot(ycovar,v))+V
-    return 0.5*sc.sum(delta**2./sigma2+sc.log(sigma2))
+    return 0.5*sc.sum(delta**2./sigma2+sc.log(sigma2)+sc.log(1.+mbV[1]**2.))
