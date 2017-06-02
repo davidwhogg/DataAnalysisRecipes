@@ -359,7 +359,7 @@ def read_data(datafilename='data_yerr.dat',allerr=False):
             rawdata.append(float(i.group()))
             nvalue+= 1
         if nvalue != ncol:
-            print "Warning, number of columns for this record does not match the expected number"
+            print("Warning, number of columns for this record does not match the expected number")
     #Now process the raw data
     out=[]
     for ii in range(nline):

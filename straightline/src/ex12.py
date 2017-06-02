@@ -97,17 +97,17 @@ def ex12(exclude=sc.array([1,2,3,4]),plotfilename='ex12.png',
                                        (Z,ycovar),disp=False)
     if linalg.norm(bestfit2d-bestfit2d1) > 10**-12:
         if linalg.norm(bestfit2d-bestfit2d1) < 10**-6:
-            print "Different optimizers give slightly different results..."
+            print("Different optimizers give slightly different results...")
         else:
-            print "Different optimizers give rather different results..."
-        print "The norm of the results differs by %g" % linalg.norm(bestfit2d-bestfit2d1)
+            print("Different optimizers give rather different results...")
+        print("The norm of the results differs by %g" % linalg.norm(bestfit2d-bestfit2d1))
         try:
             x=raw_input('continue to plot? [yn]\n')
         except EOFError:
-            print "Since you are in non-interactive mode I will assume 'y'"
+            print("Since you are in non-interactive mode I will assume 'y'")
             x='y'
         if x == 'n':
-            print "returning..."
+            print("returning...")
             return -1
 
     #Plot result
@@ -175,5 +175,5 @@ def objective(mb,Z,ycovar):
     cost= v[1]
     delta= sc.dot(v,Z.T)-mb[0]*cost
     sigma2= sc.dot(v,sc.dot(ycovar,v))
-    return 0.5*sc.sum(delta**2./sigma2+sc.log(sigma2))
+    return 0.5*sc.sum(delta**2./sigma2+sc.log(sigma2)+sc.log(1.+mb[1]**2.))
 
