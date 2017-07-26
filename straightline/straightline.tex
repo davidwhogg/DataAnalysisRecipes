@@ -9,6 +9,7 @@
 
 \documentclass[12pt,twoside,pdftex]{article}
 \usepackage{amssymb,amsmath,mathrsfs,../deluxetable,../hogg_endnotes,natbib}
+\usepackage{url}
 \input{../hogg_style}
 \usepackage{float,graphicx}
 
@@ -32,15 +33,16 @@
 \footnotetext{%
   The \notename s begin on page~\pageref{note:first}, including the
   license\note{\label{note:first}%
-    Copyright 2010 by the authors.  You may copy and distribute this
+    Copyright 2010, 2017 by the authors.  You may copy and distribute this
     document provided that you make no changes to it whatsoever.}  and
   the acknowledgements\note{%
-    Above all we owe a debt to Sam Roweis (Toronto \& NYU, now
+    Above all we owe a debt to Sam Roweis (Toronto / NYU, now
     deceased), who taught us to find and optimize justified scalar
     objective functions.  He will be sorely missed by all three of us. 
     In addition it is a pleasure to thank Mike
     Blanton (NYU), Scott Burles (D. E. Shaw), Daniel Foreman-Mackey
-    (Queens), Brandon C. Kelly (Harvard), Iain Murray (Edinburgh),
+    (Queens / NYU / UW), Brandon C. Kelly (Harvard),
+    Yin-Zhe Ma, Andisheh Mahdavi, Iain Murray (Edinburgh),
     Hans-Walter Rix (MPIA), and David Schiminovich (Columbia) for
     valuable comments and discussions.  This research was partially
     supported by NASA (ADP grant NNX08AJ48G), NSF (grant AST-0908357),
@@ -1910,9 +1912,34 @@ matrix $\mS_i$ projects down to an orthogonal variance $\Sigma_i^2$ given by
 and then the log likelihood for $(m,b)$ or $(\theta,b\,\cos\theta)$
 can be written as
 \begin{equation}\label{eq:twodlike}
-\ln\like = K - \sum_{i=1}^N \frac{\Delta_i^2}{2\,\Sigma_{i}^2} \quad ,
+\ln\like = K - \frac{1}{2}\,\sum_{i=1}^N \left[\frac{\Delta_i^2}{\Sigma_{i}^2}
+           +\ln|\Sigma_{i}^2|\right]\quad ,
 \end{equation}
-where $K$ is some constant.  \emph{This} likelihood can be maximized,
+where $K$ is some constant, and we had to retain $\ln\Sigma^2$ terms
+because the values of the $\Sigma_i^2$ depend on the values of the
+parameters $(m,b)$.\note{The industrious reader will identify that
+  \equationname~(\ref{eq:twodlike}) does \emph{not} precisely reduce
+  to results like \equationname~(\ref{eq:objectivei}) in the limit
+  that the $x$-direction uncertainties vanish. This inconsistency
+  derives from the fact that the standard fitting procedure treats the
+  $x$ and $y$ directions asymmetrically. If the marginalization that
+  delivers \equationname~(\ref{eq:twodlike}) is not done \emph{along}
+  the line, but rather along the $x$ axis (that is, if the $x$
+  uncertainties are marginalized out in the $x$ direction
+  preferentially), \equationname~(\ref{eq:twodlike}) obtains an extra
+  term that looks like $-\sum_i \ln|m|$. This additional term (which
+  explicitly breaks rotation invariance in the $x$-$y$ plane)
+  synchronizes \equationname~(\ref{eq:twodlike}) with
+  \equationname~(\ref{eq:objectivei}) in the limit of vanishing $x$
+  uncertainties. More discussion of this marginalization is available
+  at a blog post by Foreman-Mackey (2017; {\small
+  \url{http://dan.iel.fm/posts/fitting-a-plane/}}), to whom we owe
+  thanks, along with Andisheh Mahdavi and Yin-Zhe Ma,
+  for forcing us to confront all this unpleasantness. For the
+  very discerning reader, we also note that the marginalization that
+  delivers \equationname~(\ref{eq:twodlike}) involves an improper prior,
+  or a proper prior for which we have taken some infinite-width limit.}
+\emph{This} likelihood can be maximized,
 and the resulting values of $(m,b)$ are justifiably the best-fit
 values.  The only modification we would suggest is performing the fit
 or likelihood maximization not in terms of $(m,b)$ but rather
