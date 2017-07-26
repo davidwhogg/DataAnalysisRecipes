@@ -168,7 +168,7 @@ def ex13(exclude=sc.array([1,2,3,4]),plotfilename='ex13.png',
                    xlabel=r'$x$',ylabel=r'$y$',zorder=2)
     for ii in range(10):
         #Random sample
-        ransample= sc.floor((stats.uniform.rvs()*nsamples))
+        ransample= sc.floor((stats.uniform.rvs()*nsamples)).astype('int')
         ransample= samples.T[ransample,0:2]
         mf= m.sqrt(1./m.cos(ransample[1])**2.-1.)
         b= ransample[0]/m.cos(ransample[1])
@@ -263,7 +263,7 @@ def objective(pars,Z,ycovar):
     for ii in range(ndata):
         detVycovar[ii]= m.sqrt(linalg.det(V+ycovar[:,ii,:]))
         deltaOUT[ii]= sc.dot(Z[ii,:]-Zb,sc.dot(linalg.inv(V+ycovar[:,ii,:]),Z[ii,:]-Zb))
-    return sc.sum(sc.log((1.-Pb)/sc.sqrt(2.*m.pi*sigma2)*
+    return sc.sum(sc.log((1.-Pb)/sc.sqrt(2.*m.pi*sigma2/sc.cos(t)**2.)*
                          sc.exp(-0.5*delta**2./sigma2)
                          +Pb/2./m.pi/detVycovar
                          *sc.exp(-0.5*deltaOUT)))
@@ -287,4 +287,4 @@ def Pbad(pars,Z,ycovar):
     detVycovar= m.sqrt(linalg.det(V+ycovar[:,:]))
     deltaOUT= sc.dot(Z-Zb,sc.dot(linalg.inv(V+ycovar[:,:]),Z-Zb))
     Pbad= Pb/2./m.pi/detVycovar*sc.exp(-0.5*deltaOUT)
-    return Pbad/(Pbad+(1.-Pb)/sc.sqrt(2.*m.pi*sigma2)*sc.exp(-0.5*delta**2./sigma2))
+    return Pbad/(Pbad+(1.-Pb)/sc.sqrt(2.*m.pi*sigma2)*sc.exp(-0.5*delta**2./sigma2/sc.cos(t)**2.))

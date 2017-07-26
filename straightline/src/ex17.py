@@ -156,7 +156,7 @@ def ex17(exclude=sc.array([3]),plotfilename='ex17.png',
     #Plot
     plot.bovy_print(**bovyprintargs)
     hist, bins, patchess= plot.bovy_hist(sc.exp(samples.T[:,2]/2.),edgecolor='k',
-                                      bins=round(sc.sqrt(nsamples)/2.),
+                                      bins=int(round(sc.sqrt(nsamples)/2.)),
                                       xlabel=r'$\sqrt{V}$',normed=True,
                                       histtype='step')
     cumhist= sc.cumsum(hist)/sc.sum(hist)/(bins[1]-bins[0])
@@ -265,5 +265,5 @@ def objective(pars,Z,ycovar):
     v= sc.array([-sc.sin(t),sc.cos(t)])
     delta= sc.dot(v,Z.T)-bcost
     sigma2= sc.dot(v,sc.dot(ycovar,v))+V
-    return -0.5*sc.sum(delta**2./sigma2+sc.log(sigma2))#+pars[2]
+    return -0.5*sc.sum(delta**2./sigma2+sc.log(sigma2/sc.cos(t)**2.))
 
