@@ -8,10 +8,8 @@
 % - Incorporate changes around equation (32) as suggested by Mahdavi in email from 2011-12-30-ish; ack Mahdavi.
 
 \documentclass[12pt,twoside,pdftex]{article}
-\usepackage{amssymb,amsmath,mathrsfs,../deluxetable,../hogg_endnotes,natbib}
-\usepackage{url}
+\usepackage{../deluxetable}
 \input{../hogg_style}
-\usepackage{float,graphicx}
 
 % ask dstn about this insanity
 %\usepackage{mparhack}
@@ -28,38 +26,20 @@
 \begin{document}
 \thispagestyle{plain}\raggedbottom
 \section*{Data analysis recipes:\ \\
-  Fitting a model to data\footnotemark}
-
-\footnotetext{%
-  The \notename s begin on page~\pageref{note:first}, including the
-  license\note{\label{note:first}%
+  Fitting a model to data%
+\note{%
     Copyright 2010, 2017 by the authors.  You may copy and distribute this
-    document provided that you make no changes to it whatsoever.}  and
-  the acknowledgements\note{%
-    Above all we owe a debt to Sam Roweis (Toronto / NYU, now
-    deceased), who taught us to find and optimize justified scalar
-    objective functions.  He will be sorely missed by all three of us. 
-    In addition it is a pleasure to thank Mike
-    Blanton (NYU), Scott Burles (D. E. Shaw), Daniel Foreman-Mackey
-    (Queens / NYU / UW), Brandon C. Kelly (Harvard),
-    Yin-Zhe Ma, Andisheh Mahdavi, Iain Murray (Edinburgh),
-    Hans-Walter Rix (MPIA), and David Schiminovich (Columbia) for
-    valuable comments and discussions.  This research was partially
-    supported by NASA (ADP grant NNX08AJ48G), NSF (grant AST-0908357),
-    and a Research Fellowship of the Alexander von Humboldt
-    Foundation.  This research made use of the Python programming
-    language and the open-source Python packages scipy, numpy, and
-    matplotlib.}.}
+    document provided that you make no changes to it whatsoever.}}
 
 \noindent
-David~W.~Hogg\\
+\textbf{David~W.~Hogg}\\
 \affil{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New York University}\\
 \affil{Max-Planck-Institut f\"ur Astronomie, Heidelberg}
 \\[1ex]
-Jo~Bovy\\
+\textbf{Jo~Bovy}\\
 \affil{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New York University}
 \\[1ex]
-Dustin~Lang\\
+\textbf{Dustin~Lang}\\
 \affil{Department of Computer Science, University of Toronto}\\
 \affil{Princeton University Observatory}
 
@@ -2185,7 +2165,22 @@ data point is a single sample.  Such methods fall into the
 intersection of density estimation and deconvolution, and completely
 general methods exist.\note{Density estimation by generative modeling,
   in situations of heteroscedastic data, has been solved for
-  situations of varying generality by \cite{kelly07} and \cite{bovy}.}
+  situations of varying generality by \cite{kelly07} and \cite{bovy}.}%
+\,\note{\textit{Acknowledgements:}
+    Above all we owe a debt to Sam Roweis (Toronto / NYU, now
+    deceased), who taught us to find and optimize justified scalar
+    objective functions.  He will be sorely missed by all three of us. 
+    In addition it is a pleasure to thank Mike
+    Blanton (NYU), Scott Burles (D. E. Shaw), Daniel Foreman-Mackey
+    (Queens / NYU / UW), Brandon C. Kelly (Harvard),
+    Yin-Zhe Ma, Andisheh Mahdavi, Iain Murray (Edinburgh),
+    Hans-Walter Rix (MPIA), and David Schiminovich (Columbia) for
+    valuable comments and discussions.  This research was partially
+    supported by NASA (ADP grant NNX08AJ48G), NSF (grant AST-0908357),
+    and a Research Fellowship of the Alexander von Humboldt
+    Foundation.  This research made use of the Python programming
+    language and the open-source Python packages scipy, numpy, and
+    matplotlib.}
 
 \begin{problem}\label{prob:intrinsic}
 Re-do \problemname~\ref{prob:twod}, but now allowing for an orthogonal
@@ -2219,9 +2214,6 @@ limits?
 The marginalized posterior probability distribution for the intrinsic
 variance.}\label{fig:bayesintrinsic}
 \end{figure}
-
-\clearpage
-\markright{Notes}\theendnotes
 
 \clearpage
 \begin{thebibliography}{}\markright{References}

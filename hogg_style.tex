@@ -1,12 +1,11 @@
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{mathrsfs}
-\IfFileExists{./hogg_endnotes.sty}{\usepackage{./hogg_endnotes}}{}
-\IfFileExists{../hogg_endnotes.sty}{\usepackage{../hogg_endnotes}}{}
 \usepackage{natbib}
 \usepackage{float}
 \usepackage{graphicx}
 \usepackage{multirow}
+\usepackage{url}
 
 %%Figure caption
 \makeatletter
@@ -51,9 +50,8 @@
 \newcommand{\notename}{note}
 \renewcommand{\and}{{\footnotesize{and}}}
 
-\newcommand{\note}[1]{\endnote{#1}}
-\def\enotesize{\normalsize}
-\renewcommand{\thefootnote}{\fnsymbol{footnote}} % the ONE footnote needs this
+\newcommand{\note}[1]{\footnote{#1}}
+\renewcommand{\thefootnote}{\textbf{\arabic{footnote}}}
 
 \newcounter{problem}
 \newenvironment{problem}{\paragraph{\problemname~\theproblem:}\refstepcounter{problem}}{}
