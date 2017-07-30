@@ -1,11 +1,10 @@
 % This file is part of the Data Analysis Recipes project.
-% Copyright 2010, 2011, 2012, 2013 David W. Hogg, Jo Bovy, Dustin Lang.
+% Copyright 2010, 2011, 2012, 2013, 2017 David W. Hogg, Jo Bovy, Dustin Lang.
 
 % to-do for next revision
 % -----------------------
 % - Make sure it is clear that by ``optimize'' in the exercises we mean ``by computer'' rather than ``by hand'' (where we do).  Thank Joe Romano (email dated 2012-06-11).
 % - Make sure that what we say about goodness-of-fit is not inconsistent with Gelman's philosophy papers; cite those.
-% - Incorporate changes around equation (32) as suggested by Mahdavi in email from 2011-12-30-ish; ack Mahdavi.
 
 \documentclass[12pt,twoside,pdftex]{article}
 \usepackage{amssymb,amsmath,mathrsfs,../deluxetable,../hogg_endnotes,natbib}
@@ -1874,10 +1873,15 @@ sense, a missing datum for each point.\note{One amusing aspect of
   probability distribution function for the true position of any
   individual data point, under the assumptions of the generative
   model.  That is, it is possible to reconstruct the missing data.}
-One approach is to think of the straight line as a two-dimensional
-Gaussian with an infinite eigenvalue corresponding to the direction of
-the line and a zero eigenvalue for the direction orthogonal to
-this. In the end, this line of argument leads to \emph{projections} of
+One approach---and it is not the only approach\note{There is no
+  solution to the problem of fitting a line when there are
+  uncertainties in both directions that does not require or bring in
+  additional assumptions. There are many different approaches to the
+  problem and the one presented here is only one of them.}---is to
+think of the straight line as a two-dimensional Gaussian with an
+infinite eigenvalue corresponding to the direction of the line and a
+zero eigenvalue for the direction orthogonal to this.
+In the end, this line of argument leads to \emph{projections} of
 the two-dimensional uncertainty Gaussians along the line (or onto the
 subspace that is orthogonal to the line), and evaluation of those at
 the \emph{projected displacements}.  Projection is a standard linear
@@ -1886,9 +1890,9 @@ notation.\note{The fact that the marginalization over the true
   positions of the points reduces to a projection along the line---or
   onto the subspace orthogonal to the line---makes this method very
   similar to that called ``orthogonal least squares''.  This
-  generative model justifies that procedure, in the case when the
+  generative model (partly) justifies that procedure, in the case when the
   orthogonal displacements are penalized by the properly projected
-  uncertainties.}
+  uncertainties, and the relevant log-determinant term is included.}
 
 A slope $m$ can be described by a unit vector $\vhat$
 \emph{orthogonal} to the line or linear relation:
