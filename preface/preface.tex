@@ -1,0 +1,100 @@
+% This file is part of the Data Analysis Recipes project.
+% Copyright 2020 the author.
+
+\documentclass[12pt,twoside,pdftex]{article}
+\usepackage{amssymb,amsmath,mathrsfs,../deluxetable,../hogg_endnotes,natbib}
+\usepackage{url}
+\input{../hogg_style}
+\usepackage{float,graphicx}
+
+% ask dstn about this insanity
+%\usepackage{mparhack}
+%\usepackage{numberparagraphs}
+\newcommand{\numberparagraphs}{}
+%\newcommand{\nonumberparagraphs}{}
+
+% header stuff
+\renewcommand{\MakeUppercase}[1]{#1}
+\pagestyle{myheadings}
+\renewcommand{\sectionmark}[1]{\markright{\thesection.~#1}}
+\markboth{Foo and Bar}{}
+
+\begin{document}
+\thispagestyle{plain}\raggedbottom
+\section*{\raggedright
+  Everything I know about data analysis, all in one place\footnotemark}
+
+\footnotetext{%
+  The \notename s begin on page~\pageref{note:first}, including the
+  license\note{\label{note:first}%
+    Copyright 2020 by the author.  You may copy and distribute this
+    document provided that you make no changes to it whatsoever.}  and
+  the acknowledgements\note{%
+    Above all I owe thanks to all my students, postdocs, and collaborators,
+    from whom I learned all this---by doing it.
+    This research was supported by NASA, the NSF, the Simons Foundation,
+    the Moore Foundation, the Sloan Foundation, and the 
+    Alexander von Humboldt Foundation.}}
+
+\noindent
+David~W.~Hogg\\
+\affil{Center~for~Cosmology~and~Particle~Physics, Department~of~Physics, New York University}\\
+\affil{Max-Planck-Institut f\"ur Astronomie, Heidelberg}\\
+\affil{Flatiron Institute, a division of the Simons Foundation}
+
+\begin{abstract}
+  Here are the points I will make: Foo and bar.
+\end{abstract}
+
+\numberparagraphs
+
+I learned all this by doing it, in collaboration with others!
+
+\clearpage
+\markright{Notes}\theendnotes
+
+\clearpage
+\begin{thebibliography}{}\markright{References}
+\bibitem[Bovy, Hogg, \& Roweis(2009)]{bovy}
+  Bovy,~J., Hogg,~D.~W., \& Roweis, S.~T., 2009,
+  Extreme deconvolution: inferring complete distribution functions from noisy, heterogeneous, and incomplete observations, 
+  arXiv:0905.2979 [stat.ME]
+\bibitem[Jaynes(2003)]{jaynes}
+  Jaynes,~E.~T., 2003,
+  \textit{Probability theory: the logic of science} (Cambridge University Press)
+\bibitem[Gilks, Richardson, \& Spiegelhalter(1995)]{gilksmcmc}
+  Gilks,~W.~R., Richardson,~S., \& Spiegelhalter,~D., 1995,
+  \textit{Markov chain Monte Carlo in practice: interdisciplinary statistics} (Chapman \& Hall/CRC)
+\bibitem[Hampel \etal(1986)]{hampel}
+  Hampel,~F.~R., Ronchetti,~E.~M., Rousseeuw,~P.~J., \& Stahel,~W.~A., 1986, 
+  \textit{Robust statistics: the approach based on influence functions} (New York: Wiley)
+\bibitem[Isobe \etal(1990)]{isobe90}
+  Isobe,~T., Feigelson, E.~D., Akritas,~M.~G., \& Babu,~G.~J., 1990,
+  Linear regression in astronomy,
+  \textit{Astrophysical Journal} \textbf{364} 104
+\bibitem[Kelly(2007)]{kelly07}
+  Kelly,~B.~C., 2007,
+  Some aspects of measurement error in linear regression of astronomical data,
+  \textit{Astrophysical Journal} \textbf{665} 1489
+\bibitem[Mackay(2003)]{mackay}
+  Mackay,~D.~J.~C., 2003,
+  \textit{Information theory, inference, and learning algorithms} (Cambridge University Press)
+\bibitem[Neal(2003)]{neal2003a}
+  Neal.,~R.~M., 2003,
+  Slice sampling,
+  \textit{Annals of Statistics}, \textbf{31}(3), 705
+\bibitem[Press(1997)]{pressH0}
+  Press,~W.~H., 1997,
+  Understanding data better with Bayesian and global statistical methods,
+  in \textit{Unsolved problems in astrophysics,}
+  eds. Bahcall,~J.~N. \& Ostriker,~J.~P. (Princeton University Press)
+  49--60
+\bibitem[Press \etal(2007)]{press}
+  Press,~W.~H., Teukolsky,~S.~A., Vetterling,~W.~T., \& Flannery,~B.~P., 2007,
+  \textit{Numerical recipes: the art of scientific computing} (Cambridge University Press)
+\bibitem[Sivia \& Skilling(2006)]{sivia}
+  Sivia,~D.~S. \& Skilling,~J., 2006,
+  \textit{Data analysis: a Bayesian tutorial} (Oxford University Press)
+\end{thebibliography}
+
+\end{document}
