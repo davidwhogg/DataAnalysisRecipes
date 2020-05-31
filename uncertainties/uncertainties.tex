@@ -19,12 +19,33 @@
 {\footnotesize Flatiron Institute}
 
 \paragraph{Abstract:}
+Any measurement you make using data ought to be reported with an uncertainty
+estimate (often called an ``error'' or an ``error bar'' unfortunately).
+I discuss and compare methodologies for making such estimates.
+One important consideration is whether you have a generative model for your
+data, with which either you can simulate your noisy data, or (even better)
+compute probability densities for different data sets.
+Even if you have a generative model, another important consideration is whether
+you believe it, or believe what it implies for the moments of
+the noise distribution.
+If you have a good generative model, information theory or data simulations can deliver
+measurement uncertainties.
+If you don't, bootstrap and jackknife methods provide well justified, empirical
+alternatives.
+I also discuss the role of nuisance parameters in uncertainty estimation, and
+the differences between Bayesian and frequentist approaches and interpretation.
+I spend a bit of time on common issues and troubleshooting.
+One important idea is that the circumstances in which an uncertainty can be estimated
+precisely are rare: Even when you have a precise measurement, you probably won't know
+your uncertainty with similar precision.
 
 \section{Measurements and uncertainties}
 
 Hello world.
 
 Different ways of making a measurement: Bayes, max-like, rando estimator.
+
+Comments on terminology---should this be its own section?
 
 \section{The standard errors on a least-square fit}
 
