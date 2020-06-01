@@ -5,10 +5,13 @@
 % -----
 % - make up a toy data set and make problems.
 %   - make two different generative models for the toy data.
+%   - should have bayes and frequentist options.
+% - reformat in side-notes style like GaussianProductRefactor.
+% - get BibTeX working like GPR.
 
 \documentclass[12pt, letterpaper]{article}
 
-\begin{document}
+\begin{document}\sloppy\sloppypar\raggedbottom\frenchspacing
 
 \section*{Data Analysis Recipes:\\
   What is the uncertainty on my measurement?}
@@ -22,28 +25,43 @@
 Any measurement you make using data ought to be reported with an uncertainty
 estimate (often called an ``error'' or an ``error bar'' unfortunately).
 I discuss and compare methodologies for making such estimates.
-One important consideration is whether you have a generative model for your
+The options availble to you depend on whether you have a generative model for your
 data, with which either you can simulate your noisy data, or (even better)
 compute probability densities for different data sets.
-Even if you have a generative model, another important consideration is whether
-you believe it, or believe what it implies for the moments of
-the noise distribution.
+They also depend on whether you believe that model,
+or believe what it implies for the moments of the noise distribution.
 If you have a good generative model, information theory or data simulations can deliver
-measurement uncertainties.
-If you don't, bootstrap and jackknife methods provide well justified, empirical
-alternatives.
+measurement uncertainties; if you don't they can often provide strong bounds.
+Either way, bootstrap and jackknife methods provide well justified, empirical
+alternatives that I recommend.
 I also discuss the role of nuisance parameters in uncertainty estimation, and
 the differences between Bayesian and frequentist approaches and interpretation.
 I spend a bit of time on common issues and troubleshooting.
 One important idea is that the circumstances in which an uncertainty can be estimated
-precisely are rare: Even when you have a precise measurement, you probably won't know
-your uncertainty with similar precision.
+precisely are rare: Even when you have a very precise measurement, you probably won't
+know the uncertainty on that measurement with great precision.
 
 \section{Measurements and uncertainties}
 
-Hello world.
+You have data. There's something you want to measure. You have many
+options for making this measurement: You can come up with an
+\textsl{estimator}, that transforms your data (through arithmetic
+operations) into an estimate of the quantity you want to measure. You
+can write down a likelihood function---a probability density function
+(or pdf) for your data given the quantity you want to measure (and
+maybe other nuisance parameters)---and you can optimize it. That
+procedure will get you an estimator, but it would be a
+\textsl{maximum-likelihood estimator}, which has some great
+properties. Or you can write down, in addition to your likelihood
+function, a set of prior pdfs over parameters and perform
+\textsl{Bayesian inference}.  In each of these cases you will make
+some kind of measurement, and in each of these cases you will be
+expected to deliver that measurement with an associated \textsl{uncertainty}.
 
-Different ways of making a measurement: Bayes, max-like, rando estimator.
+Hello world---syntactical reference.
+
+Comments on interpretation; it's absurd! The frequentist interpretation is
+absurd. But the Bayesian interpretation requires additonal assumptions.
 
 Comments on terminology---should this be its own section?
 
@@ -60,6 +78,12 @@ Connection to Cram\'er--Rao bound and Fisher information.
 \section{Bayes}
 
 Foo
+
+You are only permitted to make one kind of uncertainty estimate in Bayes.
+
+So you better believe that model really really well.
+
+Or make it more baroque. (Good option for a problem / exercise!)
 
 \section{Data simulation}
 
