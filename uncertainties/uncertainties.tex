@@ -8,6 +8,7 @@
 %   - should have bayes and frequentist options.
 % - reformat in side-notes style like GaussianProductRefactor.
 % - get BibTeX working like GPR.
+% - Where does the point go that there are many qualitatively different sources of noise or uncertainty.
 
 \documentclass[12pt, letterpaper]{article}
 
@@ -61,7 +62,7 @@ function, a set of prior pdfs over parameters and perform
 some kind of measurement, and in each of these cases you will be
 expected to deliver that measurement with an associated \textsl{uncertainty}.
 
-This uncertainty can come from different kinds of operations, with
+This estimate of your uncertainty can come from different kinds of operations, with
 different epistemological status. In some kinds of uncertainty
 estimates, we use physical knowledge of the data-generating process to
 compute, from (essentially) theory, how the noise in the data
@@ -73,12 +74,52 @@ theoretical uncertainty estimates! But I discuss both in detail in what follows,
 because (in the physical sciences at least) there are often cases in which the
 theoretical uncertainties are very close to correct, or at least very useful.
 
-Hello world---syntactical reference.
+And---closely related to the above point---the \emph{source} of the
+uncertainty can be a well-defined noise process (like photon shot
+noise in a detector); or it can be an ill-understood noise process
+(like the variabilities of stars, for which we have no good model); or
+it can be something else (unknown calibration systematics, mistakes or
+wrong approximations in the physical model, and so on). For some analysses
+all of these noise processes are relevant; for others only some are.
+That is, the way uncertainties are estimated has something to do with
+\emph{how they will be used}. This is related to the (sometimes obscure)
+ways that physicists separate uncertainties into ``statistical'' and ``systematic''.
+And what's ``systematic'' to some users will be ``statistical'' to others.
+We will return to that point below.
 
-Comments on interpretation; it's absurd! The frequentist interpretation is
-absurd. But the Bayesian interpretation requires additonal assumptions.
+One of my grad-school mentors\footnote{Gerry Neugebauer (1932--2014),
+  who was one of the pioneers of infrared astrophysics, and the US
+  lead of the NASA \textsl{IRAS} Mission, and a wonderful human
+  being.} liked to say, when I said something about ``errors'' or
+``error bars'', that ``they are \emph{uncertainties} not
+\emph{errors}! If they were \emph{errors}, we'd correct them!'' That
+phrase rings in my head every day. But this points out a difficulty,
+which is in the interpretation of uncertainty estimates. When we say
+that some parameter is measured to be $42\pm 6$, what does that ``$\pm 6$''
+mean?  The answer depends a bit on your statistical philosophy:
+If you are a Bayesian, it means that you believe that, with some
+fairly well-defined probability (like maybe 68\,percent), the
+parameter is within that range.
 
-Comments on terminology---should this be its own section?
+Seem straightforward? It is, but the straightforwardness of Bayesians
+comes at a cost, which is in assumptions. If you don't want to make some
+of those assumptions, you can be a frequentist instead, but then the
+interpretation of the measurement $42\pm 6$ isn't so simple! For a frequentist
+the meaning is that in some well defined fraction (like maybe 68\,percent)
+of hypothetically repeated experiments with similar-quality data, the
+best-fit or estimated value of the parameter would be within that range.
+The Bayesian's answer is about the \emph{parameter}, the frequentist's
+answer is about hypothetically repeated \emph{counterfactual experiments}.
+The trade-off between assumptions and interpetation will come up again below.
+And, combined with this, there are things to say about the terribly named
+``confidence interval'' and the even worse-named ``credible region'' and other
+abominations.
+
+Most of you, I hope, don't care about such pedantic details and just
+want an \emph{uncertainty estimate on their measurement}. In what follows,
+I will try to give you that, with enough discussion to answer questions
+and explain your choices. We'll start with the theoretical approaches and
+then pivot to the empirical approaches.
 
 \section{The standard errors on a least-square fit}
 
@@ -122,6 +163,10 @@ What it looks like in very nonlinear situations (like period fitting).
 
 There is only bias and variance; nothing else.
 
+What is a statistical uncertainty? And what is a systematic one?
+
+When do you want to use the former? When do you want to add both in quadrature?
+
 \section{Common mistakes and troubleshooting}
 
 About 68\,percent of your values should be outside one sigma. What do think
@@ -139,6 +184,10 @@ Do I multiply my uncertainties down?
 Sometimes you only need the error bars to be correct in a
 \emph{relative} sense. If, say they are just being used to weight (by
 their squared inverses) data in a fit.
+
+Sometimes you have huge theoretical uncertainties and you want to use
+them in your analysis. Sometimes you have these and you \emph{don't} want
+to use them in your analysis.
 
 \section{Discussion}
 
