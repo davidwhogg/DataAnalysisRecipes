@@ -11,6 +11,8 @@
 
 \documentclass[12pt, letterpaper]{article}
 
+\newcommand{\documentname}{\textsl{Note}}
+
 \begin{document}\sloppy\sloppypar\raggedbottom\frenchspacing
 
 \section*{Data Analysis Recipes:\\
@@ -52,11 +54,24 @@ can write down a likelihood function---a probability density function
 maybe other nuisance parameters)---and you can optimize it. That
 procedure will get you an estimator, but it would be a
 \textsl{maximum-likelihood estimator}, which has some great
-properties. Or you can write down, in addition to your likelihood
+properties (to be discussed below).
+Or you can write down, in addition to your likelihood
 function, a set of prior pdfs over parameters and perform
 \textsl{Bayesian inference}.  In each of these cases you will make
 some kind of measurement, and in each of these cases you will be
 expected to deliver that measurement with an associated \textsl{uncertainty}.
+
+This uncertainty can come from different kinds of operations, with
+different epistemological status. In some kinds of uncertainty
+estimates, we use physical knowledge of the data-generating process to
+compute, from (essentially) theory, how the noise in the data
+contaminates the measurement. In other kinds of uncertainty estimates,
+we use the variance or noise visible in the data to estimate the measurement
+uncertainty. Loyal readers of \documentname s in this series can imagine that
+I am generally partial to empirical or data-driven uncertainty estimates over
+theoretical uncertainty estimates! But I discuss both in detail in what follows,
+because (in the physical sciences at least) there are often cases in which the
+theoretical uncertainties are very close to correct, or at least very useful.
 
 Hello world---syntactical reference.
 
@@ -120,6 +135,10 @@ analysis?
 Do I multiply my uncertainties up or do I add something in quadrature?
 
 Do I multiply my uncertainties down?
+
+Sometimes you only need the error bars to be correct in a
+\emph{relative} sense. If, say they are just being used to weight (by
+their squared inverses) data in a fit.
 
 \section{Discussion}
 
