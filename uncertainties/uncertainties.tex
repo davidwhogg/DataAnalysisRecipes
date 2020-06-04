@@ -6,23 +6,60 @@
 % - make up a toy data set and make problems.
 %   - make two different generative models for the toy data.
 %   - should have bayes and frequentist options.
-% - reformat in side-notes style like GaussianProductRefactor.
 % - get BibTeX working like GPR.
 % - Where does the point go that there are many qualitatively different
 %   sources of noise or uncertainty.
 % - See notes from Stars & Exoplanets meeting 2020-06-03.
 
-\documentclass[12pt, letterpaper]{article}
+\documentclass[10pt]{article}
+\usepackage{xcolor}
+\usepackage{marginfix} % necessary but possibly evil
 
+% text macros
 \newcommand{\documentname}{\textsl{Note}}
+
+% page layout stuff
+\setlength{\headheight}{0.0in}
+\setlength{\headsep}{0.0in}
+\setlength{\parindent}{\baselineskip}
+\setlength{\textwidth}{4.3in}
+\setlength{\textheight}{2\textwidth}
+\raggedbottom\sloppy\sloppypar\frenchspacing
+
+% this might be crazy, but here's my number
+\setlength{\marginparsep}{0.15in}
+\setlength{\marginparwidth}{2.7in}
+\newcounter{marginnote}
+\setcounter{marginnote}{0}
+\renewcommand{\footnote}[1]{\refstepcounter{marginnote}\textsuperscript{\themarginnote}\marginpar{\color{darkgray}\raggedright\footnotesize\textsuperscript{\themarginnote}#1}}
+\newcommand{\tfigurerule}{\rule{0pt}{1ex}\\ \rule{\marginparwidth}{0.5pt}\\ \rule{0pt}{0.25ex}}
+\newcommand{\bfigurerule}{\rule{0pt}{0.25ex}\\ \rule{\marginparwidth}{0.5pt}\\ \rule{0pt}{1ex}}
+\renewcommand{\caption}[1]{\parbox{\marginparwidth}{\footnotesize\refstepcounter{figure}\textbf{\figurename~\thefigure}: {#1}}}
+
+% and make the left margin correct
+\setlength{\oddsidemargin}{0.5\paperwidth}
+\addtolength{\oddsidemargin}{-1.0in}
+\addtolength{\oddsidemargin}{-0.5\textwidth}
+\addtolength{\oddsidemargin}{-0.5\marginparwidth}
+\addtolength{\oddsidemargin}{-0.5\marginparsep}
+
+% and the top margin
+\setlength{\topmargin}{0.5\paperheight}
+\addtolength{\topmargin}{-1.0in}
+\addtolength{\topmargin}{-0.5\textheight}
 
 \begin{document}\sloppy\sloppypar\raggedbottom\frenchspacing
 
 \section*{Data Analysis Recipes:\\
   What is the uncertainty on my measurement?}
 
-\textbf{David W. Hogg} \\
-{\footnotesize New York University} \\
+\textbf{David W. Hogg\footnote{%
+    It is a pleasure to thank
+    the participants in my data-analysis classes in New York City,
+    and
+    the weekly Stars and Exoplanets meeting at the Flatiron Insititute
+    for help with all of this material.}} \\
+{\footnotesize Center for Cosmology and Particle Physics, Dept Physics, New York University} \\
 {\footnotesize Max-Planck-Institut f\"ur Astronomie} \\
 {\footnotesize Flatiron Institute}
 
@@ -32,7 +69,7 @@ estimate (often called an ``error'' or an ``error bar'' unfortunately).
 I discuss and compare methodologies for making such estimates.
 The options availble to you depend on whether you have a generative model for your
 data, with which either you can simulate your noisy data, or (even better)
-compute probability densities for different data sets.
+you can compute probability densities for different data sets.
 They also depend on whether you believe that model,
 or believe what it implies for the moments of the noise distribution.
 If you have a good generative model, information theory or data simulations can deliver
