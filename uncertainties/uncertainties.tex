@@ -165,8 +165,8 @@ ways that physicists separate uncertainties into ``statistical'' and ``systemati
 And what's ``systematic'' to some users will be ``statistical'' to others.
 We will return to that point below.
 
-One of my grad-school mentors\footnote{Gerry Neugebauer (1932--2014),
-  who was one of the pioneers of infrared astrophysics, and the US
+One of my grad-school mentors\footnote{This was Gerry Neugebauer (1932--2014).
+  He was one of the pioneers of infrared astrophysics, and the US
   lead of the NASA \textsl{IRAS} Mission, and a wonderful human
   being.} liked to say, when I said something about ``errors'' or
 ``error bars'', that ``they are \emph{uncertainties} not
@@ -254,7 +254,16 @@ physicists call ``chi-squared''\footnote{HOGG: Differences between physicists
 \end{equation}
 The magic\footnote{This magic is described in much more detail in \cite{straightline}.}
 is that the maximum-likelihood parameter estimates
-$\hat{a}_k$ are given by straightforward linear algebra:
+$\hat{a}_k$ are given by straightforward linear algebra:\footnote{It is beyond the
+  scope of this \documentname, but if you are actually implementing the estimator
+  of \equationname~(\ref{eq:llsf}), you don't want to naively construct the
+  tensor $\tC$ (which is almost entirely zeros). Write your code to just do the
+  diagonal multiply directly. Also, you never want to use the inverse function
+  \code{inv()}; instead use the \code{solve()} or \code{(lstsq()} function, which
+  does the multiply by the inverse more precisely than just naively taking the
+  inverse. There are a lot more things to say about implementation that go
+  beyond these pieces of advice; I am putting these here just to make the point
+  that implementation of the simple formula isn't, itself, necessarily simple.}
 \begin{equation}\label{eq:llsf}
   \hat{\va} = [\mX\T\cdot\tC\inv\cdot\mX]\inv\cdot\mX\T\cdot\tC\inv\cdot\vy
 \end{equation}
@@ -292,16 +301,7 @@ $\tC\inv$ is the inverse variance tensor for the data\footnote{Note about
   non-negative definite, square martrices) like $\tC$.}
 which is diagonal in this simple case),
 and
-$\vy$ is the (column) vector of data points $y_n$.\footnote{It is beyond the
-  scope of this \documentname, but if you are actually implementing the estimator
-  of \equationname~(\ref{eq:llsf}), you don't want to naively construct the
-  tensor $\tC$ (which is almost entirely zeros). Write your code to just do the
-  diagonal multiply directly. Also, you never want to use the inverse function
-  \code{inv()}; instead use the \code{solve()} or \code{(lstsq()} function, which
-  does the multiply by the inverse more precisely than just naively taking the
-  inverse. There are a lot more things to say about implementation that go
-  beyond these pieces of advice; I am putting these here just to make the point
-  that implementation of the simple formula isn't, itself, necessarily simple.}
+$\vy$ is the (column) vector of data points $y_n$.
 
 When this (\ref{eq:llsf}) is your estimator for $\hat{\va}$, and when
 the assumptions (listed above) hold (or you are willing to hold
