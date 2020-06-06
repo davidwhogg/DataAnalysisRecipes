@@ -86,8 +86,7 @@
 
 \begin{document}\sloppy\sloppypar\raggedbottom\frenchspacing
 
-\section*{Data Analysis Recipes:\\
-  What is the uncertainty\\ on my measurement?}
+\section*{Data Analysis Recipes: What is \\ the uncertainty on my measurement?}
 
 \textbf{David W. Hogg}\footnote{%
     It is a pleasure to thank
@@ -288,6 +287,8 @@ $\vy$ is the (column) vector of data points $y_n$.\footnote{HOGG Note about type
 
 ...XTX is the inverse covariance matrix for the parameters $\va$. Define $\tC_a$.
 
+...Comment on units and dimensions of objects.
+
 ...If you want the uncertainty on JUST ONE component of $\va$, profiling out
 the rest or marginalizing out the rest (with a wide prior) then the relevant
 uncertainty is the diagonal element of $[\mX\T\cdot\tC\inv\cdot\mX]\inv$. There
@@ -331,12 +332,14 @@ to zero, we find the optimum given by the magic formula in
 \equationname~(\ref{eq:llsf}).
 If we take two derivatives of $\ln\like(\va)$ with respect to $\va$ we get
 \begin{equation}
-  \frac{\dd^2}{\dd\va^2}\,\ln\like(\va) = -\mX\T\cdot\tC\inv\cdot\mX
+  -\frac{\dd^2}{\dd\va^2}\,\ln\like(\va) = \mX\T\cdot\tC\inv\cdot\mX = \tC_a\inv
   \quad.
 \end{equation}
 That is, the (negative of the) second derivative of the log-likelihood function is
 the inverse variance tensor $\tC_a\inv$.
 That's important for generalizing the simple, linear case.
+
+...Comment on units and shapes of objects.
 
 ...NOTE language that the inverse variance is called the information tensor or the precision matrix or other such things.
 
