@@ -197,13 +197,14 @@ I will try to give you that, with enough discussion to answer questions
 and explain your choices. We'll start with the theoretical approaches and
 then pivot to the empirical approaches.
 
-\section{The standard errors on a least-square fit}
+\section{Simplest case: the linear least-square fit}
 
 The simplest case for uncertainty estimation---and a case you may have
-encountered previously---is a standard, linear fit, as we have discussed endlessly
-in this series.\footnote{See, for example, the first two \sectionname s of
-  \cite{straightline}. And also the applied math in \cite{gaussianproduct}.}
-This is the case in which the following things hold:
+encountered previously---is a standard, linear fit, as we have
+discussed endlessly in this series.\footnote{See, for example, the
+  first two \sectionname s of \cite{straightline}. And also the
+  applied math in \cite{gaussianproduct}.}  This is the case in which
+the following things hold:
 \begin{itemize}
 \item You have $N$ data points $y_n$. These could be scalars or vectors, but
   let's call them scalars for now.
@@ -223,7 +224,7 @@ This is the case in which the following things hold:
     a collection of things. It is (at least) a prediction for the data and a
     prediction for the distribution of the noise. A model, for me, is everything
     that you need to construct a likelihood function, or a pdf for the data given
-    your parambers.}
+    your parameters.}
   is
   \begin{equation}
     y_n = \sum_{k=1}^K a_k\,x_{kn} + \mbox{noise}
@@ -240,7 +241,8 @@ physicists call ``chi-squared''\footnote{HOGG: Differences between physicists
 \begin{equation}
   \chi^2 = \sum_{n=1}^N \frac{\left[y_n - \sum_k a_k\,x_{kn}\right]^2}{\sigma^2_n}
 \end{equation}
-The magic is that the maximum-likelihood parameters $a_k$ (HOGG SHOULD I DISTINGUISH
+The magic\footnote{This magic is described in much more detail in \cite{straightline}.}
+is that the maximum-likelihood parameters $a_k$ (HOGG SHOULD I DISTINGUISH
 PARAMETERS from PARAMETER ESTIMATES?) are given by straightforward
 linear algebra:
 \begin{equation}
@@ -277,9 +279,15 @@ $\tC\inv$ is the inverse variance tensor (which is diagonal in this simple case)
 and
 $\vy$ is the (column) vector of data points $y_n$.\footnote{HOGG Note about typesetting!}
 
-...XTX is the inverse covariance matrix.
+...XTX is the inverse covariance matrix for the parameters $\va$. Define $\tC_a$.
 
-...Note that XTX is also the second derivative of the LLF.
+...If you want the uncertainty on JUST ONE component of $\va$, profiling out
+the rest or marginalizing out the rest (with a wide prior) then the relevant
+uncertainty is the diagonal element of $[\mX\T\cdot\tC\inv\cdot\mX]\inv$. There
+is a big difference between the diagonal element of $\tC_a$ and the inverse
+of the diagonal element of $\tC_a\inv$.
+
+...Note that XTX is also the second derivative of the LLF. That's important!
 
 ...Non-linear fit. What's different?
 
