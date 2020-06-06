@@ -11,6 +11,8 @@
 %   sources of noise or uncertainty.
 % - See notes from Stars & Exoplanets meeting 2020-06-03.
 % - Make common style file for both this document and GaussianProductRefactor
+% - Before submission: Check that all notes are displayed, and that they are on
+%   the correct pages; marginfix is unstable.
 
 \documentclass[10pt]{article}
 \usepackage{amsmath, bm, mathrsfs, amssymb}
@@ -22,6 +24,7 @@
             urlcolor=NavyBlue]{hyperref}
 \usepackage{graphicx}
 \usepackage{marginfix} % necessary but possibly evil
+% Note to the archaeologists who find this file: The marginfix package is unstable and buggy. It needs to be rewritten.
 
 % citation stuhh
 \usepackage{doi}
@@ -31,6 +34,7 @@
 
 % text macros
 \newcommand{\foreign}[1]{\textsl{#1}}
+\newcommand{\code}[1]{\texttt{#1}}
 \newcommand{\documentname}{\textsl{Note}}
 \newcommand{\sectionname}{Section}
 \newcommand{\equationname}{equation}
@@ -281,19 +285,74 @@ $\hat{a}_k$ are given by straightforward linear algebra:
 \end{equation}
 where $\hat{\va}$ is the (column) vector of parameter estimates $\hat{a}_k$,
 $\mX$ is the desgin matrix of features $x_{kn}$,
-$\tC\inv$ is the inverse variance tensor (which is diagonal in this simple case),
+$\tC\inv$ is the inverse variance tensor for the data\footnote{Note about
+  typesetting: I typeset vectors---which are all column vectors---like
+  $\va$, $\vy$. I typeset arbitrary rectangular matrices like $\mX$
+  and variance tensors or information tensors (which must be
+  non-negative definite, square martrices) like $\tC$.}
+which is diagonal in this simple case),
 and
-$\vy$ is the (column) vector of data points $y_n$.\footnote{HOGG Note about typesetting! And another footnote about implementation.}
+$\vy$ is the (column) vector of data points $y_n$.\footnote{It is beyond the
+  scope of this \documentname, but if you are actually implementing the estimator
+  of \equationname~(\ref{eq:llsf}), you don't want to naively construct the
+  tensor $\tC$ (which is almost entirely zeros). Write your code to just do the
+  diagonal multiply directly. Also, you never want to use the inverse function
+  \code{inv()}; instead use the \code{solve()} or \code{(lstsq()} function, which
+  does the multiply by the inverse more precisely than just naively taking the
+  inverse. There are a lot more things to say about implementation that go
+  beyond these pieces of advice; I am putting these here just to make the point
+  that implementation of the simple formula isn't, itself, necessarily simple.}
 
-...XTX is the inverse covariance matrix for the parameters $\va$. Define $\tC_a$.
+When this (\ref{eq:llsf}) is your estimator for $\hat{\va}$, and when
+the assumptions (listed above) hold (or you are willing to hold
+them\footnote{HOGG polemic here about subjectivity BUT ALSO
+  checkability of assumptions.}),
+then the formal or standard uncertainty on the $K$-vector of parameter
+estimates $\hat{\va}$ is the $K\times K$ uncertainty tensor $\tC_a$
+\begin{equation}
+  \tC_a = [\mX\T\cdot\tC\inv\cdot\mX]\inv
+  \quad.
+\end{equation}
+How do we interpret this object?
 
-...Comment on units and dimensions of objects.
+...HOGG interpret this object.
 
 ...If you want the uncertainty on JUST ONE component of $\va$, profiling out
 the rest or marginalizing out the rest (with a wide prior) then the relevant
 uncertainty is the diagonal element of $[\mX\T\cdot\tC\inv\cdot\mX]\inv$. There
 is a big difference between the diagonal element of $\tC_a$ and the inverse
 of the diagonal element of $\tC_a\inv$.
+
+...HOGG emphasize here strongly that we have now solved the problem good
+enough for many users. Only read on if this is \emph{not good enough} for your
+needs. It might not be good enough because your fit is nonlinear (ref forward).
+It might not be good enough because you don't have a LF (ref forward). It might
+not be good enough because you don't trust your uncertainty estimates or your
+other assumptions (ref forward).
+
+Perhaps because I am a physicist, I like to think in terms of units and dimensions.
+These linear-algebra operators have units, and the result $\hat{\va}$ must have correct
+units.
+The $N$-vector of data $\vy$ has, say,
+``data units'' (maybe photons per second, say, or maybe Kelvins, or maybe
+magnitudes or Janskys if you are an astronomer).
+Or maybe even each row of $\vy$ has its own special units, if the data are
+very heterogeneous.
+The inverse variance tensor $\tC\inv$ has inverse-data-squared units, because
+it contains inverted, squared uncertainties.
+The design matrix $\mX$ has units of ``data per parameter'' because when the
+features $x_{kn}$ in the design matrix are multiplied by the parameters $a_k$
+in the parameter vector $\va$ they produce predictions for the data.
+Again, every row of the parameter vector $\va$ can have different units, but
+then every element $x_{kn}$ of the design matrix $\mX$ has units of data element
+$y_n$ divided by the units of parameter $a_k$.
+With these observations, it is a nice exercise to show that the estimator
+$\hat{\va}$ given in \equationname~(\ref{eq:llsf}) has correct parameter
+units, and so does the uncertainty tensor $\tC_a$.\footnote{The
+  requirement that equations have correct units---that the left-hand
+  and right-hand sides of every equation have the same units---is a
+  fundamental symmetry of everything in all of science. Yes, I think
+  this is a symmetry.}
 
 \section{Generalization to nonlinear models}
 
@@ -307,7 +366,7 @@ The objective function $\chi^2$ can be written as
   \quad,
 \end{equation}
 where we have written this as a function of the parameter vector $\va$ because
-that is the thing with respect to which we minimized it to get the estimates
+that is the thing with respect to which we minimized to get the estimates
 $\hat{\va}$.
 The likelihood function---the probability density function (pdf) for
 the data given the parameters---can be written as
