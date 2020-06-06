@@ -30,8 +30,10 @@
 \setcitestyle{round,citesep={,},aysep={}}
 
 % text macros
+\newcommand{\foreign}[1]{\textsl{#1}}
 \newcommand{\documentname}{\textsl{Note}}
 \newcommand{\sectionname}{Section}
+\newcommand{\equationname}{equation}
 
 % math macros
 \newcommand{\hquad}{~~}
@@ -44,6 +46,7 @@
 \newcommand{\tensor}[1]{\mathbf{#1}}
 \renewcommand{\matrix}[1]{\mathsf{#1}}
 \newcommand{\normal}{\mathcal{N}\!\,}
+\newcommand{\like}{\mathscr{L}}
 
 % variables
 \newcommand{\va}{\vector{a}}
@@ -235,21 +238,25 @@ the following things hold:
 \end{itemize}
 When \emph{all} of these assumptions hold---or, really, when you are
 willing to assume \emph{all} of these things---the maximum-likelihood
-estimator for the parameters $a_k$ can be found by minimizing what
+estimates\footnote{I will distinguish a parameter,
+  for example $a_2$, from an \emph{estimate} of that parameter, for example $\hat{a}_2$.
+  The estimate is the outcome of applying an estimator to the data.
+  The parameter can in principle take on values other than the estimated value; the
+  parameter is a variable whereas the estimate is a value for that variable.}
+$\hat{a}_k$ for the parameters $a_k$ can be found by minimizing what
 physicists call ``chi-squared''\footnote{HOGG: Differences between physicists
   and statisticians here.}
 \begin{equation}
   \chi^2 = \sum_{n=1}^N \frac{\left[y_n - \sum_k a_k\,x_{kn}\right]^2}{\sigma^2_n}
 \end{equation}
 The magic\footnote{This magic is described in much more detail in \cite{straightline}.}
-is that the maximum-likelihood parameters $a_k$ (HOGG SHOULD I DISTINGUISH
-PARAMETERS from PARAMETER ESTIMATES?) are given by straightforward
-linear algebra:
-\begin{equation}
-  \va = [\mX\T\cdot\tC\inv\cdot\mX]\inv\cdot\mX\T\cdot\tC\inv\cdot\vy
+is that the maximum-likelihood parameter estimates
+$\hat{a}_k$ are given by straightforward linear algebra:
+\begin{equation}\label{eq:llsf}
+  \hat{\va} = [\mX\T\cdot\tC\inv\cdot\mX]\inv\cdot\mX\T\cdot\tC\inv\cdot\vy
 \end{equation}
 \begin{equation}
-  \va\T \equiv \begin{bmatrix} a_1 & a_2 & \hdots & a_K \end{bmatrix}
+  \hat{\va}\T \equiv \begin{bmatrix} \hat{a}_1 & \hat{a}_2 & \hdots & \hat{a}_K \end{bmatrix}
 \end{equation}
 \begin{equation}
   \mX \equiv \begin{bmatrix}
@@ -273,11 +280,11 @@ linear algebra:
   \vy\T \equiv \begin{bmatrix} y_1 & y_2 & y_3 & \hdots & y_N \end{bmatrix}
   \quad ,
 \end{equation}
-where $\va$ is the (column) vector of parameters $a_k$,
+where $\hat{\va}$ is the (column) vector of parameter estimates $\hat{a}_k$,
 $\mX$ is the desgin matrix of features $x_{kn}$,
 $\tC\inv$ is the inverse variance tensor (which is diagonal in this simple case),
 and
-$\vy$ is the (column) vector of data points $y_n$.\footnote{HOGG Note about typesetting!}
+$\vy$ is the (column) vector of data points $y_n$.\footnote{HOGG Note about typesetting! And another footnote about implementation.}
 
 ...XTX is the inverse covariance matrix for the parameters $\va$. Define $\tC_a$.
 
@@ -287,7 +294,51 @@ uncertainty is the diagonal element of $[\mX\T\cdot\tC\inv\cdot\mX]\inv$. There
 is a big difference between the diagonal element of $\tC_a$ and the inverse
 of the diagonal element of $\tC_a\inv$.
 
-...Note that XTX is also the second derivative of the LLF. That's important!
+\section{Generalization to nonlinear models}
+
+If you want to derive the magical linear least-squares estimator above,
+or if you want to generalize what we have done to nonlinear models,
+it is useful to note that the linear-algebra objects defined
+above have the following properties:
+The objective function $\chi^2$ can be written as
+\begin{equation}
+  \chi^2(\va) = [\vy - \mX\cdot\va]\T\cdot\tC\inv\cdot[\vy - \mX\cdot\va]
+  \quad,
+\end{equation}
+where we have written this as a function of the parameter vector $\va$ because
+that is the thing with respect to which we minimized it to get the estimates
+$\hat{\va}$.
+The likelihood function---the probability density function (pdf) for
+the data given the parameters---can be written as
+\begin{equation}
+  p(\vy\given\va) = \normal(\vy\given\mX\cdot\va,\tC)
+  \quad,
+\end{equation}
+where $\normal(x\given m,V)$ is the Gaussian pdf given mean $m$ and variance $V$.
+The log-likelihood function is
+\begin{equation}
+  \ln\like(\va) = -\frac{1}{2}\,\chi^2(\va) -\frac{1}{2}\,||2\pi\,\tC||
+  \quad,
+\end{equation}
+where $||V||$ is the determinant operator and we have written the
+log-likelihood as a function of the parameters $\va$ even though it is
+also a function of the data $\vy$ and the noise variance $\tC$.
+We write it as a function only of the parameters because when we manipulate it
+(in a moment), we only take derivatives with respect to these parameters.
+
+If we take one derivative of $\ln\like(\va)$ with respect to $\va$ and set it
+to zero, we find the optimum given by the magic formula in
+\equationname~(\ref{eq:llsf}).
+If we take two derivatives of $\ln\like(\va)$ with respect to $\va$ we get
+\begin{equation}
+  \frac{\dd^2}{\dd\va^2}\,\ln\like(\va) = -\mX\T\cdot\tC\inv\cdot\mX
+  \quad.
+\end{equation}
+That is, the (negative of the) second derivative of the log-likelihood function is
+the inverse variance tensor $\tC_a\inv$.
+That's important for generalizing the simple, linear case.
+
+...NOTE language that the inverse variance is called the information tensor or the precision matrix or other such things.
 
 ...Non-linear fit. What's different?
 
@@ -362,5 +413,9 @@ to use them in your analysis.
 \section{Discussion}
 
 Hello world.
+
+% Render the references
+\clearpage\raggedright
+\bibliography{refs}
 
 \end{document}
