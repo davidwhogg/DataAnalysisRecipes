@@ -9,6 +9,7 @@
 % - get BibTeX working like GPR.
 % - Where does the point go that there are many qualitatively different
 %   sources of noise or uncertainty.
+% - find a place to mention the Neyman--Pearson Lemma (and check spelling!)
 % - See notes from Stars & Exoplanets meeting 2020-06-03.
 % - Make common style file for both this document and GaussianProductRefactor
 % - Before submission: Check that all notes are displayed, and that they are on
@@ -247,8 +248,13 @@ estimates\footnote{I will distinguish a parameter,
   The parameter can in principle take on values other than the estimated value; the
   parameter is a variable whereas the estimate is a value for that variable.}
 $\hat{a}_k$ for the parameters $a_k$ can be found by minimizing what
-physicists call ``chi-squared''\footnote{HOGG: Differences between physicists
-  and statisticians here.}
+physicists call ``chi-squared''\footnote{For physicists, chi-squared is a statistic
+  of the data or an objective function to be minimized. It is like a metric distance
+  between the data and the model, where the metric is the inverse variance tensor
+  of the data. For statisticians, chi-squared is a distribution. It is the distribution
+  you expect for the sum of squares of (zero-mean) Gaussian draws. This difference in
+  the meaning of the word ``chi-squared'' causes some
+  confusion when we participate in interdisciplinary activities in data analysis.}
 \begin{equation}
   \chi^2 = \sum_{n=1}^N \frac{\left[y_n - \sum_k a_k\,x_{kn}\right]^2}{\sigma^2_n}
 \end{equation}
