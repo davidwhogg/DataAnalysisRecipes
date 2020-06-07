@@ -341,12 +341,25 @@ uncertainty is the diagonal element of $[\mX\T\cdot\tC\inv\cdot\mX]\inv$. There
 is a big difference between the diagonal element of $\tC_a$ and the inverse
 of the diagonal element of $\tC_a\inv$.
 
-...HOGG emphasize here strongly that we have now solved the problem good
-enough for many users. Only read on if this is \emph{not good enough} for your
-needs. It might not be good enough because your fit is nonlinear (ref forward).
-It might not be good enough because you don't have a LF (ref forward). It might
-not be good enough because you don't trust your uncertainty estimates or your
-other assumptions (ref forward).
+At this point we have delivered what is requested: An uncertainty estimate
+on the measurement!
+If this serves your needs, you are done and you don't need to read further,
+unless you want some understanding of what just happened.
+Of course for many of you I expect that this does \emph{not} meet your needs:
+It might be that your model is nonlinear, so the optimum (the maximum-likelihood
+estimator) is not a linear function of the data. That case will be discussed
+in \sectionname~\ref{sec:nonlinear}.
+It might be that you don't have an executable or tractable likelihood function.
+In this case, you either have to use data simulation to get your uncertainties,
+as discussed in \sectionname~\ref{sec:simulation}, or empirical approaches
+like bootstrap or jackknife, as discussed in \sectionname~\ref{sec:empirical}.
+It might be that I haven't met your needs because you don't have good noise
+estimates for your data points, or you aren't using a maximum-likelihood method
+at all. Or you don't have a generative model at all. Or you don't believe it, or
+want to check it. In these cases, you must use empirical approaches like those discussed
+in \sectionname~\ref{sec:empirical}. You have no choice.
+And of course I might be missing the point because your analysis is Bayesian.
+In that case I will talk to you in \sectionname~\ref{sec:bayes}.
 
 Perhaps because I am a physicist, I like to think in terms of units and dimensions.
 These linear-algebra operators have units, and the result $\hat{\va}$ must have correct
@@ -386,7 +399,7 @@ This is one of the indicators that the standard uncertainty estimate is a
 very theoretical object, and very brittle. We'll say more about this below.
 But first let's see how this uncertainty estimate generalizes and is justified.
 
-\section{Generalization to nonlinear models}
+\section{Generalization to nonlinear models}\label{sec:nonlinear}
 
 If you want to derive the magical linear least-squares estimator above,
 or if you want to generalize what we have done to nonlinear models,
@@ -436,7 +449,7 @@ That's important for generalizing the simple, linear case.
 
 ...Non-linear fit. What's different?
 
-\section{Information theory}
+\section{Information theory}\label{sec:info}
 
 Connection to Cram\'er--Rao bound and Fisher information.
 
@@ -444,7 +457,7 @@ Relationship of first derivative squared to second derivative.
 
 Note inherent frequentism in this point of view.
 
-\section{Bayes}
+\section{Bayes}\label{sec:bayes}
 
 Foo
 
@@ -454,7 +467,7 @@ So you better believe that model really really well.
 
 Or make it more baroque. (Good option for a problem / exercise!)
 
-\section{Data simulation}
+\section{Data simulation}\label{sec:simulation}
 
 Everything in the preceding \sectionname s has assumed that you are in posession
 of an executable likelihood function, or probability (or really pdf)
