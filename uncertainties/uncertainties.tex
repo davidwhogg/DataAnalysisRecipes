@@ -106,7 +106,7 @@
 Any measurement you make using data ought to be reported with an uncertainty
 estimate (often called an ``error'' or an ``error bar'' unfortunately).
 I discuss and compare methodologies for making such estimates.
-The options availble to you depend on whether you have a generative model for your
+The options available to you depend on whether you have a generative model for your
 data, with which either you can simulate your noisy data, or (even better)
 you can compute probability densities for different data sets.
 They also depend on whether you believe that model,
@@ -157,7 +157,7 @@ uncertainty can be a well-defined noise process (like photon shot
 noise in a detector); or it can be an ill-understood noise process
 (like the variabilities of stars, for which we have no good model); or
 it can be something else (unknown calibration systematics, mistakes or
-wrong approximations in the physical model, and so on). For some analysses
+wrong approximations in the physical model, and so on). For some analyses
 all of these noise processes are relevant; for others only some are.
 That is, the way uncertainties are estimated has something to do with
 \emph{how they will be used}. This is related to the (sometimes obscure)
@@ -214,7 +214,7 @@ the following things hold:
 \begin{itemize}
 \item You have $N$ data points $y_n$. These could be scalars or vectors, but
   let's call them scalars for now.
-\item Each data point $y_n$ has an assoicated noise variance
+\item Each data point $y_n$ has an associated noise variance
   $\sigma^2_n$, which is the variance of zero-mean Gaussian noise that
   affects each data point $y_n$.  You believe these noise variance
   estimates.\footnote{We will return to the question of testing or
@@ -259,7 +259,7 @@ $\hat{a}_k$ are given by straightforward linear algebra:\footnote{It is beyond t
   of \equationname~(\ref{eq:llsf}), you don't want to naively construct the
   tensor $\tC$ (which is almost entirely zeros). Write your code to just do the
   diagonal multiply directly. Also, you never want to use the inverse function
-  \code{inv()}; instead use the \code{solve()} or \code{(lstsq()} function, which
+  \code{inv()}; instead use the \code{solve()} or \code{lstsq()} function, which
   does the multiply by the inverse more precisely than just naively taking the
   inverse. There are a lot more things to say about implementation that go
   beyond these pieces of advice; I am putting these here just to make the point
@@ -293,7 +293,7 @@ $\hat{a}_k$ are given by straightforward linear algebra:\footnote{It is beyond t
   \quad ,
 \end{equation}
 where $\hat{\va}$ is the (column) vector of parameter estimates $\hat{a}_k$,
-$\mX$ is the desgin matrix of features $x_{kn}$,
+$\mX$ is the design matrix of features $x_{kn}$,
 $\tC\inv$ is the inverse variance tensor for the data\footnote{Note about
   typesetting: I typeset vectors---which are all column vectors---like
   $\va$, $\vy$. I typeset arbitrary rectangular matrices like $\mX$
