@@ -10,7 +10,8 @@
 % - Where does the point go that there are many qualitatively different
 %   sources of noise or uncertainty.
 % - find a place to mention the Neyman--Pearson Lemma (and check spelling!)
-% - See notes from Stars & Exoplanets meeting 2020-06-03.
+% - put some side-note on jackknife about relationship to cross-validation?
+% - See notes from Stars & Exoplanets meeting 2020-06-03 for various ideas.
 % - Make common style file for both this document and GaussianProductRefactor
 % - Before submission: Check that all notes are displayed, and that they are on
 %   the correct pages; marginfix is unstable.
@@ -311,8 +312,19 @@ $\vy$ is the (column) vector of data points $y_n$.
 
 When this (\ref{eq:llsf}) is your estimator for $\hat{\va}$, and when
 the assumptions (listed above) hold (or you are willing to hold
-them\footnote{HOGG polemic here about subjectivity BUT ALSO
-  checkability of assumptions.}),
+them\footnote{One of the themes of this \documentname\ and the others in this
+  series is that data analyses are always technically \emph{subjective}: You
+  make choices, based on your beliefs, and your methods flow from your choices.
+  Your estimator and your uncertainty on your estimated values both are
+  included in this: You have to make strong assumptions, hopefully based on your
+  beliefs, and maybe also on your \emph{utility} (because there are trade offs
+  between being accurate with your data and being tractable in your code).
+  I don't think this subjectivity is a problem, but I do think that it has to be
+  acknowledged and addressed. One of the most important things to note here is
+  that although things like Gaussianity and independence are \emph{assumptions},
+  these assumptions can be checked, empirically, with statistical tests. That is,
+  assumptions are subjective and defining, but they are not outside the realm
+  of empirical science. They are part of it.}),
 then the formal or standard uncertainty on the $K$-vector of parameter
 estimates $\hat{\va}$ is the $K\times K$ uncertainty tensor $\tC_a$
 \begin{equation}
@@ -359,6 +371,20 @@ units, and so does the uncertainty tensor $\tC_a$.\footnote{The
   and right-hand sides of every equation have the same units---is a
   fundamental symmetry of everything in all of science. Yes, I think
   this is a symmetry.}
+
+Finally, we should end this \sectionname\ on an upsetting note:
+The parameter uncertainty variance estimate
+$\tC_a = [\mX\T\cdot\tC\inv\cdot\mX]\inv$
+is based on the design matrix $\mX$ and the noise variance for the data $\tC$,
+but it makes no reference to the data $\vy$ themselves!
+That is, the data don't enter, only the precision of the data enters.
+That is, the uncertainty variance could be computed on the basis of the
+expected variance without any idea about the expected data.
+Or even the parameter values.
+See how strange this is?
+This is one of the indicators that the standard uncertainty estimate is a
+very theoretical object, and very brittle. We'll say more about this below.
+But first let's see how this uncertainty estimate generalizes and is justified.
 
 \section{Generalization to nonlinear models}
 
@@ -430,11 +456,56 @@ Or make it more baroque. (Good option for a problem / exercise!)
 
 \section{Data simulation}
 
-Hello world.
+Everything in the preceding \sectionname s has assumed that you are in posession
+of an executable likelihood function, or probability (or really pdf)
+for your data given the parameters.
+In many cases you don't have such a function, either because you don't have
+a well-formed belief about how your data are generated (or the noise process
+in particular), or because you do, but you can't tractably compute the
+pdf for the data evaluated at the parameters.
+This situation is not uncommon; we encounter it, for example,
+when we measure large-scale structure (two-point and higher-order statistics)
+in cosmology.
+When you don't have a tractable likelihood function, you have two-ish choices.
+One is to perform data simulations, which is the subject of this \sectionname,
+and the other is to use empirical measures of the uncertainty like bootstrap and
+jackknife, which are the subject of \sectionname~\ref{sec:empirical}.
 
-\section{Jackknife and bootstrap}
+...What to say here?
 
-Hello world.
+...How many simulations do you need?
+
+...Different kinds of parameters and resimulation?
+
+...Emulators?
+
+...What do you want to compute, really? Come back to the mistakes of LSS.
+
+\section{Jackknife and bootstrap}\label{sec:empirical}
+
+In many---or even most---of the data analysis project in which I have been
+involved, we have not confidently believed all of our assumptions about the
+noise processes contributing to our data.
+That is, we have not been confident that we have a realistic model of how
+the data were generated.
+This means that even if we can compute a likelihood function, we don't entirely
+believe it.
+And even if we can simulate our data, we don't believe that the simulated data
+will have all the issues that beset our real data.
+We cry out for an empirical method to assess our uncertainties!
+
+The statistics community hears our cries, and has responded with many options.
+Here we will discuss two that can be used (with care, perhaps) in almost every
+setting I regularly encounter: Jackknife and bootstrap.
+
+...Remind the reader that we didn't use the agreement between model and data
+at all in the above!!
+
+...Remind the reader that if our data is very noisy, the scatter around the
+model prediction or expectation will be large. So the noise variance is empirically
+accessible.
+
+...etc.
 
 \section{Nuisance parameters}
 
@@ -453,6 +524,8 @@ There is only bias and variance; nothing else.
 What is a statistical uncertainty? And what is a systematic one?
 
 When do you want to use the former? When do you want to add both in quadrature?
+
+\section{Upper limits and the like}
 
 \section{Visualizing and reporting uncertainties}
 
