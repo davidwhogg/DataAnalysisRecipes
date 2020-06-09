@@ -3,6 +3,7 @@
 
 % to-do
 % -----
+% - move problem / exercise macros in from other DARs.
 % - make up a toy data set and make problems.
 %   - make two different generative models for the toy data.
 %   - should have bayes and frequentist options.
@@ -223,7 +224,8 @@ the following things hold:
     believing your uncertainties below.}
 \item There are no other sources of noise and there is no
   non-Gaussianity (no skewness or kurtosis or outliers or the like) to
-  the noise. The noise in data point $y_n$ is independent of the noise
+  the noise.
+\item The noise in data point $y_n$ is independent of the noise
   in any other data point.\footnote{This assumption is the
     easiest---of all these assumptions---to relax.}
 \item There is a set of $K$ features $x_{kn}$ for each data point $y_n$ such that
@@ -399,6 +401,10 @@ This is one of the indicators that the standard uncertainty estimate is a
 very theoretical object, and very brittle. We'll say more about this below.
 But first let's see how this uncertainty estimate generalizes and is justified.
 
+HOGG: EXERCISE HERE where we do repeated experiments generating data
+and doing a linear fit and show that the best-fit parameters are
+Gaussian-distributed according to the rules above.
+
 \section{Generalization to nonlinear models}\label{sec:nonlinear}
 
 If you want to derive the magical linear least-squares estimator above,
@@ -459,13 +465,32 @@ Note inherent frequentism in this point of view.
 
 \section{Bayes}\label{sec:bayes}
 
-Foo
+If your data analysis is Bayesian, and you are obeying the rules of
+Bayesian inference, then the uncertainty estimation and noise propagation
+are automatically built in to your analysis.
+That is, in Bayesian inference, you are required to have a likelihood
+function\footnote{Of course there are Bayesian likelihood-free methods
+  such as (the terribly named) Approximate Bayesian Computation (see, for
+  example, \cite{??}). These methods are data-simulation methods and
+  live somewhere between the things I'm writing about in this \sectionname\ and
+  the things in \sectionname~\ref{sec:simulation}.} and also a prior, and your
+parameter estimation or measurement is performed by multiplying these
+two and displaying or summarizing the posterior pdf for the parameters
+of interest.
+Provided that you believe your likelihood function (which, if you are
+a subjective Bayesian, you explicitly must) and you believe your prior
+pdf (same), then you don't have to do anything else at all: Your posterior
+pdf is literally a probability density over all possible parameters that
+are consistent with your prior and your data. It contains all of the
+measurement and uncertainty that you could possibly want or need to know.
+You have no choice, and you get a full answer.
 
-You are only permitted to make one kind of uncertainty estimate in Bayes.
-
-So you better believe that model really really well.
+All that said ... So you better believe that model really really well.
 
 Or make it more baroque. (Good option for a problem / exercise!)
+
+Also: Lots of investigators vary the priors, but it is the likelihood function
+that needs to be challenged, usually! Cite Gelman.
 
 \section{Data simulation}\label{sec:simulation}
 
