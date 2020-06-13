@@ -202,9 +202,10 @@ abominations.
 
 Most of you, I hope, don't care about such pedantic details and just
 want an \emph{uncertainty estimate on your measurement}. In what follows,
-I will try to give you that, with enough discussion to answer questions
+I will try to help you get that, with enough discussion to answer questions
 and explain your choices. We'll start with the theoretical approaches and
-then pivot to the empirical approaches.
+then move on to the empirical approaches, followed by some troubleshooting and
+discussion about communication and assessment.
 
 \section{Simplest case: the linear least-square fit}
 
@@ -221,12 +222,19 @@ the following things hold:
   $\sigma^2_n$, which is the variance of zero-mean Gaussian noise that
   affects each data point $y_n$.  You believe these noise variance
   estimates.\footnote{We will return to the question of testing or
-    believing your uncertainties below.}
+    believing your uncertainties below. But one thing to note right here
+    is that there are many scientific contexts in which you do not have any
+    good idea of these individual-datum uncertainty variances $\sigma^2_n$.
+    If you don't know these, you can't use the uncertainty estimate developed in
+    this section and you need to use empirical methods like those discussed in
+    \sectionname~\ref{sec:empirical}. That is, this assumption---that you have
+    some quantitative understanding of the noise in your data---is critical
+    to the theoretical or information-theoretic discussion in this \sectionname.}
 \item There are no other sources of noise and there is no
   non-Gaussianity (no skewness or kurtosis or outliers or the like) to
   the noise.
 \item The noise in data point $y_n$ is independent of the noise
-  in any other data point.\footnote{This assumption is the
+  in any other data point.\footnote{This assumption turns out to be the
     easiest---of all these assumptions---to relax.}
 \item There is a set of $K$ features $x_{kn}$ for each data point $y_n$ such that
   the expectation for data point $y_n$ is going to be fit as a linear combination
