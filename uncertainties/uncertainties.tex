@@ -387,6 +387,14 @@ in the parameter vector $\va$ they produce predictions for the data.
 Again, every row of the parameter vector $\va$ can have different units, but
 then every element $x_{kn}$ of the design matrix $\mX$ has units of data element
 $y_n$ divided by the units of parameter $a_k$.
+Indeed, you can think of $\mX$ as a derivative of the expectation of the data
+vector $\vy$ with respect to the parameter vector $\va$
+\begin{equation}
+  \mX \approx \frac{\dd\vy}{\dd\va}
+\end{equation}
+where I am being a bit loose with notation because really it is not the
+derivative of the data $\vy$ but the derivative of the \emph{expectation} of the
+data.
 With these observations, it is a nice exercise to show that the estimator
 $\hat{\va}$ given in \equationname~(\ref{eq:llsf}) has correct parameter
 units, and so does the uncertainty tensor $\tC_a$.\footnote{The
