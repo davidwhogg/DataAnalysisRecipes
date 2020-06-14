@@ -631,6 +631,38 @@ MUST PASS.
 
 \section{Nuisance parameters}
 
+As we have implicitly discussed above, in most substantial data analyses, your
+model includes both important parameters you care about, like, say, the age of
+the Universe, and unimportant nuisance parameters you don't, like, say, the
+conversion between counts in your detector and the brightnesses of the supernovae
+you are measuring.
+If you are being conservative, you want to provide the final measurement uncertainty
+on the age of the Universe, including the effective noise contribution or uncertainty
+contribution from the unknown (and uninteresting) calibration parameters.\footnote{I
+  might comment here that I have spent a lot of my life determining calibration
+  parameters and I have even recommended that we---in some cases---think of the
+  calibration parameters as the important parameters, and the properties of the
+  Universe as the nuisances (CITE). So take this to be an example only; one scientist's
+  nuisance is another's objective.}
+How you account for these effects---how you propagate the uncertainty from the
+nuisance estimation---depends on how you are getting your uncertainties in the
+first place.
+It isn't difficult, but it requires some care and attention in some cases.
+
+Before I continue, I should remark that the inclusion or exclusion of
+nuisance parameters in fits can be a controversial subject, and is a
+place that investigators can introduce important but hard-to-catch
+adjustments to their uncertainty estimates.
+That is, two investigators, making the same measurement with the same data
+with the same likelihood function can get very different uncertainty estimates
+simply by including or excluding certain nuisance parameters in their fits.
+And this is not science fiction: Different cosmological projects in my lifetime
+have obtained very different uncertainty estimates by permitting different
+parameters to vary; funding for a project can be granted or declined on the basis
+of the forecast precision of that project; the temptation to fix important parameters
+can become overwhelming.
+...HOGG CITE the DETF and etc; do they discuss this?
+
 Difference between marginalizing and profiling.
 
 Identicality when it comes to the linear, Gaussian case.
@@ -665,10 +697,15 @@ corner plots.
 
 catalogs and data releases. Cite Malz.
 
-\section{Other and strange situations}
+\section{Other unpleasant situations}
 
 Upper limits and how to use them. And why NOT to report them. What are
 you trying to report?
+
+Related: What if your LF is undefined for, say, a negative eccentricity?
+
+Related: What if your LF is defined for a negative parameter, but your
+prior rules it out? Like the brightness of a star?
 
 What if your uncertainties are part of the model? This is possibly
 true if you are using a GP for your noise, say. Or if your
