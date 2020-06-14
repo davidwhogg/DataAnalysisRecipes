@@ -463,6 +463,18 @@ That's important for generalizing the simple, linear case.
 
 ...Non-linear fit. What's different?
 
+...The concept of linearizing and then doing what you did above. Note that this
+requires a choice of a fiducial point around which to linearize.
+
+...A reminder that uncertainties are rarely precisely known, so often linearization
+is as good as you need; do it and publish and stop reading now.
+
+If you want more theoretical backing, read \sectionname~\ref{sec:info}. If you
+don't trust your likelihood function, head to \sectionname~\ref{sec:empirical}.
+If you not only believe your likelihood function, but you are happy to put priors
+on all your parameters---or if you want to run MCMC---check
+out \sectionname~\ref{sec:bayes}.
+
 \section{Information theory}\label{sec:info}
 
 Connection to Cram\'er--Rao bound and Fisher information.
@@ -473,7 +485,16 @@ Note inherent frequentism in this point of view.
 
 \section{Bayes}\label{sec:bayes}
 
-If your data analysis is Bayesian, and you are obeying the rules of
+If your data analysis is Bayesian,\footnote{There are a lot of things that
+  can be meant by the word ``Bayesian'' but for our purposes here it only means
+  that you are doing your data analysis with a likelihood function \emph{and} a
+  prior pdf over the parameters. The information-theoretic considerations in the
+  previous \sectionname s are explicitly frequentist in justification, but (as so
+  often happens in data analysis) the final results are very similar between
+  frequentist and Bayesian uncertainty estimates. It is mainly their
+  interpretations that differ. Not all statisticians wojuld agree with me
+  on that last statement.}
+and you are obeying the rules of
 Bayesian inference, then the uncertainty estimation and noise propagation
 are automatically built in to your analysis.
 That is, in Bayesian inference, you are required to have a likelihood
@@ -493,11 +514,36 @@ are consistent with your prior and your data. It contains all of the
 measurement and uncertainty that you could possibly want or need to know.
 You have no choice, and you get a full answer.
 
-All that said ... So you better believe that model really really well.
-
+...All that said ... So you better believe that model really really well...
 Or make it more baroque. (Good option for a problem / exercise!)
 
-Also: Lots of investigators vary the priors, but it is the likelihood function
+...Now consider the fully Gaussian linear model again and note that the
+Bayesian uncertainty has closed form and is incredibly similar to the frequentist
+result; the only difference is that the prior pdf appears like an additional
+data point. And there is an additional---critical---assumption.
+
+...Now consider the linearized non-linear case. Same thing: very similar to
+the frequentist result.
+
+...In general...it's a mess but you get to use MCMC (note and cite). MCMC is a
+method of last resort but it requires little thinking (note on climate impact).
+
+...Note that you can't run MCMC without priors. And no, flat priors are not no
+priprs. A sampling \emph{has no meaning} without priors. Why not?
+
+...And the theorem that Goodman pointed me to that give some limits in which
+Bayesian and frequentist confidence intervals are identical.
+
+...Now am I bringing together frequentists and Bayesians? No, because the
+interpretation is \emph{totally different}. In the one you have figured out the
+probability in which your experiment would get your data, given a particular
+parameter value; while in the other you have figured out the probability that
+the universe has your parameter value, given your data. So be very careful
+what you say in your papers, people. Take some time to criticize but explain the
+confidence vs credible terminology.
+
+...But I will say something that both frequentists and Bayesians can agree on:
+Lots of investigators vary the priors, but it is the likelihood function
 that needs to be challenged, usually! Cite Gelman.
 
 \section{Data simulation}\label{sec:simulation}
