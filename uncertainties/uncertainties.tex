@@ -132,6 +132,8 @@ I spend a bit of time on common issues and troubleshooting.
 One important idea is that the circumstances in which an uncertainty can be estimated
 precisely are rare: Even when you have a very precise measurement, you probably won't
 know the uncertainty on that measurement with great precision.
+In part for this reason, a (bad) summary of my recommendations is to use
+the standard linear or linearized uncertainty, or jackknife, or both.
 
 \section{Measurements and uncertainties}
 
@@ -411,6 +413,11 @@ units, and so does the uncertainty tensor $\tC_a$.\footnote{The
   fundamental symmetry of everything in all of science. Yes, I think
   this is a symmetry.}
 
+It is sometimes useful for intuition-building to note that the uncertainty
+tensor $\tC_a$ shares things in common with the kinds of uncertainty or noise
+propagation that is sometimes taught in undergraduate lab classes. In these
+contexts you learn.... HOGG!
+
 Finally, we should end this \sectionname\ on an upsetting note:
 The parameter uncertainty variance estimate
 $\tC_a = [\mX\T\cdot\tC\inv\cdot\mX]\inv$
@@ -591,8 +598,8 @@ jackknife, which are the subject of \sectionname~\ref{sec:empirical}.
 
 \section{Jackknife and bootstrap}\label{sec:empirical}
 
-In many---or even most---of the data analysis project in which I have been
-involved, we have not confidently believed all of our assumptions about the
+In many---or even most---of the data analysis projects in which I have been
+involved, we have \emph{not} confidently believed all of our assumptions about the
 noise processes contributing to our data.
 That is, we have not been confident that we have a realistic model of how
 the data were generated.
@@ -614,6 +621,10 @@ model prediction or expectation will be large. So the noise variance is empirica
 accessible.
 
 ...etc.
+
+...At the end come back to the point that even if you DO believe your noise
+model and your LF you still want to do jackknife to check it all. This test
+MUST PASS.
 
 \section{Nuisance parameters}
 
@@ -685,6 +696,8 @@ their squared inverses) data in a fit.
 Sometimes you have huge theoretical uncertainties and you want to use
 them in your analysis. Sometimes you have these and you \emph{don't} want
 to use them in your analysis.
+
+I have a good LF but then I did jackknife and it disagrees!
 
 \section{Discussion}
 
