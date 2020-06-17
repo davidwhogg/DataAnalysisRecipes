@@ -359,9 +359,11 @@ $k,k$ element of $\tC_a$ is the squared uncertainty $\sigma^2_{ak}$ on parameter
 $a_k$.
 These uncertainties are conservative in the sense that the diagonal element of
 the tensor $\tC_a$ is the uncertainty on the parameter,
-\emph{permitting the other parameters
-  to vary} or including the uncertainty that comes from the fact that you don't know
+\emph{permitting the other parameters to vary}
+or including the uncertainty that comes from the fact that you don't know
 those parameters in advance or separately.
+This point is related to questions of nuisance parameters (marginalization or
+profiling) to be discussed in \sectionname~\ref{sec:nuisances}.
 The uncertainty is \emph{not} conservative, however, in the sense that it depends
 critically on the assumptions we made at the beginning of this \sectionname, to wit,
 that the noise in the data is purely Gaussian with zero mean and with known variances
@@ -369,20 +371,35 @@ and uncorrelated.
 
 You might ask: If the diagonal element of the tensor $\tC_a$ is the squared uncertainty
 on the parameter, what is the meaning of the diagonal element of the inverse
-uncertainty tensor $\tC_a\inv$? This is sometimes called the \textsl{precision
-  matrix} or \textsl{information tensor}.
+uncertainty tensor\footnote{An inverse uncertainty tensor
+  is sometimes called a \textsl{precision matrix} or \textsl{information tensor},
+  for reasons that will appear in \sectionname~\ref{sec:info}.}
+$\tC_a\inv$? 
 It turns out that the diagonal element of $\tC_a\inv$ is not the inverse of the
 square of the uncertainty on the parameter, or it is, but now \emph{not} taking
 into account the uncertainties on the other parameters.
 That is, the inverse-square-root of the $k,k$ element
-of the information tensor $\tC_a\inv$ is not a
-conservative uncertainty on parameter $a_k$.\footnote{A figure demonstrating this
+of the information tensor $\tC_a\inv$ is not as
+conservative an uncertainty estimate for parameter $a_k$ as is the square-root of the
+$k,k$ element of the uncertainty tensor $\tC_a$.\footnote{A figure demonstrating this
   difference would be cool! Hogg}
-We will return to this discussion in more detail below in
-\sectionname~\ref{sec:nuisances}.
+We will return to this discussion in \sectionname~\ref{sec:nuisances}.
 
-And what is the interpretation of the off-diagonal elements of the uncertainty
-tensor $\tC_a$? HOGG SAY THINGS...
+Now what about the off-diagonal elements of the uncertainty tensor $\tC_a$?
+The quick answer is that if the off-diagonal $k,k'$ element of $\tC_a$ is positive,
+then if you (through bad luck) are over-estimating parameter $a_k$ then you are
+also likely to be over-estimating parameter $a_{k'}$.
+Or, alternatively, then you might know the \emph{difference} between the parameters
+(if they have the same units\footnote{Never subtract two quantities that have different
+  units---nor add them---for God's sake!}),
+or the \emph{ratio} of the parameters more precisely than you know either of them
+individually.
+On the contrary, if it is negative, then an over-estimate of one parameter should
+be associated with an under-estimate of the other, and you might know the sum
+or product better than either individually.
+In detail it is hard to have good, universal intuitions about these covariances.
+I will return to these matters in \sectionname~\ref{sec:viz}, where we look at how
+to visualize uncertainties and uncertainty tensors.
 
 At this point we have delivered what is requested: An uncertainty estimate
 on the measurement!
@@ -702,7 +719,7 @@ What is a statistical uncertainty? And what is a systematic one?
 
 When do you want to use the former? When do you want to add both in quadrature?
 
-\section{Visualizing and reporting uncertainties}
+\section{Visualizing and reporting uncertainties}\label{sec:viz}
 
 error bars
 
