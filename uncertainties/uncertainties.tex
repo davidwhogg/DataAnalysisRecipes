@@ -353,13 +353,33 @@ estimates $\hat{\va}$ is the $K\times K$ uncertainty tensor $\tC_a$
 \end{equation}
 How do we interpret this object?
 
-...HOGG interpret this object.
+The diagonal elements of the uncertainty tensor $\tC_a$ are the squared uncertainties
+(variances of the uncertainty distribution) for the parameters. That is, the
+$k,k$ element of $\tC_a$ is the squared uncertainty $\sigma^2_{ak}$ on parameter
+$a_k$.
+These uncertainties are conservative in the sense that the diagonal element of
+the tensor $\tC_a$ is the uncertainty on the parameter,
+\emph{permitting the other parameters
+  to vary} or including the uncertainty that comes from the fact that you don't know
+those parameters in advance or separately.
+The uncertainty is \emph{not} conservative, however, in the sense that it depends
+critically on the assumptions we made at the beginning of this \sectionname, to wit,
+that the noise in the data is purely Gaussian with zero mean and with known variances
+and uncorrelated.
 
-...If you want the uncertainty on JUST ONE component of $\va$, profiling out
-the rest or marginalizing out the rest (with a wide prior) then the relevant
-uncertainty is the diagonal element of $[\mX\T\cdot\tC\inv\cdot\mX]\inv$. There
-is a big difference between the diagonal element of $\tC_a$ and the inverse
-of the diagonal element of $\tC_a\inv$.
+You might asK: If the diagonal element of the tensor $\tC_a$ is the squared uncertainty
+on the parameter, what is the meaning of the diagonal element of the inverse
+uncertainty tensor $\tC_a\inv$? This is sometimes called the \textsl{precision
+  matrix} or \textsl{information tensor}.
+It turns out that the diagonal element of $\tC_a\inv$ is not the inverse of the
+square of the uncertainty on the parameter, or it is, but now \emph{not} taking
+into account the uncertainties on the other parameters.
+That is, the inverse-square-root of the $k,k$ element
+of the information tensor $\tC_a\inv$ is not a
+conservative uncertainty on parameter $a_k$.\footnote{A figure demonstrating this
+  difference would be cool! Hogg}
+We will return to this discussion in more detail below in
+\sectionname~\ref{sec:nuisances}.
 
 At this point we have delivered what is requested: An uncertainty estimate
 on the measurement!
@@ -629,7 +649,7 @@ accessible.
 model and your LF you still want to do jackknife to check it all. This test
 MUST PASS.
 
-\section{Nuisance parameters}
+\section{Nuisance parameters}\label{sec:nuisances}
 
 As we have implicitly discussed above, in most substantial data analyses, your
 model includes both important parameters you care about, like, say, the age of
