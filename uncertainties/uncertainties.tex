@@ -324,7 +324,7 @@ $\mX$ is the design matrix of features $x_{kn}$,
 $\tC\inv$ is the inverse variance tensor for the data\footnote{Note about
   typesetting: I typeset vectors---which are all column vectors---like
   $\va$, $\vy$. I typeset arbitrary rectangular matrices like $\mX$
-  and variance tensors or information tensors (which must be
+  and variance tensors (which must be
   non-negative definite, square martrices) like $\tC$.}
 which is diagonal in this simple case),
 and
@@ -379,11 +379,11 @@ It turns out that the diagonal element of $\tC_a\inv$ is not the inverse of the
 square of the uncertainty on the parameter, or it is, but now \emph{not} taking
 into account the uncertainties on the other parameters.
 That is, the inverse-square-root of the $k,k$ element
-of the information tensor $\tC_a\inv$ is not as
+of the inverse uncertainty tensor $\tC_a\inv$ is not as
 conservative an uncertainty estimate for parameter $a_k$ as is the square-root of the
 $k,k$ element of the uncertainty tensor $\tC_a$.\footnote{A figure demonstrating this
   difference would be cool! Hogg}
-We will return to this discussion in \sectionname~\ref{sec:nuisances}.
+We will return to this point and discuss it further in \sectionname~\ref{sec:nuisances}.
 
 Now what about the off-diagonal elements of the uncertainty tensor $\tC_a$?
 The quick answer is that if the off-diagonal $k,k'$ element of $\tC_a$ is positive,
@@ -717,15 +717,19 @@ place that investigators can introduce important but hard-to-catch
 adjustments to their uncertainty estimates.
 That is, two investigators, making the same measurement with the same data
 with the same likelihood function can get very different uncertainty estimates
-simply by including or excluding certain nuisance parameters in their fits.
-And this is not science fiction: Different cosmological projects in my lifetime
-have obtained very different uncertainty estimates by permitting different
-parameters to vary; funding for a project can be granted or declined on the basis
-of the forecast precision of that project; the temptation to fix important parameters
-can become overwhelming.
-...HOGG CITE the DETF and etc; do they discuss this?
+simply by including or excluding certain nuisance parameters in their
+fits.\footnote{This is not science fiction: Different cosmological
+  projects in my lifetime have obtained very different uncertainty
+  estimates by permitting different parameters to vary; funding for a
+  project can be granted or declined on the basis of the forecast
+  precision of that project; the temptation to fix important
+  parameters can become overwhelming.  ...HOGG CITE the DETF and etc;
+  do they discuss this?}
 
-Difference between marginalizing and profiling.
+Why is it that the introduction of a free nuisance parameter will in general
+increase the uncertainty on your parameters of interest? Hogg....
+
+... HOGG: Difference between marginalizing and profiling.
 
 Identicality when it comes to the linear, Gaussian case.
 
