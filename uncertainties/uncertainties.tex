@@ -135,7 +135,7 @@ know the uncertainty on that measurement with great precision.
 In part for this reason, a (bad) summary of my recommendations is to use
 the standard linear or linearized uncertainty, or jackknife, or both.
 
-\section{Measurements and uncertainties}
+\section{Measurements and uncertainties}\label{sec:intro}
 
 You have data. There's something you want to measure. You have many
 options for making this measurement: You can come up with an
@@ -479,7 +479,7 @@ Gaussian-distributed according to the rules above.
 \section{Generalization to nonlinear models}\label{sec:nonlinear}
 
 If you want to derive the magical linear least-squares estimator above,
-or if you want to generalize what we have done to nonlinear models,
+or if you want to generalize to nonlinear models,
 it is useful to note that the linear-algebra objects defined
 above have the following properties:
 The objective function $\chi^2$ can be written as
@@ -629,7 +629,29 @@ One is to perform data simulations, which is the subject of this \sectionname,
 and the other is to use empirical measures of the uncertainty like bootstrap and
 jackknife, which are the subject of \sectionname~\ref{sec:empirical}.
 
-...What to say here?
+As we said in the introduction (\sectionname~\ref{sec:intro}), the
+frequentist definition of uncertainty is literally tied to what you
+\emph{would have gotten} if you had repeated the experiment.
+And that is also the implicit setting for the information-theoretic
+derivation and discussion in \sectionname~\ref{sec:info}.
+So---it stands to reason that---if you can simulate your data with a
+simulation you believe, you can generate standard uncertainties
+directly through simulation.
+The idea is simple: Make a simulation of the data at known true
+parameters $\tilde{\va}$, obtain estimated values for the parameters
+$\hat{\va}$ in that simulated data set using your estimator, repeat
+$K$ times, and then estimate the variance (or full distribution) of
+the mistakes you made.
+
+...why am I talking about ``mistakes''? Well, when you know the truth and you have
+an estimate, there is a difference between them. This is not the uncertainty; it
+is a draw from the distribution over uncertainties. And I am not going to call
+it an ``error'' because that term is over-loaded (see \sectionname~\ref{sec:intro}).
+
+...note that you have to choose a fiducial point in parameter space.
+
+...note that you can compute bias also, which is interesting. And the whole
+distribution of mistakes.
 
 ...How many simulations do you need?
 
