@@ -217,7 +217,7 @@ and explain your choices. We'll start with the theoretical approaches and
 then move on to the empirical approaches, followed by some troubleshooting and
 discussion about communication and assessment.
 
-\section{Simplest case: the linear least-square fit}
+\section{Simplest case: the linear least-square fit}\label{sec:standard}
 
 The simplest case for uncertainty estimation---and a case you may have
 encountered previously---is a standard, linear fit, as we have
@@ -475,6 +475,38 @@ But first let's see how this uncertainty estimate generalizes and is justified.
 HOGG: EXERCISE HERE where we do repeated experiments generating data
 and doing a linear fit and show that the best-fit parameters are
 Gaussian-distributed according to the rules above.
+
+\section{A common fallacy about chi-squared}\label{sec:fallacy}
+
+The uncertainty can be thought of as the distance you are permitted to move
+the parameters without changing chi-squared by more than 1 (is that correct??)
+...
+The eigenvalues and eigenvectors of $\tC_a$ are the orthogonal
+semi-axes of an ellipsoid in parameter space describing the parameter-space
+volume in which you are permitted to move the parameters without increasing chi-squared
+away from its minimum value by more than 1...
+
+At the same time, we learn that if the model we are fitting is a \emph{good fit},
+then chi-squared is expected to be $\nu\pm\sqrt{2\,\nu}$ where $\nu$ is the number
+of degrees of freedom or the number of data points minus the number of parameters.
+...
+That is, chi-squared is often used as a test of whether the model is good.
+...
+Now imagine that $\nu$ is large (as it often is).
+...
+The model-acceptance $\chi^2$ volume in parameter space is \emph{far larger} than
+the uncertainty volume.
+...
+These things have been famously confused in the literature\footnote{CITE Gould maybe?}
+...
+
+The important thing is that the uncertainty can be small whether or not the model
+is ruled out in this sense. Indeed, the uncertainty estimate of
+\sectionname~\ref{sec:standard}
+makes no reference to the data $\vy$ at all! And certainly no reference to the value
+of chi-squared at the best-fit model. These issues are totally different. The uncertainty is about differences in likelihood within the context of a model that is assumed
+to be correct in some sense. The model testing is about comparing the data to a
+theoretical expectation of the model. Confuse these not.
 
 \section{Generalization to nonlinear models}\label{sec:nonlinear}
 
