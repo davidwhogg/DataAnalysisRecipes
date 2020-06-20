@@ -703,10 +703,17 @@ derivation and discussion in \sectionname~\ref{sec:info}.
 So---it stands to reason that---if you can simulate your data with a
 simulation you believe, you can generate standard uncertainties
 directly through simulation.
-The idea is simple: Make a simulation of the data at known true
+The idea is simple: Make a simulation of the data at known true\footnote{The
+  word ``true'' is problematic, and my loyal reader knows that I avoid using
+  this word. Or use it only under strict conditions. Here the word ``true'' is
+  only used to mean the parameters that you---as the investigator---set for
+  your data simulation. When you simulate data you are acting like God, so you
+  can set parameters like God, and God's parameters are the true parameters.
+  In the Real World (tm), you can never know the true parameters. They might not
+  even exist (because your model is wrong or approximate in important ways).}
 parameters $\tilde{\va}$, obtain estimated values for the parameters
 $\hat{\va}$ in that simulated data set using your estimator, repeat
-$K$ times, and then estimate the variance (or full distribution) of
+$K$ times, and then estimate the mean and variance (or full distribution) of
 the mistakes you made.
 
 ...why am I talking about ``mistakes''? Well, when you know the truth and you have
