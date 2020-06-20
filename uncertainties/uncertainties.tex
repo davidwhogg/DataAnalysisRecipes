@@ -99,15 +99,16 @@
     It is a pleasure to thank
     the participants in my data-analysis classes in New York City,
     and
-    the weekly Stars and Exoplanets meeting at the Flatiron Insititute
+    the weekly Stars and Exoplanets meeting at the Flatiron Institute
     for help with all of this material, and
     Alessandro Gentilini
     for help with the manuscript.
     If I reach back to my deep past, I find that I am indebted to
     Robert Lupton (Princeton),
     Jonathan Goodman (NYU),
+    Gerry Neugebauer (deceased),
     and
-    Gerry Neugebauer (deceased)
+    Scott Tremaine (IAS)
     for some of these ideas.} \\
 {\footnotesize Center for Cosmology and Particle Physics, Dept Physics, New York University} \\
 {\footnotesize Max-Planck-Institut f\"ur Astronomie} \\
@@ -132,12 +133,14 @@ I spend a bit of time on common issues and troubleshooting.
 One important idea is that the circumstances in which an uncertainty can be estimated
 precisely are rare: Even when you have a very precise measurement, you probably won't
 know the uncertainty on that measurement with great precision.
+In part for this reason, a (bad) summary of my recommendations is to use
+the standard linear or linearized uncertainty, or jackknife, or both.
 
-\section{Measurements and uncertainties}
+\section{Measurements and uncertainties}\label{sec:intro}
 
 You have data. There's something you want to measure. You have many
 options for making this measurement: You can come up with an
-\textsl{estimator}, that transforms your data (through arithmetic
+\textsl{estimator}, which transforms your data (through arithmetic
 operations) into an estimate of the quantity you want to measure. You
 can write down a likelihood function---a probability density function
 (or pdf) for your data given the quantity you want to measure (and
@@ -215,7 +218,7 @@ and explain your choices. We'll start with the theoretical approaches and
 then move on to the empirical approaches, followed by some troubleshooting and
 discussion about communication and assessment.
 
-\section{Simplest case: the linear least-square fit}
+\section{Simplest case: the linear least-square fit}\label{sec:standard}
 
 The simplest case for uncertainty estimation---and a case you may have
 encountered previously---is a standard, linear fit, as we have
@@ -245,8 +248,10 @@ the following things hold:
   in any other data point.\footnote{This assumption turns out to be the
     easiest---of all these assumptions---to relax.}
 \item There is a set of $K$ features $x_{kn}$ for each data point $y_n$ such that
-  the expectation for data point $y_n$ is going to be fit as a linear combination
-  of these features. That is, the model\footnote{I use the word ``model'' to mean
+  the expectation for data point $y_n$ can be \emph{accurately} described
+  as a linear combination
+  of these features (plus noise).
+  That is, the model\footnote{I use the word ``model'' to mean
     a collection of things. It is (at least) a prediction for the data and a
     prediction for the distribution of the noise. A model, for me, is everything
     that you need to construct a likelihood function, or a pdf for the data given
@@ -322,8 +327,8 @@ $\mX$ is the design matrix of features $x_{kn}$,
 $\tC\inv$ is the inverse variance tensor for the data\footnote{Note about
   typesetting: I typeset vectors---which are all column vectors---like
   $\va$, $\vy$. I typeset arbitrary rectangular matrices like $\mX$
-  and variance tensors or information tensors (which must be
-  non-negative definite, square matrices) like $\tC$.}
+  and variance tensors (which must be
+  non-negative definite, square martrices) like $\tC$.}
 which is diagonal in this simple case),
 and
 $\vy$ is the (column) vector of data points $y_n$.
@@ -351,13 +356,53 @@ estimates $\hat{\va}$ is the $K\times K$ uncertainty tensor $\tC_a$
 \end{equation}
 How do we interpret this object?
 
-...HOGG interpret this object.
+The diagonal elements of the uncertainty tensor $\tC_a$ are the squared uncertainties
+(variances of the uncertainty distribution) for the parameters. That is, the
+$k,k$ element of $\tC_a$ is the squared uncertainty $\sigma^2_{ak}$ on parameter
+$a_k$.
+These uncertainties are conservative in the sense that the diagonal element of
+the tensor $\tC_a$ is the uncertainty on the parameter,
+\emph{permitting the other parameters to vary}
+or including the uncertainty that comes from the fact that you don't know
+those parameters in advance or separately.
+This point is related to questions of nuisance parameters (marginalization or
+profiling) to be discussed in \sectionname~\ref{sec:nuisances}.
+The uncertainty is \emph{not} conservative, however, in the sense that it depends
+critically on the assumptions we made at the beginning of this \sectionname, to wit,
+that the noise in the data is purely Gaussian with zero mean and with known variances
+and uncorrelated.
 
-...If you want the uncertainty on JUST ONE component of $\va$, profiling out
-the rest or marginalizing out the rest (with a wide prior) then the relevant
-uncertainty is the diagonal element of $[\mX\T\cdot\tC\inv\cdot\mX]\inv$. There
-is a big difference between the diagonal element of $\tC_a$ and the inverse
-of the diagonal element of $\tC_a\inv$.
+You might ask: If the diagonal element of the tensor $\tC_a$ is the squared uncertainty
+on the parameter, what is the meaning of the diagonal element of the inverse
+uncertainty tensor\footnote{An inverse uncertainty tensor
+  is sometimes called a \textsl{precision matrix} or \textsl{information tensor},
+  for reasons that will appear in \sectionname~\ref{sec:info}.}
+$\tC_a\inv$? 
+It turns out that the diagonal element of $\tC_a\inv$ is not the inverse of the
+square of the uncertainty on the parameter, or it is, but now \emph{not} taking
+into account the uncertainties on the other parameters.
+That is, the inverse-square-root of the $k,k$ element
+of the inverse uncertainty tensor $\tC_a\inv$ is not as
+conservative an uncertainty estimate for parameter $a_k$ as is the square-root of the
+$k,k$ element of the uncertainty tensor $\tC_a$.\footnote{A figure demonstrating this
+  difference would be cool! Hogg}
+We will return to this point and discuss it further in \sectionname~\ref{sec:nuisances}.
+
+Now what about the off-diagonal elements of the uncertainty tensor $\tC_a$?
+The quick answer is that if the off-diagonal $k,k'$ element of $\tC_a$ is positive,
+then if you (through bad luck) are over-estimating parameter $a_k$ then you are
+also likely to be over-estimating parameter $a_{k'}$.
+Or, alternatively, then you might know the \emph{difference} between the parameters
+(if they have the same units\footnote{Never subtract two quantities that have different
+  units---nor add them---for God's sake!}),
+or the \emph{ratio} of the parameters more precisely than you know either of them
+individually.
+On the contrary, if it is negative, then an over-estimate of one parameter should
+be associated with an under-estimate of the other, and you might know the sum
+or product better than either individually.
+In detail it is hard to have good, universal intuitions about these covariances.
+I will return to these matters in \sectionname~\ref{sec:viz}, where we look at how
+to visualize uncertainties and uncertainty tensors.
 
 At this point we have delivered what is requested: An uncertainty estimate
 on the measurement!
@@ -429,10 +474,78 @@ HOGG: EXERCISE HERE where we do repeated experiments generating data
 and doing a linear fit and show that the best-fit parameters are
 Gaussian-distributed according to the rules above.
 
+\section{A common fallacy about chi-squared}\label{sec:fallacy}
+
+The uncertainty can be thought of as the distance you are permitted to move
+in the parameter space (the space in which the vector $\va$ lives)
+without changing chi-squared by more than about 1.
+That is, if you start at the minimum-chi-squared or best-fit parameter
+vector position $\hat{\va}$ and you move one of the parameters $a_k$ by some small
+amount $\delta a_k$, the displacement $\delta a_k$ is within one standard error
+if the chi-squared
+value did not rise from its minimum by more than $\Delta\chi^2=1$.\footnote{Demonstrating
+  this, either analytically or numerically, is a nice exercise for the ambitious reader.}
+Another way to put this is as follows:
+The square-root-eigenvalues and eigenvectors of $\tC_a$ are the orthogonal
+semi-axes of an ellipsoid in parameter space describing the parameter-space
+volume in which you are permitted to move the parameters away from the
+minimum-chi-squared solution without increasing chi-squared
+away from its minimum value by more than 1. We will come back to the computation
+and visualization of this ellipsoid in \sectionname~\ref{sec:viz}.
+
+But this description sometimes makes physicists uneasy. After all,
+we are also taught (often) that if the model we are fitting is a \emph{good fit},
+then chi-squared is expected to be $\nu\pm\sqrt{2\,\nu}$ HOGG CHECK
+where $\nu$ is the number
+of degrees of freedom or the number of data points minus the number of parameters.
+That is, chi-squared is supposed to have a value that is related to the number
+of data points, and if it is far away from that value, there is something wrong
+with either your model or your uncertainty estimates.
+That is, chi-squared is often used as a test of whether the model is \emph{a good fit}.
+Now imagine that $\nu$ is large (as it often is). That is, imagine that you have
+many data points.
+In this case, the model-acceptance $\chi^2$ volume (which goes out to
+$\Delta\chi^2$ of something like $\sqrt{2\,\nu}$) in parameter space
+is \emph{far larger} than the uncertainty volume (which goes out to
+$\Delta\chi^2$ of unity).
+What gives? Which is my uncertainty?
+
+The answer is that your uncertainty is what we delivered in
+\sectionname~\ref{sec:standard}.
+This relates, somehow, to the difference between \emph{precision} and \emph{accuracy}:
+The data can be very precise, whether or not the model is accurate.
+And determining the value of a parameter \emph{within the context of a
+  model} is much easier and more precise than determining
+\emph{whether that model is appropriate}.
+These two things have been famously confused in the
+literature.\footnote{CITE Gould maybe? I often surprise even seasoned
+  data analysts with these observations. Confused? It's genuinely
+  confusing.}
+
+The important thing is that the uncertainty can be small whether or
+not the model is ruled out in the ``bad chi-squared'' sense. Indeed,
+the uncertainty estimate of \sectionname~\ref{sec:standard} makes no
+reference to the data $\vy$ at all!
+And certainly no reference to the value of chi-squared at the best-fit
+model.
+These issues (parameter uncertainty \foreign{vs} goodness of fit) are
+totally different.
+The uncertainty is about differences in likelihood within the context
+of a model that is \emph{literally assumed to be correct} in some sense.
+Recall the assumptions listed in \sectionname~\ref{sec:standard}!
+The model testing (is chi-squared of order $\nu$) is about comparing
+the data to a theoretical expectation of the model. That's different.
+It does \emph{test} the assumption that the model is applicable. But the
+parameter estimation can happen and be precise in either case.
+
+HOGG: Talk about chi-squared being a measure of the size of your data. In both
+the good sense (it goes up with $\nu$) and the bad sense (you will always, with
+enough data, violate $\nu\pm\sqrt{2\,\nu}$).
+
 \section{Generalization to nonlinear models}\label{sec:nonlinear}
 
 If you want to derive the magical linear least-squares estimator above,
-or if you want to generalize what we have done to nonlinear models,
+or if you want to generalize to nonlinear models,
 it is useful to note that the linear-algebra objects defined
 above have the following properties:
 The objective function $\chi^2$ can be written as
@@ -475,8 +588,6 @@ That's important for generalizing the simple, linear case.
 
 ...Comment on units and shapes of objects.
 
-...NOTE language that the inverse variance is called the information tensor or the precision matrix or other such things.
-
 ...Non-linear fit. What's different?
 
 ...The concept of linearizing and then doing what you did above. Note that this
@@ -493,11 +604,16 @@ out \sectionname~\ref{sec:bayes}.
 
 \section{Information theory}\label{sec:info}
 
-Connection to Cram\'er--Rao bound and Fisher information.
+...NOTE language that the inverse variance is called the information tensor or the precision matrix or other such things.
+
+...Connection to Cram\'er--Rao bound and Fisher information.
 
 Relationship of first derivative squared to second derivative.
 
 Note inherent frequentism in this point of view.
+
+...Come back to inverse-variance weighting. Note that this appears everywhere
+in the linear case. That's deep information-theory shih.
 
 \section{Bayes}\label{sec:bayes}
 
@@ -579,7 +695,36 @@ One is to perform data simulations, which is the subject of this \sectionname,
 and the other is to use empirical measures of the uncertainty like bootstrap and
 jackknife, which are the subject of \sectionname~\ref{sec:empirical}.
 
-...What to say here?
+As we said in the introduction (\sectionname~\ref{sec:intro}), the
+frequentist definition of uncertainty is literally tied to what you
+\emph{would have gotten} if you had repeated the experiment.
+And that is also the implicit setting for the information-theoretic
+derivation and discussion in \sectionname~\ref{sec:info}.
+So---it stands to reason that---if you can simulate your data with a
+simulation you believe, you can generate standard uncertainties
+directly through simulation.
+The idea is simple: Make a simulation of the data at known true\footnote{The
+  word ``true'' is problematic, and my loyal reader knows that I avoid using
+  this word. Or use it only under strict conditions. Here the word ``true'' is
+  only used to mean the parameters that you---as the investigator---set for
+  your data simulation. When you simulate data you are acting like God, so you
+  can set parameters like God, and God's parameters are the true parameters.
+  In the Real World (tm), you can never know the true parameters. They might not
+  even exist (because your model is wrong or approximate in important ways).}
+parameters $\tilde{\va}$, obtain estimated values for the parameters
+$\hat{\va}$ in that simulated data set using your estimator, repeat
+$K$ times, and then estimate the mean and variance (or full distribution) of
+the mistakes you made.
+
+...why am I talking about ``mistakes''? Well, when you know the truth and you have
+an estimate, there is a difference between them. This is not the uncertainty; it
+is a draw from the distribution over uncertainties. And I am not going to call
+it an ``error'' because that term is over-loaded (see \sectionname~\ref{sec:intro}).
+
+...note that you have to choose a fiducial point in parameter space.
+
+...note that you can compute bias also, which is interesting. And the whole
+distribution of mistakes.
 
 ...How many simulations do you need?
 
@@ -591,8 +736,8 @@ jackknife, which are the subject of \sectionname~\ref{sec:empirical}.
 
 \section{Jackknife and bootstrap}\label{sec:empirical}
 
-In many---or even most---of the data analysis project in which I have been
-involved, we have not confidently believed all of our assumptions about the
+In many---or even most---of the data analysis projects in which I have been
+involved, we have \emph{not} confidently believed all of our assumptions about the
 noise processes contributing to our data.
 That is, we have not been confident that we have a realistic model of how
 the data were generated.
@@ -615,9 +760,49 @@ accessible.
 
 ...etc.
 
-\section{Nuisance parameters}
+...At the end come back to the point that even if you DO believe your noise
+model and your LF you still want to do jackknife to check it all. This test
+MUST PASS.
 
-Difference between marginalizing and profiling.
+\section{Nuisance parameters}\label{sec:nuisances}
+
+As we have implicitly discussed above, in most substantial data analyses, your
+model includes both important parameters you care about, like, say, the age of
+the Universe, and unimportant nuisance parameters you don't, like, say, the
+conversion between counts in your detector and the brightnesses of the supernovae
+you are measuring.
+If you are being conservative, you want to provide the final measurement uncertainty
+on the age of the Universe, including the effective noise contribution or uncertainty
+contribution from the unknown (and uninteresting) calibration parameters.\footnote{I
+  might comment here that I have spent a lot of my life determining calibration
+  parameters and I have even recommended that we---in some cases---think of the
+  calibration parameters as the important parameters, and the properties of the
+  Universe as the nuisances (CITE). So take this to be an example only; one scientist's
+  nuisance is another's objective.}
+How you account for these effects---how you propagate the uncertainty from the
+nuisance estimation---depends on how you are getting your uncertainties in the
+first place.
+It isn't difficult, but it requires some care and attention in some cases.
+
+Before I continue, I should remark that the inclusion or exclusion of
+nuisance parameters in fits can be a controversial subject, and is a
+place that investigators can introduce important but hard-to-catch
+adjustments to their uncertainty estimates.
+That is, two investigators, making the same measurement with the same data
+with the same likelihood function can get very different uncertainty estimates
+simply by including or excluding certain nuisance parameters in their
+fits.\footnote{This is not science fiction: Different cosmological
+  projects in my lifetime have obtained very different uncertainty
+  estimates by permitting different parameters to vary; funding for a
+  project can be granted or declined on the basis of the forecast
+  precision of that project; the temptation to fix important
+  parameters can become overwhelming.  ...HOGG CITE the DETF and etc;
+  do they discuss this?}
+
+Why is it that the introduction of a free nuisance parameter will in general
+increase the uncertainty on your parameters of interest? Hogg....
+
+... HOGG: Difference between marginalizing and profiling.
 
 Identicality when it comes to the linear, Gaussian case.
 
@@ -633,9 +818,38 @@ What is a statistical uncertainty? And what is a systematic one?
 
 When do you want to use the former? When do you want to add both in quadrature?
 
-\section{Upper limits and the like}
+\section{Visualizing and reporting uncertainties}\label{sec:viz}
 
-\section{Visualizing and reporting uncertainties}
+error bars
+
+68, 95, 99.whatever and all that.
+
+mean, variance, skewness, kurtosis and all that.
+
+asymmetric erro bars.
+
+violin plots.
+
+banana plots.
+
+corner plots.
+
+catalogs and data releases. Cite Malz.
+
+\section{Other unpleasant situations}
+
+Upper limits and how to use them. And why NOT to report them. What are
+you trying to report?
+
+Related: What if your LF is undefined for, say, a negative eccentricity?
+
+Related: What if your LF is defined for a negative parameter, but your
+prior rules it out? Like the brightness of a star?
+
+What if your uncertainties are part of the model? This is possibly
+true if you are using a GP for your noise, say. Or if your
+uncertainties depend on your model parameters, as they do in a Poisson
+process. Nothing really changes, but say words.
 
 \section{Common mistakes and troubleshooting}
 
@@ -661,6 +875,8 @@ their squared inverses) data in a fit.
 Sometimes you have huge theoretical uncertainties and you want to use
 them in your analysis. Sometimes you have these and you \emph{don't} want
 to use them in your analysis.
+
+I have a good LF but then I did jackknife and it disagrees!
 
 \section{Discussion}
 
