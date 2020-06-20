@@ -248,8 +248,10 @@ the following things hold:
   in any other data point.\footnote{This assumption turns out to be the
     easiest---of all these assumptions---to relax.}
 \item There is a set of $K$ features $x_{kn}$ for each data point $y_n$ such that
-  the expectation for data point $y_n$ is going to be fit as a linear combination
-  of these features. That is, the model\footnote{I use the word ``model'' to mean
+  the expectation for data point $y_n$ can be \emph{accurately} described
+  as a linear combination
+  of these features (plus noise).
+  That is, the model\footnote{I use the word ``model'' to mean
     a collection of things. It is (at least) a prediction for the data and a
     prediction for the distribution of the noise. A model, for me, is everything
     that you need to construct a likelihood function, or a pdf for the data given
@@ -454,11 +456,6 @@ units, and so does the uncertainty tensor $\tC_a$.\footnote{The
   fundamental symmetry of everything in all of science. Yes, I think
   this is a symmetry.}
 
-It is sometimes useful for intuition-building to note that the uncertainty
-tensor $\tC_a$ shares things in common with the kinds of uncertainty or noise
-propagation that is sometimes taught in undergraduate lab classes. In these
-contexts you learn.... HOGG!
-
 Finally, we should end this \sectionname\ on an upsetting note:
 The parameter uncertainty variance estimate
 $\tC_a = [\mX\T\cdot\tC\inv\cdot\mX]\inv$
@@ -480,34 +477,70 @@ Gaussian-distributed according to the rules above.
 \section{A common fallacy about chi-squared}\label{sec:fallacy}
 
 The uncertainty can be thought of as the distance you are permitted to move
-the parameters without changing chi-squared by more than 1 (is that correct??)
-...
-The eigenvalues and eigenvectors of $\tC_a$ are the orthogonal
+in the parameter space (the space in which the vector $\va$ lives)
+without changing chi-squared by more than about 1.
+That is, if you start at the minimum-chi-squared or best-fit parameter
+vector position $\hat{\va}$ and you move one of the parameters $a_k$ by some small
+amount $\delta a_k$, the displacement $\delta a_k$ is within one standard error
+if the chi-squared
+value did not rise from its minimum by more than $\Delta\chi^2=1$.\footnote{Demonstrating
+  this, either analytically or numerically, is a nice exercise for the ambitious reader.}
+Another way to put this is as follows:
+The square-root-eigenvalues and eigenvectors of $\tC_a$ are the orthogonal
 semi-axes of an ellipsoid in parameter space describing the parameter-space
-volume in which you are permitted to move the parameters without increasing chi-squared
-away from its minimum value by more than 1...
+volume in which you are permitted to move the parameters away from the
+minimum-chi-squared solution without increasing chi-squared
+away from its minimum value by more than 1. We will come back to the computation
+and visualization of this ellipsoid in \sectionname~\ref{sec:viz}.
 
-At the same time, we learn that if the model we are fitting is a \emph{good fit},
-then chi-squared is expected to be $\nu\pm\sqrt{2\,\nu}$ where $\nu$ is the number
+But this description sometimes makes physicists uneasy. After all,
+we are also taught (often) that if the model we are fitting is a \emph{good fit},
+then chi-squared is expected to be $\nu\pm\sqrt{2\,\nu}$ HOGG CHECK
+where $\nu$ is the number
 of degrees of freedom or the number of data points minus the number of parameters.
-...
-That is, chi-squared is often used as a test of whether the model is good.
-...
-Now imagine that $\nu$ is large (as it often is).
-...
-The model-acceptance $\chi^2$ volume in parameter space is \emph{far larger} than
-the uncertainty volume.
-...
-These things have been famously confused in the literature\footnote{CITE Gould maybe?}
-...
+That is, chi-squared is supposed to have a value that is related to the number
+of data points, and if it is far away from that value, there is something wrong
+with either your model or your uncertainty estimates.
+That is, chi-squared is often used as a test of whether the model is \emph{a good fit}.
+Now imagine that $\nu$ is large (as it often is). That is, imagine that you have
+many data points.
+In this case, the model-acceptance $\chi^2$ volume (which goes out to
+$\Delta\chi^2$ of something like $\sqrt{2\,\nu}$) in parameter space
+is \emph{far larger} than the uncertainty volume (which goes out to
+$\Delta\chi^2$ of unity).
+What gives? Which is my uncertainty?
 
-The important thing is that the uncertainty can be small whether or not the model
-is ruled out in this sense. Indeed, the uncertainty estimate of
-\sectionname~\ref{sec:standard}
-makes no reference to the data $\vy$ at all! And certainly no reference to the value
-of chi-squared at the best-fit model. These issues are totally different. The uncertainty is about differences in likelihood within the context of a model that is assumed
-to be correct in some sense. The model testing is about comparing the data to a
-theoretical expectation of the model. Confuse these not.
+The answer is that your uncertainty is what we delivered in
+\sectionname~\ref{sec:standard}.
+This relates, somehow, to the difference between \emph{precision} and \emph{accuracy}:
+The data can be very precise, whether or not the model is accurate.
+And determining the value of a parameter \emph{within the context of a
+  model} is much easier and more precise than determining
+\emph{whether that model is appropriate}.
+These two things have been famously confused in the
+literature.\footnote{CITE Gould maybe? I often surprise even seasoned
+  data analysts with these observations. Confused? It's genuinely
+  confusing.}
+
+The important thing is that the uncertainty can be small whether or
+not the model is ruled out in the ``bad chi-squared'' sense. Indeed,
+the uncertainty estimate of \sectionname~\ref{sec:standard} makes no
+reference to the data $\vy$ at all!
+And certainly no reference to the value of chi-squared at the best-fit
+model.
+These issues (parameter uncertainty \foreign{vs} goodness of fit) are
+totally different.
+The uncertainty is about differences in likelihood within the context
+of a model that is \emph{literally assumed to be correct} in some sense.
+Recall the assumptions listed in \sectionname~\ref{sec:standard}!
+The model testing (is chi-squared of order $\nu$) is about comparing
+the data to a theoretical expectation of the model. That's different.
+It does \emph{test} the assumption that the model is applicable. But the
+parameter estimation can happen and be precise in either case.
+
+HOGG: Talk about chi-squared being a measure of the size of your data. In both
+the good sense (it goes up with $\nu$) and the bad sense (you will always, with
+enough data, violate $\nu\pm\sqrt{2\,\nu}$).
 
 \section{Generalization to nonlinear models}\label{sec:nonlinear}
 
