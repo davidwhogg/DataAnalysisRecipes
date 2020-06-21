@@ -59,6 +59,7 @@
 \newcommand{\va}{\vector{a}}
 \newcommand{\vy}{\vector{y}}
 \newcommand{\tC}{\tensor{C}}
+\newcommand{\tV}{\tensor{V}}
 \newcommand{\mX}{\matrix{X}}
 
 % page layout stuhh
@@ -359,8 +360,13 @@ How do we interpret this object?
 The diagonal elements of the uncertainty tensor $\tC_a$ are the squared uncertainties
 (variances of the uncertainty distribution) for the parameters. That is, the
 $k,k$ element of $\tC_a$ is the squared uncertainty $\sigma^2_{ak}$ on parameter
-$a_k$.
-These uncertainties are conservative in the sense that the diagonal element of
+$a_k$; in symbols
+\begin{equation}
+  \sigma^2_{ak} = [\tC_a]_{kk}
+  \quad ,
+\end{equation}
+where by $[\tV]_{ij}$ we mean the $i,j$ element of the matrix $\tV$.
+These uncertainty estimates are conservative in the sense that the diagonal element of
 the tensor $\tC_a$ is the uncertainty on the parameter,
 \emph{permitting the other parameters to vary}
 or including the uncertainty that comes from the fact that you don't know
@@ -384,8 +390,13 @@ into account the uncertainties on the other parameters.
 That is, the inverse-square-root of the $k,k$ element
 of the inverse uncertainty tensor $\tC_a\inv$ is not as
 conservative an uncertainty estimate for parameter $a_k$ as is the square-root of the
-$k,k$ element of the uncertainty tensor $\tC_a$.\footnote{A figure demonstrating this
+$k,k$ element of the uncertainty tensor $\tC_a$,\footnote{A figure demonstrating this
   difference would be cool! Hogg}
+or in symbols
+\begin{equation}
+  \sigma^2_{ak} \ne \frac{1}{[\tC_a\inv]_{kk}}
+  \quad .
+\end{equation}
 We will return to this point and discuss it further in \sectionname~\ref{sec:nuisances}.
 
 Now what about the off-diagonal elements of the uncertainty tensor $\tC_a$?
@@ -582,7 +593,7 @@ the data given the parameters---can be written as
 where $\normal(x\given m,V)$ is the Gaussian pdf given mean $m$ and variance $V$.
 The log-likelihood function is
 \begin{equation}
-  \ln\like(\va) = -\frac{1}{2}\,\chi^2(\va) -\frac{1}{2}\,||2\pi\,\tC||
+  \ln\like(\va) = -\frac{1}{2}\,\chi^2(\va) -\frac{1}{2}\,\ln\det(2\pi\,\tC)
   \quad,
 \end{equation}
 where $||V||$ is the determinant operator and we have written the
@@ -649,7 +660,7 @@ are automatically built in to your analysis.
 That is, in Bayesian inference, you are required to have a likelihood
 function\footnote{Of course there are Bayesian likelihood-free methods
   such as (the terribly named) Approximate Bayesian Computation (see, for
-  example, \cite{??}). These methods are data-simulation methods and
+  example, \cite{wiki:abc}). These methods are data-simulation methods and
   live somewhere between the things I'm writing about in this \sectionname\ and
   the things in \sectionname~\ref{sec:simulation}.} and also a prior, and your
 parameter estimation or measurement is performed by multiplying these
@@ -794,7 +805,8 @@ contribution from the unknown (and uninteresting) calibration parameters.\footno
   might comment here that I have spent a lot of my life determining calibration
   parameters and I have even recommended that we---in some cases---think of the
   calibration parameters as the important parameters, and the properties of the
-  Universe as the nuisances (CITE). So take this to be an example only; one scientist's
+  Universe as the nuisances (\citealt{hoggcrazy}).
+  So take this to be an example only; one scientist's
   nuisance is another's objective.}
 How you account for these effects---how you propagate the uncertainty from the
 nuisance estimation---depends on how you are getting your uncertainties in the
@@ -813,8 +825,9 @@ fits.\footnote{This is not science fiction: Different cosmological
   estimates by permitting different parameters to vary; funding for a
   project can be granted or declined on the basis of the forecast
   precision of that project; the temptation to fix important
-  parameters can become overwhelming.  ...HOGG CITE the DETF and etc;
-  do they discuss this?}
+  parameters can become overwhelming. Some of these issues are discussed
+  implicitly by \cite{fom}. That reference also contains a very compact
+  and useful discussion of the relevant information theory around nuisances.}
 
 Why is it that the introduction of a free nuisance parameter will in general
 increase the uncertainty on your parameters of interest? Hogg....
