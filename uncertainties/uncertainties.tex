@@ -538,13 +538,30 @@ the data to a theoretical expectation of the model. That's different.
 It does \emph{test} the assumption that the model is applicable. But the
 parameter estimation can happen and be precise in either case.
 
-HOGG: Talk about chi-squared being a measure of the size of your data. In both
-the good sense (it goes up with $\nu$) and the bad sense (you will always, with
-enough data, violate $\nu\pm\sqrt{2\,\nu}$).
+% HOGG: SHOULD IT BE chi-square OR chi-squared??
+
+When I speak about these matters, I like to say ``chi-squared is a measure
+of the size of your data'', which I learned from some statistician.\footnote{I am
+  embarrassed to say that I don't remember which one.}
+This adage is true for two reasons.
+The first is that chi-squared rises with the number of data points, because
+(even when all is well) it has a scaling with the number of degrees of freedom
+$\nu$, which itself is the number of data points minus the number of
+parameters.
+The second sense in which this adage is true is that as you get more data it
+becomes more likely that you will rule out your model.
+A model that passes the chi-squared test for a small or imprecise data set
+will fail that same test for a large or precise data set.
+And since all models are wrong (in detail), all models will fail the chi-squared
+test if you have the patience to take enough data.
+Before we go back to our main subject---uncertainty estimation---I want to just
+say for the last time: The standard uncertainty estimate does not depend on
+whether the adopted model is a good fit or strongly ruled out! It doesn't depend
+on the absolute value of chi-squared at all.
 
 \section{Generalization to nonlinear models}\label{sec:nonlinear}
 
-If you want to derive the magical linear least-squares estimator above,
+If you want to derive the magical linear least-squares estimator (\ref{eq:llsf}) above,
 or if you want to generalize to nonlinear models,
 it is useful to note that the linear-algebra objects defined
 above have the following properties:
