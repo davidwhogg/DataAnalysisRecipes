@@ -41,6 +41,7 @@
 \newcommand{\documentname}{\textsl{Note}}
 \newcommand{\sectionname}{Section}
 \newcommand{\equationname}{equation}
+\newcommand{\notename}{Note}
 
 % math macros
 \newcommand{\hquad}{~~}
@@ -175,10 +176,19 @@ noise in a detector); or it can be an ill-understood noise process
 it can be something else (unknown calibration systematics, mistakes or
 wrong approximations in the physical model, and so on). For some analyses
 all of these noise processes are relevant; for others only some are.
+For example, if you are measuring the mean brightness of a star, the variability
+of the star is noise for you, contributing to your uncertainty.
+However, if you are measuring the \emph{variability} of the star, the
+variability is your signal, not your noise, and it is not a contribution
+to your uncertainty at all. But then perhaps the mis-specification of your
+variability model will become a new source of uncertainty.
 That is, the way uncertainties are estimated has something to do with
-\emph{how they will be used}. This is related to the (sometimes obscure)
+\emph{how they will be used} or the objectives of your investigation.
+This is related to the (sometimes obscure)
 ways that physicists separate uncertainties into ``statistical'' and ``systematic''.
-And what's ``systematic'' to some users will be ``statistical'' to others.
+And what's ``systematic'' to some users will be ``statistical'' to
+others.\footnote{This is also related to the \emph{subjectivity} of scientific
+  investigation. I say a bit more in \notename\textsuperscript{\ref{note:subjective}}.}
 We will return to that point below.
 
 One of my grad-school mentors\footnote{This was Gerry Neugebauer (1932--2014).
@@ -337,7 +347,8 @@ $\vy$ is the (column) vector of data points $y_n$.
 
 When this (\ref{eq:llsf}) is your estimator for $\hat{\va}$, and when
 the assumptions (listed above) hold (or you are willing to hold
-them\footnote{One of the themes of this \documentname\ and the others in this
+them\footnote{\label{note:subjective}%
+  One of the themes of this \documentname\ and the others in this
   series is that data analyses are always technically \emph{subjective}: You
   make choices, based on your beliefs, and your methods flow from your choices.
   Your estimator and your uncertainty on your estimated values both are
@@ -413,8 +424,8 @@ On the contrary, if it is negative, then an over-estimate of one parameter shoul
 be associated with an under-estimate of the other, and you might know the sum
 or product better than either individually.
 In detail it is hard to have good, universal intuitions about these covariances.
-I will return to these matters in \sectionname~\ref{sec:viz}, where we look at how
-to visualize uncertainties and uncertainty tensors.
+I will return to these matters in \sectionnames\ref{sec:interp} and \ref{sec:viz},
+where we look at how to interpret and visualize uncertainties and uncertainty tensors.
 
 At this point we have delivered what is requested: An uncertainty estimate
 on the measurement!
@@ -435,6 +446,44 @@ want to check it. In these cases, you must use empirical approaches like those d
 in \sectionname~\ref{sec:empirical}. You have no choice.
 And of course I might be missing the point because your analysis is Bayesian.
 In that case I will talk to you in \sectionname~\ref{sec:bayes}.
+
+HOGG: EXERCISE HERE where we do repeated experiments generating data
+and doing a linear fit and show that the best-fit parameters are
+Gaussian-distributed according to the rules above.
+
+\section{Interpretation and discussion of the simple case}
+
+MAKE SURE THAT THIS SECTION ISN'T TOO REPETITIVE with what's above and below.
+
+...What is the ``one-sigma'' uncertainty? It is the square root of sigma^2.
+If your model is good, it is also the 68-percent confidence region.
+Meaning: FREQUENTIST MEANING. We'll get Bayesian later. But don't worry; there
+are limits where (although they mean different things) they are identical in
+value.
+
+...If you want to report a value and an error bar, report this unless there
+are reasons to do otherwise. And plot it as a vertical line that goes up and
+down by one-sigma from your measurement. Show a figure.
+
+...Now imagine that you have 2 (or worse, $K$) parameters, how do you interpret
+the matrix $\tC_a$? Let's start at 2 dimensions. Eigenvalues and eigenvectors make
+up an ellipse. Show a figure.
+
+...Does the 68-percent rule change in 2 dimensions, or $K$ dimensions? Argh!!
+
+...In the same way that the uncertainty on one parameter is the $k,k$ element
+of $\tC_a$, the uncertainty on a pair is the $2\times 2$ sub-matrix associated
+with those two elements.
+
+...Under what circumstances do you want to look at the elements of $\tC_a\inv$?
+There are some! They relate to the independent information about each parameter.
+Consider, for example, the uncertainty on one parameter,
+the uncertainty on the other, and the uncertainty on one \emph{given} the other.
+
+...What would it mean to have no covariance between $k$ and $k'$? The concept
+of centering. Is this a correct usage?
+
+...now pivot to discussion of the math of the method...?
 
 Perhaps because I am a physicist, I like to think in terms of units and dimensions.
 The linear-algebra objects $\vy$, $\tC$, and $\mX$ have units,
@@ -468,7 +517,7 @@ units, and so does the uncertainty tensor $\tC_a$.\footnote{The
   fundamental symmetry of everything in all of science. Yes, I think
   this is a symmetry.}
 
-Finally, we should end this \sectionname\ on an upsetting note:
+One important (and perhaps upsetting) point:
 The parameter uncertainty variance estimate
 $\tC_a = [\mX\T\cdot\tC\inv\cdot\mX]\inv$
 is based on the design matrix $\mX$ and the noise variance for the data $\tC$,
@@ -482,9 +531,8 @@ This is one of the indicators that the standard uncertainty estimate is a
 very theoretical object, and very brittle. We'll say more about this below.
 But first let's see how this uncertainty estimate generalizes and is justified.
 
-HOGG: EXERCISE HERE where we do repeated experiments generating data
-and doing a linear fit and show that the best-fit parameters are
-Gaussian-distributed according to the rules above.
+HOGG: EXERCISE HERE repeat problem above but now draw the ellipse and show
+that about k-percent of them are inside the ellipse.
 
 \section{A common fallacy about chi-squared}\label{sec:fallacy}
 
