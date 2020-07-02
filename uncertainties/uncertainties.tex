@@ -435,6 +435,9 @@ Of course for many of you I expect that this does \emph{not} meet your needs:
 It might be that your model is nonlinear, so the optimum (the maximum-likelihood
 estimator) is not a linear function of the data. That case will be discussed
 in \sectionname~\ref{sec:nonlinear}.
+It might be that your model is linear but you want to know the uncertainty on
+some nonlinear combination of the linear parameters.
+If so, see \sectionname~\ref{sec:transform}.
 It might be that you don't have an executable or tractable likelihood function.
 In this case, you either have to use data simulation to get your uncertainties,
 as discussed in \sectionname~\ref{sec:simulation}, or empirical approaches
@@ -678,6 +681,11 @@ don't trust your likelihood function, head to \sectionname~\ref{sec:empirical}.
 If you not only believe your likelihood function, but you are happy to put priors
 on all your parameters---or if you want to run MCMC---check
 out \sectionname~\ref{sec:bayes}.
+
+\section{Transformations of parameters}\label{sec:transform}
+
+...You have an error estimate on some parameters, but you want to know the
+uncertainty on some function of those parameters. Examples...
 
 \section{Information theory}\label{sec:info}
 
