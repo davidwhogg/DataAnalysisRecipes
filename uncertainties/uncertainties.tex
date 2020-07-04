@@ -683,11 +683,6 @@ If you not only believe your likelihood function, but you are happy to put prior
 on all your parameters---or if you want to run MCMC---check
 out \sectionname~\ref{sec:bayes}.
 
-\section{Transformations of parameters}\label{sec:transform}
-
-...You have an error estimate on some parameters, but you want to know the
-uncertainty on some function of those parameters. Examples...
-
 \section{Information theory}\label{sec:info}
 
 ...NOTE language that the inverse variance is called the information tensor or the precision matrix or other such things.
@@ -897,6 +892,15 @@ Identicality when it comes to the linear, Gaussian case.
 What it looks like.
 
 What it looks like in very nonlinear situations (like period fitting).
+
+\section{Transformations of parameters}\label{sec:transform}
+
+...You have an error estimate on some parameters, but you want to know the
+uncertainty on some function of those parameters. Examples...
+
+HOGG: Imagine that you have $\hat{\va}$ and you have $\tC_a$. What is the
+uncertainty on $f(\va)$? Is it just the same as doing inference, where
+the $\hat{\va}$ is your data vector? I think it might be.
 
 \section{Systematic error and theoretical uncertainty}
 
