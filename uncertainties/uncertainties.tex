@@ -477,7 +477,13 @@ If you repeated the measurement many times, and every time you had similar-quali
 data (like similar individual-data-point uncertainty variances $\sigma^2_n$ and
 the same number of data points and so on) and always all the assumptions listed
 at the beginning of \sectionname~\ref{sec:standard} hold, you would get different
-answers every time---different parameter estimates $\hat{a}_k$, but these would
+answers\footnote{The idea of this game of hypothetical repeated experiments is
+  that the true parameters $\va$ are the same in every repeated experiment, and
+  the noise variances $\sigma^2_n$ are the same in every repeated experiment,
+  but the specific noise draws or specific data you get is different. So the
+  repeated experiments are independent, identically distributed, noisy measurements
+  of exactly the same thing, measured in the same way each time.}
+every time---different parameter estimates $\hat{a}_k$, but these would
 be distributed in a Gaussian distribution with a mean equal to the true values of those
 parameters\footnote{Hence, unbiased.}, and variance equal to $\sigma^2_{ak}$.
 Or in the multi-dimensional case, the distribution of vectors $\hat{\va}$ would be
