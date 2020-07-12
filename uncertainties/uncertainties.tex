@@ -378,6 +378,8 @@ $a_k$; in symbols
   \quad ,
 \end{equation}
 where by $[\tV]_{ij}$ we mean the $i,j$ element of the matrix $\tV$.
+The quantitative meaning of this uncertainty will be addressed below in
+\sectionname~\ref{sec:interp}.
 These uncertainty estimates are conservative in the sense that the diagonal element of
 the tensor $\tC_a$ is the uncertainty on the parameter,
 \emph{permitting the other parameters to vary}
@@ -386,7 +388,8 @@ those parameters in advance or separately.
 This point is related to questions of nuisance parameters (marginalization or
 profiling) to be discussed in \sectionname~\ref{sec:nuisances}.
 The uncertainty is \emph{not} conservative, however, in the sense that it depends
-critically on the assumptions we made at the beginning of this \sectionname, to wit,
+critically on the assumptions we made at the beginning of this \sectionname,
+and especially
 that the noise in the data is purely Gaussian with zero mean and with known variances
 and uncorrelated.
 
@@ -458,15 +461,42 @@ Gaussian-distributed according to the rules above.
 
 MAKE SURE THAT THIS SECTION ISN'T TOO REPETITIVE with what's above and below.
 
-...What is the ``one-sigma'' uncertainty? It is the square root of $\sigma^2$.
-If your model is good, it is also the 68-percent confidence region.
-Meaning: FREQUENTIST MEANING. We'll get Bayesian later. But don't worry; there
-are limits where (although they mean different things) they are identical in
-value.
+The standard uncertainty $\sigma_{ak}$ on parameter estimate $\hat{a}_k$
+(the square root of the uncertainty variance $\sigma^2_{ak}$)
+we found in \sectionname~\ref{sec:standard} is called the ``one-sigma''
+uncerainty.
+If all the assumptions that led to the analysis were correct---and there
+are a lot of assumptions---then the uncertainty variance $\sigma^2_{ak}$
+is the expected variance\footnote{Statisticians talk in terms of bias and variance
+  of estimators. In usual parlance, these have frequentist meanings, in the sense
+  that they refer to the mean and variance in a hypothetical universe in which
+  the experiment is repeated, as described in this paragraph.}
+of the maximum-likelihood estimator $\hat{a}_k$.
+It is the variance in the following sense:
+If you repeated the measurement many times, and every time you had similar-quality
+data (like similar individual-data-point uncertainty variances $\sigma^2_n$ and
+the same number of data points and so on) and always all the assumptions listed
+at the beginning of \sectionname~\ref{sec:standard} hold, you would get different
+answers every time---different parameter estimates $\hat{a}_k$, but these would
+be distributed in a Gaussian distribution with a mean equal to the true values of those
+parameters\footnote{Hence, unbiased.}, and variance equal to $\sigma^2_{ak}$.
+Or in the multi-dimensional case, the distribution of vectors $\hat{\va}$ would be
+Gaussian with mean equal to the true value of $\va$ and variance tensor $\tC_a$,
+again as computed in \sectionname~\ref{sec:standard}.
+When someone says ``this is a one-sigma uncertainty'', this is usually what
+they mean (but not always\footnote{One exception is if the speaker is
+  a Bayesian, in which case they might be giving you the root-variance
+  or some quantiles of the posterior pdf. We will return to that
+  possibility in \sectionname~\ref{sec:bayes}.}).
 
-...If you want to report a value and an error bar, report this unless there
-are reasons to do otherwise. And plot it as a vertical line that goes up and
-down by one-sigma from your measurement. Show a figure.
+If you don't have very strong reasons to do otherwise, and you only have one
+parameter you deeply care about, and you want to report
+a value for your parameter and an uncertainty, report this one-sigma uncertainty!
+If you plot your measurement on a plot, plot it as a dot (or other symbol)
+plus lines (``error bars'') that extend by one-sigma in each direction.
+If a plot contains points and error bars and no detailed description, then this
+is how we interpret those error bars: They ought to be one-sigma, standard
+uncertainties.
 
 ...Now imagine that you have 2 (or worse, $K$) parameters, how do you interpret
 the matrix $\tC_a$? Let's start at 2 dimensions. Eigenvalues and eigenvectors make
