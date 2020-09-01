@@ -886,6 +886,11 @@ accessible.
 
 ...etc.
 
+...Extremely important point: You must bootstrap UP FRONT. Not after
+data pre-processing or patching or whatever. It has to happen before
+you do anything to the data. Before the train/test/validation split. Etc.
+Call out the APW project here.
+
 ...At the end come back to the point that even if you DO believe your noise
 model and your LF you still want to do jackknife to check it all. This test
 MUST PASS.
