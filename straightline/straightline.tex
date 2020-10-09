@@ -367,7 +367,7 @@ distance in the data space.\note{The inverse covariance matrix
   optimization.}  This, of course, is only one possible meaning of the
 phrase ``best fit''; that issue is addressed more below.
 
-When the uncertainties are Gaussian and their variances $\sigma_{yi}$
+When the uncertainties are Gaussian and their variances $\sigma_{yi}^2$
 are correctly estimated, the matrix
 $\inverse{\left[\mAT\,\mCinv\,\mA\right]}$ that appears in
 \equationname~(\ref{eq:lsf}) is just the covariance matrix (Gaussian
@@ -1766,11 +1766,11 @@ already).  Is the fit good?  What about for the fit performed in
 
 \begin{problem}\label{prob:chi2}
 Re-do the fit of \problemname~\ref{prob:easy} but setting all
-$\sigma_{yi}^2=S$, that is, ignoring the uncertainties and replacing
-them all with the same value $S$.  What uncertainty variance $S$ would
+$\sigma_{yi}=S$, that is, ignoring the uncertainties and replacing
+them all with the same value $S$.  What uncertainty $S$ would
 make $\chi^2 = N-2$?  Relevant plots are shown in
 \figurename~\ref{fig:chi2}.  How does it compare to the mean and
-median of the uncertainty variances $\allsigmay$?
+median of the uncertainty $\allsigmay$?
 \end{problem}
 
 \begin{figure}[htbp]
