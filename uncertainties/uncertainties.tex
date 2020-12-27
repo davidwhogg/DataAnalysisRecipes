@@ -3,6 +3,8 @@
 
 % to-do
 % -----
+% - make sure I address the illustration of an uncertainty on a function or
+%   functional prediction.
 % - move problem / exercise macros in from other DARs.
 % - make up a toy data set and make problems.
 %   - make two different generative models for the toy data.
@@ -64,11 +66,19 @@
 \newcommand{\mX}{\matrix{X}}
 
 % page layout stuhh
-\setlength{\headheight}{0.0in}
-\setlength{\headsep}{0.0in}
+\makeatletter
+\renewcommand\section{\@startsection {section}{1}{\z@}%
+  {-3.5ex \@plus -1ex \@minus -.2ex}%
+  {2.3ex \@plus.2ex}%
+  {\raggedright\normalfont\Large\bfseries}}
+\makeatother
+\setlength{\headheight}{2ex}
+\setlength{\headsep}{3ex}
 \setlength{\parindent}{\baselineskip}
 \setlength{\textwidth}{4.3in}
-\setlength{\textheight}{2\textwidth}
+\setlength{\textheight}{2.2\textwidth}
+\pagestyle{myheadings}
+\markright{\textcolor{gray}{\textsf{Hogg / Estimating uncertainties}}}
 \raggedbottom\sloppy\sloppypar\frenchspacing
 
 % this might be crazy, but here's my number
@@ -92,8 +102,10 @@
 \setlength{\topmargin}{0.5\paperheight}
 \addtolength{\topmargin}{-1.0in}
 \addtolength{\topmargin}{-0.5\textheight}
+\addtolength{\topmargin}{-0.5\headsep}
+\addtolength{\topmargin}{-0.5\headheight}
 
-\begin{document}\sloppy\sloppypar\raggedbottom\frenchspacing
+\begin{document}\thispagestyle{plain}
 
 \section*{Data Analysis Recipes: What is \\ the uncertainty on my measurement?}
 
