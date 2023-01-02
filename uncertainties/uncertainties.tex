@@ -1,5 +1,5 @@
 % This document is part of the Data Analysis Recipes project.
-% Copyright 2020 the author.
+% Copyright 2020, 2022 the author.
 
 % to-do
 % -----
@@ -10,8 +10,6 @@
 %   - make two different generative models for the toy data.
 %   - should have bayes and frequentist options.
 % - Cite Numerical Recipes somewhere.
-% - Where does the point go that there are many qualitatively different
-%   sources of noise or uncertainty.
 % - find a place to mention the Neyman--Pearson Lemma (and check spelling!)
 % - put some side-note on jackknife about relationship to cross-validation?
 % - See notes from Stars & Exoplanets meeting 2020-06-03 for various ideas.
@@ -28,6 +26,7 @@
             citecolor=darkgray,
             urlcolor=NavyBlue]{hyperref}
 \usepackage{graphicx}
+\usepackage{changepage} % for "wider" environment
 \usepackage{marginfix} % necessary but possibly evil
 % Note to the archaeologists who find this file: The marginfix package is unstable and buggy. It needs to be rewritten.
 
@@ -65,6 +64,16 @@
 \newcommand{\tV}{\tensor{V}}
 \newcommand{\mX}{\matrix{X}}
 
+% marginseparation stuff
+\setlength{\marginparsep}{0.15in}
+\setlength{\marginparwidth}{2.5in}
+\newcounter{marginnote}
+\setcounter{marginnote}{0}
+\renewcommand{\footnote}[1]{\refstepcounter{marginnote}\textsuperscript{\themarginnote}\marginpar{\color{darkgray}\raggedright\footnotesize\textsuperscript{\themarginnote}#1}}
+\newcommand{\tfigurerule}{\rule{0pt}{1ex}\\ \rule{\marginparwidth}{0.5pt}\\ \rule{0pt}{0.25ex}}
+\newcommand{\bfigurerule}{\rule{0pt}{0.25ex}\\ \rule{\marginparwidth}{0.5pt}\\ \rule{0pt}{1ex}}
+\renewcommand{\caption}[1]{\parbox{\marginparwidth}{\footnotesize\refstepcounter{figure}\textbf{\figurename~\thefigure}: {#1}}}
+
 % page layout stuhh
 \makeatletter
 \renewcommand\section{\@startsection {section}{1}{\z@}%
@@ -76,21 +85,16 @@
 \setlength{\headsep}{4ex}
 \setlength{\footskip}{\headsep}
 \setlength{\parindent}{\baselineskip}
-\setlength{\textwidth}{4.3in}
-\setlength{\textheight}{2.2\textwidth}
+\setlength{\textwidth}{4.5in}
+\setlength{\textheight}{2.0\textwidth}
 \pagestyle{myheadings}
 \markright{\textcolor{gray}{\textsf{Hogg / Estimating uncertainties}}}
 \raggedbottom\sloppy\sloppypar\frenchspacing
-
-% this might be crazy, but here's my number
-\setlength{\marginparsep}{0.15in}
-\setlength{\marginparwidth}{2.7in}
-\newcounter{marginnote}
-\setcounter{marginnote}{0}
-\renewcommand{\footnote}[1]{\refstepcounter{marginnote}\textsuperscript{\themarginnote}\marginpar{\color{darkgray}\raggedright\footnotesize\textsuperscript{\themarginnote}#1}}
-\newcommand{\tfigurerule}{\rule{0pt}{1ex}\\ \rule{\marginparwidth}{0.5pt}\\ \rule{0pt}{0.25ex}}
-\newcommand{\bfigurerule}{\rule{0pt}{0.25ex}\\ \rule{\marginparwidth}{0.5pt}\\ \rule{0pt}{1ex}}
-\renewcommand{\caption}[1]{\parbox{\marginparwidth}{\footnotesize\refstepcounter{figure}\textbf{\figurename~\thefigure}: {#1}}}
+\newlength{\foo}
+\setlength{\foo}{\marginparwidth}
+\addtolength{\foo}{\marginparsep}
+\newenvironment{wider}{\begin{adjustwidth}{0in}{-\foo}}{\end{adjustwidth}}
+\sloppy\sloppypar\raggedbottom\frenchspacing
 
 % and make the left margin correct
 \setlength{\oddsidemargin}{0.5\paperwidth}
@@ -106,10 +110,13 @@
 \addtolength{\topmargin}{-0.5\headsep}
 \addtolength{\topmargin}{-1.0\headheight}
 
-\begin{document}\thispagestyle{plain}
+\begin{document}\thispagestyle{empty}
 
-\section*{Data Analysis Recipes: What is \\ the uncertainty on my measurement?}
+\begin{wider}
+\section*{Data Analysis Recipes: \\ What is the uncertainty on my measurement?}
+\end{wider}
 
+\noindent
 \textbf{David W. Hogg}\footnote{%
     It is a pleasure to thank
     the participants in my data-analysis classes in New York City,
@@ -126,10 +133,11 @@
     and
     Scott Tremaine (IAS)
     for some of these ideas.} \\
-{\footnotesize Center for Cosmology and Particle Physics, Dept Physics, New York University} \\
+{\footnotesize Center for Cosmology and Particle Physics, Department of Physics, New York University} \\
 {\footnotesize Max-Planck-Institut f\"ur Astronomie} \\
 {\footnotesize Flatiron Institute}
 
+\bigskip
 \paragraph{Abstract:}
 Any measurement you make using data ought to be reported with an uncertainty
 estimate (often called an ``error'' or an ``error bar'' unfortunately).
@@ -146,31 +154,35 @@ alternatives that I recommend.
 I also discuss the role of nuisance parameters in uncertainty estimation, and
 the differences between Bayesian and frequentist approaches and interpretation.
 I spend a bit of time on common issues and troubleshooting.
-One important idea is that the circumstances in which an uncertainty can be estimated
-precisely are rare: Even when you have a very precise measurement, you probably won't
-know the uncertainty on that measurement with great precision.
-In part for this reason, a (bad) summary of my recommendations is to use
-the standard linear or linearized uncertainty, or jackknife, or both.
+One important idea is that you will almost never get a precise estimate of your uncertainty.
+For this reason, I recommend pragmatism, and empirical approaches.
 
 \section{Measurements and uncertainties}\label{sec:intro}
 
 You have data. There's something you want to measure. You have many
-options for making this measurement: You can come up with an
+options for making this measurement: It might be that you can come up with an
 \textsl{estimator}, which transforms your data (through arithmetic
-operations) into an estimate of the quantity you want to measure. You
+operations) into an estimate of the quantity you want to measure.
+It might be that you
 can write down a likelihood function---a probability density function
 (or pdf) for your data given the quantity you want to measure (and
 maybe other nuisance parameters)---and you can optimize it. That
 procedure will get you an estimator, but it would be a
 \textsl{maximum-likelihood estimator}, which has some great
 properties (to be discussed below).
-Or you can write down, in addition to your likelihood
+Or perhaps you can write down, in addition to your likelihood
 function, a set of prior pdfs over parameters and perform
 \textsl{Bayesian inference}.  In each of these cases you will make
-some kind of measurement, and in each of these cases you will be
-expected to deliver that measurement with an associated \textsl{uncertainty}.
+some kind of measurement, and in each of these cases you will probably be
+expected to deliver that measurement in the form of a value, with an associated
+\textsl{uncertainty}.\footnote{If you are a committed Bayesian, you might object that we don't produce
+measurements as particular numerical values,
+but rather we produce probability densities over quantities of interest.
+There is an element of truth to that, but it is also the case that if, as a Bayesian, you want to
+write the outcome of your measurement and uncertainty into the abstract of your paper, you
+probably need to boil that probability density down to a number or a few numbers.}
 
-This estimate of your uncertainty can come from different kinds of operations, with
+The estimate of your uncertainty can come from different kinds of operations, with
 different epistemological status. In some kinds of uncertainty
 estimates, we use physical knowledge of the data-generating process to
 compute, from (essentially) theory, how the noise in the data
@@ -186,15 +198,15 @@ And---closely related to the above point---the \emph{source} of the
 uncertainty can be a well-defined noise process (like photon shot
 noise in a detector); or it can be an ill-understood noise process
 (like the variabilities of stars, for which we have no good model); or
-it can be something else (unknown calibration systematics, mistakes or
-wrong approximations in the physical model, and so on). For some analyses
+it can be something else (unknown calibration systematics, uncertainties in some of
+the inputs going into the physical model, and so on). For some analyses
 all of these noise processes are relevant; for others only some are.
 For example, if you are measuring the mean brightness of a star, the variability
 of the star is noise for you, contributing to your uncertainty.
 However, if you are measuring the \emph{variability} of the star, the
 variability is your signal, not your noise, and it is not a contribution
-to your uncertainty at all. But then perhaps the mis-specification of your
-variability model will become a new source of uncertainty.
+to your uncertainty at all. But then perhaps uncertainty about the form of your
+variability model will become a new source of uncertainty on your answer.
 That is, the way uncertainties are estimated has something to do with
 \emph{how they will be used} or the objectives of your investigation.
 This is related to the (sometimes obscure)
@@ -205,14 +217,14 @@ others.\footnote{This is also related to the \emph{subjectivity} of scientific
 We will return to that point below.
 
 One of my grad-school mentors\footnote{This was Gerry Neugebauer (1932--2014).
-  He was one of the pioneers of infrared astrophysics, and the US
+  He was one of the pioneers of infrared astrophysics, the US
   lead of the NASA \textsl{IRAS} Mission, and a wonderful human
   being.} liked to say, when I said something about ``errors'' or
 ``error bars'', that ``they are \emph{uncertainties} not
 \emph{errors}! If they were \emph{errors}, we'd correct them!'' That
 phrase rings in my head every day. But this points out a difficulty,
 which is in the interpretation of uncertainty estimates. When we say
-that some parameter is measured to be $42\pm 6$, what does that ``$\pm 6$''
+that some parameter is measured to be $42\pm 6$, what does that ``${}\pm 6$''
 mean?  The answer depends a bit on your statistical philosophy:
 If you are a Bayesian, it means that you believe that, with some
 fairly well-defined probability (like maybe 68\,percent), the
@@ -973,6 +985,11 @@ What is a statistical uncertainty? And what is a systematic one?
 
 When do you want to use the former? When do you want to add both in quadrature?
 
+\section{Isolating different sources of uncertainty}
+
+HOGG: Is this a section? Thinking about the comments in the introduction about the point
+that the uncertainty can come from many sources.
+
 \section{Visualizing and reporting uncertainties}\label{sec:viz}
 
 error bars
@@ -1038,7 +1055,9 @@ I have a good LF but then I did jackknife and it disagrees!
 Hello world.
 
 % Render the references
+\begin{wider}
 \clearpage\raggedright
 \bibliography{refs}
+\end{wider}
 
 \end{document}
