@@ -6,7 +6,10 @@
 % - Make sure it is clear that by ``optimize'' in the exercises we mean ``by computer'' rather than ``by hand'' (where we do).  Thank Joe Romano (email dated 2012-06-11).
 % - Make sure that what we say about goodness-of-fit is not inconsistent with Gelman's philosophy papers; cite those.
 
-\documentclass[12pt,twoside,pdftex]{article}
+\documentclass[paper=6.125in:9.250in,pagesize=pdftex,
+               headinclude=on,footinclude=on,12pt]{scrbook}
+\areaset[0.50in]{4.5in}{8in}
+
 \usepackage{amssymb,amsmath,mathrsfs,../deluxetable,../hogg_endnotes,natbib}
 \usepackage{url}
 \input{../hogg_style}
@@ -25,6 +28,9 @@
 \markboth{Fitting a model to data}{}
 
 \begin{document}
+
+\newpage
+
 \thispagestyle{plain}\raggedbottom
 \section*{Data analysis recipes:\ \\
   Fitting a model to data\footnotemark}
@@ -62,7 +68,7 @@ Dustin~Lang\\
 \affil{Department of Computer Science, University of Toronto}\\
 \affil{Princeton University Observatory}
 
-\begin{abstract}
+\chapter{Preface}
   We go through the many considerations involved in fitting a model to
   data, using as an example the fit of a straight line to a set of
   points in a two-dimensional plane.  Standard weighted least-squares
@@ -81,9 +87,11 @@ Dustin~Lang\\
   parameters or the posterior probability distribution.  Construction
   of a posterior probability distribution is indispensible if there
   are ``nuisance parameters'' to marginalize away.
-\end{abstract}
+
 
 \numberparagraphs
+
+\chapter{Introduction}
 
 It is conventional to begin any scientific document with an
 introduction that explains why the subject matter is important.  Let
@@ -120,7 +128,7 @@ physical justification for the fit.\note{When fitting is used for
   data-driven prediction---that is, using existing data to predict the
   properties of new data not yet acquired---the conditions for model
   applicability are weaker.  For example, a line fit by the standard
-  method outlined in \sectionname~\ref{sec:standard} can be, under a
+  method outlined in \chaptername~\ref{sec:standard} can be, under a
   range of assumptions, the best linear predictor of new data, even
   when it is not a good or appropriate model.  A full discussion of
   this, which involves model selection and clarity about exactly what
@@ -155,7 +163,7 @@ all situations in which they are used.\note{The term ``linear
   regression'' is used in many different contexts, but in the most
   common, they seem to mean ``linear fitting without any use of the
   uncertainties''.  In other words, linear regression is usually just
-  the procedure outlined in this \sectionname, but with the covariance
+  the procedure outlined in this \chaptername, but with the covariance
   matrix $\mC$ set equal to the identity matrix.  This is equivalent
   to fitting under the assumption not just that the $x$-direction
   uncertainties are negligible, but also that all of the $y$-direction
@@ -211,7 +219,7 @@ errors and absurdities in the literature.\note{Along the lines of
   then you must fit $y$ as a function of $x$; if the other way then
   the other way, and if neither has much smaller uncertainties, then
   that kind of linear fitting is invalid.  We have more to say about
-  this generic situation in later \sectionname s.  What is written in
+  this generic situation in later \chaptername s.  What is written in
   \cite{isobe90}---by professional statisticians, we could add---is
   simply wrong.\label{note:fallacy}} When an investigator cites,
 relies upon, or transmits a best-fit slope or intercept reported in
@@ -242,7 +250,7 @@ example problems.  The reader is encouraged to do the \problemnames;
 many of these ask you to produce plots which can be compared with the
 \figurenames.
 
-\section{Standard practice}\label{sec:standard}
+\chapter{Standard practice}\label{sec:standard}
 
 You have a set of $N>2$ points $(x_i,y_i)$, with known Gaussian
 uncertainties $\sigma_{yi}$ in the $y$ direction, and no uncertainty
@@ -350,15 +358,15 @@ distance in the data space.\note{The inverse covariance matrix
   model. This distance can then be minimized.  This idea---that the
   covariance matrix is a metric---is sometimes useful for thinking
   about statistics as a physicist; it will return in
-  \sectionname~\ref{sec:twod} when we think about data for which there
+  \chaptername~\ref{sec:twod} when we think about data for which there
   are uncertainties in both the $x$ and $y$ directions.
 
   Because of the purely quadratic nature of this metric distance, the
-  standard problem solved in this \sectionname\ has a linear solution.
+  standard problem solved in this \chaptername\ has a linear solution.
   Not only that, but the objective function ``landscape'' is also
   \emph{convex} so the optimum is global and the solution is unique.
   This is remarkable, and almost no perturbation of this problem (as
-  we will see in later \sectionname s) has either of these properties,
+  we will see in later \chaptername s) has either of these properties,
   let alone both.  For this standard problem, the linearity and
   convexity permit a one-step solution with no significant engineering
   challenges, even when $N$ gets exceedingly large.  As we modify (and
@@ -382,7 +390,7 @@ uncertainty---uncertainty not error\note{There is a difference between
   of knowledge, not \emph{mistakes}.\label{note:error}}---variances on
 the diagonal, covariances off the diagonal) for the parameters in
 $\mX$.  We will have more to say about this in 
-\sectionname~\ref{sec:uncertainty}.
+\chaptername~\ref{sec:uncertainty}.
 
 % Any changes to this table should be made IN THE CODE
 % The code is astrometry/projects/straightline/py/generate_data.py
@@ -418,7 +426,7 @@ $\mX$.  We will have more to say about this in
 \end{deluxetable}
 
 \begin{problem}\label{prob:easy}
-Using the standard linear algebra method of this \sectionname, fit the
+Using the standard linear algebra method of this \chaptername, fit the
 straight line $y=m\,x+b$ to the $x$, $y$, and $\sigma_y$ values for
 data points 5 through 20 in \tablename~\ref{table:data_allerr} on
 page~\pageref{table:data_allerr}.  That is, ignore the first four data
@@ -454,7 +462,7 @@ set.}\label{fig:standard}
 \end{figure}
 
 \begin{problem}\label{prob:quadratic}
-Generalize the method of this \sectionname\ to fit a general quadratic
+Generalize the method of this \chaptername\ to fit a general quadratic
 (second order) relationship.  Add another column to matrix $\mA$
 containing the values $x_i^2$, and another element to vector $\mX$
 (call it $q$).  Then re-do \problemname~\ref{prob:easy} but
@@ -473,7 +481,7 @@ standard weighted least-square fit but now with a second-order
 \end{figure}
 \numberparagraphs
 
-\section{The objective function}\label{sec:objective}
+\chapter{The objective function}\label{sec:objective}
 
 A scientist's justification of \equationname~(\ref{eq:lsf}) cannot
 appeal purely to abstract ideas of linear algebra, but must originate
@@ -520,13 +528,13 @@ optimum.\note{Of course, whether you are a frequentist or a Bayesian,
   \emph{optimize} the objective, but pass forward a description of the
   dependence of the objective on the parameters, so that other
   investigators can combine your results with theirs in a responsible
-  way.  In the fully Gaussian case described in this \sectionname,
+  way.  In the fully Gaussian case described in this \chaptername,
   this means passing forward the optimum \emph{and} second derivatives
   around that optimum (since a Gaussian is fully specified by its
   mode---or mean--and its second derivative at the mode).  In what
   follows, when things aren't purely Gaussian, more sophisticated
   outputs will be necessary.}  Note that in the previous
-\sectionname\ we did \emph{not} proceed according to these rules;
+\chaptername\ we did \emph{not} proceed according to these rules;
 indeed the procedure was introduced prior to the objective function,
 and the objective function was not justified.
 
@@ -594,7 +602,7 @@ Taking the logarithm,
 \end{eqnarray}
 where $K$ is some constant.  This shows that likelihood maximization
 is identical to $\chi^2$ minimization and we have justified,
-scientifically, the procedure of the previous \sectionname.
+scientifically, the procedure of the previous \chaptername.
 
 The Bayesian generalization of this is to say that
 \begin{equation}
@@ -603,7 +611,7 @@ p(m,b|\ally,I) = \frac{p(\ally|m,b,I)\,p(m,b|I)}{p(\ally|I)} \quad ,
 where $m$ and $b$ are the model parameters, $\ally$ is a short-hand
 for all the data $y_i$, $I$ is a short-hand for all the prior
 knowledge of the $x_i$ and the $\sigma_{yi}$ and everything else about
-the problem\note{One oddity in this \sectionname\ is that when we
+the problem\note{One oddity in this \chaptername\ is that when we
   set up the Bayesian problem we put the $\allx$ and $\allsigmay$ into
   the prior information $I$ and \emph{not} into the data.  These were
   not considered data.  Why not?  This was a choice, but we made it to
@@ -616,7 +624,7 @@ the problem\note{One oddity in this \sectionname\ is that when we
   and the $y_i$ are the declinations you measured at those times.  As
   soon as there is any sense in which the $x_i$ are themselves
   \emph{also} data, the method---Bayesian or frequentist---of this
-  \sectionname\ is invalid.}, $p(m,b|\ally,I)$ is the \emph{posterior}
+  \chaptername\ is invalid.}, $p(m,b|\ally,I)$ is the \emph{posterior}
 probability distribution for the parameters given the data and the
 prior knowledge, $p(\ally|m,b,I)$ is the likelihood $\like$ just
 computed in \equationname~(\ref{eq:like}) (which is a frequency
@@ -668,7 +676,7 @@ the minimum is at the matrix location given in
 \equationname~(\ref{eq:lsf}).
 \end{problem}
 
-\section{Pruning outliers}\label{sec:outliers}
+\chapter{Pruning outliers}\label{sec:outliers}
 
 The standard linear fitting method is very sensitive to
 \emph{outliers}, that is, points that are substantially farther from
@@ -679,10 +687,10 @@ doesn't apply to all the data).  There are two general approaches to
 mitigating this sensitivity, which are not necessarily different.  The
 first is to find ways to objectively remove, reject, or become
 insensitive to ``bad'' points; this is the subject of
-this \sectionname.  The second is to better model your data-point
+this \chaptername.  The second is to better model your data-point
 uncertainties, permitting larger deviations than the Gaussian noise
 estimates; this is the subject of
-\sectionname~\ref{sec:non-Gaussian}.  Both of these are strongly
+\chaptername~\ref{sec:non-Gaussian}.  Both of these are strongly
 preferable to sorting through the data and rejecting points by hand,
 for reasons of subjectivity and irreproducibility that we need not
 state.  They are also preferable to the standard (in astrophysics
@@ -722,7 +730,7 @@ and not the outcome of justifiable modeling.\note{\emph{Sigma
   employed in the common situation in which you have to perform data
   rejection but you \emph{don't know the magnitudes of your
     uncertainties} $\allsigmay$.  We will say a bit more about this in
-  \sectionname~\ref{sec:goodness}, but a better procedure is to
+  \chaptername~\ref{sec:goodness}, but a better procedure is to
   include the $\allsigmay$ as (possibly restricted) model parameters
   and infer them and marginalize over them \emph{also}.  This is only
   really tractable if you can assume that all the data-point
@@ -928,8 +936,8 @@ integrators, in particular it works very well with a simple
 Markov-Chain Monte Carlo, which we advocate below.
 
 We have lots to discuss.  We have gone from a procedure
-(\sectionname~\ref{sec:standard}) to an objective function
-(\sectionname~\ref{sec:objective}) to a general expression for a
+(\chaptername~\ref{sec:standard}) to an objective function
+(\chaptername~\ref{sec:objective}) to a general expression for a
 non-trivial posterior probability distribution function involving
 priors and multi-dimensional integration.  We will treat each of
 these issues in turn: We must set the prior, we must find a way to
@@ -1198,10 +1206,10 @@ distribution gets much worse when the data uncertainties are
 underestimated.}\label{fig:badfraction}
 \end{figure}
 
-\section{Uncertainties in the best-fit parameters}\label{sec:uncertainty}
+\chapter{Uncertainties in the best-fit parameters}\label{sec:uncertainty}
 
 In the standard linear-algebra method of $\chi^2$ minimization given
-in \sectionname~\ref{sec:standard}, the uncertainties in the best-fit
+in \chaptername~\ref{sec:standard}, the uncertainties in the best-fit
 parameters $(m,b)$ are given by the two-dimensional output covariance
 matrix
 \begin{equation}
@@ -1245,14 +1253,14 @@ relationship has intrinsic scatter and curvature.\note{If you are
   best-fit point in parameter space.  However, the smugness must be
   tempered by the fact that \emph{within} the context of a single
   model (such as the generative model described in
-  \sectionname~\ref{sec:objective}), the Bayesian analysis does not
+  \chaptername~\ref{sec:objective}), the Bayesian analysis does not
   return any useful goodness-of-fit information; a bad model can be
   constrained well by the data but still be dead wrong.}  For these
 generic reasons, we much prefer empirical estimates of the uncertainty
 in the best-fit parameters.
 
 In the Bayesian outlier-modeling schemes of
-\sectionname~\ref{sec:outliers}, the output is a
+\chaptername~\ref{sec:outliers}, the output is a
 posterior distribution for the parameters $(m,b)$.  This distribution
 function is closer than the standard estimate
 $\inverse{\left[\mAT\,\mCinv\,\mA\right]}$ to being an
@@ -1392,9 +1400,9 @@ panel) when you underestimate your observational
 uncertainties.}\label{fig:reduceerror}
 \end{figure}
 
-\section{Non-Gaussian uncertainties}\label{sec:non-Gaussian}
+\chapter{Non-Gaussian uncertainties}\label{sec:non-Gaussian}
 
-The standard method of \sectionname~\ref{sec:standard} is only
+The standard method of \chaptername~\ref{sec:standard} is only
 justified when the measurement uncertainties are Gaussian with known
 variances.  Many noise processes in the real world are \emph{not}
 Gaussian; what to do?  There are three general kinds of methodologies
@@ -1447,7 +1455,7 @@ uncertainties, the observed variance of a finite sample of points can
 be very much smaller than the true variance of the generating
 distribution function.  The second approach is to make no attempt to
 understand the non-Gaussianity, but to use the data-rejection methods
-of \sectionname~\ref{sec:outliers}.  We generally recommend
+of \chaptername~\ref{sec:outliers}.  We generally recommend
 data-rejection methods, but there is a third approach in which the
 likelihood is artificially or heuristically softened to reduce the
 influence of the outliers.  This approach is not usually a good idea
@@ -1491,9 +1499,9 @@ justifiable.\note{We don't recommend them, but there are many
   it, and marginalize it out.  In general these are both far less good
   alternatives than modeling the outliers, because objective functions
   softer than $\chi^2$ are rarely justifiable in terms of any
-  generative model for the data.  In this \sectionname\ we modeled
+  generative model for the data.  In this \chaptername\ we modeled
   outliers by a method that can almost be interpreted in terms of a
-  softer $\chi^2$; in \sectionname~\ref{sec:non-Gaussian} we discuss
+  softer $\chi^2$; in \chaptername~\ref{sec:non-Gaussian} we discuss
   (briefly) justifiable modifications to the objective function when
   the observational uncertainty distributions depart from Gaussians in
   known ways.  Nonetheless, even when there is not a good
@@ -1516,18 +1524,18 @@ modeled, the investigator can replace the Gaussian objective function
 with something more realistic.  Indeed, \emph{any} (reasonable)
 frequency distribution can be described as a mixture of Gaussians, so
 this approach is extremely general (in principle; it may not be easy).
-For example, the generative model in \sectionname~\ref{sec:objective}
+For example, the generative model in \chaptername~\ref{sec:objective}
 for the standard case was built out of individual data-point
 likelihoods given in \equationname~(\ref{eq:objectivei}).  If the
 frequency distribution for the noise contribution to data point $y_i$
 has been expressed as the sum of $k$ Gaussians, these likelihoods
 become
-\begin{equation}
+\begin{multline}\label{eq:too_long_1}
 p(y_i|x_i,\sigma_{yi},m,b) = \sum_{j=1}^k
- \frac{a_{ij}}{\sqrt{2\,\pi\,\sigma_{yij}^2}}
+ \frac{a_{ij}}{\sqrt{2\,\pi\,\sigma_{yij}^2}}\\
  \,\exp\left(-\frac{[y_i+\Delta y_{ij}-m\,x_i-b]^2}{2\,\sigma_{yij}^2}\right)
  \quad ,
-\end{equation}
+\end{multline}
 where the $k$ Gaussians for measurement $i$ have variances
 $\sigma_{yij}$, offsets (means---there is no need for the Gaussians to
 be concentric) $\Delta y_{ij}$, and amplitudes $a_{ij}$ that sum to
@@ -1584,7 +1592,7 @@ scalar objective function, and carry on.\note{The possibility arises
 that is an engineering problem that must be tackled for scientific
 correctness.
 
-\section{Goodness of fit and unknown uncertainties}\label{sec:goodness}
+\chapter{Goodness of fit and unknown uncertainties}\label{sec:goodness}
 
 How can you decide if your fit is a good one, or that your assumptions
 are justified?  And how can you infer or assess the individual
@@ -1595,7 +1603,7 @@ unless you are very confident about your uncertainty estimates, and
 you can't test your uncertainty estimates unless you are very
 confident about your assumptions.
 
-Imagine that the generative model in \sectionname~\ref{sec:objective}
+Imagine that the generative model in \chaptername~\ref{sec:objective}
 is a valid description of the data.  In this case, the noise
 contribution for each data point $i$ has been drawn from a Gaussian
 with variance $\sigma_{yi}^2$.  The expectation is that data point $i$
@@ -1717,13 +1725,13 @@ off-diagonal elements are non-zero, $\chi^2$ must be computed by the
 matrix expression in \equationname~(\ref{eq:chisquared}); this is
 equivalent to replacing the sum over $i$ to two sums over $i$ and $j$
 and considering all cross terms
-\begin{equation}
+\begin{multline}\label{eq:too_long_2}
 \chi^2 =
- \transpose{\left[\mY-\mA\,\mX\right]}\,\mCinv\,\left[\mY-\mA\,\mX\right]
+ \transpose{\left[\mY-\mA\,\mX\right]}\,\mCinv\,\left[\mY-\mA\,\mX\right] \\
  = \sum_{i=1}^N \sum_{j=1}^N
  w_{ij}\,\left[y_i-f(x_i)\right]\,\left[y_j-f(x_j)\right]
  \quad,
-\end{equation} 
+\end{multline} 
 where the $w_{ij}$ are the elements of the inverse covariance
 matrix $\inverse{\mC}$.
 
@@ -1783,7 +1791,7 @@ data uncertainties.}\label{fig:chi2}
 \begin{problem}\label{prob:bayeschi2}
 Flesh out and write all equations for the Bayesian uncertainty
 estimation and marginalization procedure described in this
-\sectionname.  Note that the inference and marginalization would be
+\chaptername.  Note that the inference and marginalization would be
 very expensive without excellent sampling tools!  Make the additional
 (unjustified) assumption that all the uncertainties have the same
 variance $\sigma_{yi}^2=S$ to make the problem tractable.  Apply the
@@ -1808,7 +1816,7 @@ results of inferring the observational uncertainties simultaneously
 with the fit parameters.}\label{fig:bayeschi2}
 \end{figure}
 
-\section{Arbitrary two-dimensional uncertainties}\label{sec:twod}
+\chapter{Arbitrary two-dimensional uncertainties}\label{sec:twod}
 
 Of course most real two-dimensional data $\allxy$ come with
 uncertainties in \emph{both} directions (in both $x$ and $y$).  You
@@ -1837,11 +1845,11 @@ used in a two-dimensional Gaussian representation of the probability
 of getting measurement $(x_i,y_i)$ when the ``true value'' (the value
 you would have for this data point if it had been observed with
 negligible noise) is $(x,y)$:
-\begin{equation}
-p(x_i,y_i|\mS_i,x,y) = \frac{1}{2\,\pi\,\sqrt{\det(\mS_i)}}
+\begin{multline}\label{eq:too_long_3}
+p(x_i,y_i|\mS_i,x,y) = \frac{1}{2\,\pi\,\sqrt{\det(\mS_i)}}\\
   \,\exp\left(-\frac{1}{2}\,\transpose{\left[\mZ_i - \mZ\right]}
   \,\inverse{\mS_i}\,\left[\mZ_i - \mZ\right]\right) \quad ,
-\end{equation}
+\end{multline}
 where we have implicitly made column vectors
 \begin{equation}\label{eq:mZ}
 \mZ = \left[\begin{array}{c} x \\ y \end{array}\right] \quad ; \quad
@@ -1852,7 +1860,7 @@ Now in the face of these general (though Gaussian) two-dimensional
 uncertainties, how do we fit a line?  Justified objective functions
 will have something to do with the probability of the observations
 $\allxy$ given the uncertainties $\allS$, as a function of properties
-$(m,b)$ of the line.  As in \sectionname~\ref{sec:objective}, the
+$(m,b)$ of the line.  As in \chaptername~\ref{sec:objective}, the
 probability of the observations given model parameters $(m,b)$ is
 proportional to the \emph{likelihood} of the parameters given the
 observations.  We will now construct this likelihood and maximize it,
@@ -1964,12 +1972,12 @@ was drawn from the two-dimensional Gaussian with covariance tensor
 $\mS_i$.  As usual, if this generative model is a good approximation
 to the properties of the data set, the method works very well.  Of
 course there are many situations in which this is \emph{not} a good
-approximation.  In \sectionname~\ref{sec:scatter}, we consider the
+approximation.  In \chaptername~\ref{sec:scatter}, we consider the
 (very common) case that the relationship is near-linear but not
 \emph{narrow}, so there is an intrinsic width or scatter in the true
 relationship.  Another case is that there are outliers; this can be
 taken care of by methods very precisely analogous to the methods in
-\sectionname~\ref{sec:outliers}.  We ask for this in the
+\chaptername~\ref{sec:outliers}.  We ask for this in the
 \problemnames\ below.
 
 It is true that standard least-squares fitting is easy and simple;
@@ -1978,7 +1986,7 @@ inappropriate.  We hope to have convinced some readers that doing
 something justifiable and sensible when there are uncertainties in
 both dimensions---when standard linear fitting is inappropriate---is
 neither difficult nor complex.  That said, there is something
-fundamental wrong with the generative model of this \sectionname, and
+fundamental wrong with the generative model of this \chaptername, and
 it is that the model generates \emph{only} the displacements of the
 points \emph{orthogonal} to the linear relationship.  The model is
 completely unspecified for the distribution \emph{along} the
@@ -2001,7 +2009,7 @@ systematic uncertainty.  This is unjustified.\note{The difference
   \emph{unjustifiable} you will certainly introduce large systematics!
   This forward--reverse procedure is not justifiable and it gives
   results which differ by substantially more than the uncertainty in
-  the procedure given in this \sectionname.  We have already
+  the procedure given in this \chaptername.  We have already
   (\notename~\ref{note:regression}) criticized one of the
   principal papers to promote this kind of hack, and do not need to
   repeat that criticism here.}  Another common method for finding the
@@ -2025,7 +2033,7 @@ is \emph{principal components analysis}.  The manifold reasons
   negligible (but in that case everything is trivial anyway).}
 
 \begin{problem}\label{prob:twod}
-Using the method of this \sectionname, fit the straight line
+Using the method of this \chaptername, fit the straight line
 $y=m\,x+b$ to the $x$, $y$, $\sigma_x^2$, $\sigma_{xy}$, and
 $\sigma_y^2$ values of points 5 through 20 taken from
 \tablename~\ref{table:data_allerr} on
@@ -2048,7 +2056,7 @@ Repeat \problemname~\ref{prob:twod}, but using all of the data in
 page~\pageref{table:data_allerr}.  Some of the points are now
 outliers, so your fit may look worse.  Follow the fit by a robust
 procedure analogous to the Bayesian mixture model with bad-data
-probability $\Pbad$ described in \sectionname~\ref{sec:outliers}.  Use
+probability $\Pbad$ described in \chaptername~\ref{sec:outliers}.  Use
 something sensible for the prior probability distribution for $(m,b)$.
 Plot the two results with the data and uncertainties.  For extra
 credit, plot a sampling of 10 lines drawn from the marginalized
@@ -2074,7 +2082,7 @@ through 20 from \tablename~\ref{table:data_allerr} on
 page~\pageref{table:data_allerr}.  That is, fit a straight line to the
 $y$ values of the points, using the $y$-direction uncertainties
 $\sigma_y^2$ only, by the standard method described in
-\sectionname~\ref{sec:standard}.  Now transpose the problem and fit
+\chaptername~\ref{sec:standard}.  Now transpose the problem and fit
 the same data but fitting the $x$ values using the $x$-direction
 uncertainties $\sigma_x^2$ only.  Make a plot showing the data points,
 the $x$-direction and $y$-direction uncertainties, and the two
@@ -2114,7 +2122,7 @@ the principal eigenvector.  Your plot should look like
 component from a principal components analysis.}\label{fig:pca}
 \end{figure}
 
-\section{Intrinsic scatter}\label{sec:scatter}
+\chapter{Intrinsic scatter}\label{sec:scatter}
 
 So far, everything we have done has implicitly assumed that there
 truly is a narrow linear relationship between $x$ and $y$ (or there
@@ -2178,7 +2186,7 @@ limitations to this procedure because it models only the distribution
   scatter.  If things are Gaussian, it doesn't matter whether you
   think of the scatter being in the $x$ direction, the $y$ direction,
   or the direction perpendicular to the line (as we think of it in the
-  method involving $V$ in this \sectionname).  However it must be made
+  method involving $V$ in this \chaptername).  However it must be made
   clear which direction is being used for the statement of the result,
   and what the conversions are to the other directions (these involve
   the angle $\theta$ or slope $m$ of course).}  Probably all good
