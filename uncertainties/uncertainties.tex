@@ -26,12 +26,11 @@
             citecolor=darkgray,
             urlcolor=NavyBlue]{hyperref}
 \usepackage{graphicx}
-\usepackage{changepage} % for "wider" environment
 \usepackage{marginfix} % necessary but possibly evil
 % Note to the archaeologists who find this file: The marginfix package is unstable and buggy. It needs to be rewritten.
 
 % citation stuhh
-\usepackage{doi}
+% \usepackage{doi} % huh?
 \usepackage{natbib}
 \bibliographystyle{hogg_abbrvnat}
 \setcitestyle{round,citesep={,},aysep={}}
@@ -93,7 +92,6 @@
 \newlength{\foo}
 \setlength{\foo}{\marginparwidth}
 \addtolength{\foo}{\marginparsep}
-\newenvironment{wider}{\begin{adjustwidth}{0in}{-\foo}}{\end{adjustwidth}}
 \sloppy\sloppypar\raggedbottom\frenchspacing
 
 % and make the left margin correct
@@ -112,10 +110,7 @@
 
 \begin{document}\thispagestyle{empty}
 
-\begin{wider}
 \section*{Data Analysis Recipes: \\ What is the uncertainty on my measurement?}
-\end{wider}
-
 \noindent
 \textbf{David W. Hogg}\footnote{%
     It is a pleasure to thank
@@ -1055,9 +1050,7 @@ I have a good LF but then I did jackknife and it disagrees!
 Hello world.
 
 % Render the references
-\begin{wider}
 \clearpage\raggedright
 \bibliography{refs}
-\end{wider}
 
 \end{document}
