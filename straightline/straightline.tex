@@ -367,7 +367,7 @@ distance in the data space.\note{The inverse covariance matrix
   optimization.}  This, of course, is only one possible meaning of the
 phrase ``best fit''; that issue is addressed more below.
 
-When the uncertainties are Gaussian and their variances $\sigma_{yi}$
+When the uncertainties are Gaussian and their variances $\sigma_{yi}^2$
 are correctly estimated, the matrix
 $\inverse{\left[\mAT\,\mCinv\,\mA\right]}$ that appears in
 \equationname~(\ref{eq:lsf}) is just the covariance matrix (Gaussian
@@ -1767,7 +1767,7 @@ already).  Is the fit good?  What about for the fit performed in
 \begin{problem}\label{prob:chi2}
 Re-do the fit of \problemname~\ref{prob:easy} but setting all
 $\sigma_{yi}^2=S$, that is, ignoring the uncertainties and replacing
-them all with the same value $S$.  What uncertainty variance $S$ would
+them all with the same value $\sqrt(S)$.  What uncertainty variance $S$ would
 make $\chi^2 = N-2$?  Relevant plots are shown in
 \figurename~\ref{fig:chi2}.  How does it compare to the mean and
 median of the uncertainty variances $\allsigmay$?
@@ -1814,7 +1814,7 @@ Of course most real two-dimensional data $\allxy$ come with
 uncertainties in \emph{both} directions (in both $x$ and $y$).  You
 might not know the amplitudes of these uncertainties, but it is
 unlikely that the $x$ values are known to sufficiently high accuracy
-that any of the straight-line fitting methods given so far is valid.
+that any of the straight-line fitting methods given so far are valid.
 Recall that everything so far has assumed that the $x$-direction
 uncertainties were negligible.  This might be true, for example, when
 the $x_i$ are the times at which a set of stellar measurements are
@@ -1823,12 +1823,12 @@ It is \emph{not} going to be true when the $x_i$ are the right
 ascensions of the star.
 
 In general, when one makes a two-dimensional measurement $(x_i,y_i)$,
-that measurement comes with uncertainties $(\sigma_{xi}^2,\sigma_{yi}^2)$
-in both directions, and some covariance $\sigma_{xyi}$ between them.
+that measurement comes with uncertainties $(\sigma_{xi},\sigma_{yi})$
+in both directions, and some covariance $S_{x_iy_i}$ between them.
 These can be put together into a covariance tensor $\mS_i$
 \begin{equation}
 \mS_i \equiv \left[\begin{array}{cc}
-\sigma_{xi}^2 & \sigma_{xyi} \\ \sigma_{xyi} & \sigma_{yi}^2
+\sigma_{xi}^2 & S_{x_iy_i} \\ S_{x_iy_i} & \sigma_{yi}^2
 \end{array}\right] \quad .
 \end{equation}
 If the uncertainties are Gaussian, or if all that is known about the
